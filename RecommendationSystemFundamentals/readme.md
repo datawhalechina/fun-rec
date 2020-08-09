@@ -1,8 +1,8 @@
-# [01 编程语言与数据结构](https://github.com/datawhalechina/team-learning-program)
+
 
 ## 简介
 
-本项目主要存储Datawhale组队学习中“编程、数据结构与算法”方向的资料。
+该资料正在整理中预计用于10月份的组队学习。
 
 
 
