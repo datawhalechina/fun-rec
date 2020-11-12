@@ -1,7 +1,13 @@
-﻿# 推荐系统基础
+﻿
+
+
+
+
+
+# 推荐系统基础
 
 ## 基本信息
-- 贡献人员：何世福、罗如意、梁家晖、徐何军、陈锴、吴忠强
+
 - 学习周期：12天
 - 学习形式：理论学习 + 练习
 - 人群定位：对机器学习有一定的了解，会使用常见的数据分析工具（Numpy，Pandas），了解向量检索工具（faiss）的学习者。
@@ -67,15 +73,16 @@ FM（Factorization Machines）算法属于对逻辑回归（LR）算法应用在
 
 该模型仍然是对LR模型的改进，使用树模型做特征交叉，相比于FM的二阶特征交叉，树模型可以对特征进行深度的特征交叉，充分利用了特征之间的相关性。
 
+---
+# 贡献人员
 
-## 备注
 
-有关组队学习的开源内容
+姓名 | 博客|备注
+---|---|---
+何世福||大连理工大学研究生
+罗如意||西安电子科技大学研究生
+梁家晖|微信公众号：可能好玩|
+徐何军|[Github](https://mumaxu.github.io/)|华中科技大学研究生
+陈锴 | [个人网站](chenk.tech)|中山大学本科生
+吴忠强|[CSDN](https://blog.csdn.net/wuzhongqiang)| 东北大学研究生
 
-- [team-learning](https://github.com/datawhalechina/team-learning)：主要展示Datawhale的组队学习计划。
-- [team-learning-program](https://github.com/datawhalechina/team-learning-program)：主要存储Datawhale组队学习中“编程、数据结构与算法”方向的资料。
-- [team-learning-data-mining](https://github.com/datawhalechina/team-learning-data-mining)：主要存储Datawhale组队学习中“数据挖掘/机器学习”方向的资料。
-- [team-learning-nlp](https://github.com/datawhalechina/team-learning-nlp)：主要存储Datawhale组队学习中“自然语言处理”方向的资料。
-- [team-learning-cv](https://github.com/datawhalechina/team-learning-cv)：主要存储Datawhale组队学习中“计算机视觉”方向的资料。
-- [team-learning-rs](https://github.com/datawhalechina/team-learning-rs)：主要存储Datawhale组队学习中“推荐系统”方向的资料。
-- [team-learning-rl](https://github.com/datawhalechina/team-learning-rl)：主要存储Datawhale组队学习中“强化学习”方向的资料。
