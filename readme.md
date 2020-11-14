@@ -5,6 +5,9 @@
 主要包括：
 
 - [推荐系统基础](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommendationSystemFundamentals)
+- [推荐系统实践（新闻推荐）](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommandNews)
+
+
 
 
 
