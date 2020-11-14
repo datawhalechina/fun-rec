@@ -80,7 +80,7 @@ FM（Factorization Machines）算法属于对逻辑回归（LR）算法应用在
 姓名 | 博客|备注
 ---|---|---
 何世福||大连理工大学研究生
-罗如意||西安电子科技大学研究生
+罗如意|[个人网站](https://ruyiluo.github.io/)|西安电子科技大学研究生
 梁家晖|微信公众号：可能好玩|
 徐何军|[Github](https://mumaxu.github.io/)|华中科技大学研究生
 陈锴 | [个人网站](chenk.tech)|中山大学本科生
