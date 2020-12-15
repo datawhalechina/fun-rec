@@ -68,15 +68,24 @@ FM（Factorization Machines）算法属于对逻辑回归（LR）算法应用在
 该模型仍然是对LR模型的改进，使用树模型做特征交叉，相比于FM的二阶特征交叉，树模型可以对特征进行深度的特征交叉，充分利用了特征之间的相关性。
 
 ---
-# 贡献人员
 
 
-姓名 | 博客|备注
----|---|---
-何世福||大连理工大学研究生
-罗如意|[个人网站](https://ruyiluo.github.io/)|西安电子科技大学研究生
- 吴忠强 | [CSDN](https://blog.csdn.net/wuzhongqiang) |东北大学研究生
-徐何军|[Github](https://mumaxu.github.io/)|华中科技大学研究生
-陈锴 | [个人网站](chenk.tech)|中山大学本科生
- 梁家晖 | 微信公众号：可能好玩                       |                        
+
+## 关于Datawhale
+
+> Datawhale是一个专注于数据科学与AI领域的开源组织，汇集了众多领域院校和知名企业的优秀学习者，聚合了一群有开源精神和探索精神的团队成员。Datawhale 以“for the learner，和学习者一起成长”为愿景，鼓励真实地展现自我、开放包容、互信互助、敢于试错和勇于担当。同时 Datawhale 用开源的理念去探索开源内容、开源学习和开源方案，赋能人才培养，助力人才成长，建立起人与人，人与知识，人与企业和人与未来的联结。 本次数据挖掘路径学习，专题知识将在天池分享，详情可关注Datawhale(二维码在上面)
+
+
+
+## 其他组队学习
+
+有关组队学习的开源内容
+
+- [team-learning](https://github.com/datawhalechina/team-learning)：主要展示Datawhale的组队学习计划。
+- [team-learning-program](https://github.com/datawhalechina/team-learning-program)：主要存储Datawhale组队学习中“编程、数据结构与算法”方向的资料。
+- [team-learning-data-mining](https://github.com/datawhalechina/team-learning-data-mining)：主要存储Datawhale组队学习中“数据挖掘/机器学习”方向的资料。
+- [team-learning-nlp](https://github.com/datawhalechina/team-learning-nlp)：主要存储Datawhale组队学习中“自然语言处理”方向的资料。
+- [team-learning-cv](https://github.com/datawhalechina/team-learning-cv)：主要存储Datawhale组队学习中“计算机视觉”方向的资料。
+- [team-learning-rs](https://github.com/datawhalechina/team-learning-rs)：主要存储Datawhale组队学习中“推荐系统”方向的资料。
+- [team-learning-rl](https://github.com/datawhalechina/team-learning-rl)：主要存储Datawhale组队学习中“强化学习”方向的资料。
 
