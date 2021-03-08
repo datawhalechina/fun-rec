@@ -19,18 +19,18 @@ FunRec推荐系统项目主要分为三个阶段，分别是推荐系统基础�
     - [x] [1.1.4 FM](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/04%20FM.md)
     - [x] [1.1.5 GBDT+LR](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/06%20GBDT%2BLR.md)
   - 1.2 基于深度组合的深度推荐算法
-    - [x] 深度学习模型搭建基础
-    - [x] 1.2.1 NeuralCF
-    - [x] 1.2.2 Deep Crossing
-    - [x] 1.2.3 PNN
+    - [x] [深度学习模型搭建基础](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80.md)
+    - [x] [1.2.1 NeuralCF](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/NeuralCF.md)
+    - [x] [1.2.2 Deep Crossing](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DeepCrossing.md)
+    - [x] [1.2.3 PNN](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/PNN.md)
     - [x] [1.2.3 Wide&Deep](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/05%20Wide%26Deep.md)
-    - [x] 1.2.4 DeepFM
-    - [x] 1.2.5 Deep&Cross
-    - [x] 1.2.6 NFM
+    - [x] [1.2.4 DeepFM](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DeepFM.md)
+    - [x] [1.2.5 Deep&Cross](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DeepCrossing.md)
+    - [x] [1.2.6 NFM](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/NFM.md)
   - 1.3 深度推荐算法前沿
-    - [x] 1.3.1 AFM
-    - [x] 1.3.2 DIN
-    - [x] 1.3.3 DIEN
+    - [x] [1.3.1 AFM](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/AFM.md)
+    - [x] [1.3.2 DIN](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DIN.md)
+    - [x] [1.3.3 DIEN](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DIEN.md)
     - [ ] ...
 
 - 第二章 推荐系统进阶
