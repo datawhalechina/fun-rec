@@ -36,7 +36,7 @@ FunRec推荐系统项目主要分为三个阶段，分别是推荐系统基础�
 - **第二章 推荐系统进阶**
 
   - **2.1 [竞赛实践(天池入门赛-新闻推荐)](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommandNews)**
-- [x] [2.1.1 赛题理解](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3%2BBaseline.ipynb)
+    - [x] [2.1.1 赛题理解](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3%2BBaseline.ipynb)
     - [x] [2.1.2 Baseline](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3%2BBaseline.ipynb)
     - [x] [2.1.3 数据分析](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90.ipynb)
     - [x] [2.1.4 多路召回](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E5%A4%9A%E8%B7%AF%E5%8F%AC%E5%9B%9E.ipynb)
@@ -44,16 +44,16 @@ FunRec推荐系统项目主要分为三个阶段，分别是推荐系统基础�
     - [x] [2.1.6 排序模型](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%8E%92%E5%BA%8F%E6%A8%A1%E5%9E%8B%2B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88.ipynb)
     - [x] [2.1.7 模型集成](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%8E%92%E5%BA%8F%E6%A8%A1%E5%9E%8B%2B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88.ipynb)
   - **2.2推荐系统架构**
-	- [ ] 2.2.1 基础架构
-  - [ ] 2.2.2 数据处理
+    - [ ] 2.2.1 基础架构
+    - [ ] 2.2.2 数据处理
     - [ ] 2.2.3 特征工程
     - [ ] 2.2.4 多路召回
     - [ ] 2.2.5 排序模型
     - [ ] 2.2.6 模型评估
     - [ ] 2.2.7 线上服务
   - **2.3 新闻推荐架构实践**
-  - [ ] 计划中...
-  
+    - [ ] 计划中...
+
 - **第三章 推荐系统应用**
 
   - [ ] 信息流推荐
