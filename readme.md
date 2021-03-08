@@ -1,21 +1,17 @@
-﻿## 动手学习推荐系统 (Dive-into-RS)
+﻿# FunRec
 
-本项目《动手学习推荐系统》是Datawhale推荐系统小组近期推动的一个重点项目，受李沐老师的[《动手学深度学习》](https://zh.d2l.ai/)及Datawhale CV小组发起的[《动手学CV-Pytorch版》](https://github.com/datawhalechina/dive-into-cv-pytorch)，我们旨在构建一个动手学推荐系统的项目，项目中的每个小节的内容都会详细的代码实现，帮助学习入门推荐系统的人可以更加直观的理解算法和模型。
-
-
-
-**内容设计上主要分为三个阶段，分别是推荐系统基础、推荐系统进阶和推荐系统应用。**
+FunRec推荐系统项目主要分为三个阶段，分别是推荐系统基础、推荐系统进阶和推荐系统应用，每个阶段的具体内容如下：
 
 - 推荐系统基础，这部分内容旨在让初学者了解推荐系统是什么，有哪些经典的推荐算法以及经典算法的实现，这一部分也是推荐系统非常核心的部分。对于基础部分，已经完成了基础推荐算法，接下来是完成深度学习推荐相关的算法模型。
 - 推荐系统进阶，这部分内容是在了解了推荐系统基础之后，在架构层面去了解推荐系统如何实现的，这里的内容会参考王喆老师的[《深度学习推荐系统》](https://book.douban.com/subject/35013197/)这本书及[SparrowRecSys](https://github.com/wzhe06/SparrowRecSys)开源项目，搭建一个完整的推荐系统框架。目前打算是基于最新的MIND数据集搭建一个新闻推荐的项目，在进阶部分除了推荐系统框架以外还有一个关于竞赛的实践内容，这部分内容是一个比较完整的推荐系竞赛入门的教程，将推荐系统中的召回和排序连在一起可以作为进阶部门的基础。
 - 推荐系统应用，这一部分是基于基础和进阶之上，在推荐系统细分领域上做的内容，例如信息流推荐、视频推荐、音乐推荐等。这一部分需要一些对这些细分领域比较熟悉的人来协助共同完成，如果对这部分内容的贡献感兴趣的可以联系我们，一起来完善这个项目。
 
-
+项目在Datawhale的组队学习过程中不断的迭代和优化，通过大家的反馈来修正或者补充相关的内容，如果项目对项目内容设计有更好的意见欢迎给我们反馈。
 
 ## 内容目录
 
 - [第一章 推荐系统基础](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommendationSystemFundamentals)
-  
+
   - 1.1 基础推荐算法
     - [x] [1.1.1 推荐系统概述](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/01%20%E6%A6%82%E8%BF%B0.md)
     - [x] [1.1.2 协同过滤](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/02%20%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4.md)
@@ -23,43 +19,44 @@
     - [x] [1.1.4 FM](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/04%20FM.md)
     - [x] [1.1.5 GBDT+LR](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/06%20GBDT%2BLR.md)
   - 1.2 基于深度组合的深度推荐算法
-    - [ ] 1.2.1 NeuralCF
-    - [ ] 1.2.2 Deep Crossing
-    - [ ] 1.2.3 PNN
+    - [x] 深度学习模型搭建基础
+    - [x] 1.2.1 NeuralCF
+    - [x] 1.2.2 Deep Crossing
+    - [x] 1.2.3 PNN
     - [x] [1.2.3 Wide&Deep](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/05%20Wide%26Deep.md)
-    - [ ] 1.2.4 DeepFM
-    - [ ] 1.2.5 Deep&Cross
-    - [ ] 1.2.6 NFM
+    - [x] 1.2.4 DeepFM
+    - [x] 1.2.5 Deep&Cross
+    - [x] 1.2.6 NFM
   - 1.3 深度推荐算法前沿
-    - [ ] 1.3.1 AFM
-    - [ ] 1.3.2 DIN
-    - [ ] 1.3.3 DIEN
-    - [ ] 1.3.4 DRN
+    - [x] 1.3.1 AFM
+    - [x] 1.3.2 DIN
+    - [x] 1.3.3 DIEN
     - [ ] ...
-  
+
 - 第二章 推荐系统进阶
 
-  - 2.1 推荐系统架构
+  - 2.1 [竞赛实践(天池入门赛-新闻推荐)](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommandNews)
 
-    - [ ] 2.1.1 基础架构
-    - [ ] 2.1.2 数据处理
-    - [ ] 2.1.3 特征工程
-    - [ ] 2.1.4 多路召回
-    - [ ] 2.1.5 排序模型
-    - [ ] 2.1.6 模型评估
-    - [ ] 2.1.7 线上服务
-  - 2.2 [竞赛实践(天池入门赛-新闻推荐)](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommandNews)
-  
-    - [x] [2.2.1 赛题理解](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3%2BBaseline.ipynb)
-    - [x] [2.2.2 Baseline](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3%2BBaseline.ipynb)
-    - [x] [2.2.3 数据分析](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90.ipynb)
-    - [x] [2.2.4 多路召回](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E5%A4%9A%E8%B7%AF%E5%8F%AC%E5%9B%9E.ipynb)
-    - [x] [2.2.5 特征工程](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B.ipynb)
-    - [x] [2.2.6 排序模型](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%8E%92%E5%BA%8F%E6%A8%A1%E5%9E%8B%2B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88.ipynb)
-    - [x] [2.2.7 模型集成](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%8E%92%E5%BA%8F%E6%A8%A1%E5%9E%8B%2B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88.ipynb)
+    - [x] [2.1.1 赛题理解](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3%2BBaseline.ipynb)
+    - [x] [2.1.2 Baseline](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3%2BBaseline.ipynb)
+    - [x] [2.1.3 数据分析](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90.ipynb)
+    - [x] [2.1.4 多路召回](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E5%A4%9A%E8%B7%AF%E5%8F%AC%E5%9B%9E.ipynb)
+    - [x] [2.1.5 特征工程](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B.ipynb)
+    - [x] [2.1.6 排序模型](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%8E%92%E5%BA%8F%E6%A8%A1%E5%9E%8B%2B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88.ipynb)
+    - [x] [2.1.7 模型集成](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%8E%92%E5%BA%8F%E6%A8%A1%E5%9E%8B%2B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88.ipynb)
+  - 2. 2推荐系统架构
+
+    - [ ] 2.2.1 基础架构
+    - [ ] 2.2.2 数据处理
+    - [ ] 2.2.3 特征工程
+    - [ ] 2.2.4 多路召回
+    - [ ] 2.2.5 排序模型
+    - [ ] 2.2.6 模型评估
+    - [ ] 2.2.7 线上服务
   - 2.3 新闻推荐架构实践
+
     - [ ] 计划中...
-  
+
 - 第三章 推荐系统应用
 
   - [ ] 信息流推荐
@@ -72,8 +69,6 @@
     
     ......
     
-
-
 
 
 
