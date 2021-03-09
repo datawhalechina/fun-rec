@@ -1,5 +1,10 @@
 ﻿## 推荐系统实践（新闻推荐）
 
+## 数据下载
+
+> 链接：https://pan.baidu.com/s/15ReHXSM6VlQP-usia0DgYw
+> 提取码：135r
+
 ## 基本信息
 
 - 学习周期：15天
