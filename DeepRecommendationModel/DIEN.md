@@ -187,7 +187,7 @@ def DIEN(feature_columns, behavior_feature_list, behavior_seq_feature_list, neg_
 
 [deepctr](https://github.com/shenweichen/DeepCTR)
 
-[原论文](Deep Interest Evolution Network for Click-Through Rate Prediction  )
+[原论文](https://arxiv.org/pdf/1809.03672.pdf)
 
 [[论文阅读]阿里DIEN深度兴趣进化网络之总体解读](https://mp.weixin.qq.com/s/IlVZCVtDco3hWuvnsUmekg)
 
