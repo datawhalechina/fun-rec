@@ -12,7 +12,7 @@ PNN模型其实是对IPNN和OPNN的总称，两者分别对应的是不同的Pro
 
 PNN模型的整体架构如下图所示：
 
-<img src="C:\Users\ryl\AppData\Roaming\Typora\typora-user-images\image-20210308142624189.png" alt="image-20210308142624189" style="zoom: 50%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210308142624189.png" alt="image-20210308142624189" style="zoom: 50%;" />
 
 一共分为五层，其中除了Product Layer别的layer都是比较常规的处理方法，均可以从前面的章节进一步了解。模型中最重要的部分就是通过Product层对embedding特征进行交叉组合，也就是上图中红框所显示的部分。
 

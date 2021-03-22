@@ -22,13 +22,13 @@ Deep Interest Network(DIIN)是2018年阿里巴巴提出来的模型， 该模型
 
 工业上的CTR预测数据集一般都是`multi-group categorial form`的形式，就是类别型特征最为常见，这种数据集一般长这样：
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1.png" style="zoom: 67%;" />
+<img src="https://img-blog.csdnimg.cn/20210118190044920.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" style="zoom: 67%;" />
 
 这里的亮点就是框出来的那个特征，这个包含着丰富的用户兴趣信息。
 
 对于特征编码，作者这里举了个例子：`[weekday=Friday, gender=Female, visited_cate_ids={Bag,Book}, ad_cate_id=Book]`， 这种情况我们知道一般是通过one-hot的形式对其编码， 转成系数的二值特征的形式。但是这里我们会发现一个`visted_cate_ids`， 也就是用户的历史商品列表， 对于某个用户来讲，这个值是个多值型的特征， 而且还要知道这个特征的长度不一样长，也就是用户购买的历史商品个数不一样多，这个显然。这个特征的话，我们一般是用到multi-hot编码，也就是可能不止1个1了，有哪个商品，对应位置就是1， 所以经过编码后的数据长下面这个样子：
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片2.png" style="zoom:67%;" />
+<img src="https://img-blog.csdnimg.cn/20210118185933510.png" style="zoom:67%;" />
 
 这个就是喂入模型的数据格式了，这里还要注意一点 就是上面的特征里面没有任何的交互组合，也就是没有做特征交叉。这个交互信息交给后面的神经网络去学习。
 
