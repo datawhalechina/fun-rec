@@ -8,9 +8,9 @@ FunRec推荐系统项目主要分为三个阶段，分别是推荐系统基础�
 
 项目在Datawhale的组队学习过程中不断的迭代和优化，通过大家的反馈来修正或者补充相关的内容，如果项目对项目内容设计有更好的意见欢迎给我们反馈。
 
-由于微信群的二维码只有7天有效，为了方便大家进群直接扫下面的二维码，备注：FunRec，会被拉到交流群
+由于微信群的二维码只有7天有效，为了方便大家进群直接扫下面的二维码，备注：**FunRec**，会被拉到交流群
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210327163711753.png" alt="image-20210327163711753" style="zoom:50%;" />
+<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210327163711753.png" width = 30%/> </div>
 
 ## 内容目录
 
