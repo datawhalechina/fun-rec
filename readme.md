@@ -13,53 +13,57 @@
 ## 内容目录
 
 - [第一章 推荐系统基础](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommendationSystemFundamentals)
-- **1.1 基础推荐算法**
-    - [x] [1.1.1 推荐系统概述](./docs/第一章 推荐系统基础./1.1基础推荐算法/1.1.1 概述.md)
-    - [x] [1.1.2 协同过滤](./docs/第一章 推荐系统基础./1.1基础推荐算法/1.1.2 协同过滤.md)
-    - [x] [1.1.3 矩阵分解](./docs/第一章 推荐系统基础./1.1基础推荐算法/1.1.3 矩阵分解.md)
-    - [x] [1.1.4 FM](./docs/第一章 推荐系统基础./1.1基础推荐算法/1.1.4 FM.md)
-    - [x] [1.1.5 GBDT+LR](./docs/第一章 推荐系统基础./1.1基础推荐算法/1.1.5 GBDT+LR.md)
-  - **1.2 基于深度组合的深度推荐算法**
-    - [x] [深度学习模型搭建基础](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80.md)
-    - [x] [1.2.1 NeuralCF](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/NeuralCF.md)
-    - [x] [1.2.2 Deep Crossing](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DeepCrossing.md)
-    - [x] [1.2.3 PNN](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/PNN.md)
-    - [x] [1.2.3 Wide&Deep](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/05%20Wide%26Deep.md)
-    - [x] [1.2.4 DeepFM](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DeepFM.md)
-    - [x] [1.2.5 Deep&Cross](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DeepCrossing.md)
-    - [x] [1.2.6 NFM](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/NFM.md)
-  - **1.3 深度推荐算法前沿**
-    - [x] [1.3.1 AFM](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/AFM.md)
-    - [x] [1.3.2 DIN](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DIN.md)
-    - [x] [1.3.3 DIEN](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DIEN.md)
-    - [ ] ...
-  
-- **第二章 推荐系统进阶**
 
-  - **2.1 [竞赛实践(天池入门赛-新闻推荐)](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommandNews)**
-    - [x] [2.1.1 赛题理解](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3%2BBaseline.ipynb)
-    - [x] [2.1.2 Baseline](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3%2BBaseline.ipynb)
-    - [x] [2.1.3 数据分析](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90.ipynb)
-    - [x] [2.1.4 多路召回](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E5%A4%9A%E8%B7%AF%E5%8F%AC%E5%9B%9E.ipynb)
-    - [x] [2.1.5 特征工程](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B.ipynb)
-    - [x] [2.1.6 排序模型](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%8E%92%E5%BA%8F%E6%A8%A1%E5%9E%8B%2B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88.ipynb)
-    - [x] [2.1.7 模型集成](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommandNews/%E6%8E%92%E5%BA%8F%E6%A8%A1%E5%9E%8B%2B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88.ipynb)
-  - **2.2推荐系统架构**
-    - [ ] 2.2.1 基础架构
-    - [ ] 2.2.2 数据处理
-    - [ ] 2.2.3 特征工程
-    - [ ] 2.2.4 多路召回
-    - [ ] 2.2.5 排序模型
-    - [ ] 2.2.6 模型评估
-    - [ ] 2.2.7 线上服务
-  - **2.3 新闻推荐架构实践**
-    - [ ] 计划中...
+    - **1.1 基础推荐算法**
+
+        - [1.1.1 推荐系统概述](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.1%E5%9F%BA%E7%A1%80%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/1.1.1%20%E6%A6%82%E8%BF%B0.md)
+
+        - [1.1.2 协同过滤](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.1%E5%9F%BA%E7%A1%80%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/1.1.2%20%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4.md)
+        - [1.1.3 矩阵分解](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.1%E5%9F%BA%E7%A1%80%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/1.1.3%20%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3.md)
+
+        - [1.1.4 FM](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.1%E5%9F%BA%E7%A1%80%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/1.1.4%20FM.md)
+        - [1.1.5 GBDT+LR](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.1%E5%9F%BA%E7%A1%80%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/1.1.6%20GBDT%2BLR.md)
+
+    - **1.2 基于深度组合的深度推荐算法**
+        - [深度学习模型搭建基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.2%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%BB%84%E5%90%88%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B/1.2.0%20%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80.md)
+        - [1.2.1 NeuralCF](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.2%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%BB%84%E5%90%88%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B/1.2.1%20NeuralCF.md)
+        - [1.2.2 Deep Crossing](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.2%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%BB%84%E5%90%88%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B/1.2.2%20DeepCrossing.md)
+        - [1.2.3 PNN](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.2%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%BB%84%E5%90%88%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B/1.2.3%20PNN.md)
+        - [1.2.4 Wide&Deep](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.2%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%BB%84%E5%90%88%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B/1.2.4%20Wide%26Deep.md)
+        - [1.2.5 DeepFM](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.2%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%BB%84%E5%90%88%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B/1.2.5%20DeepFM.md)
+        - [1.2.6 Deep&Cross](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.2%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%BB%84%E5%90%88%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B/1.2.7%20DCN.md)
+        - [1.2.7 NFM](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.2%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%BB%84%E5%90%88%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B/1.2.6%20NFM.md)
+
+     - **1.3 深度推荐算法前沿**
+        - [1.3.1 AFM](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.3%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B%E5%89%8D%E6%B2%BF/1.3.1%20AFM.md)
+        - [1.3.2 DIN](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.3%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B%E5%89%8D%E6%B2%BF/1.3.2%20DIN.md)
+        - [1.3.3 DIEN](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.3%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B%E5%89%8D%E6%B2%BF/1.3.3%20DIEN.mdhttps://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DIEN.md)
+
+        -  ...
+
+- **第二章 推荐系统进阶**
+    - **2.1 [竞赛实践(天池入门赛-新闻推荐)](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommandNews)**
+        - [2.1.1 赛题理解&Baseline](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%BF%9B%E9%98%B6/2.1%E7%AB%9E%E8%B5%9B%E5%AE%9E%E8%B7%B5/jupyter/2.1%20%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3%2BBaseline.ipynb)
+        - [2.1.2 数据分析](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%BF%9B%E9%98%B6/2.1%E7%AB%9E%E8%B5%9B%E5%AE%9E%E8%B7%B5/jupyter/2.2%20%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90.ipynb)
+        - [2.1.3 多路召回](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%BF%9B%E9%98%B6/2.1%E7%AB%9E%E8%B5%9B%E5%AE%9E%E8%B7%B5/jupyter/2.3%20%E5%A4%9A%E8%B7%AF%E5%8F%AC%E5%9B%9E.ipynb)
+        - [2.1.4 特征工程](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%BF%9B%E9%98%B6/2.1%E7%AB%9E%E8%B5%9B%E5%AE%9E%E8%B7%B5/jupyter/2.4%20%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B.ipynb)
+        - [2.1.5 排序模型&模型融合](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%BF%9B%E9%98%B6/2.1%E7%AB%9E%E8%B5%9B%E5%AE%9E%E8%B7%B5/jupyter/2.5%20%E6%8E%92%E5%BA%8F%E6%A8%A1%E5%9E%8B%2B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88.ipynb)
+    - **2.2推荐系统架构**
+      - 2.2.1 基础架构
+      - 2.2.2 数据处理
+      - 2.2.3 特征工程
+      - 2.2.4 多路召回
+      - 2.2.5 排序模型
+      - 2.2.6 模型评估
+      - 2.2.7 线上服务
+    - **2.3 新闻推荐架构实践**
+      - 计划中...
 
 - **第三章 推荐系统应用**
-  - [ ] **3.1 信息流推荐**
-  - [ ] **3.2 视频推荐**
-  - [ ] **3.3 音乐推荐**
-  - [ ] **3.4 广告推荐**
+  - **3.1 信息流推荐**
+  - **3.2 视频推荐**
+  - **3.3 音乐推荐**
+  - **3.4 广告推荐**
     ......
 
 
