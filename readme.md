@@ -13,13 +13,12 @@
 ## 内容目录
 
 - [第一章 推荐系统基础](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommendationSystemFundamentals)
-
-  - **1.1 基础推荐算法**
-    - [x] [1.1.1 推荐系统概述](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/01%20%E6%A6%82%E8%BF%B0.md)
-    - [x] [1.1.2 协同过滤](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/02%20%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4.md)
-    - [x] [1.1.3 矩阵分解](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/03%20%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3.md)
-    - [x] [1.1.4 FM](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/04%20FM.md)
-    - [x] [1.1.5 GBDT+LR](https://github.com/datawhalechina/team-learning-rs/blob/master/RecommendationSystemFundamentals/06%20GBDT%2BLR.md)
+- **1.1 基础推荐算法**
+    - [x] [1.1.1 推荐系统概述](./docs/第一章 推荐系统基础./1.1基础推荐算法/1.1.1 概述.md)
+    - [x] [1.1.2 协同过滤](./docs/第一章 推荐系统基础./1.1基础推荐算法/1.1.2 协同过滤.md)
+    - [x] [1.1.3 矩阵分解](./docs/第一章 推荐系统基础./1.1基础推荐算法/1.1.3 矩阵分解.md)
+    - [x] [1.1.4 FM](./docs/第一章 推荐系统基础./1.1基础推荐算法/1.1.4 FM.md)
+    - [x] [1.1.5 GBDT+LR](./docs/第一章 推荐系统基础./1.1基础推荐算法/1.1.5 GBDT+LR.md)
   - **1.2 基于深度组合的深度推荐算法**
     - [x] [深度学习模型搭建基础](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80.md)
     - [x] [1.2.1 NeuralCF](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/NeuralCF.md)
@@ -34,7 +33,7 @@
     - [x] [1.3.2 DIN](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DIN.md)
     - [x] [1.3.3 DIEN](https://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DIEN.md)
     - [ ] ...
-
+  
 - **第二章 推荐系统进阶**
 
   - **2.1 [竞赛实践(天池入门赛-新闻推荐)](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommandNews)**
