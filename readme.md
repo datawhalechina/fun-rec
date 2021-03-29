@@ -69,41 +69,27 @@
 ##### 核心贡献者：
 
 罗如意：Datawhale成员，西安电子科技大学(项目负责人)
-
 吴忠强：Datawhale成员，东北大学
 
 ##### 贡献者：
 
 何世福：Datawhale成员，推荐算法工程师(内容审核负责人)
-
 徐何军：Datawhale成员，推荐算法工程师(内容审核)
-
 李万业：Datawhale成员，同济大学
-
 陈琰钰：Datawhale成员，清华大学
-
 陈锴：    Datawhale成员，中山大学
-
 梁家晖：Datawhale成员， 公众号：可能好玩
-
 王贺：    Datawhale成员，算法工程师
-
 宁彦吉：Datawhale Contributor, 算法工程师
-
 田雨：   Datawhale成员，武汉大学
-
 赖敏材:  Datawhale成员，上海科技大学
 
 **组队学习贡献者：**
 
 刘雯静：Datawhale成员
-
 吕豪杰：Datawhale成员
-
 张汉隆：华北电力大学
-
 吴丹飞：华北电力大学
-
 王云川：山东农业大学
 
 ## 关于Datawhale
