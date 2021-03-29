@@ -20,6 +20,7 @@
         - [1.1.3 矩阵分解](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.1%E5%9F%BA%E7%A1%80%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/1.1.3%20%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3.md)
         - [1.1.4 FM](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.1%E5%9F%BA%E7%A1%80%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/1.1.4%20FM.md)
         - [1.1.5 GBDT+LR](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.1%E5%9F%BA%E7%A1%80%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/1.1.6%20GBDT%2BLR.md)
+ 
     - **1.2 基于深度组合的深度推荐算法**
         - [深度学习模型搭建基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.2%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%BB%84%E5%90%88%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B/1.2.0%20%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80.md)
         - [1.2.1 NeuralCF](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.2%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%BB%84%E5%90%88%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B/1.2.1%20NeuralCF.md)
@@ -36,14 +37,16 @@
         - [1.3.3 DIEN](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.3%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B%E5%89%8D%E6%B2%BF/1.3.3%20DIEN.mdhttps://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DIEN.md)
         -  ...
 
-- **第二章 推荐系统进阶**
-    - **2.1 [竞赛实践(天池入门赛-新闻推荐)](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommandNews)**
+- 第二章 推荐系统进阶
+    - 2.1 [竞赛实践(天池入门赛-新闻推荐)](https://github.com/datawhalechina/team-learning-rs/tree/master/RecommandNews)
         - [2.1.1 赛题理解&Baseline](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%BF%9B%E9%98%B6/2.1%E7%AB%9E%E8%B5%9B%E5%AE%9E%E8%B7%B5/jupyter/2.1%20%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3%2BBaseline.ipynb)
         - [2.1.2 数据分析](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%BF%9B%E9%98%B6/2.1%E7%AB%9E%E8%B5%9B%E5%AE%9E%E8%B7%B5/jupyter/2.2%20%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90.ipynb)
         - [2.1.3 多路召回](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%BF%9B%E9%98%B6/2.1%E7%AB%9E%E8%B5%9B%E5%AE%9E%E8%B7%B5/jupyter/2.3%20%E5%A4%9A%E8%B7%AF%E5%8F%AC%E5%9B%9E.ipynb)
         - [2.1.4 特征工程](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%BF%9B%E9%98%B6/2.1%E7%AB%9E%E8%B5%9B%E5%AE%9E%E8%B7%B5/jupyter/2.4%20%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B.ipynb)
         - [2.1.5 排序模型&模型融合](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%BF%9B%E9%98%B6/2.1%E7%AB%9E%E8%B5%9B%E5%AE%9E%E8%B7%B5/jupyter/2.5%20%E6%8E%92%E5%BA%8F%E6%A8%A1%E5%9E%8B%2B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88.ipynb)
-    - **2.2推荐系统架构**
+       
+    - 2.2推荐系统架构
+
       - 2.2.1 基础架构
       - 2.2.2 数据处理
       - 2.2.3 特征工程
@@ -51,6 +54,7 @@
       - 2.2.5 排序模型
       - 2.2.6 模型评估
       - 2.2.7 线上服务
+     
     - **2.3 新闻推荐架构实践**
       - 计划中...
 
@@ -67,21 +71,21 @@
 
 ##### 核心贡献者：
 
-罗如意：Datawhale成员，西安电子科技大学(项目负责人)
+罗如意：Datawhale成员，西安电子科技大学(项目负责人)  
 吴忠强：Datawhale成员，东北大学
 
 ##### 贡献者：
 
-何世福：Datawhale成员，推荐算法工程师(内容审核负责人)
-徐何军：Datawhale成员，推荐算法工程师(内容审核)
-李万业：Datawhale成员，同济大学
-陈琰钰：Datawhale成员，清华大学
-陈锴：    Datawhale成员，中山大学
-梁家晖：Datawhale成员， 公众号：可能好玩
-王贺：    Datawhale成员，算法工程师
-宁彦吉：Datawhale Contributor, 算法工程师
-田雨：   Datawhale成员，武汉大学
-赖敏材:  Datawhale成员，上海科技大学
+何世福：Datawhale成员，推荐算法工程师(内容审核负责人)  
+徐何军：Datawhale成员，推荐算法工程师(内容审核)  
+李万业：Datawhale成员，同济大学  
+陈琰钰：Datawhale成员，清华大学  
+陈锴：    Datawhale成员，中山大学  
+梁家晖：Datawhale成员， 公众号：可能好玩  
+王贺：    Datawhale成员，算法工程师  
+宁彦吉：Datawhale Contributor, 算法工程师  
+田雨：   Datawhale成员，武汉大学  
+赖敏材:  Datawhale成员，上海科技大学  
 
 **组队学习贡献者：**
 
