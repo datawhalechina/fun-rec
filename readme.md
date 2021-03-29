@@ -10,7 +10,7 @@
 
 <div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210327163711753.png" width = 25%/> </div>
 
-## 内容目录
+## 内容导航
 
 - **第一章 推荐系统基础**
   - **1.1 基础推荐算法**
