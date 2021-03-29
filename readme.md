@@ -34,7 +34,6 @@
         - [1.3.1 AFM](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.3%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B%E5%89%8D%E6%B2%BF/1.3.1%20AFM.md)
         - [1.3.2 DIN](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.3%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B%E5%89%8D%E6%B2%BF/1.3.2%20DIN.md)
         - [1.3.3 DIEN](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.3%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B%E5%89%8D%E6%B2%BF/1.3.3%20DIEN.mdhttps://github.com/datawhalechina/team-learning-rs/blob/master/DeepRecommendationModel/DIEN.md)
-
         -  ...
 
 - **第二章 推荐系统进阶**
