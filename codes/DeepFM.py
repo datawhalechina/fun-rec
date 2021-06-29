@@ -218,3 +218,4 @@ if __name__ == "__main__":
     # 模型训练
     history.fit(train_model_input, train_data['label'].values,
             batch_size=64, epochs=5, validation_split=0.2, )
+
