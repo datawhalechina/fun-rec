@@ -55,8 +55,8 @@
     
       - **2.2.1 构建物料池**
         - 2.2.1.1 Mysql基础
-        - 2.2.1.2 MongoDB基础
-        - 2.2.1.3 Redis基础
+        - [2.2.1.2 MongoDB基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/MongoDB%E5%9F%BA%E7%A1%80.md)
+        - [2.2.1.3 Redis基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/Redis%E5%9F%BA%E7%A1%80.md)
         - 2.2.1.4 scrapy框架基础
         - 2.2.1.5 scrapy新闻爬取
         - 2.2.1.6 新闻画像的构建
