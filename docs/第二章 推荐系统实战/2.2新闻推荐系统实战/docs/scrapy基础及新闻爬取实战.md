@@ -495,7 +495,7 @@ sh run_scrapy_sina.sh
 
 最终查看数据库中的数据：
 
-<img src="C:\Users\ryl\AppData\Roaming\Typora\typora-user-images\image-20211103214611171.png" alt="image-20211103214611171" style="zoom:80%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211103214611171.png" alt="image-20211103214611171" style="zoom:80%;" />
 
 ### 参考资料
 
