@@ -54,33 +54,32 @@
     - **2.2 新闻推荐系统实践**
     
       - **2.2.1 构建物料池**
-        - 2.2.1.1 Mysql基础
-        - 2.2.1.2 MongoDB基础
-        - 2.2.1.3 Redis基础
-        - 2.2.1.4 scrapy框架基础
-        - 2.2.1.5 scrapy新闻爬取
+        - [2.2.1.1 Mysql基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.1%20Mysql%E5%9F%BA%E7%A1%80.md)
+        - [2.2.1.2 MongoDB基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.2%20MongoDB%E5%9F%BA%E7%A1%80.md)
+        - [2.2.1.3 Redis基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.3%20Redis%E5%9F%BA%E7%A1%80.md)
+        - [2.2.1.4 Scrapy基础及新闻爬取实战](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.4%20scrapy%E5%9F%BA%E7%A1%80%E5%8F%8A%E6%96%B0%E9%97%BB%E7%88%AC%E5%8F%96%E5%AE%9E%E6%88%98.md)
         - 2.2.1.6 新闻画像的构建
-    
+      
       - **2.2.2 前后端交互**
         - 2.2.2.1 Vue简介及基础
         - 2.2.2.2 flask简介及基础
         - 2.2.2.3 前后端交互
-    
+      
       - **2.2.3 数据收集及冷启动**
-    
+      
       - **2.2.4 特征工程**
-    
+      
       - **2.2.5 召回**
         - 2.2.5.1 规则类召回
         - 2.2.5.2 模型类召回
         - 2.2.5.3 召回评估
-    
+      
       - **2.2.6 排序**
         - 2.2.6.1 DeepFM排序模型
         - 2.2.6.2 排序模型评估
-    
+      
       - **2.2.7 规则与重排**
-    
+      
       - **2.2.8 任务监控与调度**
     
 - **第三章 推荐算法面经**
