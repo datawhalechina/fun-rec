@@ -19,7 +19,7 @@
     - 1.0.2 逻辑回归
     - 1.0.3 神经网络
     - 1.0.4 常用优化算法
-    - [1.0.5 深度学习模型搭建基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.2%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%BB%84%E5%90%88%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B/1.2.0%20%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80.md)
+    - [1.0.5 深度学习模型搭建基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.0%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/1.0.5%20%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80.md)
 
   - **1.1 基础推荐算法**
       - [1.1.1 推荐系统概述](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.1%E5%9F%BA%E7%A1%80%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/1.1.1%20%E6%A6%82%E8%BF%B0.md)
@@ -61,7 +61,7 @@
         - 2.2.1.6 新闻画像的构建
       
       - **2.2.2 前后端交互**
-        - 2.2.2.1 Vue简介及基础
+        - [2.2.2.1 前端基础及Vue实战](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.1%20%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%8F%8AVue%E5%AE%9E%E6%88%98.md)
         - 2.2.2.2 flask简介及基础
         - 2.2.2.3 前后端交互
       
@@ -84,10 +84,10 @@
     
 - **第三章 推荐算法面经**
 
-  - 3.1 机器学习相关
-  - 3.2 推荐模型相关
-  - 3.3 热门技术相关
-  - 3.4 业务场景相关
+  - [3.1 ML与DL基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.1%20ML%E4%B8%8EDL%E5%9F%BA%E7%A1%80.md)
+  - [3.2 推荐模型相关](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.2%20%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B%E7%9B%B8%E5%85%B3.md)
+  - [3.3 热门技术相关](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.3%20%E7%83%AD%E9%97%A8%E6%8A%80%E6%9C%AF%E7%9B%B8%E5%85%B3.md)
+  - [3.4 业务场景相关](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.4%20%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E7%9B%B8%E5%85%B3.md)
 
 
 
