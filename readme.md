@@ -84,10 +84,10 @@
     
 - **第三章 推荐算法面经**
 
-  - 3.1 机器学习相关
-  - 3.2 推荐模型相关
-  - 3.3 热门技术相关
-  - 3.4 业务场景相关
+  - [3.1 ML与DL基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.1%20ML%E4%B8%8EDL%E5%9F%BA%E7%A1%80.md)
+  - [3.2 推荐模型相关](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.2%20%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B%E7%9B%B8%E5%85%B3.md)
+  - [3.3 热门技术相关](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.3%20%E7%83%AD%E9%97%A8%E6%8A%80%E6%9C%AF%E7%9B%B8%E5%85%B3.md)
+  - [3.4 业务场景相关](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.4%20%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E7%9B%B8%E5%85%B3.md)
 
 
 
