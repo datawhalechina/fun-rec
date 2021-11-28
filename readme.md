@@ -62,7 +62,7 @@
       
       - **2.2.2 前后端交互**
         - [2.2.2.1 前端基础及Vue实战](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.1%20%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%8F%8AVue%E5%AE%9E%E6%88%98.md)
-        - 2.2.2.2 flask简介及基础
+        - [2.2.2.2 flask简介及基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.2%20flask%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%9F%BA%E7%A1%80.md)
         - 2.2.2.3 前后端交互
       
       - **2.2.3 数据收集及冷启动**
