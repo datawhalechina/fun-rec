@@ -53,19 +53,19 @@
         
     - **2.2 新闻推荐系统实践**
     
-      - **2.2.1 构建物料池**
+      - **2.2.1 离线物料系统的构建**
         - [2.2.1.1 Mysql基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.1%20Mysql%E5%9F%BA%E7%A1%80.md)
         - [2.2.1.2 MongoDB基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.2%20MongoDB%E5%9F%BA%E7%A1%80.md)
         - [2.2.1.3 Redis基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.3%20Redis%E5%9F%BA%E7%A1%80.md)
         - [2.2.1.4 Scrapy基础及新闻爬取实战](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.4%20scrapy%E5%9F%BA%E7%A1%80%E5%8F%8A%E6%96%B0%E9%97%BB%E7%88%AC%E5%8F%96%E5%AE%9E%E6%88%98.md)
-        - 2.2.1.6 新闻画像的构建
+        - 2.2.1.6 离线用户及物料特征的构建
       
-      - **2.2.2 前后端交互**
+      - **2.2.2 前后端基础及交互**
         - [2.2.2.1 前端基础及Vue实战](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.1%20%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%8F%8AVue%E5%AE%9E%E6%88%98.md)
         - [2.2.2.2 flask简介及基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.2%20flask%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%9F%BA%E7%A1%80.md)
         - 2.2.2.3 前后端交互
       
-      - **2.2.3 数据收集及冷启动**
+      - **2.2.3 推荐流程的构建**
       
       - **2.2.4 特征工程**
       
