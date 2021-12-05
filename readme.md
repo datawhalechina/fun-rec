@@ -63,7 +63,7 @@
       - **2.2.2 前后端基础及交互**
         - [2.2.2.1 前端基础及Vue实战](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.1%20%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%8F%8AVue%E5%AE%9E%E6%88%98.md)
         - [2.2.2.2 flask简介及基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.2%20flask%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%9F%BA%E7%A1%80.md)
-        - 2.2.2.3 前后端交互
+        - [2.2.2.3 前后端交互](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.3%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BA%A4%E4%BA%92.md)
       
       - **2.2.3 推荐流程的构建**
       
@@ -88,6 +88,19 @@
   - [3.2 推荐模型相关](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.2%20%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B%E7%9B%B8%E5%85%B3.md)
   - [3.3 热门技术相关](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.3%20%E7%83%AD%E9%97%A8%E6%8A%80%E6%9C%AF%E7%9B%B8%E5%85%B3.md)
   - [3.4 业务场景相关](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.4%20%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E7%9B%B8%E5%85%B3.md)
+
+---
+
+### 新闻推荐系统前端显示页面
+
+<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211205142026937.png" alt="image-20211205142026937" style="zoom:80%;" />
+</div>
+
+### 新闻推荐系统架构图
+
+<div align=center>
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Fun-Rec新闻推荐系统.png" alt="Fun-Rec新闻推荐系统" style="zoom:80%;" />
+</div>
 
 
 
