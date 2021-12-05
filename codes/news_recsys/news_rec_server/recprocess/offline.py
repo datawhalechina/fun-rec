@@ -4,6 +4,7 @@ sys.path.append("../")
 from dao.mongo_server import MongoServer
 from dao.redis_server import RedisServer
 from recall.hot_recall import HotRecall
+from cold_start.cold_start import ColdStart
 from datetime import datetime
 
 # 这个类是用来实现离线推荐流程的，给每个用户都存储一个倒排索引列表
@@ -14,7 +15,7 @@ class OfflineServer(object):
         self.redis_mongo_collection = MongoServer().get_redis_mongo_collection()
         self.reclist_redis = RedisServer().get_reclist_redis()
         self.hot_recall = HotRecall()
-
+        self.cold_start = ColdStart()
         
     def hot_list_to_redis(self):
         """热门页面，初始化的时候每个用户都是同样的内容
@@ -30,8 +31,10 @@ class OfflineServer(object):
     def cold_start_template_to_redis(self):
         """冷启动列表模板
         """
-        pass
-
+        self.cold_start.generate_cold_user_strategy_templete_to_redis()
+        # 对现有用户先拷贝一份
+        self.cold_start.generate_cold_start_news_list_to_redis_for_register_user()
+        
     def _get_user_id_list(self):
         """获取所有注册用户的id
         """
@@ -64,6 +67,8 @@ class OfflineServer(object):
 if __name__ == "__main__":
     # 生成统一的，用于测试的倒排索引
     # TODO 待测试
-    offline_server = OfflineServer().test()
-    offline_server = OfflineServer().hot_list_to_redis()
+    offline_server = OfflineServer()
+    # offline_server.test()
+    offline_server.hot_list_to_redis()
+    offline_server.cold_start_template_to_redis()
 

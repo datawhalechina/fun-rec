@@ -1,62 +1,86 @@
 import sys
+
+from sqlalchemy.sql.functions import user
 sys.path.append('../../')
 
 from dao.mongo_server import MongoServer
 from dao.redis_server import RedisServer
+from dao.mysql_server import MysqlServer
+from dao.entity.register_user import RegisterUser
 from datetime import datetime
+import random
 
+# 这里需要从物料库中获取物料的信息，把物料按冷启用户分组
+# 对不同组的冷启用户推荐对应物料50条 + 10条本地新闻 按热度值排序 并去重 
 
-# 这里设计冷启动规则
-# 针对每个用户，构造出三部分最终将计算好的物料热度，对物料进行排序
+"""
+第一版先不考虑用户位置和新闻位置的关系，因为目前新闻的数据量太少了
+冷启动用户分组，最终的内容按照热度进行排序：
+"""
 
-class HotRecall(object):
+class ColdStart(object):
     def __init__(self):
         self.feature_protrail_collection = MongoServer().get_feature_protrail_collection()
         self.reclist_redis = RedisServer().get_reclist_redis()
-    
-    def get_hot_rec_list(self):
-        """获取物料的点赞，收藏和创建时间等信息，计算热度并生成热度推荐列表存入redis
+        self.register_user_sess = MysqlServer().get_register_user_session()
+        self.set_user_group()
+
+    def set_user_group(self):
+        """将用户进行分组
+        1. age < 23 && gender == female  
+        2. age >= 23 && gender == female 
+        3. age < 23 && gender == male 
+        4. age >= 23 && gender == male  
         """
-        # 遍历物料池里面的所有文章
-        for item in self.feature_protrail_collection.find():
-            news_id = item['news_id']
-            news_cate = item['cate']
-            news_ctime = item['ctime']
-            news_likes_num = item['likes']
-            news_collections_num = item['collections']
-            news_read_num = item['read_num']
-            news_hot_value = item['hot_value']
+        self.user_group = {
+            "1": ["国内","娱乐","体育","科技"],
+            "2": ["国内","社会","美股","财经","股市"],
+            "3": ["国内","股市","体育","科技"],
+            "4": ["国际", "国内","军事","社会","美股","财经","股市"]
+        }
 
-            #print(news_id, news_cate, news_ctime, news_likes_num, news_collections_num, news_read_num, news_hot_value)
+    def generate_cold_user_strategy_templete_to_redis(self):
+        """冷启动用户模板，总共分成了四类人群
+        """
+        for k, item in self.user_group.items():
+            redis_key = "cold_start_group:{}".format(str(k))
+            query_keys_list = [{"cate": val} for val in item]
+            news_info_list = list(self.feature_protrail_collection.find({'$or': query_keys_list}))
+            # 为了后面拿到文章的类别
+            news_id_list = [news["cate"] + "_" + news["news_id"] for news in news_info_list]
+            hot_values_list = [float(news['hot_value']) for news in news_info_list]
+            print("模板 {} 的 新闻数量为 {}".format(str(k), len(news_info_list)))
+            for news, score in zip(news_id_list, hot_values_list):
+                self.reclist_redis.zadd(redis_key, {news: score}, nx=True)
 
-            # 时间转换与计算时间差   前提要保证当前时间大于新闻创建时间，目前没有捕捉异常
-            news_ctime_standard = datetime.strptime(news_ctime, "%Y-%m-%d %H:%M")
-            cur_time_standard = datetime.now()
-            time_day_diff = (cur_time_standard - news_ctime_standard).days
-            time_hour_diff = (cur_time_standard - news_ctime_standard).seconds / 3600
+    def copy_redis_sorted_set(self, user_id, redis_key):
+        """redis冷启动模板拷贝到当前用户，由于需要产生一定的差异，这里随机对模板中的新闻随机选择90%的数据
+        TODO: 需要有随机性
+        """
+        user_key = "cold_start:{}".format(user_id)
+        print(self.reclist_redis.zunionstore(user_key, [redis_key]))
 
-            # 只要最近3天的内容
-            if time_day_diff > 3:
-                continue
-            
-            # 计算热度分，这里使用魔方秀热度公式， 可以进行调整, read_num 上一次的 hot_value  上一次的hot_value用加？  因为like_num这些也都是累加上来的， 所以这里计算的并不是增值，而是实时热度吧
-            # news_hot_value = (news_likes_num * 6 + news_collections_num * 3 + news_read_num * 1) * 10 / (time_hour_diff+1)**1.2
-            # 72 表示的是3天，
-            news_hot_value = (news_likes_num * 0.6 + news_collections_num * 0.3 + news_read_num * 0.1) * 10 / (1 + time_hour_diff / 72) 
+    def generate_cold_start_news_list_to_redis_for_register_user(self):
+        """给已经注册的用户制作冷启动新闻列表
+        """
+        for user_info in self.register_user_sess.query(RegisterUser).all():
+            if int(user_info.age) < 23 and user_info.gender == "female":
+                redis_key = "cold_start_group:{}".format(str(1))
+                self.copy_redis_sorted_set(user_info.userid, redis_key)
+            elif int(user_info.age) >= 23 and user_info.gender == "female":
+                redis_key = "cold_start_group:{}".format(str(2))
+                self.copy_redis_sorted_set(user_info.userid, redis_key)
+            elif int(user_info.age) < 23 and user_info.gender == "male":
+                redis_key = "cold_start_group:{}".format(str(3))
+                self.copy_redis_sorted_set(user_info.userid, redis_key)
+            elif int(user_info.age) >= 23 and user_info.gender == "male":
+                redis_key = "cold_start_group:{}".format(str(4))
+                self.copy_redis_sorted_set(user_info.userid, redis_key)
+            else:
+                pass 
+        print("generate_cold_start_news_list_to_redis_for_register_user.")
 
-            #print(news_likes_num, news_collections_num, time_hour_diff)
-
-            # 更新物料池的文章hot_value
-            item['hot_value'] = news_hot_value
-            self.feature_protrail_collection.update({'news_id':news_id}, item)
-
-            #print("news_hot_value: ", news_hot_value)
-
-            # 保存到redis中
-            self.reclist_redis.zadd('hot_list', {'{}_{}'.format(news_cate, news_id): news_hot_value}, nx=True)
-
-
-
-
-
+if __name__ == "__main__":
+    ColdStart().generate_cold_user_strategy_templete_to_redis()
+    ColdStart().generate_cold_start_news_list_to_redis_for_register_user()
 

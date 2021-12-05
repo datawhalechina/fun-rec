@@ -91,3 +91,8 @@ a sorted news_ids are saved into redis.
 a hot rec list are saved into redis.....
 run /home/recsys/miniconda3/envs/news_rec_py3/bin/python /home/recsys/news_rec_server/recprocess/offline.py success.
  
+2021-12-05-00-15-43
+a sorted news_ids are saved into redis.
+a hot rec list are saved into redis.....
+run /home/recsys/miniconda3/envs/news_rec_py3/bin/python /home/recsys/news_rec_server/recprocess/offline.py success.
+ 

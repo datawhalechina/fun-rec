@@ -8,3 +8,13 @@ process_user.py success.
 news detail info are saved in redis db.
 update_redis success.
  
+2021-12-05-00-14-24
+run update_new_items success.
+update_dynamic_feature_protrail success.
+delete RedisProtrail ...
+run update_redis_mongo_protrail_data success.
+process_material success.
+process_user.py success.
+news detail info are saved in redis db.
+update_redis success.
+ 

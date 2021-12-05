@@ -6,7 +6,8 @@ import time
 import threading
 
 from dao.redis_server import RedisServer
-
+from dao.mysql_server import MysqlServer
+from dao.entity.register_user import RegisterUser
 from controller.user_action_controller import UserAction
 
 redis_server = RedisServer()
@@ -21,7 +22,8 @@ class OnlineServer(object):
         self.static_news_info_redis_db = redis_server.get_static_news_info_redis()
         self.dynamic_news_info_redis_db = redis_server.get_dynamic_news_info_redis()
         self.exposure_redis_db = redis_server.get_exposure_redis()
-        
+        self.register_sql_sess = MysqlServer().get_register_user_session()
+
     def __new__(cls, *args, **kwargs):
         if not hasattr(OnlineServer, "_instance"):
             with OnlineServer._instance_lock:
@@ -29,6 +31,105 @@ class OnlineServer(object):
                     OnlineServer._instance = object.__new__(cls)  
         return OnlineServer._instance
     
+    def _get_register_user_cold_start_redis_key(self):
+        """通过查sql表得到用户的redis key进而确定当前新用户使用哪一个新的模板
+        """
+        user_info = self.register_sql_sess.query(RegisterUser).find_one()
+        if int(user_info.age) < 23 and user_info.gender == "female":
+            redis_key = "cold_start_group:{}".format(str(1))
+        elif int(user_info.age) >= 23 and user_info.gender == "female":
+            redis_key = "cold_start_group:{}".format(str(2))
+        elif int(user_info.age) < 23 and user_info.gender == "male":
+            redis_key = "cold_start_group:{}".format(str(3))
+        elif int(user_info.age) >= 23 and user_info.gender == "male":
+            redis_key = "cold_start_group:{}".format(str(4))
+        else:
+            pass 
+        return redis_key
+
+    def get_cold_start_rec_list(self, userid):
+        """获取冷启动用户的推荐列表
+        """
+        cold_start_user_key = "cold_start:{}".format(userid)
+        if self.reclist_redis_db.exists(cold_start_user_key) == 0:
+            # 如果当前redis中没有该用户的推荐列表直接从冷启动模板中拷贝一份
+            user_key = "cold_start:{}".format(userid)
+            redis_key = self._get_register_user_cold_start_redis_key(userid)
+            self.reclist_redis.zunionstore(user_key, [redis_key])
+
+        user_exposure_prefix = "user_exposure:"
+        user_exposure_key = user_exposure_prefix + str(userid)
+
+        # 一页默认10个item, 但这里候选20条，因为有可能有的在推荐页曝光过
+        article_num = 50
+
+        # 返回的是一个news_id列表   zrevrange排序分值从大到小
+        candiate_id_list = self.reclist_redis_db.zrevrange(cold_start_user_key, 0, article_num-1)
+
+        print("candiate_id_list", candiate_id_list)
+
+        if len(candiate_id_list) > 0:
+            # 根据news_id获取新闻的具体内容，并返回一个列表，列表中的元素是按照顺序展示的新闻信息字典
+            news_info_list = []
+            selected_news = []   # 记录真正被选了的
+            cou = 0
+
+            # 曝光列表
+            print("self.reclist_redis_db.exists(key)",self.exposure_redis_db.exists(user_exposure_key))
+            if self.exposure_redis_db.exists(user_exposure_key) > 0:
+                exposure_list = self.exposure_redis_db.smembers(user_exposure_key)
+                news_expose_list = set(map(lambda x: x.split(':')[0], exposure_list))
+            else:
+                news_expose_list = set()
+
+            for i in range(len(candiate_id_list)):
+                candiate = candiate_id_list[i]
+                news_id = candiate.split('_')[1]
+
+                # 去重曝光过的，包括在推荐页以及hot页
+                if news_id in news_expose_list:
+                    continue
+
+                # TODO 有些新闻可能获取不到静态的信息，这里应该有什么bug
+                # bug 原因是，json.loads() redis中的数据会报错，需要对redis中的数据进行处理
+                # 可以在物料处理的时候过滤一遍，json无法load的新闻
+                try:
+                    news_info_dict = self.get_news_detail(news_id)
+                except Exception as e:
+                    with open("/home/recsys/news_rec_server/logs/news_bad_cases.log", "a+") as f:
+                        f.write(news_id + "\n")
+                        print("there are not news detail info for {}".format(news_id))
+                    continue
+                # news_info_str = news_info_str.replace("'", '"' ) # 将单引号都替换成双引号
+                # news_info_dict = json.loads(news_info_str)
+                # 需要确认一下前端接收的json，key需要是单引号还是双引号
+                news_info_list.append(news_info_dict)
+                news_expose_list.add(news_id)
+                # 注意，原数的key中是包含了类别信息的
+                selected_news.append(candiate)
+                cou += 1
+                if cou == 10:
+                    break
+            
+            if len(selected_news) > 0:
+                # 手动删除读取出来的缓存结果, 这个很关键, 返回被删除的元素数量，用来检测是否被真的被删除了
+                removed_num = self.reclist_redis_db.zrem(cold_start_user_key, *selected_news)
+                print("the numbers of be removed:", removed_num)
+
+            # 曝光重新落表
+            self._save_user_exposure(userid,news_expose_list)
+            #print(news_expose_list, len(news_expose_list))
+            # print(news_info_list)
+            return news_info_list 
+        else:
+            #TODO 临时这么做，这么做不太好
+            self.reclist_redis_db.zunionstore(cold_start_user_key, ["hot_list"])
+            print("copy a hot_list for {}".format(cold_start_user_key))
+            # 如果是把所有内容都刷完了再重新拷贝的数据，还得记得把今天的曝光数据给清除了
+            self.exposure_redis_db.delete(user_exposure_key)
+            return  self.get_cold_start_rec_list(userid)
+
+
     def get_rec_list(self, user_id, page_id):
         """给定页面的展示范围进行展示
         user_id 后面做个性化推荐的时候需要用到

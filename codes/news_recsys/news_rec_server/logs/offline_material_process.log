@@ -72,3 +72,7 @@ material to mongo and redis success.
 2021-12-04-00-00-01
 scrapy crawl sina_spider --pages  success.
 run python monitor_news.py success.
+2021-12-05-00-00-01
+scrapy crawl sina_spider --pages  success.
+the news nums of news_20211205 collection is 793 and less then 1000.
+run python monitor_news.py success.

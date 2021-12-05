@@ -94,7 +94,10 @@ def rec_list():
     if user_id is None or page_id is None:
         return jsonify({"code": 2000, "msg": "user_id or page_id is none!"}) 
     try:
-        rec_news_list = recsys_server.get_rec_list(user_id, page_id)
+        # rec_news_list = recsys_server.get_rec_list(user_id, page_id)
+        # 冷启动策略
+        rec_news_list = recsys_server.get_cold_start_rec_list(user_id)
+        
         if len(rec_news_list) == 0:
             return jsonify({"code": 500, "msg": "rec_list data is empty."})
         return jsonify({"code": 200, "msg": "request rec_list success.", "data": rec_news_list, "user_id": user_id})
