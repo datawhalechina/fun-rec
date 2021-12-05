@@ -91,12 +91,12 @@
 
 ---
 
-### 新闻推荐系统前端显示页面
+### 新闻推荐系统前端显示页面（项目没有任何商用价值仅供入门者学习）
 
 <div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211205142026937.png" alt="image-20211205142026937" style="zoom:80%;" />
 </div>
 
-### 新闻推荐系统架构图
+### 新闻推荐系统架构图（项目没有任何商用价值仅供入门者学习）
 
 <div align=center>
 <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Fun-Rec新闻推荐系统.png" alt="Fun-Rec新闻推荐系统" style="zoom:80%;" />
