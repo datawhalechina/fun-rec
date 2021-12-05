@@ -5,7 +5,6 @@ from dao.mongo_server import MongoServer
 from dao.redis_server import RedisServer
 from recall.hot_recall import HotRecall
 from cold_start.cold_start import ColdStart
-from datetime import datetime
 
 # 这个类是用来实现离线推荐流程的，给每个用户都存储一个倒排索引列表
 # 对于热门页的内容，初始化的时候每个用户都是一样的

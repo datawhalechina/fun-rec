@@ -7,7 +7,7 @@ import sys
 sys.path.append("../../")
 import jieba
 import jieba.analyse
-
+from conf.proj_path import stop_words_path
 
 def get_key_words(words_str):
     """提取中文中的关键词
@@ -22,8 +22,7 @@ def get_key_words(words_str):
     
     # 加载停用词
     stopword_set = set()
-    # TODO 改成变量而不是写死
-    with open('/home/recsys/news_rec_server/conf/stop_words.txt', encoding="utf-8") as f:
+    with open(stop_words_path, encoding="utf-8") as f:
         line = f.readline().rstrip()
         stopword_set.add(line)
     
@@ -41,10 +40,10 @@ def get_key_words(words_str):
     key_words_list_tfidf = jieba.analyse.extract_tags(new_words_str, topK=10, withWeight=False, allowPOS=('ns', 'n', 'vn', 'v'))
     key_words_list_textrank = jieba.analyse.textrank(new_words_str, topK=10, withWeight=False, allowPOS=('ns', 'n', 'vn', 'v'))
     
-    # print("key_words_list_tfidf", key_words_list_tfidf)
-    # print("key_words_list_textrank", key_words_list_textrank)
-    
     tfidf_textrank_list = list(set(key_words_list_tfidf) & set(key_words_list_textrank))[:3]
 
-    # print(tfidf_textrank_list)
     return tfidf_textrank_list
+
+if __name__ == "__main__":
+    key_words = get_key_words("本教程主要是针对具有机器学习基础并想找推荐算法岗位的同学，由推荐算法基础、推荐算法入门赛、新闻推荐项目及推荐算法面经组成，形成了一个完整的从基础到实战再到面试的闭环。主要分为三个阶段，分别是推荐系统基础、推荐系统进阶和推荐算法面经，每个阶段的具体内容如下")
+    print(key_words)

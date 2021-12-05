@@ -61,12 +61,12 @@ class OnlineServer(object):
         user_exposure_key = user_exposure_prefix + str(userid)
 
         # 一页默认10个item, 但这里候选20条，因为有可能有的在推荐页曝光过
-        article_num = 50
+        article_num = 200
 
         # 返回的是一个news_id列表   zrevrange排序分值从大到小
         candiate_id_list = self.reclist_redis_db.zrevrange(cold_start_user_key, 0, article_num-1)
 
-        print("candiate_id_list", candiate_id_list)
+        # print("candiate_id_list", candiate_id_list)
 
         if len(candiate_id_list) > 0:
             # 根据news_id获取新闻的具体内容，并返回一个列表，列表中的元素是按照顺序展示的新闻信息字典
@@ -190,12 +190,10 @@ class OnlineServer(object):
             self.reclist_redis_db.zunionstore(hot_list_user_key, ["hot_list"])
 
         # 一页默认10个item, 但这里候选20条，因为有可能有的在推荐页曝光过
-        article_num = 50
+        article_num = 200
 
         # 返回的是一个news_id列表   zrevrange排序分值从大到小
         candiate_id_list = self.reclist_redis_db.zrevrange(hot_list_user_key, 0, article_num-1)
-
-        print("candiate_id_list", candiate_id_list)
 
         if len(candiate_id_list) > 0:
             # 根据news_id获取新闻的具体内容，并返回一个列表，列表中的元素是按照顺序展示的新闻信息字典
@@ -229,8 +227,6 @@ class OnlineServer(object):
                         f.write(news_id + "\n")
                         print("there are not news detail info for {}".format(news_id))
                     continue
-                # news_info_str = news_info_str.replace("'", '"' ) # 将单引号都替换成双引号
-                # news_info_dict = json.loads(news_info_str)
                 # 需要确认一下前端接收的json，key需要是单引号还是双引号
                 news_info_list.append(news_info_dict)
                 news_expose_list.add(news_id)
@@ -247,8 +243,6 @@ class OnlineServer(object):
 
             # 曝光重新落表
             self._save_user_exposure(user_id,news_expose_list)
-            #print(news_expose_list, len(news_expose_list))
-            # print(news_info_list)
             return news_info_list 
         else:
             #TODO 临时这么做，这么做不太好
@@ -262,22 +256,14 @@ class OnlineServer(object):
     def get_news_detail(self, news_id):
         """获取新闻展示的详细信息
         """
-        # print(1111)
         news_info_str = self.static_news_info_redis_db.get("static_news_detail:" + news_id)
-        # print(222)
-        # print(news_info_str)
         news_info_str = news_info_str.replace('\'', '\"' ) # 将单引号都替换成双引号
-        # print(333)
-        # print(news_info_str)
         news_info_dit = json.loads(news_info_str)
-        # print(444)
 
-        # print("news_info_dit:", news_info_dit)
         news_dynamic_info_str = self.dynamic_news_info_redis_db.get("dynamic_news_detail:" + news_id)
         news_dynamic_info_str = news_dynamic_info_str.replace("'", '"' ) # 将单引号都替换成双引号
         news_dynamic_info_dit = json.loads(news_dynamic_info_str)
 
-        # print("news_info_dit:", news_dynamic_info_dit)
 
         for k in news_dynamic_info_dit.keys():
             news_info_dit[k] = news_dynamic_info_dit[k]
@@ -298,9 +284,7 @@ class OnlineServer(object):
                 news_dynamic_info_dict[action_type[0]] -=1
         else:
             news_dynamic_info_dict["read_num"] +=1
-        # print("update",news_dynamic_info_dict)
         news_dynamic_info_str = json.dumps(news_dynamic_info_dict)
-        # print("update",news_dynamic_info_str)
         news_dynamic_info_str = news_dynamic_info_str.replace('"', "'" )
         res = self.dynamic_news_info_redis_db.set("dynamic_news_detail:" + news_id, news_dynamic_info_str)
         return res
