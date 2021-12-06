@@ -59,27 +59,21 @@
         - [2.2.1.3 Redis基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.3%20Redis%E5%9F%BA%E7%A1%80.md)
         - [2.2.1.4 Scrapy基础及新闻爬取实战](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.4%20scrapy%E5%9F%BA%E7%A1%80%E5%8F%8A%E6%96%B0%E9%97%BB%E7%88%AC%E5%8F%96%E5%AE%9E%E6%88%98.md)
         - [2.2.1.5 自动化构建用户及物料画像](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.5%20%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA%E7%94%A8%E6%88%B7%E5%8F%8A%E7%89%A9%E6%96%99%E7%94%BB%E5%83%8F.md)
-      
       - **2.2.2 前后端基础及交互**
         - [2.2.2.1 前端基础及Vue实战](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.1%20%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%8F%8AVue%E5%AE%9E%E6%88%98.md)
         - [2.2.2.2 flask简介及基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.2%20flask%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%9F%BA%E7%A1%80.md)
         - [2.2.2.3 前后端交互](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.3%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BA%A4%E4%BA%92.md)
-      
       - **2.2.3 推荐流程的构建**
-      
+      - 2.2.3.1 推荐系统流程构建
       - **2.2.4 特征工程**
-      
       - **2.2.5 召回**
         - 2.2.5.1 规则类召回
         - 2.2.5.2 模型类召回
         - 2.2.5.3 召回评估
-      
       - **2.2.6 排序**
         - 2.2.6.1 DeepFM排序模型
         - 2.2.6.2 排序模型评估
-      
       - **2.2.7 规则与重排**
-      
       - **2.2.8 任务监控与调度**
     
 - **第三章 推荐算法面经**
