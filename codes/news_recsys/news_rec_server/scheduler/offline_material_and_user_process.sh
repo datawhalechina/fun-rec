@@ -2,7 +2,7 @@
 # python 环境需要换成自己的虚拟环境中的Python
 python=/home/recsys/miniconda3/envs/news_rec_py3/bin/python
 home_path=$HOME
-news_recsys_path=${home_path}"/fun-rec/codes/news_rec_server"
+news_recsys_path=${home_path}"/fun-rec/codes/news_recsys/news_rec_server"
 
 echo "$(date -d today +%Y-%m-%d-%H-%M-%S)"
 
