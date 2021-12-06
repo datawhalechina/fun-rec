@@ -64,7 +64,7 @@
         - [2.2.2.2 flask简介及基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.2%20flask%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%9F%BA%E7%A1%80.md)
         - [2.2.2.3 前后端交互](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.2.3%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BA%A4%E4%BA%92.md)
       - **2.2.3 推荐流程的构建**
-      - [2.2.3.1 推荐系统流程构建](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.3.1%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%B5%81%E7%A8%8B%E7%9A%84%E6%9E%84%E5%BB%BA.md)
+        - [2.2.3.1 推荐系统流程构建](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.3.1%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%B5%81%E7%A8%8B%E7%9A%84%E6%9E%84%E5%BB%BA.md)
       - **2.2.4 特征工程**
       - **2.2.5 召回**
         - 2.2.5.1 规则类召回
