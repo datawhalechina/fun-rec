@@ -31,10 +31,11 @@ class OnlineServer(object):
                     OnlineServer._instance = object.__new__(cls)  
         return OnlineServer._instance
     
-    def _get_register_user_cold_start_redis_key(self):
+    def _get_register_user_cold_start_redis_key(self, userid):
         """通过查sql表得到用户的redis key进而确定当前新用户使用哪一个新的模板
         """
-        user_info = self.register_sql_sess.query(RegisterUser).find_one()
+        user_info = self.register_sql_sess.query(RegisterUser).first()
+        # print(user_info)
         if int(user_info.age) < 23 and user_info.gender == "female":
             redis_key = "cold_start_group:{}".format(str(1))
         elif int(user_info.age) >= 23 and user_info.gender == "female":
@@ -55,12 +56,12 @@ class OnlineServer(object):
             # 如果当前redis中没有该用户的推荐列表直接从冷启动模板中拷贝一份
             user_key = "cold_start:{}".format(userid)
             redis_key = self._get_register_user_cold_start_redis_key(userid)
-            self.reclist_redis.zunionstore(user_key, [redis_key])
+            self.reclist_redis_db.zunionstore(user_key, [redis_key])
 
         user_exposure_prefix = "user_exposure:"
         user_exposure_key = user_exposure_prefix + str(userid)
 
-        # 一页默认10个item, 但这里候选20条，因为有可能有的在推荐页曝光过
+        # 一页默认10个item, 但这里候选200条，因为有可能有的在推荐页曝光过
         article_num = 200
 
         # 返回的是一个news_id列表   zrevrange排序分值从大到小
@@ -75,7 +76,7 @@ class OnlineServer(object):
             cou = 0
 
             # 曝光列表
-            print("self.reclist_redis_db.exists(key)",self.exposure_redis_db.exists(user_exposure_key))
+            # print("self.reclist_redis_db.exists(key)",self.exposure_redis_db.exists(user_exposure_key))
             if self.exposure_redis_db.exists(user_exposure_key) > 0:
                 exposure_list = self.exposure_redis_db.smembers(user_exposure_key)
                 news_expose_list = set(map(lambda x: x.split(':')[0], exposure_list))
@@ -124,7 +125,7 @@ class OnlineServer(object):
         else:
             #TODO 临时这么做，这么做不太好
             self.reclist_redis_db.zunionstore(cold_start_user_key, ["hot_list"])
-            print("copy a hot_list for {}".format(cold_start_user_key))
+            # print("copy a hot_list for {}".format(cold_start_user_key))
             # 如果是把所有内容都刷完了再重新拷贝的数据，还得记得把今天的曝光数据给清除了
             self.exposure_redis_db.delete(user_exposure_key)
             return  self.get_cold_start_rec_list(userid)
