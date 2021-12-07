@@ -34,7 +34,7 @@ class OnlineServer(object):
     def _get_register_user_cold_start_redis_key(self, userid):
         """通过查sql表得到用户的redis key进而确定当前新用户使用哪一个新的模板
         """
-        user_info = self.register_sql_sess.query(RegisterUser).first()
+        user_info = self.register_sql_sess.query(RegisterUser).filter(RegisterUser.userid == userid).first()
         # print(user_info)
         if int(user_info.age) < 23 and user_info.gender == "female":
             redis_key = "cold_start_group:{}".format(str(1))
@@ -62,7 +62,7 @@ class OnlineServer(object):
         user_exposure_key = user_exposure_prefix + str(userid)
 
         # 一页默认10个item, 但这里候选200条，因为有可能有的在推荐页曝光过
-        article_num = 200
+        article_num = 500
 
         # 返回的是一个news_id列表   zrevrange排序分值从大到小
         candiate_id_list = self.reclist_redis_db.zrevrange(cold_start_user_key, 0, article_num-1)
@@ -191,7 +191,7 @@ class OnlineServer(object):
             self.reclist_redis_db.zunionstore(hot_list_user_key, ["hot_list"])
 
         # 一页默认10个item, 但这里候选20条，因为有可能有的在推荐页曝光过
-        article_num = 200
+        article_num = 500
 
         # 返回的是一个news_id列表   zrevrange排序分值从大到小
         candiate_id_list = self.reclist_redis_db.zrevrange(hot_list_user_key, 0, article_num-1)
