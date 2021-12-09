@@ -16,8 +16,7 @@ import VueAxios from 'vue-axios'
 // Vue.prototype.$http = axios
 Vue.use(VueAxios, axios);
 // axios公共基路径，以后所有的请求都会在前面加上这个路径
-// axios.defaults.baseURL = "http://10.170.4.60:3000";
-axios.defaults.baseURL = "http://47.108.56.188:3000";
+axios.defaults.baseURL = "localhost:3000";
 
 // 设置表单提交方式，默认是 json
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
