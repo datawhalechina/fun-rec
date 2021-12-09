@@ -11,6 +11,7 @@ from dao.mysql_server import MysqlServer
 from dao.entity.register_user import RegisterUser
 from controller.user_action_controller import UserAction
 from collections import defaultdict
+
 redis_server = RedisServer()
 
 class OnlineServer(object):
@@ -260,22 +261,25 @@ class OnlineServer(object):
                 self.group_to_cate_id_dict[k].append(self.name2id_cate_dict[cate])
 
     def _get_register_user_group_id(self, userid):
-        """获取注册用户的分组
+        """获取注册用户的分组,
+        bug: 新用户注册可能会有延迟
         """
-        while self.register_sql_sess.query(RegisterUser).filter(RegisterUser.userid == userid).count() > 0:
-            user_info = self.register_sql_sess.query(RegisterUser).filter(RegisterUser.userid == userid).first()
-            print("user_info", user_info)
-            if int(user_info.age) < 23 and user_info.gender == "female":
-                return "1"
-            elif int(user_info.age) >= 23 and user_info.gender == "female":
-                return "2"
-            elif int(user_info.age) < 23 and user_info.gender == "male":
-                return "3"
-            elif int(user_info.age) >= 23 and user_info.gender == "male":
-                return "4"
-            else:
-                return "error" 
-
+        cnt = 0
+        while self.register_sql_sess.query(RegisterUser).filter(RegisterUser.userid == userid).count() == 0:
+            print("sleep cnt: {}".format(cnt))
+            cnt += 1
+            time.sleep(0.5)
+        user_info = self.register_sql_sess.query(RegisterUser).filter(RegisterUser.userid == userid).first()
+        if int(user_info.age) < 23 and user_info.gender == "female":
+            return "1"
+        elif int(user_info.age) >= 23 and user_info.gender == "female":
+            return "2"
+        elif int(user_info.age) < 23 and user_info.gender == "male":
+            return "3"
+        elif int(user_info.age) >= 23 and user_info.gender == "male":
+            return "4"
+        else:
+            return "error" 
 
     def _copy_cold_start_list_to_redis(self, user_id, group_id):
         """将确定分组后的用户的物料添加到redis中，并记录当前用户的所有新闻类别id

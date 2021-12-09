@@ -1,6 +1,6 @@
 import sys
 sys.path.append("./")
-import json
+import json, time
 from flask_cors import * 
 from flask import Flask, jsonify, request
 import snowflake.client  
@@ -93,17 +93,23 @@ def rec_list():
 
     if user_id is None or page_id is None:
         return jsonify({"code": 2000, "msg": "user_id or page_id is none!"}) 
-    try:
-        rec_news_list = recsys_server.get_cold_start_rec_list_v2(user_id)
-        # 冷启动策略
-        # rec_news_list = recsys_server.get_cold_start_rec_list(user_id)
-        
-        if len(rec_news_list) == 0:
-            return jsonify({"code": 500, "msg": "rec_list data is empty."})
-        return jsonify({"code": 200, "msg": "request rec_list success.", "data": rec_news_list, "user_id": user_id})
-    except Exception as e:
-        print(str(e))
-        return jsonify({"code": 500, "msg": "redis fail."}) 
+
+    try_cnt = 0
+    while try_cnt < 3:
+        # bug: 新用户注册可能会有延迟
+        try:
+            rec_news_list = recsys_server.get_cold_start_rec_list_v2(user_id)
+            # 冷启动策略
+            # rec_news_list = recsys_server.get_cold_start_rec_list(user_id)
+            
+            if len(rec_news_list) == 0:
+                continue
+            return jsonify({"code": 200, "msg": "request rec_list success.", "data": rec_news_list, "user_id": user_id})
+        except Exception as e:
+            print(str(e))
+        time.sleep(0.3)
+        try_cnt += 1
+    return jsonify({"code": 500, "msg": "redis fail."}) 
 
 
 @app.route('/recsys/hot_list', methods=["GET"])
