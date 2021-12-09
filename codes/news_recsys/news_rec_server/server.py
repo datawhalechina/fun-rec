@@ -94,9 +94,9 @@ def rec_list():
     if user_id is None or page_id is None:
         return jsonify({"code": 2000, "msg": "user_id or page_id is none!"}) 
     try:
-        # rec_news_list = recsys_server.get_rec_list(user_id, page_id)
+        rec_news_list = recsys_server.get_cold_start_rec_list_v2(user_id)
         # 冷启动策略
-        rec_news_list = recsys_server.get_cold_start_rec_list(user_id)
+        # rec_news_list = recsys_server.get_cold_start_rec_list(user_id)
         
         if len(rec_news_list) == 0:
             return jsonify({"code": 500, "msg": "rec_list data is empty."})
@@ -124,9 +124,9 @@ def hot_list():
 
     try:
         # 这里需要改成get_hot_list, 当前get_hot_list方法还没有实现
-        rec_news_list = recsys_server.get_hot_list(user_id)
-        # 下面这个接口是用来前端测试的
-        # rec_news_list = recsys_server.get_rec_list(user_id, page_id)
+        # rec_news_list = recsys_server.get_hot_list(user_id)
+
+        rec_news_list = recsys_server.get_hot_list_v2(user_id)
 
         if len(rec_news_list) == 0:
             return jsonify({"code": 200, "msg": "request redis data fail."})

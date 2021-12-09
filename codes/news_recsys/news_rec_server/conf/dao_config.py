@@ -38,3 +38,17 @@ reclist_redis_db_num = 0
 static_news_info_db_num = 1
 dynamic_news_info_db_num = 2
 user_exposure_db_num = 3
+
+# 类别映射字典
+cate_dict = {
+    '2510':  '国内',
+    '2511':  '国际',
+    '2669':  '社会',
+    '2512':  '体育',
+    '2513':  '娱乐',
+    '2514':  '军事',
+    '2515':  '科技',
+    '2516':  '财经',
+    '2517':  '股市',
+    '2518':  '美股'
+}
