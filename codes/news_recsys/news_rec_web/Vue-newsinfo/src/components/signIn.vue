@@ -65,8 +65,6 @@
         let url = '/recsys/'
         let state = this.val
         url += state
-        console.log(url)
-        // console.log(this.model);
 
         let res = {username: this.model.username, passwd: this.model.passwd}
         this.axios.post(url, res).then(resource => {
@@ -83,7 +81,7 @@
             }
 
             localStorage.username = res.username
-            this.$router.push('/NewsLists')
+            this.$router.push('/recLists')
           }if(resource.data.code === 500){
             Toast('登陆失败')
           }if(resource.data.code === 501){
@@ -121,6 +119,7 @@
     background-size: 100% 100%;
     background-color: black;
     padding: 4rem 4rem 4rem 4rem;
+    height: 100vh;
   }
 
   /* 登录和注册的切换 */

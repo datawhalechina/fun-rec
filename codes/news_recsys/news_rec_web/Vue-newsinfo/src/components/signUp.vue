@@ -113,7 +113,6 @@
         if(this.state){
           this.axios.post(url, res).then(resource => {
           if (resource.data.code === 200) {
-            console.log(resource);
             localStorage.username = res.username
             let loginInfo = {
               LoginName: res.username,
@@ -124,8 +123,7 @@
             this.cookie.setCookie(loginInfo, 7)
 
             localStorage.username = res.username
-            console.log(resource)
-            this.$router.push('/NewsLists')
+            this.$router.push('/recLists')
           }if(resource.data.code === 500) {
             Toast('用户名已存在')
           }
@@ -137,7 +135,6 @@
       getCity(city) {
         //处理选择的城市
         this.model.city = city.join('-')
-        console.log(this.model) //得到选择的城市数据
       },
 
       // 验证用户名
@@ -241,6 +238,7 @@
     background-size: 100% 100%;
     background-color: black;
     padding: 4rem 4rem 4rem 4rem;
+    /* height: 100vh; */
   }
 
   /* 登录和注册的切换 */

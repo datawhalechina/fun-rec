@@ -42,19 +42,16 @@
       </div>
 
     </div>
-    <!-- <bottomBarVue></bottomBarVue> -->
     <div class="blank"></div>
   </div>
 
 </template>
 
 <script>
-  import bottomBarVue from './bottomBar.vue'
-  // 导入定义的评论组件,哪里用哪里导
-  // import Comment from '../subcomments/comment.vue'
   import {
     Toast
   } from 'mint-ui'
+  import common from './common.vue'
 
   export default {
     data() {
@@ -108,7 +105,6 @@
           action_time: Date.now(),
           action_type: 'read',
         }
-        console.log(val)
         this.axios.post("/recsys/action", val).then(resource => {
           if (resource.status === 200) {} else {
             Toast('加载数据失败')
@@ -117,6 +113,25 @@
       },
       iflike() {
         this.islike = !this.islike
+        if(this.islike == true){
+            for(let i = 0; i<common.hotList.length; i++){
+              if(common.hotList[i].news_id == this.id){
+                common.hotList[i].likes++
+              }
+              if(common.recList[i].news_id == this.id){
+                common.recList[i].likes++
+              }
+            }   
+          }else{
+            for(let i = 0; i<common.hotList.length; i++){
+              if(common.hotList[i].news_id == this.id){
+                common.hotList[i].likes--
+              }
+              if(common.recList[i].news_id == this.id){
+                common.recList[i].likes--
+              }
+            }   
+          }
         var val = {
           user_name: localStorage.username,
           news_id: this.id,
@@ -125,8 +140,7 @@
         }
         this.axios.post("/recsys/action", val).then(resource => {
           if (resource.status === 200) {
-            // this.news_content = resource.data.data
-            // console.log(this.news_content)
+            
           } else {
             Toast('加载数据失败')
           }
@@ -135,6 +149,25 @@
       },
       ifcollection() {
         this.iscollection = !this.iscollection
+        if(this.iscollection == true){
+            for(let i = 0; i<common.hotList.length; i++){
+              if(common.hotList[i].news_id == this.id){
+                common.hotList[i].collections++
+              }
+              if(common.recList[i].news_id == this.id){
+                common.recList[i].collections++
+              }
+            }   
+          }else{
+            for(let i = 0; i<common.hotList.length; i++){
+              if(common.hotList[i].news_id == this.id){
+                common.hotList[i].collections--
+              }
+              if(common.recList[i].news_id == this.id){
+                common.recList[i].collections--
+              }
+            }   
+          }
         var val = {
           user_name: localStorage.username,
           news_id: this.id,
@@ -154,7 +187,6 @@
     created() {
       this.getNewsInfo()
       this.sendInfo()
-      console.log(this.$route.params);
     },
     components: {
       // Comment
@@ -162,7 +194,7 @@
     }, 
     beforeRouteLeave(to, from, next) {
       //设置下一个路由的meta,让列表页面缓存,即不刷新
-      to.meta.keepAlive = true
+      // to.meta.keepAlive = true
       next()
     },
   }

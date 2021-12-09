@@ -137,4 +137,9 @@
   /deep/ span[data-v-4aa99128] {
     font-size: 1rem;
   }
+
+   /* /deep/ .van-tab__pane {
+    height: 100vh;
+    overflow: auto;
+  } */
 </style>

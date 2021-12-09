@@ -5,15 +5,15 @@ import VueRouter from 'vue-router'
 import cookie from './assets/js/cookie'
 
 import Myself from "./components/Myself.vue";
-// 新闻组件
-import NewsLists from "./components/NewsLists.vue";
 import NewsInfo from "./components/NewsInfo.vue";
-import Login from './components/Login.vue'
 import signIn from './components/signIn.vue'
 import signUp from './components/signUp.vue'
+import recLists from './components/recLists.vue'
+import hotLists from './components/hotLists.vue'
 
 let routerObj = new VueRouter({
     // mode: 'history',
+    // base: '/home/recsys/',
     routes: [
         {
             path: '/',
@@ -36,8 +36,17 @@ let routerObj = new VueRouter({
 
         },
         {
-            path: '/NewsLists',
-            component: NewsLists,
+            path: '/recLists',
+            component: recLists,
+            meta: {
+                isPublic: false,
+                keepAlive: true,
+                scrollTop: 0
+            }
+        },
+        {
+            path: '/hotLists',
+            component: hotLists,
             meta: {
                 isPublic: false,
                 keepAlive: true,
