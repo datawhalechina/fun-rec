@@ -90,51 +90,115 @@
   - [3.3 热门技术相关](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.3%20%E7%83%AD%E9%97%A8%E6%8A%80%E6%9C%AF%E7%9B%B8%E5%85%B3.md)
   - [3.4 业务场景相关](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E9%9D%A2%E7%BB%8F/3.4%20%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF%E7%9B%B8%E5%85%B3.md)
 
----
 
-### 新闻推荐系统前端显示页面（项目没有任何商用价值仅供入门者学习）
 
-<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211205142026937.png" alt="image-20211205142026937" style="zoom:80%;" />
+**新闻推荐系统前端显示页面及后端系统架构（项目没有任何商用价值仅供入门者学习**）
+
+<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211205142026937.png" alt="image-20211205142026937" style="zoom:61%;" />
 </div>
-
-### 新闻推荐系统架构图（项目没有任何商用价值仅供入门者学习）
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Fun-Rec新闻推荐系统.png" alt="Fun-Rec新闻推荐系统" style="zoom:80%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Fun-Rec新闻推荐系统.png" alt="Fun-Rec新闻推荐系统" style="zoom:54%;" />
 </div>
 
 
+## 致谢
 
-## 贡献者
+<table align="center" style="width:80%;">
+  <caption><b>内容贡献者名单</b></caption>
+<thead>
+  <tr>
+    <th>成员</th>
+    <th>个人简介及贡献</th>
+    <th>个人主页</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">罗如意</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，西安电子科技大学，项目负责人, 核心贡献者</td>
+    <td><a href="https://github.com/ruyiluo">Github</a></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">吴忠强</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，东北大学，CSDN博客专家，核心贡献者</td>
+    <td><a href="https://blog.csdn.net/wuzhongqiang">CSDN</a></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">何世福</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，参与项目早期的内容审核</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">徐何军</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，参与项目早期的内容审核</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">李万业</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，同济大学硕士，新闻推荐入门赛贡献部分内容</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">陈琰钰</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，清华大学硕士，新闻推荐入门赛贡献部分内容</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">陈锴</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，中山大学本科，推荐算法基础贡献部分内容</td>
+    <td></td>
+  </tr>
+   <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">梁家晖</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，公众号：可能好玩</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王贺</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，新闻推荐入门赛赛题设计者</td>
+    <td><a href="https://www.zhihu.com/people/wang-he-13-93">鱼遇雨欲语与余</a></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宁彦吉</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，深度推荐模型章节贡献部分内容</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">田雨</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，武汉大学硕士，深度推荐模型章节贡献部分内容</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">赖敏材</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale意向成员，上海科技大学硕士，深度模型及面经贡献部分内容</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">汪志鸿</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale意向成员，东北大学硕士，新闻推荐系统实践贡献部分内容</td>
+    <td></td>
+  </tr>
+   <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王辰玥</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale意向成员，中国地质大学，新闻推荐系统实践前端负责人</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">唐鑫</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale意向成员，西安电子科技大学硕士，机器学习基础贡献部分内容</td>
+    <td></td>
+  </tr>
+</tbody>
+</table> 
 
-##### 核心贡献者：
+$\color{red}{感谢Datawhale成员刘雯静、吕豪杰及意向成员张汉隆、吴丹飞、王云川和宋禹成在开源项目组队学习中担任助教时的辛苦付出！}$
 
-罗如意：Datawhale成员，西安电子科技大学(项目负责人)  
-吴忠强：Datawhale成员，东北大学, CSDN博客专家
+## 关注我们
+<div align=center>
+<p>扫描下方二维码关注公众号：Datawhale</p>
+<img src="https://raw.githubusercontent.com/datawhalechina/pumpkin-book/master/res/qrcode.jpeg" width = "180" height = "180">
+</div>
 
-##### 贡献者：
-
-何世福：Datawhale成员，推荐算法工程师(内容审核负责人)  
-徐何军：Datawhale成员，推荐算法工程师(内容审核)  
-李万业：Datawhale成员，同济大学  
-陈琰钰：Datawhale成员，清华大学  
-陈锴：    Datawhale成员，中山大学  
-梁家晖：Datawhale成员， 公众号：可能好玩  
-王贺：    Datawhale成员，算法工程师  
-宁彦吉：Datawhale Contributor, 算法工程师  
-田雨：    Datawhale成员，武汉大学  
-赖敏材：Datawhale成员，上海科技大学  
-
-**组队学习贡献者：**
-
-刘雯静：Datawhale成员  
-吕豪杰：Datawhale成员  
-张汉隆：华北电力大学  
-吴丹飞：华北电力大学  
-王云川：山东农业大学    
-
-## 关于Datawhale
-
-> Datawhale是一个专注于数据科学与AI领域的开源组织，汇集了众多领域院校和知名企业的优秀学习者，聚合了一群有开源精神和探索精神的团队成员。Datawhale 以“for the learner，和学习者一起成长”为愿景，鼓励真实地展现自我、开放包容、互信互助、敢于试错和勇于担当。同时 Datawhale 用开源的理念去探索开源内容、开源学习和开源方案，赋能人才培养，助力人才成长，建立起人与人，人与知识，人与企业和人与未来的联结。 本次数据挖掘路径学习，专题知识将在天池分享，详情可关注Datawhale(二维码在上面)
-
-<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201214105807029.png" width = 25%/> </div>
+## LICENSE
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey" /></a>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可。
