@@ -84,49 +84,49 @@ def rec_list():
     """推荐页
     """
     user_name = request.args.get('user_id')
-    page_id = request.args.get('page_id')
+    age = request.args.get('age')
+    gender = request.args.get('gender')
+    
+    # 如果年龄无法转int说明是老用户，不需要传age 和 gender 
+    try:
+        age = int(age)
+    except:
+        age = None
+        gender = None
 
     # 查询用户的id
     user_id = UserAction().get_user_id_by_name(user_name)  
     if not user_id:
         return False
 
-    if user_id is None or page_id is None:
-        return jsonify({"code": 2000, "msg": "user_id or page_id is none!"}) 
+    if user_id is None:
+        return jsonify({"code": 2000, "msg": "user_id is none!"}) 
 
-    try_cnt = 0
-    while try_cnt < 3:
-        # bug: 新用户注册可能会有延迟
-        try:
-            rec_news_list = recsys_server.get_cold_start_rec_list_v2(user_id)
-            # 冷启动策略
-            # rec_news_list = recsys_server.get_cold_start_rec_list(user_id)
-            
-            if len(rec_news_list) == 0:
-                continue
-            return jsonify({"code": 200, "msg": "request rec_list success.", "data": rec_news_list, "user_id": user_id})
-        except Exception as e:
-            print(str(e))
-        time.sleep(0.3)
-        try_cnt += 1
-    return jsonify({"code": 500, "msg": "redis fail."}) 
-
+    try:
+        rec_news_list = recsys_server.get_cold_start_rec_list_v2(user_id, age, gender)
+        # 冷启动策略
+        # rec_news_list = recsys_server.get_cold_start_rec_list(user_id)
+        if len(rec_news_list) == 0:
+            jsonify({"code": 500, "msg": "rec_news_list is empty."}) 
+        return jsonify({"code": 200, "msg": "request rec_list success.", "data": rec_news_list, "user_id": user_id})
+    except Exception as e:
+        print(str(e))
+        return jsonify({"code": 500, "msg": "redis fail."}) 
+        
 
 @app.route('/recsys/hot_list', methods=["GET"])
 def hot_list():
     """热门页面
     """
-    if request.method == "GET":
-        user_name = request.args.get('user_id')
-        page_id = request.args.get('page_id')
+    user_name = request.args.get('user_id')
 
-        if user_name is None or page_id is None:
-            return jsonify({"code": 2000, "msg": "user_name or page_id is none!"}) 
+    if user_name is None:
+        return jsonify({"code": 2000, "msg": "user_name none!"}) 
 
-        # 查询用户的id
-        user_id = UserAction().get_user_id_by_name(user_name)  
-        if not user_id:
-            return False
+    # 查询用户的id
+    user_id = UserAction().get_user_id_by_name(user_name)  
+    if not user_id:
+        return False
 
     try:
         # 这里需要改成get_hot_list, 当前get_hot_list方法还没有实现
@@ -169,7 +169,7 @@ def news_detail():
             news_detail["collections"] = True
         else:
             news_detail["collections"] = False
-        # print("test",news_detail)
+
         return jsonify({"code": 0, "msg": "request news_detail success.", "data": news_detail})
     except Exception as e:
         print(str(e))

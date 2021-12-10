@@ -260,23 +260,17 @@ class OnlineServer(object):
             for cate in cate_list:
                 self.group_to_cate_id_dict[k].append(self.name2id_cate_dict[cate])
 
-    def _get_register_user_group_id(self, userid):
+    def _get_register_user_group_id(self, age, gender):
         """获取注册用户的分组,
         bug: 新用户注册可能会有延迟
         """
-        cnt = 0
-        while self.register_sql_sess.query(RegisterUser).filter(RegisterUser.userid == userid).count() == 0:
-            print("sleep cnt: {}".format(cnt))
-            cnt += 1
-            time.sleep(0.5)
-        user_info = self.register_sql_sess.query(RegisterUser).filter(RegisterUser.userid == userid).first()
-        if int(user_info.age) < 23 and user_info.gender == "female":
+        if int(age) < 23 and gender == "female":
             return "1"
-        elif int(user_info.age) >= 23 and user_info.gender == "female":
+        elif int(age) >= 23 and gender == "female":
             return "2"
-        elif int(user_info.age) < 23 and user_info.gender == "male":
+        elif int(age) < 23 and gender == "male":
             return "3"
-        elif int(user_info.age) >= 23 and user_info.gender == "male":
+        elif int(age) >= 23 and gender == "male":
             return "4"
         else:
             return "error" 
@@ -293,7 +287,7 @@ class OnlineServer(object):
         cate_id_set_redis_key = "cold_start_user_cate_set:{}".format(user_id)
         self.reclist_redis_db.sadd(cate_id_set_redis_key, *self.group_to_cate_id_dict[group_id])
 
-    def _judge_and_get_user_reverse_index(self, user_id, rec_type):
+    def _judge_and_get_user_reverse_index(self, user_id, rec_type, age=None, gender=None):
         """判断当前用户是否存在倒排索引, 如果没有的话拷贝一份
         """
         if rec_type == 'hot_list':
@@ -313,11 +307,15 @@ class OnlineServer(object):
              if self.reclist_redis_db.exists(cate_id_set_redis_key) == 0:
                 # 如果系统中没有当前用户的冷启动倒排索引, 那么就需要从冷启动模板中复制一份
                 # 确定用户分组
-                group_id = self._get_register_user_group_id(user_id)
+                try:
+                    group_id = self._get_register_user_group_id(age, gender)
+                except:
+                    return False
                 print("group_id : {}".format(group_id))
                 self._copy_cold_start_list_to_redis(user_id, group_id)
         else:
             pass 
+        return True
 
     def _get_user_expose_set(self, user_id):
         """获取用户曝光列表
@@ -337,9 +335,7 @@ class OnlineServer(object):
         if len(newslist) == 0: return False   # 无曝光数目
 
         ctime = str(round(time.time()*1000))  # 曝光时间戳
-
         key = "user_exposure:" + str(user_id)    # 为key拼接
-
         # 将历史曝光记录与newlist(最新曝光)的交集新闻提出来  并将该部分删除，防止重复存储曝光新闻
         exposure_news_set = self.exposure_redis_db.smembers(key)  # 历史曝光记录
 
@@ -416,14 +412,18 @@ class OnlineServer(object):
             iter_cnt += 1
         return user_news_list, exposure_news_list
 
-    def get_cold_start_rec_list_v2(self, user_id):
+    def get_cold_start_rec_list_v2(self, user_id, age=None, gender=None):
         """推荐页展示列表，使用轮询的方式进行打散
         """
         # 获取用户曝光列表
         news_expose_set = self._get_user_expose_set(user_id)
         
-        # 判断用户是否存在热门列表
-        self._judge_and_get_user_reverse_index(user_id, "cold_start")
+        # 判断用户是否存在冷启动列表中
+        flag = self._judge_and_get_user_reverse_index(user_id, "cold_start", age, gender)
+
+        if not flag:
+            print("_judge_and_get_user_reverse_index fail")
+            return []
 
         # 获取用户的cate id列表
         cate_id_set_redis_key = "cold_start_user_cate_set:{}".format(user_id)

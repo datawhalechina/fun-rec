@@ -39,4 +39,3 @@ class RedisServer(object):
         """用户曝光列表redis数据库
         """
         return self._redis_db(self.user_exposure_db_num)
-    
