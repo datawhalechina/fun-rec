@@ -105,7 +105,6 @@
 ## 致谢
 
 <table align="center" style="width:80%;">
-  <caption><b>内容贡献者名单</b></caption>
 <thead>
   <tr>
     <th>成员</th>
@@ -192,7 +191,11 @@
 </tbody>
 </table> 
 
-$\color{red}{感谢Datawhale成员刘雯静、吕豪杰及意向成员张汉隆、吴丹飞、王云川和宋禹成在开源项目组队学习中担任助教时的辛苦付出！}$
+
+
+$$\color{red}{感谢Datawhale成员刘雯静、吕豪杰及意向成员张汉隆、吴丹飞、王云川和宋禹成在开源项目组队学习中担任助教时的辛苦付出！}$$
+
+
 
 ## 关注我们
 <div align=center>
