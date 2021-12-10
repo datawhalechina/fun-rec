@@ -82,6 +82,10 @@
             common.type = 'signIn',
             common.user.username = res.username
             this.$router.push({name:'recLists' ,params:{type:'signIn',username:this.model.username}})
+            
+            // this.$store.dispatch('addCacheView', 'recLists');
+            // this.$store.dispatch('addCacheView', 'hotLists');
+
           }if(resource.data.code === 500){
             Toast('登陆失败')
           }if(resource.data.code === 501){

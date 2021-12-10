@@ -9,51 +9,48 @@
       </li>
     </ul>
 
-    <label for="login-input-user" class="login__label">
+      <label for="login-input-user" class="login__label">
       用户名
-    </label>
-    <van-field v-model="model.username" placeholder="请输入用户名" required @blur='ruleName(model.username)' />
-    <span class="errorMessage">{{message.username}}</span>
+      </label>
+      <van-field v-model="model.username" placeholder="请输入用户名" required @blur='ruleName(model.username)' />
+      <span class="errorMessage">{{message.username}}</span>
 
-    <label for="login-input-password" class="login__label">
-      密码
-    </label>
-    <van-field v-model="model.passwd" placeholder="请输入密码" type="password" required @blur='rulePasswd(model.passwd)' />
-    <span class="errorMessage">{{message.passwd}}</span>
+      <label for="login-input-password" class="login__label">
+        密码
+      </label>
+      <van-field v-model="model.passwd" placeholder="请输入密码" type="password" required @blur='rulePasswd(model.passwd)' />
+      <span class="errorMessage">{{message.passwd}}</span>
 
-    <label for="login-input-user" class="login__label">
-      验证密码
-    </label>
-    <van-field v-model="model.passwd2" placeholder="再次输入密码" type="password" required @blur='rulePasswd2(model.passwd2)' />
-    <span class="errorMessage">{{message.passwd2}}</span>
+      <label for="login-input-user" class="login__label">
+        验证密码
+      </label>
+      <van-field v-model="model.passwd2" placeholder="再次输入密码" type="password" required @blur='rulePasswd2(model.passwd2)' />
+      <span class="errorMessage">{{message.passwd2}}</span>
 
-    <label for="login-input-user" class="login__label">
-      年龄
-    </label>
-    <van-field v-model="model.age" placeholder="请输入年龄" required @blur='ruleAge(model.age)' />
-    <span class="errorMessage">{{message.age}}</span>
+      <label for="login-input-user" class="login__label">
+        年龄
+      </label>
+      <van-field v-model="model.age" placeholder="请输入年龄" required @blur='ruleAge(model.age)' />
+      <span class="errorMessage">{{message.age}}</span>
 
-    <label for="login-input-user" class="login__label">
-      性别
-    </label>
-    <van-radio-group class="login__label_male" v-model="model.gender" direction="horizontal" icon-size='16px'>
-      <van-radio name="male">男</van-radio>
-      <van-radio name="female">女</van-radio>
-    </van-radio-group>
+      <label for="login-input-user" class="login__label">
+        性别
+      </label>
+      <van-radio-group class="login__label_male" v-model="model.gender" direction="horizontal" icon-size='16px'>
+        <van-radio name="male">男</van-radio>
+        <van-radio name="female">女</van-radio>
+      </van-radio-group>
 
-    <label for="login-input-user" class="login__label">
-      城市
-    </label>
-    <van-field readonly clickable name="area" :value="model.city" placeholder="点击选择省市" @click="showArea = true" />
-    <van-popup v-model="showArea" position="bottom">
-      <van-area :area-list="areaList" @confirm="onConfirm" @cancel="showArea = false" :columns-num="2" />
-    </van-popup>
+      <label for="login-input-user" class="login__label">
+        城市
+      </label>
+      <van-field readonly clickable name="area" :value="model.city" placeholder="点击选择省市" @click="showArea = true" />
+      <van-popup v-model="showArea" position="bottom">
+        <van-area :area-list="areaList" @confirm="onConfirm" @cancel="showArea = false" :columns-num="2" />
+      </van-popup>
 
-
-    <button class="login__submit" @click="login">注册</button>
-
-
-
+      <button class="login__submit" @click="login">注册</button>
+    
   </div>
 
 </template>
@@ -128,6 +125,10 @@
             common.user.age = this.model.age
             common.user.gender = this.model.gender
             this.$router.push({name:'recLists' ,params:{type:'signUp',username:this.model.username,age:this.model.age,gender:this.model.gender}})
+          
+            // this.$store.dispatch('addCacheView', 'recLists');
+            // this.$store.dispatch('addCacheView', 'hotLists');
+
           }if(resource.data.code === 500) {
             Toast('用户名已存在')
           }
@@ -243,6 +244,7 @@
     background-color: black;
     padding: 4rem 4rem 4rem 4rem;
     height: 100vh;
+    overflow: auto;
   }
 
   /* 登录和注册的切换 */

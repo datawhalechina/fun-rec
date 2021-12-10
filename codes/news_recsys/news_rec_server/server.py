@@ -72,9 +72,9 @@ def login():
             return jsonify({"code": 200, "msg": "login success"})
         elif result == 2:
             # 密码错误
-            return jsonify({"code": 500, "msg": "passwd is error"})
+            return jsonify({"code": 501, "msg": "passwd is error"})
         else:
-            return jsonify({"code": 500, "msg": "this username is not exist!"})
+            return jsonify({"code": 502, "msg": "this username is not exist!"})
     except Exception as e:
         return jsonify({"code": 500, "mgs": "login fail."})
 

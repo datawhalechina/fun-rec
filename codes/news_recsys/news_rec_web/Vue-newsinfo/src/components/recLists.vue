@@ -105,6 +105,18 @@
       }
     },
 
+    mounted () {
+      this.$store.dispatch('addCacheView', 'recLists');
+      this.$store.dispatch('addCacheView', 'hotLists');
+    },
+
+
+    beforeDestroy () {
+      // this.$store.dispatch('addCacheView', 'recLists');
+      // this.$store.dispatch('addCacheView', 'hotLists');
+      console.log('beforeDestroy');
+    }
+
     // activated() {
     //     // 进入该组件后读取数据变量设置滚动位置
     //     document.documentElement.scrollTop = this.scrollOut;
