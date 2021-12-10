@@ -40,6 +40,7 @@
 </style>
 <script>
   import bottomBarVue from "./bottomBar.vue"
+import common from './common.vue'
   export default {
     data() {
       return {
@@ -51,11 +52,13 @@
     },
     methods: {
       quit() {
+        this.$store.dispatch('deleteCacheView', 'recLists')
+        this.$store.dispatch('deleteCacheView', 'hotLists')
         /*删除cookie*/
         this.cookie.clearCookie('LoginName')
         this.cookie.clearCookie('openId')
         this.$router.push('/signIn')
-      }
+        }
     },
     created() {
       // this.username = localStorage.username

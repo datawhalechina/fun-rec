@@ -66,6 +66,7 @@
   import {
     Toast,
   } from 'mint-ui';
+  import common from './common.vue'
   export default {
     data() {
       return {
@@ -122,8 +123,11 @@
             // 调用setCookie方法，同时传递需要存储的数据，保存天数
             this.cookie.setCookie(loginInfo, 7)
 
-            localStorage.username = res.username
-            this.$router.push('/recLists')
+            common.type = 'signUp', 
+            common.user.username = res.username
+            common.user.age = this.model.age
+            common.user.gender = this.model.gender
+            this.$router.push({name:'recLists' ,params:{type:'signUp',username:this.model.username,age:this.model.age,gender:this.model.gender}})
           }if(resource.data.code === 500) {
             Toast('用户名已存在')
           }
@@ -238,7 +242,7 @@
     background-size: 100% 100%;
     background-color: black;
     padding: 4rem 4rem 4rem 4rem;
-    /* height: 100vh; */
+    height: 100vh;
   }
 
   /* 登录和注册的切换 */

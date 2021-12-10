@@ -36,7 +36,7 @@
               </p>
 
               <p class="discribe">
-                <span class="ctime">发表时间：{{ item.ctime}} </span>
+                <span class="ctime">{{ item.ctime}} </span>
                 <span class="read_num">阅读：{{numList[index].read_num}}</span>
                 <span class="likes">喜欢:{{comHot[index].likes}}</span>
                 <span class="collections">收藏:{{comHot[index].collections}}</span>
@@ -56,7 +56,7 @@
   import bottomBar from "./bottomBar.vue";
   import common from './common.vue'
   export default {
-    name: '',
+    name: 'hotLists',
     data() {
       return {
         hotContent: [],
@@ -66,10 +66,11 @@
         vanListLoading: false, // 加载状态
         finished: false, // 是否加载
         finishedText: '', // 加载完成后的提示文案
-        page: 0, // 页数
 
         scrollIn: 0, //进入页面时滚动条位置
         scrollOut: 0, //离开页面时滚动条位置
+
+        keepAlive:false,  //是否需要缓存
 
       };
     },
@@ -78,9 +79,8 @@
     },
     methods: {
       getList() {
-        let userId = localStorage.username,
-          pageId = this.page;
-        let url = '/recsys/hot_list?' + 'user_id=' + userId + '&page_id=' + pageId;
+        let url = '/recsys/hot_list?' + 'user_id=' + common.user.username 
+        console.log(common.user);
         this.axios.get(url).then(res => {
           if (res.data.code === 200) {
             this.hotContent.push(...res.data.data)
@@ -91,9 +91,7 @@
         })
       },
       onLoad() {
-        this.page++;
         this.getList();
-        this.isActive = true
       },
       toRec() {
         this.$router.push('/recLists')
@@ -102,23 +100,43 @@
         this.$router.push('/hotLists')
       }
     },
-    activated() {
-      // 进入该组件后读取数据变量设置滚动位置
-      this.scrollIn = document.body.scrollTop;
-      document.documentElement.scrollTop = this.scrollOut;
-    },
-    beforeRouteLeave(to, from, next) {
-      this.scrollOut = document.documentElement.scrollTop;
-      if(to.name == 'NewsInfo' ){
-          let reg = /NewsInfo\//
-          for(let i = 0; i<this.numList.length; i++){
-            if(this.numList[i].news_id == to.path.split(reg)[1]){
-              this.numList[i].read_num++
-            }
-          }
-      }
-      next();
-    },
+    // activated() {
+    //   if(this.keepAlive){
+    //     // 进入该组件后读取数据变量设置滚动位置
+    //     document.documentElement.scrollTop = this.scrollOut;
+    //     console.log('alive');
+    //   }else{
+    //     console.log('not alive');
+    //   }
+    // },
+
+    // beforeRouteEnter(to, from, next)  {
+    //   if(from.name !== 'signIn' && from.name !== 'signUp'){
+    //     next(vm => {
+    //       vm.keepAlive = true
+    //       console.log(vm.keepAlive);
+    //     })
+    //   }else{
+    //     next(vm => {
+    //       from.meta.keepAlive = false;
+    //       vm.keepAlive = false
+    //       console.log(vm.keepAlive);
+    //     })
+    //   }
+    // },
+
+    // beforeRouteLeave(to, from, next) {
+    //   this.scrollOut = document.documentElement.scrollTop;
+    //   if(to.name == 'NewsInfo' ){
+    //       let reg = /NewsInfo\//
+    //       for(let i = 0; i<this.numList.length; i++){
+    //         if(this.numList[i].news_id == to.path.split(reg)[1]){
+    //           this.numList[i].read_num++
+    //         }
+    //       }
+    //   }
+    //   next();
+    // },
   }
 </script>
 

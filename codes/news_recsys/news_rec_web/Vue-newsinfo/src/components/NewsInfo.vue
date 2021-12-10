@@ -194,7 +194,7 @@
     }, 
     beforeRouteLeave(to, from, next) {
       //设置下一个路由的meta,让列表页面缓存,即不刷新
-      // to.meta.keepAlive = true
+      to.meta.keepAlive = true
       next()
     },
   }

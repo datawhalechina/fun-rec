@@ -1,6 +1,7 @@
 // 导入VueRoute路由组件
 import VueRouter from 'vue-router'
 
+
 //导入cookie
 import cookie from './assets/js/cookie'
 
@@ -18,48 +19,43 @@ let routerObj = new VueRouter({
         {
             path: '/',
             component: signIn,
+            name: 'signIn',
             meta: {
-                isPublic: true,
                 keepAlive: false,
-                scrollTop: 0
             },
 
         },
         {
             path: '/signUp',
             component: signUp,
+            name: 'signUp',
             meta: {
-                isPublic: true,
                 keepAlive: false,
-                scrollTop: 0
             },
 
         },
         {
             path: '/recLists',
             component: recLists,
+            name: 'recLists',
             meta: {
-                isPublic: false,
                 keepAlive: true,
-                scrollTop: 0
             }
         },
         {
             path: '/hotLists',
             component: hotLists,
+            name: 'hotLists',
             meta: {
-                isPublic: false,
                 keepAlive: true,
-                scrollTop: 0
             }
         },
         {
             path: '/Myself',
             component: Myself,
+            name: 'Myself',
             meta: {
-                isPublic: false,
                 keepAlive: false,
-                scrollTop: 0
             },
 
         },
@@ -68,9 +64,7 @@ let routerObj = new VueRouter({
             name: 'NewsInfo',
             component: NewsInfo,
             meta: {
-                isPublic: false,
                 keepAlive: false,
-                scrollTop: 0
             }
         },
     ],
@@ -82,15 +76,6 @@ const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
     return originalPush.call(this, location).catch(err => err)
 }
-
-// 未登录直接跳转至登录页
-// routerObj.beforeEach(async (to, from, next) => {
-//     console.log(localStorage.tokens)
-//     if (!to.meta.isPublic && !localStorage.username) {
-//         return next('/login')
-//     }
-//     next()
-// })
 
 /*
 * beforeEach:从一个页面跳转到另外一个页面时触发
@@ -117,16 +102,16 @@ routerObj.beforeEach((to, from, next) => {
             next('/')
         }
     }
-    // if (from.meta.keepAlive) {
-    //     const $wrapper = document.querySelector('.van-tabs__content'); // 列表的外层容器 注意找到滚动的盒子
-    //     console.log($wrapper);
-    //     const scrollTop = $wrapper ? $wrapper.scrollTop : 0;
-    //     console.log('scrollTop=', scrollTop)
-    //     from.meta.scrollTop = scrollTop;
+    // if (from.name == 'signIn' || from.name == 'signUp') {
+    //     to.meta.keepAlive = false
+    //     console.log('router true', from, to);
+    // } else if (to.name == 'NewsInfo' || to.name == 'Myself') {
+    //     to.meta.keepAlive = false
+    //     console.log('to');
+    // } else {
+    //     to.meta.keepAlive = true
+    //     console.log('router false', from, to);
     // }
-    //     next();
+    // next();
 })
-
-
-// 把routerObj对象暴漏出去。main.js导入这个数据
 export default routerObj

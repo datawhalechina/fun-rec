@@ -1,25 +1,49 @@
 <template>
   <div class="app-container">
     <!-- <router-view></router-view> -->
-    <keep-alive>
-      <router-view v-if='$route.meta.keepAlive' />
+    <!-- <keep-alive>
+      <router-view :key="key" v-if='$route.meta.keepAlive' />
     </keep-alive>
-    <router-view v-if='!$route.meta.keepAlive' />
+    <router-view v-if='!$route.meta.keepAlive' /> -->
+
+    <keep-alive :include="cachedViews">
+      <router-view v-if="this.$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view :key="key" v-if="!this.$route.meta.keepAlive"></router-view>
+
   </div>
 </template>
 <script>
+import common from './components/common.vue'
   export default {
     data() {
-      return {}
+      return {
+        cachedViews: []
+        // key:common.user.username
+      }
     },
     methods: {
 
 
     },
 
+    watch: {
+      //监听动态缓存动态赋值控制页面是否缓存
+      $route: {
+        handler:function(to,from){
+          this.cachedViews = this.$store.state.cacheView;
+        }
+      }
+    },
+    
     computed: {
-
-    }
+      cachedViews () {
+        return this.$store.state.cachedViews.cachedViews
+      },
+      key () {
+        return common.user.username
+      },
+    },
   }
 </script>
 

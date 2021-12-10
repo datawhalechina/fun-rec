@@ -36,7 +36,7 @@
               </p>
 
               <p class="discribe">
-                <span class="ctime">发表时间：{{ item.ctime}} </span>
+                <span class="ctime">{{ item.ctime}} </span>
                 <span class="read_num">阅读：{{numList[index].read_num}}</span>
                 <span class="likes">喜欢:{{comRec[index].likes}}</span>
                 <span class="collections">收藏:{{comRec[index].collections}}</span>
@@ -56,7 +56,7 @@
   import bottomBar from "./bottomBar.vue";
   import common from './common.vue'
   export default {
-    name: '',
+    name: 'recLists',
     data() {
       return {
         recContent: [],
@@ -66,10 +66,11 @@
         vanListLoading: false, // 加载状态
         finished: false, // 是否加载
         finishedText: '', // 加载完成后的提示文案
-        page: 0, // 页数
 
         scrollIn: 0, //进入页面时滚动条位置
         scrollOut: 0, //离开页面时滚动条位置
+
+        keepAlive:false,  //是否需要缓存
 
       };
     },
@@ -78,9 +79,12 @@
     },
     methods: {
       getList() {
-        let userId = localStorage.username,
-          pageId = this.page;
-        let url = '/recsys/rec_list?' + 'user_id=' + userId + '&page_id=' + pageId;
+        var url;
+        if(common.type == 'signIn'){
+          url = '/recsys/rec_list?' + 'user_id=' + common.user.username
+        }else if(common.type == 'signUp'){
+          url = '/recsys/rec_list?' + 'user_id=' + common.user.username  + '&age=' + common.user.age + '&gender=' + common.user.gender
+        }
         this.axios.get(url).then(res => {
           if (res.data.code === 200) {
             this.recContent.push(...res.data.data)
@@ -90,38 +94,56 @@
           }
         })
       },
-
-
       onLoad() {
-        this.page++;
         this.getList();
-        this.isActive = true
       },
       toRec() {
         this.$router.push('/recLists')
       },
       toHot() {
-        this.$router.push('/hotLists')
+        this.$router.push({name:'hotLists',params:{keepAlive:this.keepAlive}})
       }
     },
 
-    activated() {
-      // 进入该组件后读取数据变量设置滚动位置
-      this.scrollIn = document.body.scrollTop;
-      document.documentElement.scrollTop = this.scrollOut;
-    },
-    beforeRouteLeave(to, from, next) {
-      this.scrollOut = document.documentElement.scrollTop;
-      if(to.name == 'NewsInfo' ){
-          let reg = /NewsInfo\//
-          for(let i = 0; i<this.numList.length; i++){
-            if(this.numList[i].news_id == to.path.split(reg)[1]){
-              this.numList[i].read_num++
-            }
-          }
-      }
-      next();
-    },
+    // activated() {
+    //     // 进入该组件后读取数据变量设置滚动位置
+    //     document.documentElement.scrollTop = this.scrollOut;
+    // },
+
+    // beforeRouteEnter(to, from, next)  {
+    //   if(from.name == 'signIn' || from.name == 'signUp'){
+    //     next(vm => {
+    //       to.meta.keepAlive = false
+    //       console.log('from login', from ,to);
+    //       vm.onLoad()
+    //       vm.keepAlive = false  //从登录注册界面跳转进入 hotlist不需要缓存
+    //     })
+    //   }else{
+    //     next(vm => {
+    //       to.meta.keepAlive = true  //当前页面缓存
+    //       vm.keepAlive = true  //从非登录注册界面跳转进入 hotlist需要缓存
+    //       console.log('not from login', from ,to);
+    //     })
+    //   }
+    // },
+
+    // beforeRouteLeave(to, from, next) {
+    //   this.scrollOut = document.documentElement.scrollTop;
+    //   if(to.name == 'NewsInfo' ){
+    //       let reg = /NewsInfo\//
+    //       for(let i = 0; i<this.numList.length; i++){
+    //         if(this.numList[i].news_id == to.path.split(reg)[1]){
+    //           this.numList[i].read_num++
+    //         }
+    //       }
+    //   }
+    //   if(this.keepAlive && to.name == 'hotLists'){
+    //     from.meta.keepAlive = true
+    //     to.meta.keepAlive = true
+    //     console.log('to hot',from,to);
+    //   }
+    //   next();
+    // },
   }
 </script>
 

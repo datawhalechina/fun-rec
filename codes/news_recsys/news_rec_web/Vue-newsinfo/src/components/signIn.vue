@@ -31,12 +31,11 @@
 
 <script>
   import {
-    DatetimePicker,
-    Toast,
-    Popup,
-    Picker
+    Toast
   } from 'mint-ui';
+  import common from './common.vue'
   export default {
+    name: 'signIn',
     data() {
       return {
         model: {
@@ -80,8 +79,9 @@
               this.cookie.setCookie(loginInfo, 1)
             }
 
-            localStorage.username = res.username
-            this.$router.push('/recLists')
+            common.type = 'signIn',
+            common.user.username = res.username
+            this.$router.push({name:'recLists' ,params:{type:'signIn',username:this.model.username}})
           }if(resource.data.code === 500){
             Toast('登陆失败')
           }if(resource.data.code === 501){
