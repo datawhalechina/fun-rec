@@ -94,12 +94,14 @@
 
 **新闻推荐系统前端显示页面及后端系统架构（项目没有任何商用价值仅供入门者学习**）
 
-<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211205142026937.png" alt="image-20211205142026937" style="zoom:61%;" />
+<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211205142026937.png" alt="image-20211205142026937" style="zoom:57%;" />
 </div>
 
+
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Fun-Rec新闻推荐系统.png" alt="Fun-Rec新闻推荐系统" style="zoom:54%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Fun-Rec新闻推荐系统.png" alt="Fun-Rec新闻推荐系统" style="zoom:55%;" />
 </div>
+
 
 
 ## 致谢
@@ -192,12 +194,12 @@
 </table> 
 
 
-
-$$\color{red}{感谢Datawhale成员刘雯静、吕豪杰及意向成员张汉隆、吴丹飞、王云川和宋禹成在开源项目组队学习中担任助教时的辛苦付出！}$$
+<font color='red'>感谢Datawhale成员刘雯静、吕豪杰及意向成员张汉隆、吴丹飞、王云川和宋禹成在开源项目组队学习中担任助教时的辛苦付出！</font>
 
 
 
 ## 关注我们
+
 <div align=center>
 <p>扫描下方二维码关注公众号：Datawhale</p>
 <img src="https://raw.githubusercontent.com/datawhalechina/pumpkin-book/master/res/qrcode.jpeg" width = "180" height = "180">
