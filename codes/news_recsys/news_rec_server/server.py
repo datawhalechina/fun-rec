@@ -126,17 +126,14 @@ def hot_list():
     # 查询用户的id
     user_id = UserAction().get_user_id_by_name(user_name)  
     if not user_id:
-        return False
+        return jsonify({"code": 2000, "msg": "user_id is not exits!."})
 
     try:
         # 这里需要改成get_hot_list, 当前get_hot_list方法还没有实现
         # rec_news_list = recsys_server.get_hot_list(user_id)
-
         rec_news_list = recsys_server.get_hot_list_v2(user_id)
-
         if len(rec_news_list) == 0:
-            return jsonify({"code": 200, "msg": "request redis data fail."})
-        # rec_news_list = recsys_server.get_hot_list(user_id, page_id)
+            return jsonify({"code": 500, "msg": "request redis data fail."})
         return jsonify({"code": 200, "msg": "request hot_list success.", "data": rec_news_list, "user_id": user_id})
     except Exception as e:
         print(str(e))
