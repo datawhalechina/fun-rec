@@ -152,7 +152,7 @@
   </tr>
    <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">梁家晖</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，公众号：可能好玩</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，公众号：可能好玩，基础推荐算法贡献部分内容</td>
     <td></td>
   </tr>
   <tr>

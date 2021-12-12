@@ -45,6 +45,12 @@ def register():
     user.gender = request_dict["gender"]
     user.city = request_dict["city"]
 
+    # 检验年龄格式的合法性
+    try:
+        age = int(user.age)
+    except:
+        return jsonify({"code": 500, "mgs": "age is not valid."})
+
     # 添加注册用户
     save_res = UserAction().save_user(user)
     if not save_res:

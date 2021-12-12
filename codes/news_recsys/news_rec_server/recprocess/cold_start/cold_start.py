@@ -61,13 +61,20 @@ class ColdStart(object):
         """将每个用户涉及到的不同的新闻列表添加到redis中去
         """
         for user_info in self.register_user_sess.query(RegisterUser).all():
-            if int(user_info.age) < 23 and user_info.gender == "female":
+            # 年龄不正常的人，随便先给一个分组，后面还需要在前后端补充相关逻辑
+            try:
+                age = int(user_info.age)
+            except:
+                self._copy_cold_start_list_to_redis(user_info.userid, group_id="4")
+                print("user_info.age: {}".format(user_info.age)) 
+
+            if age < 23 and user_info.gender == "female":
                 self._copy_cold_start_list_to_redis(user_info.userid, group_id="1")
-            elif int(user_info.age) >= 23 and user_info.gender == "female":
+            elif age >= 23 and user_info.gender == "female":
                 self._copy_cold_start_list_to_redis(user_info.userid, group_id="2")
-            elif int(user_info.age) < 23 and user_info.gender == "male":
+            elif age < 23 and user_info.gender == "male":
                 self._copy_cold_start_list_to_redis(user_info.userid, group_id="3")
-            elif int(user_info.age) >= 23 and user_info.gender == "male":
+            elif age >= 23 and user_info.gender == "male":
                 self._copy_cold_start_list_to_redis(user_info.userid, group_id="4")
             else:
                 pass 
