@@ -194,14 +194,14 @@
       },
       //验证年龄
       ruleAge(val) {
-        var ageReg = /^([1-9]|[1-9]\\d|100)$/
+        var ageReg = /^([1-9][0-9]{0,1}|100)$/
         if (val == '') {
           this.message.age = '请输入年龄'
           this.state = false
           return false
         } else
         if (!ageReg.test(val)) {
-          this.message.age = '请输入大于零的整数'
+          this.message.age = '请输入1-100的整数'
           this.state = false
           return false
         } else {
