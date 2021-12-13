@@ -190,6 +190,11 @@
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale意向成员，西安电子科技大学硕士，机器学习基础贡献部分内容</td>
     <td></td>
   </tr>
+  <tr>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宋禹成</span></td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale意向成员，东北大学硕士，新闻推荐系统贡献部分内容</td>
+    <td></td>
+  </tr>
 </tbody>
 </table> 
 

@@ -40,7 +40,6 @@
 </style>
 <script>
   import bottomBarVue from "./bottomBar.vue"
-import common from './common.vue'
   export default {
     data() {
       return {
@@ -61,8 +60,6 @@ import common from './common.vue'
         }
     },
     created() {
-      // this.username = localStorage.username
-      this,
       this.username = this.cookie.getCookie('LoginName')
     }
   }

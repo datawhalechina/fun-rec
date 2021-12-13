@@ -66,12 +66,6 @@
         vanListLoading: false, // 加载状态
         finished: false, // 是否加载
         finishedText: '', // 加载完成后的提示文案
-
-        scrollIn: 0, //进入页面时滚动条位置
-        scrollOut: 0, //离开页面时滚动条位置
-
-        keepAlive:false,  //是否需要缓存
-
       };
     },
     components: {
@@ -101,7 +95,7 @@
         this.$router.push('/recLists')
       },
       toHot() {
-        this.$router.push({name:'hotLists',params:{keepAlive:this.keepAlive}})
+        this.$router.push('/hotLists')
       }
     },
 
@@ -110,52 +104,24 @@
       this.$store.dispatch('addCacheView', 'hotLists');
     },
 
+    beforeRouteLeave(to, from, next) {
+      // this.scrollOut = document.documentElement.scrollTop;
+      if(to.name == 'NewsInfo' ){
+          let reg = /NewsInfo\//
+          for(let i = 0; i<this.numList.length; i++){
+            if(this.numList[i].news_id == to.path.split(reg)[1]){
+              this.numList[i].read_num++
+            }
+          }
+      }
+      next();
+    },
+
 
     beforeDestroy () {
       // this.$store.dispatch('addCacheView', 'recLists');
       // this.$store.dispatch('addCacheView', 'hotLists');
-      console.log('beforeDestroy');
     }
-
-    // activated() {
-    //     // 进入该组件后读取数据变量设置滚动位置
-    //     document.documentElement.scrollTop = this.scrollOut;
-    // },
-
-    // beforeRouteEnter(to, from, next)  {
-    //   if(from.name == 'signIn' || from.name == 'signUp'){
-    //     next(vm => {
-    //       to.meta.keepAlive = false
-    //       console.log('from login', from ,to);
-    //       vm.onLoad()
-    //       vm.keepAlive = false  //从登录注册界面跳转进入 hotlist不需要缓存
-    //     })
-    //   }else{
-    //     next(vm => {
-    //       to.meta.keepAlive = true  //当前页面缓存
-    //       vm.keepAlive = true  //从非登录注册界面跳转进入 hotlist需要缓存
-    //       console.log('not from login', from ,to);
-    //     })
-    //   }
-    // },
-
-    // beforeRouteLeave(to, from, next) {
-    //   this.scrollOut = document.documentElement.scrollTop;
-    //   if(to.name == 'NewsInfo' ){
-    //       let reg = /NewsInfo\//
-    //       for(let i = 0; i<this.numList.length; i++){
-    //         if(this.numList[i].news_id == to.path.split(reg)[1]){
-    //           this.numList[i].read_num++
-    //         }
-    //       }
-    //   }
-    //   if(this.keepAlive && to.name == 'hotLists'){
-    //     from.meta.keepAlive = true
-    //     to.meta.keepAlive = true
-    //     console.log('to hot',from,to);
-    //   }
-    //   next();
-    // },
   }
 </script>
 

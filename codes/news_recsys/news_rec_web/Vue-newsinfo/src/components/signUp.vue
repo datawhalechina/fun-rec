@@ -194,7 +194,7 @@
       },
       //验证年龄
       ruleAge(val) {
-        var ageReg = /^\+?[1-9][0-9]*$/
+        var ageReg = /^([1-9]|[1-9]\\d|100)$/
         if (val == '') {
           this.message.age = '请输入年龄'
           this.state = false

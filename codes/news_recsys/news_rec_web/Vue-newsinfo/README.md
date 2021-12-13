@@ -127,7 +127,7 @@
 │   │   ├── signIn.vue  登录
 │   │   └── signUp.vue  注册
 │   ├── images  图片
-│   │   ├── datawhale.png  DataWhale头像
+│   │   ├── datawhale.png  DataWhale头像  
 │   │   └── dw.png  DataWhale二维码
 │   ├── index.html  首页入口文件
 │   ├── lib  库（(最后未使用)）

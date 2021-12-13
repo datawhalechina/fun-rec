@@ -62,16 +62,9 @@
         hotContent: [],
         numList: [],
         comHot:common.hotList,
-        isActive: true,
         vanListLoading: false, // 加载状态
         finished: false, // 是否加载
         finishedText: '', // 加载完成后的提示文案
-
-        scrollIn: 0, //进入页面时滚动条位置
-        scrollOut: 0, //离开页面时滚动条位置
-
-        keepAlive:false,  //是否需要缓存
-
       };
     },
     components: {
@@ -100,43 +93,18 @@
         this.$router.push('/hotLists')
       }
     },
-    // activated() {
-    //   if(this.keepAlive){
-    //     // 进入该组件后读取数据变量设置滚动位置
-    //     document.documentElement.scrollTop = this.scrollOut;
-    //     console.log('alive');
-    //   }else{
-    //     console.log('not alive');
-    //   }
-    // },
-
-    // beforeRouteEnter(to, from, next)  {
-    //   if(from.name !== 'signIn' && from.name !== 'signUp'){
-    //     next(vm => {
-    //       vm.keepAlive = true
-    //       console.log(vm.keepAlive);
-    //     })
-    //   }else{
-    //     next(vm => {
-    //       from.meta.keepAlive = false;
-    //       vm.keepAlive = false
-    //       console.log(vm.keepAlive);
-    //     })
-    //   }
-    // },
-
-    // beforeRouteLeave(to, from, next) {
-    //   this.scrollOut = document.documentElement.scrollTop;
-    //   if(to.name == 'NewsInfo' ){
-    //       let reg = /NewsInfo\//
-    //       for(let i = 0; i<this.numList.length; i++){
-    //         if(this.numList[i].news_id == to.path.split(reg)[1]){
-    //           this.numList[i].read_num++
-    //         }
-    //       }
-    //   }
-    //   next();
-    // },
+    beforeRouteLeave(to, from, next) {
+      // this.scrollOut = document.documentElement.scrollTop;
+      if(to.name == 'NewsInfo' ){
+          let reg = /NewsInfo\//
+          for(let i = 0; i<this.numList.length; i++){
+            if(this.numList[i].news_id == to.path.split(reg)[1]){
+              this.numList[i].read_num++
+            }
+          }
+      }
+      next();
+    },
   }
 </script>
 

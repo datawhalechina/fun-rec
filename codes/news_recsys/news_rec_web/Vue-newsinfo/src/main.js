@@ -47,25 +47,13 @@ Vue.filter('timeFormat', function (dataStr, pattern = "YYYY-MM-DD HH:mm:ss") {
 // 导入mint-ui组件,不建议全部导入体积太大
 // 按需导入：先安装babel-plugin-component,然后在.babelrc加上官网说的配置加载css,如下
 import Mint from 'mint-ui';
-
-
-import CityPicker from 'vue-addr-picker';
-Vue.use(CityPicker)
-
 Vue.use(Mint);
 import 'mint-ui/lib/style.css'
-
-
 // 导入mui的css样式
 import './lib/mui/css/mui.css'
 import './lib/mui/css/icons-extra.css'
 
-// import { Field } from 'mint-ui';
 
-// Vue.component(Field.name, Field);
-
-
-// import './assets/css/index.less'
 import { Form } from 'vant';
 import { Field } from 'vant';
 import { RadioGroup, Radio } from 'vant';

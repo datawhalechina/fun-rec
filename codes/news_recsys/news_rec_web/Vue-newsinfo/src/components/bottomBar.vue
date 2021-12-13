@@ -13,22 +13,10 @@
     name: 'bottomBar',
     data() {
       return {
-        flag: false,
       }
     },
     methods: {
-      goBack() {
-        // 利用vue路由里的go对象，-1进行往前返回的跳转，
-        this.$router.go(-1)
-      },
     },
-
-    computed: {
-      isback() {
-        return this.$route.path !== '/HomeContainer'
-      }
-
-    }
   }
 </script>
 

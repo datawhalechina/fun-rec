@@ -4,6 +4,8 @@
 1. 安装conda环境
 2. 创建conda虚拟环境: conda create -n news_rec_py3 python==3.8
 3. 安装依赖文件: pip install -r requirements.txt
+4. 注意安装并启动snowflake（这个是用来生成用户id的），在requirements.txt中已经有了，所以只需要启动就行
+    - 启动：snowflake_start_server --address=127.0.0.1 --port=8910 --dc=1 --worker=1
 
 **ubuntu数据库环境**
 1. 参考 2.2.1.1 Mysql基础
@@ -25,4 +27,4 @@
 **启动前端服务**
 1. 跳转到前端项目文件目录：cd $HOME/fun-rec/codes/news_recsys/news_rec_web/Vue-newsinfo
 2. 启动前端服务：npm run dev
-3. 访问地址`http://localhost:3000`
+3. 访问地址`http://0.0.0.0:8686/#/`

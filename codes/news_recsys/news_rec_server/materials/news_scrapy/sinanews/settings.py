@@ -9,7 +9,8 @@
 
 from typing import Collection
 import sys 
-sys.path.append("/home/recsys/news_rec_server")
+from conf.proj_path import proj_path
+sys.path.append(proj_path)
 from conf.dao_config import mongo_hostname, mongo_port, sina_db_name, sina_collection_name_prefix
 
 BOT_NAME = 'sinanews'

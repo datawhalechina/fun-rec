@@ -37,9 +37,9 @@ import common from './components/common.vue'
     },
     
     computed: {
-      cachedViews () {
-        return this.$store.state.cachedViews.cachedViews
-      },
+      // cachedViews () {
+      //   return this.$store.state.cachedViews.cachedViews
+      // },
       key () {
         return common.user.username
       },
