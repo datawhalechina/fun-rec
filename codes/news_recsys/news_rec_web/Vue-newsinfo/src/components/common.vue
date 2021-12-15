@@ -7,14 +7,11 @@
     age:'',
     gender:'',
   };
-
-  const usernameOld ='';
   
   export default {
     hotList,
     recList,
     type,
     user,
-    usernameOld
   }
 </script>

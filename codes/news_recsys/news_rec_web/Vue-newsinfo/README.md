@@ -24,18 +24,21 @@
    如果因为版本或者网络问题下载失败请执行`npm install -g cnpm -registry=https://registry.npm.taobao.org/
 `和`cnpm install`
 
-3. 启动前端服务：`npm run dev`
+1. 启动前端服务：`npm run dev`
 
-4. 本机访问地址`http://0.0.0.0:8686/#/`
+2. 本机访问地址`http://localhost:8686/#/` 
 
-5. 点击`F12`或者右键选择`检查`打开`开发者模式`,选中移动端浏览（点击左上角箭头右边的手机按钮）开始体验
+   (根据需要修改package.json下`"scripts": {
+    "dev": "webpack-dev-server --open --port 8686 --contentBase src --hot --host 0.0.0.0"},`中的ip和端口号)
+
+3. 点击`F12`或者右键选择`检查`打开`开发者模式`,选中移动端浏览（点击左上角箭头右边的手机按钮）开始体验
 
 ---
 
 
 
 ### 目标功能
-- [X] **用户登录** —— 用户输入用户名和密码登录后进入主页面
+- [X] **用户登录** —— 老用户登录
   
 - `记住我`可以保存将登录信息保存7天
 
@@ -52,7 +55,7 @@
 
 - 密码是大于6位的英文和数字
 
-- 年龄是大于0的整数
+- 年龄是1-100的整数
 
 - 注册成功后将跳转至主页面
 
@@ -63,9 +66,9 @@
 
 - [X] **推荐页及热门页内容显示** —— 根据不同用户个性化显示不同新闻内容
 
-- 推荐页和热门页之间的切换时添加缓存（存在定位有些偏差的bug） 
+- 推荐页和热门页之间的切换（首次切换时会刷新，正在修复这个bug） 
 
-- 点进新闻详情页后阅读次数会实时增加，返回后定位在原始位置
+- 点进新闻详情页后阅读次数会实时增加
 
 <div  align="center">    
 <img src="https://gitee.com/theNeverLemon/news-img/raw/master/img/推荐.jpg" width = "30%" height = "30%" alt="推荐"/>  
@@ -127,7 +130,7 @@
 │   │   ├── signIn.vue  登录
 │   │   └── signUp.vue  注册
 │   ├── images  图片
-│   │   ├── datawhale.png  DataWhale头像  
+│   │   ├── datawhale.png  DataWhale头像
 │   │   └── dw.png  DataWhale二维码
 │   ├── index.html  首页入口文件
 │   ├── lib  库（(最后未使用)）
@@ -138,3 +141,4 @@
 ├── vue.config.js  vue项目的配置文件，专用于vue项目
 └── webpack.config.js  webpack的配置文件，所有使用webpack作为打包工具的项目都可以使用
 ```
+

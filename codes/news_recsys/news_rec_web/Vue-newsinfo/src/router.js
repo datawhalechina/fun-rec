@@ -13,8 +13,6 @@ import recLists from './components/recLists.vue'
 import hotLists from './components/hotLists.vue'
 
 let routerObj = new VueRouter({
-    // mode: 'history',
-    // base: '/home/recsys/',
     routes: [
         {
             path: '/',
@@ -27,7 +25,7 @@ let routerObj = new VueRouter({
         },
         {
             path: '/signUp',
-            component: signUp,
+            component: () => import('./components/signUp.vue'),
             name: 'signUp',
             meta: {
                 keepAlive: false,
@@ -36,7 +34,8 @@ let routerObj = new VueRouter({
         },
         {
             path: '/recLists',
-            component: recLists,
+            // component: recLists,
+            component: () => import('./components/recLists.vue'),
             name: 'recLists',
             meta: {
                 keepAlive: true,
@@ -44,7 +43,8 @@ let routerObj = new VueRouter({
         },
         {
             path: '/hotLists',
-            component: hotLists,
+            // component: hotLists,
+            component: () => import('./components/hotLists.vue'),
             name: 'hotLists',
             meta: {
                 keepAlive: true,
@@ -52,7 +52,8 @@ let routerObj = new VueRouter({
         },
         {
             path: '/Myself',
-            component: Myself,
+            // component: Myself,
+            component: () => import('./components/Myself.vue'),
             name: 'Myself',
             meta: {
                 keepAlive: false,
@@ -62,7 +63,8 @@ let routerObj = new VueRouter({
         {
             path: '/NewsInfo/:id',
             name: 'NewsInfo',
-            component: NewsInfo,
+            // component: NewsInfo,
+            component: () => import('./components/NewsInfo.vue'),
             meta: {
                 keepAlive: false,
             }
@@ -87,7 +89,7 @@ VueRouter.prototype.push = function push(location) {
 /* router.beforeEach意思是在router.index设置了一个全局守卫，
 只要发生页面跳转，会执行里面的代码，首先先去判断跳转的页面是否存在，
 调用cookie.getCookie()方法读取用户信息，
-如果不存在代表没有登录，用next('/Login')进入Login登录页面进行登录，
+如果不存在代表没有登录，用next('/')进入登录页面进行登录，
 如果读取到了用户信息，不做拦截直接放行。 */
 
 routerObj.beforeEach((to, from, next) => {
@@ -102,16 +104,5 @@ routerObj.beforeEach((to, from, next) => {
             next('/')
         }
     }
-    // if (from.name == 'signIn' || from.name == 'signUp') {
-    //     to.meta.keepAlive = false
-    //     console.log('router true', from, to);
-    // } else if (to.name == 'NewsInfo' || to.name == 'Myself') {
-    //     to.meta.keepAlive = false
-    //     console.log('to');
-    // } else {
-    //     to.meta.keepAlive = true
-    //     console.log('router false', from, to);
-    // }
-    // next();
 })
 export default routerObj

@@ -72,8 +72,7 @@
     },
     methods: {
       getList() {
-        let url = '/recsys/hot_list?' + 'user_id=' + common.user.username 
-        console.log(common.user);
+        let url = '/recsys/hot_list?' + 'user_id=' + this.$store.state.user.username 
         this.axios.get(url).then(res => {
           if (res.data.code === 200) {
             this.hotContent.push(...res.data.data)
@@ -94,14 +93,13 @@
       }
     },
     beforeRouteLeave(to, from, next) {
-      // this.scrollOut = document.documentElement.scrollTop;
       if(to.name == 'NewsInfo' ){
-          let reg = /NewsInfo\//
-          for(let i = 0; i<this.numList.length; i++){
-            if(this.numList[i].news_id == to.path.split(reg)[1]){
-              this.numList[i].read_num++
-            }
+        let reg = /NewsInfo\//
+        for(let i = 0; i<this.numList.length; i++){
+          if(this.numList[i].news_id == to.path.split(reg)[1]){
+            this.numList[i].read_num++
           }
+        }
       }
       next();
     },
@@ -135,6 +133,8 @@
     display: flex;
     justify-content: space-between;
     font-size: 1rem;
+    color: #918d8d;
+    padding-top: 12px;
   }
 
   .hot {

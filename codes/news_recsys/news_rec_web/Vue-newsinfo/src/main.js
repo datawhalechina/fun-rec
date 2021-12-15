@@ -1,34 +1,27 @@
 // 导入vue
 import Vue from 'vue'
+
 // 导入根组件
 import App from './App.vue'
 
 // 导入路由
 import VueRouter from 'vue-router'
-
 Vue.use(VueRouter);
 
+//导入store状态管理
 import store from './store';
 
 // 导入axios,axios不是一个插件所以不能Vue.use使用，vue-axios是个插件。
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
-
-// Vue.prototype.$http = axios
 Vue.use(VueAxios, axios);
 // axios公共基路径，以后所有的请求都会在前面加上这个路径
-// axios.defaults.baseURL = "http://10.170.4.60:3000";
 axios.defaults.baseURL = "http://47.108.56.188:3000";
-
 // 设置表单提交方式，默认是 json
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-// 请求超时时间
-// axios.defaults.timeout=5000;
 
 // 导入缩略图插件
 import VuePreview from 'vue-preview'
-
 Vue.use(VuePreview);
 
 // 导入Vue的组件
@@ -43,17 +36,7 @@ Vue.filter('timeFormat', function (dataStr, pattern = "YYYY-MM-DD HH:mm:ss") {
 });
 
 
-// 三方组件
-// 导入mint-ui组件,不建议全部导入体积太大
-// 按需导入：先安装babel-plugin-component,然后在.babelrc加上官网说的配置加载css,如下
-import Mint from 'mint-ui';
-Vue.use(Mint);
-import 'mint-ui/lib/style.css'
-// 导入mui的css样式
-import './lib/mui/css/mui.css'
-import './lib/mui/css/icons-extra.css'
-
-
+// 三方组件按需导入
 import { Form } from 'vant';
 import { Field } from 'vant';
 import { RadioGroup, Radio } from 'vant';
@@ -64,16 +47,13 @@ import 'vant/lib/area/style'
 import { Popup } from 'vant';
 import 'vant/lib/popup/style'
 Vue.use(Popup);
-
 Vue.use(Area);
 Vue.use(Form);
 Vue.use(Field);
 Vue.use(Radio);
 Vue.use(RadioGroup);
-
 import { Checkbox } from 'vant';
 Vue.use(Checkbox);
-
 import { List } from 'vant';
 Vue.use(List);
 import { Cell } from 'vant'
@@ -91,18 +71,14 @@ Vue.use(NavBar);
 import { Button } from 'vant';
 import 'vant/lib/button/style'
 Vue.use(Button);
-
+import 'vant/lib/toast/style'
 
 
 Vue.config.devtools = false; //生产环境中需要设置为false
 Vue.config.productionTip = false; //阻止vue启动时生成生产消息
 
-
 import cookie from './assets/js/cookie'
 Vue.prototype.cookie = cookie
-
-
-
 
 // 创建vue对象
 let vm = new Vue({
@@ -113,7 +89,21 @@ let vm = new Vue({
     methods: {},
     render: c => c(App),
     router: routerObj,
-    store
+    store,
+    created() {
+        //在页面加载时读取sessionStorage里的状态信息
+        if (sessionStorage.getItem("store")) {
+            console.log('页面重新加载');
+            let storet = sessionStorage.getItem("store");
+            this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(storet == null ? '' : storet)))
+        }
+        //在页面刷新时将vuex里的信息保存到sessionStorage里
+        window.addEventListener("beforeunload", () => {
+            console.log('页面被刷新');
+            let state = JSON.stringify(this.$store.state)
+            sessionStorage.setItem("store", state == null ? '' : state)
+        })
+    }
 });
 
 
