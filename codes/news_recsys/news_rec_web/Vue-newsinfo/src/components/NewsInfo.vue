@@ -8,9 +8,6 @@
         <!--子标题-->
         <p>
           <span>发布时间：{{ news_content.ctime}}</span>
-          <!-- <span>点击次数：{{ news_content.click}} </span> -->
-          <!-- <span>喜欢：{{ likeNum }} </span>
-          <span>收藏：{{ collectNum }} </span> -->
           <span>标签：{{cate}}</span>
         </p>
         <hr>
@@ -20,22 +17,20 @@
       <div class="content" v-html="content"></div>
       <div class="editor" v-html="editor"></div>
 
-      <!--如果使用接口的话使用这个id(就是路由的id值)穿给子组件，用来根据这个值加载对应的评论,没接口就算了-->
-      <!-- <Comment :id="this.id"></Comment> -->
       <div id="action">
         <span>喜欢:
-          <svg class="icon" aria-hidden="true" v-show="!islike" @click="iflike">
+          <svg class="icon" aria-hidden="true" width="20" height="20" v-show="!islike" @click="iflike">
             <use xlink:href="#icon-xihuan1"></use>
           </svg>
-          <svg class="icon" aria-hidden="true" v-show="islike" @click="iflike">
+          <svg class="icon" aria-hidden="true" width="20" height="20" v-show="islike" @click="iflike">
             <use xlink:href="#icon-xihuan"></use>
           </svg>
         </span>
         <span>收藏:
-          <svg class="icon" aria-hidden="true" v-show="!iscollection" @click="ifcollection">
+          <svg class="icon" aria-hidden="true" width="20" height="20" v-show="!iscollection" @click="ifcollection">
             <use xlink:href="#icon-shoucang"></use>
           </svg>
-          <svg class="icon" aria-hidden="true" v-show="iscollection" @click="ifcollection">
+          <svg class="icon" aria-hidden="true" width="20" height="20" v-show="iscollection" @click="ifcollection">
             <use xlink:href="#icon-shoucang1"></use>
           </svg>
         </span>
@@ -48,9 +43,7 @@
 </template>
 
 <script>
-  import {
-    Toast
-  } from 'mint-ui'
+  import { Toast } from 'vant'
   import common from './common.vue'
 
   export default {
@@ -208,8 +201,11 @@
 
   /* 大标题 */
   .newsTitle h1 {
-    font-size: 16px;
-    line-height: 2rem;
+    text-align: center;
+    color: rgb(77,79,83);;
+    font-weight: 600;
+    padding: 40px 0 20px 0;
+    margin: 0;
   }
 
   /* 副标题 */
@@ -218,7 +214,8 @@
     display: flex;
     justify-content: space-between;
     padding-top: 1rem;
-    color: #226aff;
+    padding-bottom: 1rem;
+    color: #4679e3;
   }
 
   /* 内容 距离底部padding 遮挡action */
@@ -228,13 +225,14 @@
   }
 
   /* 具体内容 */
-  .content {
+  .content[data-v-6bb6e9d1] {
     font-size: 14px;
     padding: 0 20px 20px 20px;
     text-indent: 2em;
-    /* 首行文本缩进 */
     line-height: 2.2rem;
-  }
+    /* 首行文本缩进 */
+    color: rgb(28 27 29);
+}
 
   /* 责任编辑 */
   .editor {

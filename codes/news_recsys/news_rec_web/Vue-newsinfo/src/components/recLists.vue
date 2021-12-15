@@ -74,11 +74,12 @@
     methods: {
       getList() {
         var url;
-        if(common.type == 'signIn'){
-          url = '/recsys/rec_list?' + 'user_id=' + common.user.username
-        }else if(common.type == 'signUp'){
-          url = '/recsys/rec_list?' + 'user_id=' + common.user.username  + '&age=' + common.user.age + '&gender=' + common.user.gender
+        if(this.$store.state.type == 'signIn'){
+          url = '/recsys/rec_list?' + 'user_id=' + this.$store.state.user.username
+        }else if(this.$store.state.type == 'signUp'){
+          url = '/recsys/rec_list?' + 'user_id=' + this.$store.state.user.username  + '&age=' + this.$store.state.user.age + '&gender=' + this.$store.state.user.gender
         }
+
         this.axios.get(url).then(res => {
           if (res.data.code === 200) {
             this.recContent.push(...res.data.data)
@@ -105,7 +106,6 @@
     },
 
     beforeRouteLeave(to, from, next) {
-      // this.scrollOut = document.documentElement.scrollTop;
       if(to.name == 'NewsInfo' ){
           let reg = /NewsInfo\//
           for(let i = 0; i<this.numList.length; i++){
@@ -116,12 +116,6 @@
       }
       next();
     },
-
-
-    beforeDestroy () {
-      // this.$store.dispatch('addCacheView', 'recLists');
-      // this.$store.dispatch('addCacheView', 'hotLists');
-    }
   }
 </script>
 
@@ -152,9 +146,9 @@
     display: flex;
     justify-content: space-between;
     font-size: 1rem;
+    color: #918d8d;
+    padding-top: 12px;
   }
-
-
 
   .rec {
     border-bottom: 2px solid #428bff

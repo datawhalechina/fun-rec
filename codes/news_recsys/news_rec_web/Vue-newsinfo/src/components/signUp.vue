@@ -59,11 +59,7 @@
   import {
     areaList
   } from '@vant/area-data';
-
-  import {
-    Toast,
-  } from 'mint-ui';
-  import common from './common.vue'
+  import { Toast } from 'vant'
   export default {
     data() {
       return {
@@ -120,15 +116,14 @@
             // 调用setCookie方法，同时传递需要存储的数据，保存天数
             this.cookie.setCookie(loginInfo, 7)
 
-            common.type = 'signUp', 
-            common.user.username = res.username
-            common.user.age = this.model.age
-            common.user.gender = this.model.gender
-            this.$router.push({name:'recLists' ,params:{type:'signUp',username:this.model.username,age:this.model.age,gender:this.model.gender}})
-          
-            // this.$store.dispatch('addCacheView', 'recLists');
-            // this.$store.dispatch('addCacheView', 'hotLists');
+            //将信息存入store 全部组件都可以使用
+            this.$store.state.type = 'signUp'
+            this.$store.state.user.username = res.username
+            this.$store.state.user.age = this.model.age
+            this.$store.state.user.gender = this.model.age
 
+            this.$router.push('/recLists')
+        
           }if(resource.data.code === 500) {
             Toast('用户名已存在')
           }

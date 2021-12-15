@@ -6,7 +6,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         //需要缓存的组件name
-        cacheView: ['recLists', 'hotLists']
+        cacheView: ['recLists', 'hotLists'],
+        type: '',
+        user: {
+            username: '',
+            age: '',
+            gender: ''
+        }
     },
     mutations: {
         // 动态添加及删除缓存

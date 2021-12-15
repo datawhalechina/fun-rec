@@ -29,11 +29,6 @@
   .content {
     margin-top: 40px;
   }
-
-  .mint-cell {
-    min-height: 40px;
-  }
-
   span {
     font-size: 13px;
   }
@@ -60,7 +55,8 @@
         }
     },
     created() {
-      this.username = this.cookie.getCookie('LoginName')
+      // this.username = this.cookie.getCookie('LoginName')
+      this.username = this.$store.state.user.username
     }
   }
 </script>
@@ -83,29 +79,22 @@
 
   .profile {
     margin: auto;
-    /* height: 710px;
-    width: 400px; */
     background: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    /* border-radius: 20px; */
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
     -ms-overflow-style: none;
-    /* for Internet Explorer, Edge */
     scrollbar-width: none;
-    /* for Firefox */
     overflow-y: scroll;
   }
 
   ::-webkit-scrollbar {
     display: none;
-    /* for Chrome, Safari, and Opera */
   }
 
   .header-color {
-    /* border-radius: 20px 20px 0 0; */
     padding-bottom: 150px;
     width: 100vh;
     background: #4f759b;
@@ -163,12 +152,11 @@
   }
 
   .about {
-    /* display: flex;
-    justify-content: space-between; */
     padding-top: 20px;
     padding-bottom: 20px;
     text-align: center;
     font-weight: bold;
+    font-size: 1.5rem;
   }
 
   .datawhale {

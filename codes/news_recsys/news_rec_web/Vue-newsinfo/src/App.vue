@@ -1,16 +1,9 @@
 <template>
   <div class="app-container">
-    <!-- <router-view></router-view> -->
-    <!-- <keep-alive>
-      <router-view :key="key" v-if='$route.meta.keepAlive' />
-    </keep-alive>
-    <router-view v-if='!$route.meta.keepAlive' /> -->
-
     <keep-alive :include="cachedViews">
       <router-view v-if="this.$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view :key="key" v-if="!this.$route.meta.keepAlive"></router-view>
-
   </div>
 </template>
 <script>
@@ -19,12 +12,7 @@ import common from './components/common.vue'
     data() {
       return {
         cachedViews: []
-        // key:common.user.username
       }
-    },
-    methods: {
-
-
     },
 
     watch: {
@@ -37,9 +25,6 @@ import common from './components/common.vue'
     },
     
     computed: {
-      // cachedViews () {
-      //   return this.$store.state.cachedViews.cachedViews
-      // },
       key () {
         return common.user.username
       },
