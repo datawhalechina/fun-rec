@@ -123,12 +123,12 @@
 <tbody>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">罗如意</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，西安电子科技大学，项目负责人, 核心贡献者</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，西安电子科技大学硕士，项目负责人, 核心贡献者</td>
     <td><a href="https://github.com/ruyiluo">Github</a></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">吴忠强</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，东北大学，CSDN博客专家，核心贡献者</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，东北大学硕士，CSDN博客专家，核心贡献者</td>
     <td><a href="https://blog.csdn.net/wuzhongqiang">CSDN</a></td>
   </tr>
   <tr>
@@ -178,7 +178,7 @@
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">赖敏材</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale意向成员，上海科技大学硕士，深度模型及面经贡献部分内容</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，上海科技大学硕士，深度模型及面经贡献部分内容</td>
     <td></td>
   </tr>
   <tr>
@@ -203,6 +203,7 @@
   </tr>
 </tbody>
 </table> 
+
 
 
 <font color='red'>感谢Datawhale成员刘雯静、吕豪杰及意向成员张汉隆、吴丹飞、王云川和宋禹成在开源项目组队学习中担任助教时的辛苦付出！</font>
