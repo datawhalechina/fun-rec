@@ -36,13 +36,13 @@ class SinaSpider(scrapy.Spider):
     def start_requests(self):
         """返回一个Request迭代器
         """
-        # 遍历所有类型的论文
+        # 遍历所有类型的新闻
         for cate_id in self.cate_dict.keys():
             for page in range(1, self.total_pages + 1):
                 lid = cate_id
                 # 这里就是一个随机数，具体含义不是很清楚
                 r = random.random()
-                # cb_kwargs 是用来往解析函数parse中传递参数的
+                # cb_kwargs 是用来向解析函数parse中传递参数的
                 yield Request(self.base_url.format(lid, page, r), callback=self.parse, cb_kwargs={"cate_id": lid})
     
     def parse(self, response, cate_id):
