@@ -17,7 +17,7 @@
   - **1.0 机器学习基础**
     - 1.0.1 机器学习基本流程
     - [1.0.2 逻辑回归](https://github.com/datawhalechina/fun-rec/blob/131bcee1f2d677041a4ec1c3f767c20d2d818780/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.0%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/1.0.2%20%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92.md)
-    - 1.0.3 神经网络
+    - [1.0.3 神经网络](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.0%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/1.0.3%20%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.md)
     - [1.0.4 常用优化算法](https://github.com/datawhalechina/fun-rec/blob/131bcee1f2/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.0%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/1.0.4%20%E5%B8%B8%E7%94%A8%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95.md)
     - [1.0.5 深度学习模型搭建基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/1.0%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/1.0.5%20%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80.md)
 
