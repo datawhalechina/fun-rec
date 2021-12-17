@@ -1,32 +1,34 @@
 <template>
   <div class="app-container">
-    <keep-alive :include="cachedViews">
-      <router-view v-if="this.$route.meta.keepAlive"></router-view>
+    <!-- 从列表跳到详情页，然后返回详情页的时候需要缓存列表页的状态，滚动位置信息，vue里提供了keep-alive组件用来缓存状态
+    被keep-alive包裹住的组件在重新进入时不会刷新
+    通过设置router中的meta.keepAlive属性值选择需要被缓存的组件
+    
+    点击退出登录,切换了其他账号登录后,保留的还是上一个账号的数据信息
+    通过在keep-alive中绑定isLoggedIn值解决 -->
+    <keep-alive v-if="isLoggedIn">
+      <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
-    <router-view :key="key" v-if="!this.$route.meta.keepAlive"></router-view>
+    <router-view v-if="!$route.meta.keepAlive||!isLoggedIn"></router-view>
+
   </div>
 </template>
 <script>
-import common from './components/common.vue'
   export default {
     data() {
       return {
-        cachedViews: []
+        isLoggedIn:false,
       }
     },
 
     watch: {
-      //监听动态缓存动态赋值控制页面是否缓存
-      $route: {
-        handler:function(to,from){
-          this.cachedViews = this.$store.state.cacheView;
+      // 路由发生变化时调用
+      $route(to, from) {
+        if (this.cookie.getCookie('LoginName')) {
+          this.isLoggedIn = true;
+        } else {
+          this.isLoggedIn = false;
         }
-      }
-    },
-    
-    computed: {
-      key () {
-        return common.user.username
       },
     },
   }

@@ -80,34 +80,18 @@
         },
         val: 'register',
         isLogin: true,
-        sexVisible: false, //选择器的显示与影藏
-        slots: [{
-            flex: 1,
-            values: ['male', 'female'],
-            className: 'slot1',
-            textAlign: 'center',
-            flex: 1
-          }
-
-        ],
-        city: [],
-
         showArea: false,
         areaList
-
       }
     },
     methods: {
       login() {
-        let url = '/recsys/'
-        let state = this.val
-        url += state
-
+        let url = '/recsys/register'
         let res = this.model
+
         if(this.state){
           this.axios.post(url, res).then(resource => {
           if (resource.data.code === 200) {
-            localStorage.username = res.username
             let loginInfo = {
               LoginName: res.username,
               openId: "asdasdadasdasdadad"
@@ -129,11 +113,10 @@
           }
         })
         }
-
-        
       },
+
+      //处理选择的城市
       getCity(city) {
-        //处理选择的城市
         this.model.city = city.join('-')
       },
 
@@ -154,6 +137,7 @@
           this.state = true
         }
       },
+
       // 验证密码
       rulePasswd(val) {
         var reg = /^[A-Za-z0-9]{6,}$/
@@ -171,6 +155,7 @@
           this.state = true
         }
       },
+
       //验证密码是否一致
       rulePasswd2(val) {
         if (val == '') {
@@ -187,6 +172,7 @@
           this.state = true
         }
       },
+
       //验证年龄
       ruleAge(val) {
         var ageReg = /^([1-9][0-9]{0,1}|100)$/
@@ -204,6 +190,8 @@
           this.state = true
         }
       },
+
+      // 选择城市
       onConfirm(values) {
         let pinyin = require('js-pinyin');
         this.model.city = values[1].name.slice(0, values[1].name.length - 1) //过滤到市级，删除‘市’

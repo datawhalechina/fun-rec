@@ -19,18 +19,18 @@
 
       <div id="action">
         <span>喜欢:
-          <svg class="icon" aria-hidden="true" width="20" height="20" v-show="!islike" @click="iflike">
+          <svg class="icon" aria-hidden="true" width="12" height="12" v-show="!islike" @click="iflike">
             <use xlink:href="#icon-xihuan1"></use>
           </svg>
-          <svg class="icon" aria-hidden="true" width="20" height="20" v-show="islike" @click="iflike">
+          <svg class="icon" aria-hidden="true" width="12" height="12" v-show="islike" @click="iflike">
             <use xlink:href="#icon-xihuan"></use>
           </svg>
         </span>
         <span>收藏:
-          <svg class="icon" aria-hidden="true" width="20" height="20" v-show="!iscollection" @click="ifcollection">
+          <svg class="icon" aria-hidden="true" width="12" height="12" v-show="!iscollection" @click="ifcollection">
             <use xlink:href="#icon-shoucang"></use>
           </svg>
-          <svg class="icon" aria-hidden="true" width="20" height="20" v-show="iscollection" @click="ifcollection">
+          <svg class="icon" aria-hidden="true" width="12" height="12" v-show="iscollection" @click="ifcollection">
             <use xlink:href="#icon-shoucang1"></use>
           </svg>
         </span>
@@ -44,7 +44,6 @@
 
 <script>
   import { Toast } from 'vant'
-  import common from './common.vue'
 
   export default {
     data() {
@@ -57,19 +56,20 @@
         islike: false,
         iscollection: false,
         isFixed: true,
-        likeNum: this.$route.params.likes,
-        collectNum: this.$route.params.collections,
         cate: this.$route.params.cate
       }
 
     },
     methods: {
+      // 返回上一页
       onClickLeft() {
         this.$router.go(-1);
       },
+
+      // 获取新闻详情
       getNewsInfo() {
         let reg = /责任编辑/;
-        let user_name = localStorage.username;
+        let user_name = this.$store.state.user.username;
         this.axios.get("/recsys/news_detail?news_id=" + this.id + '&user_name=' + user_name).then(resource => {
           if (resource.status === 200) {
             this.news_content = resource.data.data
@@ -91,9 +91,11 @@
         })
 
       },
+
+      // 发送action为read的请求
       sendInfo() {
         var val = {
-          user_name: localStorage.username,
+          user_name: this.$store.state.user.username,
           news_id: this.id,
           action_time: Date.now(),
           action_type: 'read',
@@ -104,97 +106,64 @@
           }
         })
       },
+
+      // 点击喜欢时发送请求
       iflike() {
         this.islike = !this.islike
+        // 调用store中的actionChange函数控制次数的变化
         if(this.islike == true){
-            for(let i = 0; i<common.hotList.length; i++){
-              if(common.hotList[i].news_id == this.id){
-                common.hotList[i].likes++
-              }
-              if(common.recList[i].news_id == this.id){
-                common.recList[i].likes++
-              }
-            }   
+            this.$store.commit('actionChange', {type:'likes',id:this.id,num:1})
           }else{
-            for(let i = 0; i<common.hotList.length; i++){
-              if(common.hotList[i].news_id == this.id){
-                common.hotList[i].likes--
-              }
-              if(common.recList[i].news_id == this.id){
-                common.recList[i].likes--
-              }
-            }   
+            this.$store.commit('actionChange', {type:'likes',id:this.id,num:-1})
           }
         var val = {
-          user_name: localStorage.username,
+          user_name: this.$store.state.user.username,
           news_id: this.id,
           action_time: Date.now(),
           action_type: `likes:${this.islike}`,
         }
         this.axios.post("/recsys/action", val).then(resource => {
           if (resource.status === 200) {
-            
           } else {
             Toast('加载数据失败')
           }
         })
 
       },
+
+      // 点击收藏时发送请求
       ifcollection() {
         this.iscollection = !this.iscollection
         if(this.iscollection == true){
-            for(let i = 0; i<common.hotList.length; i++){
-              if(common.hotList[i].news_id == this.id){
-                common.hotList[i].collections++
-              }
-              if(common.recList[i].news_id == this.id){
-                common.recList[i].collections++
-              }
-            }   
+           this.$store.commit('actionChange', {type:'collections',id:this.id,num:1})
           }else{
-            for(let i = 0; i<common.hotList.length; i++){
-              if(common.hotList[i].news_id == this.id){
-                common.hotList[i].collections--
-              }
-              if(common.recList[i].news_id == this.id){
-                common.recList[i].collections--
-              }
-            }   
+            this.$store.commit('actionChange', {type:'collections',id:this.id,num:-1})
           }
         var val = {
-          user_name: localStorage.username,
+          user_name: this.$store.state.user.username,
           news_id: this.id,
           action_time: Date.now(),
           action_type: `collections:${this.iscollection}`,
         }
         this.axios.post("/recsys/action", val).then(resource => {
           if (resource.status === 200) {
-            // this.news_content = resource.data.data
-            // console.log(this.news_content)
           } else {
             Toast('加载数据失败')
           }
         })
       }
     },
+
+    // 创建页面时调用函数
     created() {
       this.getNewsInfo()
       this.sendInfo()
-    },
-    components: {
-      // Comment
-      // bottomBarVue
-    }, 
-    beforeRouteLeave(to, from, next) {
-      //设置下一个路由的meta,让列表页面缓存,即不刷新
-      to.meta.keepAlive = true
-      next()
     },
   }
 </script>
 
 <style scoped>
-  /* 标题 */
+    /* 标题 */
   .newsTitle {
     padding: 3.5rem 1.5rem 0 1.5rem;
   }
@@ -206,6 +175,7 @@
     font-weight: 600;
     padding: 40px 0 20px 0;
     margin: 0;
+    font-size: 1.5rem;
   }
 
   /* 副标题 */
@@ -226,7 +196,7 @@
 
   /* 具体内容 */
   .content[data-v-6bb6e9d1] {
-    font-size: 14px;
+    font-size: 1rem;
     padding: 0 20px 20px 20px;
     text-indent: 2em;
     line-height: 2.2rem;
@@ -236,7 +206,7 @@
 
   /* 责任编辑 */
   .editor {
-    font-size: 14px;
+    font-size: 1rem;
     padding: 0 20px 0 20px;
     line-height: 2.2rem;
     text-align: end;
@@ -252,7 +222,7 @@
     display: inline-block;
     padding-top: 2rem;
     padding-bottom: 2rem;
-    font-size: 14px;
+    font-size: 1rem;
   }
 
   .blank {

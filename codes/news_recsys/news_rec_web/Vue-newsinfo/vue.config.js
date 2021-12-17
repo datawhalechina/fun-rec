@@ -1,4 +1,16 @@
 module.exports = {
+    // 第三方插件配置
+    pluginOptions: {
+        pwa: {
+        iconPaths: {
+            favicon32: 'favicon.ico',
+            favicon16: 'favicon.ico',
+            appleTouchIcon: 'favicon.ico',
+            maskIcon: 'favicon.ico',
+            msTileImage: 'favicon.ico'
+        }
+        }
+    },
     publicPath: './', // 基本路径
     outputDir: 'dist', // 输出文件目录
     assetsDir: "static", //放置生成的静态文件目录（js css img）
