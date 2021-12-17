@@ -104,7 +104,7 @@
             this.$store.state.type = 'signUp'
             this.$store.state.user.username = res.username
             this.$store.state.user.age = this.model.age
-            this.$store.state.user.gender = this.model.age
+            this.$store.state.user.gender = this.model.gender
 
             this.$router.push('/recLists')
         
