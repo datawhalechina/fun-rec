@@ -5,38 +5,60 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        //需要缓存的组件name
-        cacheView: ['recLists', 'hotLists'],
-        type: '',
+        type: '',  //signIn,signUp  区分获取接口时的url
         user: {
             username: '',
             age: '',
             gender: ''
-        }
+        },  //存储用户信息
+        recList: [],  //推荐页的新闻列表
+        hotList: [],  //热门页的新闻列表
     },
     mutations: {
-        // 动态添加及删除缓存
-        ADD_CACHE_VIEW: (state, view) => {
-            state.cacheView.push(view)
-        },
-        DELETE_CACHE_VIEW: (state, index) => {
-            state.cacheView.splice(index, 1)
-        }
-    },
-    actions: {
-        // 动态添加及删除缓存
-        addCacheView({ commit, state }, view) {
-            if (!state.cacheView.includes(view)) {
-                commit('ADD_CACHE_VIEW', view)
+        //点进新闻详情页时触发，让阅读次数增加
+        numChange(state, payload) {
+            let reg = /NewsInfo\//
+            if(payload.item == 'recList'){
+                for (let i = 0; i < state.recList.length; i++) {
+                    if (state.recList[i].news_id == payload.path.split(reg)[1]) {
+                        state.recList[i].read_num++
+                    }
+                }
+            }else if(payload.item == 'hotList'){
+                for (let i = 0; i < state.hotList.length; i++) {
+                    if (state.hotList[i].news_id == payload.path.split(reg)[1]) {
+                        state.hotList[i].read_num++
+                    }
+                }
             }
         },
-        deleteCacheView({ commit, state }, view) {
-            const index = state.cacheView.indexOf(view)
-            if (index > -1) {
-                commit('DELETE_CACHE_VIEW', index)
+
+        //点击喜欢或者收藏时触发，让相应次数增加或者减少
+        actionChange(state, payload){
+            if(payload.type == 'likes'){
+                for(let i = 0; i<state.recList.length; i++){
+                    if(state.recList[i].news_id == payload.id){
+                        state.recList[i].likes +=  payload.num
+                    }
+                }
+                for(let i = 0; i<state.hotList.length; i++){
+                    if(state.hotList[i].news_id == payload.id){
+                        state.hotList[i].likes += payload.num
+                    }
+                }
+            }else if(payload.type == 'collections'){
+                for(let i = 0; i<state.recList.length; i++){
+                    if(state.recList[i].news_id == payload.id){
+                        state.recList[i].collections += payload.num
+                    }
+                }
+                for(let i = 0; i<state.hotList.length; i++){
+                    if(state.hotList[i].news_id == payload.id){
+                        state.hotList[i].collections += payload.num
+                    }
+                }
             }
+            
         }
     },
-
-
 })

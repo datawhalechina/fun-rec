@@ -21,6 +21,8 @@
           人与未来的联结。</p>
         <img src="../images/dw.png" alt="二维码" class="dwimg">
       </div>
+
+      <!-- 底部导航栏，多个组件都会用到，需要时直接引入 -->
       <bottomBarVue></bottomBarVue>
     </div>
   </div>
@@ -46,16 +48,28 @@
     },
     methods: {
       quit() {
-        this.$store.dispatch('deleteCacheView', 'recLists')
-        this.$store.dispatch('deleteCacheView', 'hotLists')
+        // 退出登录时清空该用户的新闻列表
+        this.$store.state.recList = [];
+        this.$store.state.hotList = [];
+
         /*删除cookie*/
         this.cookie.clearCookie('LoginName')
         this.cookie.clearCookie('openId')
+
+        // 跳转到登录页
         this.$router.push('/signIn')
-        }
+      }
     },
+
+    // 在进入该组件时触发，执行完后进入组件
+    // 设置滚动条保持在顶部
+    beforeRouteEnter(to, from, next){
+      document.documentElement.scrollTop = 0
+      next()
+    },
+
+    // 在该组件被创建时触发，将store中的name值赋给username并显示
     created() {
-      // this.username = this.cookie.getCookie('LoginName')
       this.username = this.$store.state.user.username
     }
   }

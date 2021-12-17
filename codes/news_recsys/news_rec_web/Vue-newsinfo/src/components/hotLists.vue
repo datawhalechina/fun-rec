@@ -26,7 +26,8 @@
     </div>
     <div class="lists">
       <van-list v-model="vanListLoading" :finished="finished" :finished-text="finishedText" @load="onLoad" :offset=300>
-        <van-cell v-for="(item,index) in hotContent" :key="item.news_id">
+        <!-- 循环$store.state.hotList内的每一个item并显示 -->
+        <van-cell v-for="(item) in $store.state.hotList" :key="item.news_id">
           <!-- 路由地址传参,需要前面加：号，表示这个参数不是字符串 -->
           <router-link :to="{name:'NewsInfo' ,params:{id:item.news_id,likes:item.likes,collections:item.collections,cate:item.cate}}">
             <div>
@@ -37,9 +38,9 @@
 
               <p class="discribe">
                 <span class="ctime">{{ item.ctime}} </span>
-                <span class="read_num">阅读：{{numList[index].read_num}}</span>
-                <span class="likes">喜欢:{{comHot[index].likes}}</span>
-                <span class="collections">收藏:{{comHot[index].collections}}</span>
+                <span class="read_num">阅读：{{item.read_num}}</span>
+                <span class="likes">喜欢:{{item.likes}}</span>
+                <span class="collections">收藏:{{item.collections}}</span>
               </p>
             </div>
           </router-link>
@@ -47,6 +48,7 @@
       </van-list>
     </div>
 
+    <!-- 底部导航栏，多个组件都会用到，需要时直接引入 -->
     <bottomBar></bottomBar>
 
   </div>
@@ -54,17 +56,14 @@
 
 <script>
   import bottomBar from "./bottomBar.vue";
-  import common from './common.vue'
   export default {
     name: 'hotLists',
     data() {
       return {
-        hotContent: [],
-        numList: [],
-        comHot:common.hotList,
         vanListLoading: false, // 加载状态
         finished: false, // 是否加载
         finishedText: '', // 加载完成后的提示文案
+        scrollTop:0
       };
     },
     components: {
@@ -75,13 +74,14 @@
         let url = '/recsys/hot_list?' + 'user_id=' + this.$store.state.user.username 
         this.axios.get(url).then(res => {
           if (res.data.code === 200) {
-            this.hotContent.push(...res.data.data)
-            common.hotList.push(...res.data.data)
-            this.numList.push(...res.data.data)
+            this.$store.state.hotList.push(...res.data.data)
             this.vanListLoading = false
           }
         })
       },
+
+      // vantUi内部函数，当组件滚动到一定位置时触发 load 事件并将 loading 设置成 true
+      // offset设置当滚动条距离页面底部300px时会触发 load
       onLoad() {
         this.getList();
       },
@@ -92,15 +92,23 @@
         this.$router.push('/hotLists')
       }
     },
+
+    // 当组件在 <keep-alive> 内被切换，activated 会被对应执行
+    // 每次进入该组件时会执行,设置滚动条的位置
+    activated(){
+      document.documentElement.scrollTop = this.scrollTop
+    },
+
+    //在离开该组件时执行，执行完后跳转
+    // to:要去到的组件  from:离开的组件(本组件)  next():执行的函数，下一步
     beforeRouteLeave(to, from, next) {
-      if(to.name == 'NewsInfo' ){
-        let reg = /NewsInfo\//
-        for(let i = 0; i<this.numList.length; i++){
-          if(this.numList[i].news_id == to.path.split(reg)[1]){
-            this.numList[i].read_num++
-          }
-        }
+      // 如果下一个去到的组件是新闻详情页，触发store中的numChange函数，使阅读次数+1
+       if(to.name == 'NewsInfo' ){
+        this.$store.commit('numChange', {item:'hotList',path:to.path})
       }
+      // 存储离开时的滚动条位置
+      this.scrollTop = document.documentElement.scrollTop
+      // next()必须要写，不写不会发生跳转
       next();
     },
   }

@@ -2,7 +2,6 @@
 //  保存cookie
 //  json 需要存储cookie的对象
 //  days 默认存储多少天
-
 function setCookie(json, days) {
     // 设置过期时间
     let data = new Date(
@@ -12,13 +11,11 @@ function setCookie(json, days) {
     for (var key in json) {
         document.cookie = key + "=" + json[key] + "; expires=" + data
     }
-
 }
 
 
 // 获取cookie
 // name 需要获取cookie的key
-
 function getCookie(name) {
     var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
     if (arr != null) {
@@ -31,7 +28,6 @@ function getCookie(name) {
 
 //  删除cookie
 //  name 需要删除cookie的key
-
 function clearCookie(name) {
     let json = {};
     json[name] = '';

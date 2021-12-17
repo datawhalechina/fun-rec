@@ -40,35 +40,22 @@
           passwd: '',
         },
         val: 'login',
-        isLogin: true,
-        sexVisible: false, //选择器的显示与影藏
-        slots: [{
-            flex: 1,
-            values: ['male', 'female'],
-            className: 'slot1',
-            textAlign: 'center',
-            flex: 1
-          }
-
-        ],
         checked: false,
-        city: []
-        // sex: '男'
       }
     },
     methods: {
       login() {
-        let url = '/recsys/'
-        let state = this.val
-        url += state
-
+        let url = '/recsys/login'
         let res = {username: this.model.username, passwd: this.model.passwd}
+
         this.axios.post(url, res).then(resource => {
           if (resource.data.code === 200) {
             let loginInfo = {
               LoginName: res.username,
               openId: "asfafsfsfsdfsdfsdfdsf"
             }
+
+            // checke:true--选中记住我   checke:false--未选中记住我
             if(this.checked){
               // 调用setCookie方法，同时传递需要存储的数据，保存天数
               this.cookie.setCookie(loginInfo, 7)
@@ -90,7 +77,6 @@
         })
       },
     },
-
   }
 </script>
 

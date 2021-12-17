@@ -24,7 +24,7 @@ axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 import VuePreview from 'vue-preview'
 Vue.use(VuePreview);
 
-// 导入Vue的组件
+// 导入Vue的路由
 import routerObj from './router.js'
 
 // 全局组件
@@ -77,6 +77,7 @@ import 'vant/lib/toast/style'
 Vue.config.devtools = false; //生产环境中需要设置为false
 Vue.config.productionTip = false; //阻止vue启动时生成生产消息
 
+//将cookie绑定在vue的原型上，在各个组件通过 this.coookie调用
 import cookie from './assets/js/cookie'
 Vue.prototype.cookie = cookie
 
@@ -91,6 +92,9 @@ let vm = new Vue({
     router: routerObj,
     store,
     created() {
+        //store中的数据在刷新后会丢失，
+        //在页面刷新时将store中的数据存入sessionStorage，刷新完成后再赋值给store
+
         //在页面加载时读取sessionStorage里的状态信息
         if (sessionStorage.getItem("store")) {
             console.log('页面重新加载');
