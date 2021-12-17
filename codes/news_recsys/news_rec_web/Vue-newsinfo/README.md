@@ -66,7 +66,7 @@
 
 - [X] **推荐页及热门页内容显示** —— 根据不同用户个性化显示不同新闻内容
 
-- 推荐页和热门页之间的切换（首次切换时会刷新，正在修复这个bug） 
+- 推荐页和热门页之间的切换 
 
 - 点进新闻详情页后阅读次数会实时增加
 
@@ -137,7 +137,10 @@
 ```
 
 ---
-#### cookie.js
+
+
+
+### cookie.js
 
 定义cookie的相关操作
 
@@ -182,7 +185,7 @@ function clearCookie(name) {
 ```
 
 
-#### APP.vue
+### APP.vue
 
 定义了组件的缓存
 
@@ -198,7 +201,11 @@ function clearCookie(name) {
 ```
 
 
-#### signIn.vue/signUp.vue
+
+
+
+
+### signIn.vue/signUp.vue
 
 登录注册时将信息存入store
 
@@ -219,7 +226,10 @@ if(this.checked){
 }
 ```
 
-#### recLists.vue/hotLists.vue
+
+
+
+### recLists.vue/hotLists.vue
 
 获取后端接口数据
 
@@ -265,7 +275,10 @@ beforeRouteLeave(to, from, next) {
 ```
 
 
-#### router.js
+
+
+
+### router.js
 
 定义路由相关配置，控制页面跳转
 
@@ -326,7 +339,10 @@ routerObj.beforeEach((to, from, next) => {
 ```
 
 
-#### store.js
+
+
+
+### store.js
 
 管理用户的各种状态
 
@@ -390,6 +406,8 @@ export default new Vuex.Store({
 })
 ```
 
+
+
 **state:**
 
 在store中存储状态，在组件中通过 `this.$store.state.type` 调用
@@ -406,6 +424,7 @@ state: {
    hotList: [],  //热门页的新闻列表
 },
 ```
+
 
 **mutations:**
 
@@ -466,7 +485,7 @@ mutations: {
 
 
 
-#### NewsInfo.vue
+### NewsInfo.vue
 
 发送action请求
 
@@ -505,7 +524,9 @@ sendInfo() {
 },
 ```
 
-#### Myself.vue
+
+
+### Myself.vue
 
 退出登录时删除该用户相关信息
 
