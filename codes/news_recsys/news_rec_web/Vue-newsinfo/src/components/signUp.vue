@@ -60,6 +60,7 @@
     areaList
   } from '@vant/area-data';
   import { Toast } from 'vant'
+  import encrypt from '../assets/js/encrypt'
   export default {
     data() {
       return {
@@ -88,6 +89,8 @@
       login() {
         let url = '/recsys/register'
         let res = this.model
+        //密码加密
+        res.passwd = encrypt.Encrypt(this.model.passwd)
 
         if(this.state){
           this.axios.post(url, res).then(resource => {

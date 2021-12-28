@@ -31,6 +31,7 @@
 
 <script>
   import { Toast } from 'vant'
+  import encrypt from '../assets/js/encrypt'
   export default {
     name: 'signIn',
     data() {
@@ -46,7 +47,8 @@
     methods: {
       login() {
         let url = '/recsys/login'
-        let res = {username: this.model.username, passwd: this.model.passwd}
+        //密码解密
+        let res = {username: this.model.username, passwd: encrypt.Decrypt(this.model.passwd)}
 
         this.axios.post(url, res).then(resource => {
           if (resource.data.code === 200) {
