@@ -22,7 +22,7 @@ from dao.redis_server import RedisServer
 10. url 新闻原始链接
 """
 
-class NewsProtraitServer:
+class NewsPortraitServer:
     def __init__(self):
         """初始化相关参数
         """
@@ -128,7 +128,7 @@ class NewsProtraitServer:
 
 if __name__ == "__main__":
     # TODO 需要放到 其他逻辑中，将物料这块的逻辑打通
-    news_protrait = NewsProtraitServer()
+    news_protrait = NewsPortraitServer()
     # news_protrait.update_new_items()
     news_protrait.update_redis_mongo_protrail_data()
     # news_protrait.update_dynamic_feature_protrail()

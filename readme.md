@@ -1,4 +1,4 @@
-﻿# Fun-Rec
+﻿﻿# Fun-Rec
 
 本教程主要是针对具有机器学习基础并想找推荐算法岗位的同学，由推荐算法基础、推荐算法入门赛、新闻推荐项目及推荐算法面经组成，形成了一个完整的从基础到实战再到面试的闭环。主要分为三个阶段，分别是推荐系统基础、推荐系统进阶和推荐算法面经，每个阶段的具体内容如下：
 
@@ -135,12 +135,12 @@
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">何世福</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，参与项目早期的内容审核</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，课程设计及内容审核</td>
     <td></td>
   </tr>
   <tr>
     <td><span style="font-weight:normal;font-style:normal;text-decoration:none">徐何军</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，参与项目早期的内容审核</td>
+    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，内容审核</td>
     <td></td>
   </tr>
   <tr>
@@ -205,6 +205,7 @@
   </tr>
 </tbody>
 </table> 
+
 
 
 <font color='red'>感谢Datawhale成员刘雯静、吕豪杰及意向成员张汉隆、吴丹飞、王云川、肖桐、管柯琴、陈雨龙和宋禹成等人在开源项目组队学习中担任助教时的辛苦付出！</font>
