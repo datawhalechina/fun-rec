@@ -1,4 +1,4 @@
-from material_process.news_protrait import NewsProtraitServer
+from material_process.news_protrait import NewsPortraitServer
 from material_process.news_to_redis import NewsRedisServer
 
 

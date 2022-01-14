@@ -7,13 +7,18 @@ from conf.dao_config import sina_db_name, sina_collection_name_prefix
 from conf.dao_config import material_db_name, feature_protrail_collection_name
 from conf.dao_config import redis_mongo_collection_name
 from conf.dao_config import user_protrail_collection_name
+from conf.dao_config import contest_user_protrail_collection_name
+from conf.dao_config import contest_feature_protrail_collection_name
+
 
 class MongoServer(object):
     def __init__(self, _mongo_hostname=mongo_hostname, _mongo_port=mongo_port, _sina_db_name=sina_db_name,
         _sina_collection_name_prefix=sina_collection_name_prefix, _material_db_name=material_db_name,
         _feature_protrail_collection_name=feature_protrail_collection_name, 
         _redis_mongo_collection_name=redis_mongo_collection_name,
-        _user_protrail_collection_name=user_protrail_collection_name):
+        _user_protrail_collection_name=user_protrail_collection_name,
+        _contest_user_protrail_collection_name=contest_user_protrail_collection_name,
+        _contest_feature_protrail_collection_name=contest_feature_protrail_collection_name):
         self._hostname = _mongo_hostname
         self._port = _mongo_port
         self._sina_db_name = _sina_db_name
@@ -22,6 +27,8 @@ class MongoServer(object):
         self._feature_protrail_collection_name = _feature_protrail_collection_name
         self._redis_mongo_collection_name = _redis_mongo_collection_name
         self._user_protrail_collection_name = user_protrail_collection_name
+        self._contest_user_protrail_collection_name = contest_user_protrail_collection_name
+        self._contest_feature_protrail_collection_name = contest_feature_protrail_collection_name
 
         self._mongo_client = self._mongodb()
 
@@ -52,3 +59,14 @@ class MongoServer(object):
         """用户画像的数据集合
         """
         return self._mongo_client[self._material_db_name][self._user_protrail_collection_name] 
+
+    def get_contest_user_potrial_collection(self):
+        """获取竞赛数据中的用户画像集合
+        """
+        return self._mongo_client[self._material_db_name][self._contest_user_protrail_collection_name] 
+    
+    def get_contest_feature_potrial_collection(self):
+        """获取竞赛数据中的文章画像集合
+        """
+        return self._mongo_client[self._material_db_name][self._contest_feature_protrail_collection_name] 
+        
