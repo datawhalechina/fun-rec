@@ -52,6 +52,8 @@
 
         this.axios.post(url, res).then(resource => {
           if (resource.data.code === 200) {
+            console.log('success');
+            
             let loginInfo = {
               LoginName: res.username,
               openId: "asfafsfsfsdfsdfsdfdsf"
@@ -67,8 +69,24 @@
 
             this.$store.state.type = 'signIn'
             this.$store.state.user.username = res.username
-            this.$router.push({name:'recLists' ,params:{type:'signIn',username:this.model.username}})
-          
+
+            const toast = Toast({
+              message: '登陆成功',
+              icon:'success'
+            });
+            
+            let second = 1;
+            // 延迟一秒执行
+            const timer = setInterval(() => {
+              second--;
+              if (!second) {
+                 clearInterval(timer);
+                // 手动清除 Toast
+                Toast.clear();
+                this.$router.push({name:'recLists' ,params:{type:'signIn',username:this.model.username}})
+              }
+            }, 1000);
+
           }if(resource.data.code === 500){
             Toast('登陆失败')
           }if(resource.data.code === 501){

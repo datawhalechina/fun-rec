@@ -15,6 +15,7 @@ import store from './store';
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios);
+
 // axios公共基路径，以后所有的请求都会在前面加上这个路径
 axios.defaults.baseURL = "http://47.108.56.188:3000";
 // 设置表单提交方式，默认是 json
@@ -59,6 +60,7 @@ Vue.use(List);
 import { Cell } from 'vant'
 Vue.use(Cell)
 import { PullRefresh } from 'vant'
+import 'vant/lib/pull-refresh/style';
 Vue.use(PullRefresh)
 import { Tabbar, TabbarItem } from 'vant';
 import 'vant/lib/tabbar/style'
@@ -71,7 +73,8 @@ Vue.use(NavBar);
 import { Button } from 'vant';
 import 'vant/lib/button/style'
 Vue.use(Button);
-import 'vant/lib/toast/style'
+import 'vant/lib/toast/style';
+
 
 
 Vue.config.devtools = false; //生产环境中需要设置为false
