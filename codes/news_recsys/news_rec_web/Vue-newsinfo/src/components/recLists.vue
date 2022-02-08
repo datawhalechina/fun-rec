@@ -24,30 +24,33 @@
         </li>
       </ul>
     </div>
-    <div class="lists" ref="lists">
-      <van-list v-model="vanListLoading" :finished="finished" :finished-text="finishedText" @load="onLoad" :offset=300>
-        <!-- 循环$store.state.hotList内的每一个item并显示 -->
-        <van-cell v-for="(item) in $store.state.recList" :key="item.news_id">
-          <!-- 路由地址传参,需要前面加：号，表示这个参数不是字符串 -->
-          <router-link :to="{name:'NewsInfo' ,params:{id:item.news_id,likes:item.likes,collections:item.collections,cate:item.cate}}">
-            <div>
-              <p>
-                <span class="cate">{{item.cate}}</span>
-                <span class='title'>{{ item.title }}</span>
-              </p>
+  
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <div class="lists" ref="lists">
+        <van-list v-model="vanListLoading" :finished="finished" :finished-text="finishedText" @load="onLoad" :offset=300>
+          <!-- 循环$store.state.hotList内的每一个item并显示 -->
+          <van-cell v-for="(item,i) in $store.state.recList" :key="i">
+            <!-- 路由地址传参,需要前面加：号，表示这个参数不是字符串 -->
+            <router-link :to="{name:'NewsInfo' ,params:{id:item.news_id,likes:item.likes,collections:item.collections,cate:item.cate}}">
+              <div>
+                <p>
+                  <span class="cate">{{item.cate}}</span>
+                  <span class='title'>{{ item.title }}</span>
+                </p>
 
-              <p class="discribe">
-                <span class="ctime">{{ item.ctime}} </span>
-                <span class="read_num">阅读：{{item.read_num}}</span>
-                <span class="likes">喜欢:{{item.likes}}</span>
-                <span class="collections">收藏:{{item.collections}}</span>
-              </p>
-            </div>
-          </router-link>
-        </van-cell>
-      </van-list>
-    </div>
-
+                <p class="discribe">
+                  <span class="ctime">{{ item.ctime}} </span>
+                  <span class="read_num">阅读：{{item.read_num}}</span>
+                  <span class="likes">喜欢:{{item.likes}}</span>
+                  <span class="collections">收藏:{{item.collections}}</span>
+                </p>
+              </div>
+            </router-link>
+          </van-cell>
+        </van-list>
+      </div>
+    </van-pull-refresh>
+    
     <!-- 底部导航栏，多个组件都会用到，需要时直接引入 -->
     <bottomBar></bottomBar>
 
@@ -65,12 +68,20 @@
         finished: false, // 是否加载
         finishedText: '', // 加载完成后的提示文案
         scrollTop:0,
+        isLoading: false,
       };
     },
     components: {
       bottomBar
     },
     methods: {
+      onRefresh() {
+        setTimeout(() => {
+          this.isLoading = false;
+          this.$store.commit('clearList', "hotList")
+          this.getList()
+        }, 1000);
+      },
       getList() {
         var url;
         if(this.$store.state.type == 'signIn'){

@@ -60,7 +60,7 @@
 </template>
 
 <script>
-  import bottomBar from "./bottomBar.vue";
+  import bottomBar from "@/components/bottomBar.vue";
   export default {
     name: 'hotLists',
     data() {
@@ -87,14 +87,25 @@
           this.getList()
         }, 1000);
       },
-      getList() {
+
+      async getList() {
         let url = '/recsys/hot_list?' + 'user_id=' + this.$store.state.user.username 
-        this.axios.get(url).then(res => {
-          if (res.data.code === 200) {
-            this.$store.state.hotList.push(...res.data.data)
-            this.vanListLoading = false
-          }
-        })
+
+        let successData
+        if(this.$store.state.flag){
+          successData = await this.axios.get(url).then(res => {
+            return res
+          })
+        }else {
+          successData = await this.axios.get("/hotList").then(res => {
+            return res
+          })
+        }
+
+        if (successData.data.code === 200) {
+          this.$store.state.hotList.push(...successData.data.data)
+          this.vanListLoading = false
+        }
       },
 
       // vantUi内部函数，当组件滚动到一定位置时触发 load 事件并将 loading 设置成 true

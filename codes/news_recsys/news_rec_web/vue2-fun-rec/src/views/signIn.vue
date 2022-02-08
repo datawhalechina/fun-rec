@@ -45,56 +45,64 @@
       }
     },
     methods: {
-      login() {
-        let url = '/recsys/login'
+      async login() {
+
+        let url = '/recsys/login';
         //密码解密
-        let res = {username: this.model.username, passwd: encrypt.Decrypt(this.model.passwd)}
+        let res = {username: this.model.username, passwd: encrypt.Decrypt(this.model.passwd)};
+        let successData
 
-        this.axios.post(url, res).then(resource => {
-          if (resource.data.code === 200) {
-            console.log('success');
-            
-            let loginInfo = {
-              LoginName: res.username,
-              openId: "asfafsfsfsdfsdfsdfdsf"
-            }
-
-            // checke:true--选中记住我   checke:false--未选中记住我
-            if(this.checked){
-              // 调用setCookie方法，同时传递需要存储的数据，保存天数
-              this.cookie.setCookie(loginInfo, 7)
-            }else{
-              this.cookie.setCookie(loginInfo, 1)
-            }
-
-            this.$store.state.type = 'signIn'
-            this.$store.state.user.username = res.username
-
-            const toast = Toast({
-              message: '登陆成功',
-              icon:'success'
-            });
-            
-            let second = 1;
-            // 延迟一秒执行
-            const timer = setInterval(() => {
-              second--;
-              if (!second) {
-                 clearInterval(timer);
-                // 手动清除 Toast
-                Toast.clear();
-                this.$router.push({name:'recLists' ,params:{type:'signIn',username:this.model.username}})
-              }
-            }, 1000);
-
-          }if(resource.data.code === 500){
-            Toast('登陆失败')
-          }if(resource.data.code === 501){
-            Toast('密码输入错误')
-          }if(resource.data.code === 502){
-            Toast('用户名不存在')
+        if(this.$store.state.flag){
+          successData = await this.axios.post(url, res).then(res => {
+            return res
+          })
+        }else {
+          successData = await this.axios.post("/login", res).then((res)=>{
+            return res
+          })
+        }
+        
+        if (successData.data.code === 200) {
+          let loginInfo = {
+            LoginName: res.username,
+            openId: "asfafsfsfsdfsdfsdfdsf"
           }
-        })
+
+          // checke:true--选中记住我   checke:false--未选中记住我
+          if(this.checked){
+            // 调用setCookie方法，同时传递需要存储的数据，保存天数
+            this.cookie.setCookie(loginInfo, 7)
+          }else{
+            this.cookie.setCookie(loginInfo, 1)
+          }
+
+          this.$store.state.type = 'signIn'
+          this.$store.state.user.username = res.username
+
+          const toast = Toast({
+            message: '登陆成功',
+            icon:'success'
+          });
+          
+          let second = 1;
+          // 延迟一秒执行
+          const timer = setInterval(() => {
+            second--;
+            if (!second) {
+                clearInterval(timer);
+              // 手动清除 Toast
+              Toast.clear();
+              this.$router.push({name:'recLists' ,params:{type:'signIn',username:this.model.username}})
+            }
+          }, 1000);
+
+        }if(successData.data.code === 500){
+          Toast('登陆失败')
+        }if(successData.data.code === 501){
+          Toast('密码输入错误')
+        }if(successData.data.code === 502){
+          Toast('用户名不存在')
+        }
       },
     },
   }

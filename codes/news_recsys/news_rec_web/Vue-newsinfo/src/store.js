@@ -15,6 +15,15 @@ export default new Vuex.Store({
         hotList: [],  //热门页的新闻列表
     },
     mutations: {
+        // 清空列表 在刷新时调用 重新给列表赋值
+        clearList(state, payload){
+            if(payload == "recList"){
+                state.recList = []
+            }else if(payload == "hotList"){
+                state.hotList = []
+            }
+        },
+
         //点进新闻详情页时触发，让阅读次数增加
         numChange(state, payload) {
             let reg = /NewsInfo\//
