@@ -1,8 +1,7 @@
 **演示链接：**
 http://theneverlemon.gitee.io/vue2-fun-rec-project/#/
 
-- 测试用户名: `11`   测试密码: `111111` (连接远程服务器，具有推荐功能，优先使用这个)
-- 测试用户名: `user`   测试密码: `pass` (mock数据模拟，远程服务器获取不到数据时使用，没有推荐功能)
+测试用户名: `user`   测试密码: `pass`
 
 ---
 
@@ -24,7 +23,7 @@ http://theneverlemon.gitee.io/vue2-fun-rec-project/#/
 
 ### 运行
 
-1. 跳转到前端项目文件目录：`cd vue2-fun-rec`
+1. 跳转到前端项目文件目录：`cd Vue-newsinfo`
 
 2. 本地安装node环境，在项目根目录命令行输入命令`npm install`安装依赖包
    

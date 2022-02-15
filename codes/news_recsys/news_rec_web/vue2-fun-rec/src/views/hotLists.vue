@@ -76,6 +76,9 @@
     components: {
       bottomBar
     },
+    mounted () {
+      window.addEventListener("scroll", this.handleScroll, true);
+    },
     methods: {
       onRefresh() {
         setTimeout(() => {

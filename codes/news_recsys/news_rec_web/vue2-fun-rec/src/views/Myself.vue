@@ -27,7 +27,14 @@
     </div>
   </div>
 </template>
-
+<style scoped>
+  .content {
+    margin-top: 40px;
+  }
+  span {
+    font-size: 13px;
+  }
+</style>
 <script>
   import bottomBarVue from "@/components/bottomBar.vue"
   import { Toast } from 'vant'
