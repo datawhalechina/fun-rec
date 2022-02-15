@@ -20,7 +20,7 @@ axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 // 否则引入mock模拟数据
 axios.post('http://47.108.56.188:3000/recsys/login?username=11&passwd=111111').then(() => {
     store.state.flag = true
-}).catch(()=>{
+}).catch((e)=>{
     store.state.flag = false
 })
 !store.state.flag && require("./mock/index.js")
