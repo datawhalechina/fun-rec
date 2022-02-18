@@ -37,6 +37,19 @@ http://theneverlemon.gitee.io/vue2-fun-rec-project/#/
 - 测试用户名: `11`   测试密码: `111111` (连接远程服务器，具有推荐功能，优先使用这个)
 - 测试用户名: `user`   测试密码: `pass` (mock数据模拟，远程服务器获取不到数据时使用，没有推荐功能)
 
+<br>
+
+#### vue3
+
+**源代码:**
+[GitHub](https://github.com/datawhalechina/fun-rec/tree/master/codes/news_recsys/news_rec_web/vue3-fun-rec) 　[Gitee](https://gitee.com/theNeverLemon/vue3-fun-rec)
+
+**演示链接:**
+http://theneverlemon.gitee.io/vue3-fun-rec-project/#/
+
+- 测试用户名: `11`   测试密码: `111111` (连接远程服务器，具有推荐功能，优先使用这个)
+- 测试用户名: `user`   测试密码: `pass` (mock数据模拟，远程服务器获取不到数据时使用，没有推荐功能)
+
 ---
 
 

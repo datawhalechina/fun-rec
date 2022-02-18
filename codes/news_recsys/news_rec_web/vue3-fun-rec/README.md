@@ -1,5 +1,5 @@
 **演示链接：**
-http://theneverlemon.gitee.io/vue2-fun-rec-project/#/
+http://theneverlemon.gitee.io/vue3-fun-rec-project/#/
 
 - 测试用户名: `11`   测试密码: `111111` (连接远程服务器，具有推荐功能，优先使用这个)
 - 测试用户名: `user`   测试密码: `pass` (mock数据模拟，远程服务器获取不到数据时使用，没有推荐功能)
@@ -9,7 +9,7 @@ http://theneverlemon.gitee.io/vue2-fun-rec-project/#/
 
 ### 新闻推荐系统
 
-  + 基于vue2的框架Vant UI的基本使用。
+  + 基于vue3的框架Vant UI的基本使用。
 
   + 基于nodejs的npm包管理工具、打包工具webpack和与之相对应的插件。
 
@@ -24,7 +24,7 @@ http://theneverlemon.gitee.io/vue2-fun-rec-project/#/
 
 ### 运行
 
-1. 跳转到前端项目文件目录：`cd Vue-newsinfo`
+1. 跳转到前端项目文件目录：`cd vue3-fun-rec`
 
 2. 本地安装node环境，在项目根目录命令行输入命令`npm install`安装依赖包
    
@@ -262,34 +262,31 @@ function clearCookie(name) {
 定义路由相关配置，控制页面跳转
 
 ``` javascript
-let routerObj = new VueRouter({
-   routes: [
-      {
-         path: '/',
-         component: signIn,  // 同步加载组件，加载完成后进入首页
-         name: 'signIn',
-         meta: {
-               keepAlive: false,
-         },
+const routes = [
+  {
+    path: '/',
+    alias: '/signIn',  // 设置别名 当访问'/signIn'时，显示'/'的页面
+    component: SignIn,  // 同步加载组件，加载完成后进入首页
+    name: 'signIn',
+    meta: {
+        keepAlive: false,
+    },
+  },
+  {
+      path: '/signUp',
+      component: () => import('../views/SignUp.vue'),  //异步加载组件，进入组件时再加载提高进入首页时的加载速度
+      name: 'signUp',
+      meta: {
+          keepAlive: false,
       },
-      {
-         path: '/signUp',
-         component: () => import('./components/signUp.vue'),  //异步加载组件，进入组件时再加载提高进入首页时的加载速度
-         name: 'signUp',
-         meta: {
-               keepAlive: false,
-         },
-      },
+
+  },
+]
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes
 })
-```
-
-解决跳转相同路由时会报错的问题
-
-``` javascript
-const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch(err => err)
-}
 ```
 
 路由守卫，用户未登录时通过外部链接进入页面会跳转到首页
@@ -302,18 +299,32 @@ VueRouter.prototype.push = function push(location) {
 * next:决定是否通过
 */
 
-routerObj.beforeEach((to, from, next) => {
-   if (cookie.getCookie("openId")) {
+router.beforeEach((to, from, next) => {
+  if (cookie.getCookie("openId")) {
       next()
-   } else {
-      if (to.path == "/") {
-         next()
-      } if (to.path == '/signUp') {
-         next()
+  } else {
+      if (to.path == "/" || to.path == '/signUp') {
+        next()
       } else {
-         next('/')
-      }
-   }
+        Toast({
+            message: '暂未登录，请先登录',
+          });
+        let second = 1;
+        // 延迟一秒执行
+        const timer = setInterval(() => {
+          second--;
+          if (!second) {
+              clearInterval(timer);
+            // 手动清除 Toast
+            Toast.clear();
+          }
+        }, 1000);
+        next('/')
+    }
+  }
+  if(to.path == '/myself'){
+    document.documentElement.scrollTop = 0
+  }
 })
 ```
 
@@ -325,7 +336,7 @@ routerObj.beforeEach((to, from, next) => {
 
 ``` javascript
 //创建一个 store
-export default new Vuex.Store({
+export default createStore({
    // 添加 state 状态
     state: {
       
@@ -358,7 +369,7 @@ state: {
 
 **mutations:**
 
-更改 store 中的状态,在组件中通过 `this.$store.commit('FunctionName')`调用
+更改 store 中的状态,在组件中通过 `store.commit('FunctionName')`调用
 
 ``` javascript
 mutations: {
@@ -420,11 +431,12 @@ mutations: {
 
 被keep-alive包裹住的组件在重新进入时不会刷新,通过设置router中的meta.keepAlive属性值选择需要被缓存的组件
 
-``` javascript
-<keep-alive v-if="isLoggedIn">
-   <router-view v-if="$route.meta.keepAlive"></router-view>
-</keep-alive>
-<router-view v-if="!$route.meta.keepAlive||!isLoggedIn"></router-view>
+``` html
+  <router-view v-slot="{ Component }">
+    <keep-alive>
+      <component :is="Component" />
+    </keep-alive>
+  </router-view>
 ```
 
 
@@ -433,19 +445,19 @@ mutations: {
 登录注册时将信息存入store
 
 ``` javascript
-this.$store.state.type = 'signIn'
-this.$store.state.user.username = res.username
+store.state.type = 'signIn'
+store.state.user.username = res.username
 ```
 
 存入cookie值
 
 ``` javascript
 // checke:true--选中记住我   checke:false--未选中记住我
-if(this.checked){
+if(data.checked){
    // 调用setCookie方法，同时传递需要存储的数据，保存天数
-   this.cookie.setCookie(loginInfo, 7)
+   data.cookie.setCookie(loginInfo, 7)
 }else{
-   this.cookie.setCookie(loginInfo, 1)
+   data.cookie.setCookie(loginInfo, 1)
 }
 ```
 
@@ -457,22 +469,22 @@ if(this.checked){
 ``` javascript
 // 当组件在 <keep-alive> 内被切换，activated 会被对应执行
 // 每次进入该组件时会执行,设置滚动条的位置
-activated(){
-   document.documentElement.scrollTop = this.scrollTop
-},
+onActivated(()=>{
+  document.documentElement.scrollTop = data.scrollTop
+})
 
 //在离开该组件时执行，执行完后跳转
 // to:要去到的组件  from:离开的组件(本组件)  next():执行的函数，下一步
-beforeRouteLeave(to, from, next) {
-   // 如果下一个去到的组件是新闻详情页，触发store中的numChange函数，使阅读次数+1
-      if(to.name == 'NewsInfo' ){
-      this.$store.commit('numChange', {item:'hotList',path:to.path})
-   }
-   // 存储离开时的滚动条位置
-   this.scrollTop = document.documentElement.scrollTop
-   // next()必须要写，不写不会发生跳转
-   next();
-},
+onBeforeRouteLeave((to, from, next) => {
+  // 如果下一个去到的组件是新闻详情页，触发store中的numChange函数，使阅读次数+1
+    if(to.name == 'NewsInfo' ){
+    store.commit('numChange', {item:'recList',path:to.path})
+  }
+  // 存储离开时的滚动条位置
+  data.scrollTop = document.documentElement.scrollTop
+  // next()必须要写，不写不会发生跳转
+  next();
+})
 ```
 
 
@@ -484,32 +496,32 @@ beforeRouteLeave(to, from, next) {
 sendInfo() {
    // 阅读
    var val = {
-      user_name: this.$store.state.user.username,
-      news_id: this.id,
+      user_name: store.state.user.username,
+      news_id: data.id,
       action_time: Date.now(),
       action_type: 'read',
    }
 
    // 喜欢
    var val = {
-      user_name: this.$store.state.user.username,
-      news_id: this.id,
+      user_name: store.state.user.username,
+      news_id: data.id,
       action_time: Date.now(),
-      action_type: `likes:${this.islike}`,
+      action_type: `likes:${data.islike}`,
    }
 
    // 收藏
    var val = {
-      user_name: this.$store.state.user.username,
-      news_id: this.id,
+      user_name: store.state.user.username,
+      news_id: data.id,
       action_time: Date.now(),
-      action_type: `collections:${this.iscollection}`,
+      action_type: `collections:${data.iscollection}`,
    }
 
    // 发送对应请求
-   this.axios.post("/recsys/action", val).then(resource => {
-      if (resource.status === 200) {} else {
-         Toast('加载数据失败')
+   proxy.axios.post("/recsys/action", val).then(resource => {
+      if (resource.status !== 200) {
+        Toast('加载数据失败')
       }
    })
 },
@@ -522,24 +534,13 @@ sendInfo() {
 ``` javascript
 quit() {
    // 清空该用户的新闻列表
-   this.$store.commit('clearUser');
+   store.commit('clearUser');
 
    /*删除cookie*/
-   this.cookie.clearCookie('LoginName')
-   this.cookie.clearCookie('openId')
+   proxy.cookie.clearCookie('LoginName')
+   proxy.cookie.clearCookie('openId')
 
    // 跳转到登录页
-   this.$router.push('/signIn')
+   router.push('/signIn')
 }
-```
-
-进入页面时保持滚动条在顶部
-
-``` javascript
-// 在进入该组件时触发，执行完后进入组件
-// 设置滚动条保持在顶部
-beforeRouteEnter(to, from, next){
-   document.documentElement.scrollTop = 0
-   next()
-},
 ```
