@@ -76,7 +76,7 @@
         - 2.2.5.1 规则类召回
         - 2.2.5.2 模型类召回
 
-          - [YoutubeDNN召回](https://github.com/datawhalechina/fun-rec/blob/master/docs/第二章 推荐系统实战/2.2新闻推荐系统实战/docs/2.2.5.2 YouTubeDNN召回.md)
+          - [YoutubeDNN召回](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.5.2%20YouTubeDNN%E5%8F%AC%E5%9B%9E.md)
 
       - **2.2.6 排序**
         - 2.2.6.1 DeepFM排序模型
