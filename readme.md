@@ -75,15 +75,15 @@
       - **2.2.5 召回**
         - 2.2.5.1 规则类召回
         - 2.2.5.2 模型类召回
-          - [YouTubeDNN召回](https://github.com/datawhalechina/fun-rec/blob/master/docs/第二章 推荐系统实战/2.2新闻推荐系统实战/docs/2.2.5.2 YouTubeDNN召回.md)
-        - 2.2.5.3 召回评估
+
+          - [YoutubeDNN召回](https://github.com/datawhalechina/fun-rec/blob/master/docs/第二章 推荐系统实战/2.2新闻推荐系统实战/docs/2.2.5.2 YouTubeDNN召回.md)
 
       - **2.2.6 排序**
         - 2.2.6.1 DeepFM排序模型
         - 2.2.6.2 排序模型评估
-
+    
       - **2.2.7 规则与重排**
-
+    
       - **2.2.8 任务监控与调度**
 - **第三章 推荐算法面经**
 
