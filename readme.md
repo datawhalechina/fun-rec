@@ -54,7 +54,7 @@
     - **2.2 新闻推荐系统实践**
 
       - **[2.2.0 新闻推荐系统流程的构建视频讲解](https://datawhale.feishu.cn/minutes/obcnzns778b725r5l535j32o)**
-    
+
       - **2.2.1 离线物料系统的构建**
         - [2.2.1.1 Mysql基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.1%20Mysql%E5%9F%BA%E7%A1%80.md)
         - [2.2.1.2 MongoDB基础](https://github.com/datawhalechina/fun-rec/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/2.2%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/docs/2.2.1.2%20MongoDB%E5%9F%BA%E7%A1%80.md)
@@ -75,6 +75,7 @@
       - **2.2.5 召回**
         - 2.2.5.1 规则类召回
         - 2.2.5.2 模型类召回
+          - [YoutubeDNN召回]()
         - 2.2.5.3 召回评估
 
       - **2.2.6 排序**
