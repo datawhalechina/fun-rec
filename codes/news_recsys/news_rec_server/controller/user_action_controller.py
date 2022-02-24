@@ -42,8 +42,8 @@ class UserAction():
     def save_user(self,user):
         try:
             self.register_user_sql_session.add(user)
-            self.register_user_sql_session.commit()
-            # self.register_user_sql_session.close()
+            # self.register_user_sql_session.
+            self.register_user_sql_session.commit() 
         except Exception as e:
             print(str(e))
             return False

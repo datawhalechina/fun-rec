@@ -10,6 +10,9 @@ exposure_table_name_prefix = "exposure" # 用户曝光数据表的前缀
 loginfo_db_name = "loginfo" # log数据库
 loginfo_table_name_prefix = "log" # log数据表的前缀
 
+contest_loginfo_db_name = "contest_loginfo"
+contest_loginfo_table_name_prefix = "contest_log"
+
 # 默认配置
 mysql_username = "root"
 mysql_passwd = "123456"
@@ -29,6 +32,8 @@ material_db_name = "NewsRecSys"
 feature_protrail_collection_name = "FeatureProtrail"
 redis_mongo_collection_name = "RedisProtrail"
 user_protrail_collection_name = "UserProtrail"
+contest_user_protrail_collection_name = "ContestUserProtrail"
+contest_feature_protrail_collection_name = "ContestFeatureProtrail"
 
 # Redis
 redis_hostname = "127.0.0.1"
@@ -38,3 +43,17 @@ reclist_redis_db_num = 0
 static_news_info_db_num = 1
 dynamic_news_info_db_num = 2
 user_exposure_db_num = 3
+
+# 类别映射字典
+cate_dict = {
+    '2510':  '国内',
+    '2511':  '国际',
+    '2669':  '社会',
+    '2512':  '体育',
+    '2513':  '娱乐',
+    '2514':  '军事',
+    '2515':  '科技',
+    '2516':  '财经',
+    '2517':  '股市',
+    '2518':  '美股'
+}

@@ -1,6 +1,6 @@
 import sys
 sys.path.append("./")
-import json
+import json, time
 from flask_cors import * 
 from flask import Flask, jsonify, request
 import snowflake.client  
@@ -45,6 +45,12 @@ def register():
     user.gender = request_dict["gender"]
     user.city = request_dict["city"]
 
+    # 检验年龄格式的合法性
+    try:
+        age = int(user.age)
+    except:
+        return jsonify({"code": 500, "mgs": "age is not valid."})
+
     # 添加注册用户
     save_res = UserAction().save_user(user)
     if not save_res:
@@ -72,9 +78,9 @@ def login():
             return jsonify({"code": 200, "msg": "login success"})
         elif result == 2:
             # 密码错误
-            return jsonify({"code": 500, "msg": "passwd is error"})
+            return jsonify({"code": 501, "msg": "passwd is error"})
         else:
-            return jsonify({"code": 500, "msg": "this username is not exist!"})
+            return jsonify({"code": 502, "msg": "this username is not exist!"})
     except Exception as e:
         return jsonify({"code": 500, "mgs": "login fail."})
 
@@ -84,50 +90,56 @@ def rec_list():
     """推荐页
     """
     user_name = request.args.get('user_id')
-    page_id = request.args.get('page_id')
+    age = request.args.get('age')
+    gender = request.args.get('gender')
+    
+    # 如果年龄无法转int说明是老用户，不需要传age 和 gender 
+    try:
+        age = int(age)
+    except:
+        age = None
+        gender = None
 
     # 查询用户的id
     user_id = UserAction().get_user_id_by_name(user_name)  
     if not user_id:
         return False
 
-    if user_id is None or page_id is None:
-        return jsonify({"code": 2000, "msg": "user_id or page_id is none!"}) 
+    if user_id is None:
+        return jsonify({"code": 2000, "msg": "user_id is none!"}) 
+
     try:
-        rec_news_list = recsys_server.get_rec_list(user_id, page_id)
+        rec_news_list = recsys_server.get_cold_start_rec_list_v2(user_id, age, gender)
+        # 冷启动策略
+        # rec_news_list = recsys_server.get_cold_start_rec_list(user_id)
         if len(rec_news_list) == 0:
-            return jsonify({"code": 500, "msg": "rec_list data is empty."})
+            jsonify({"code": 500, "msg": "rec_news_list is empty."}) 
         return jsonify({"code": 200, "msg": "request rec_list success.", "data": rec_news_list, "user_id": user_id})
     except Exception as e:
         print(str(e))
         return jsonify({"code": 500, "msg": "redis fail."}) 
-
+        
 
 @app.route('/recsys/hot_list', methods=["GET"])
 def hot_list():
     """热门页面
     """
-    if request.method == "GET":
-        user_name = request.args.get('user_id')
-        page_id = request.args.get('page_id')
+    user_name = request.args.get('user_id')
 
-        if user_name is None or page_id is None:
-            return jsonify({"code": 2000, "msg": "user_name or page_id is none!"}) 
+    if user_name is None:
+        return jsonify({"code": 2000, "msg": "user_name none!"}) 
 
-        # 查询用户的id
-        user_id = UserAction().get_user_id_by_name(user_name)  
-        if not user_id:
-            return False
+    # 查询用户的id
+    user_id = UserAction().get_user_id_by_name(user_name)  
+    if not user_id:
+        return jsonify({"code": 2000, "msg": "user_id is not exits!."})
 
     try:
         # 这里需要改成get_hot_list, 当前get_hot_list方法还没有实现
-        rec_news_list = recsys_server.get_hot_list(user_id)
-        # 下面这个接口是用来前端测试的
-        # rec_news_list = recsys_server.get_rec_list(user_id, page_id)
-
+        # rec_news_list = recsys_server.get_hot_list(user_id)
+        rec_news_list = recsys_server.get_hot_list_v2(user_id)
         if len(rec_news_list) == 0:
-            return jsonify({"code": 200, "msg": "request redis data fail."})
-        # rec_news_list = recsys_server.get_hot_list(user_id, page_id)
+            return jsonify({"code": 500, "msg": "request redis data fail."})
         return jsonify({"code": 200, "msg": "request hot_list success.", "data": rec_news_list, "user_id": user_id})
     except Exception as e:
         print(str(e))
@@ -160,7 +172,7 @@ def news_detail():
             news_detail["collections"] = True
         else:
             news_detail["collections"] = False
-        # print("test",news_detail)
+
         return jsonify({"code": 0, "msg": "request news_detail success.", "data": news_detail})
     except Exception as e:
         print(str(e))
