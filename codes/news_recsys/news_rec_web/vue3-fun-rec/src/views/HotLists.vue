@@ -25,11 +25,11 @@
       </ul>
     </div>
 
-    <van-pull-refresh v-model="data.isLoading" @refresh="data.onRefresh">
+    <van-pull-refresh v-model="data.isLoading" @refresh="onRefresh">
       <div class="lists">
         <van-list v-model="data.vanListLoading" :finished="data.finished" :finished-text="data.finishedText" @load="onLoad" :offset=300>
           <!-- 循环store.state.hotList内的每一个item并显示 -->
-          <van-cell v-for="(item,i) in store.state.hotList" :key="i">
+          <van-cell v-for="(item) in store.state.hotList" :key="item.news_id">
             <!-- 路由地址传参,需要前面加：号，表示这个参数不是字符串 -->
             <router-link :to="{name:'NewsInfo' ,params:{id:item.news_id,likes:item.likes,collections:item.collections,cate:item.cate}}">
               <div>
@@ -51,8 +51,6 @@
       </div>
     </van-pull-refresh>
 
-
-
     <!-- 底部导航栏，多个组件都会用到，需要时直接引入 -->
     <bottomBar></bottomBar>
 
@@ -61,10 +59,10 @@
 
 <script setup>
   import bottomBar from "@/components/bottomBar.vue";
-  import {  reactive, onMounted, onActivated, getCurrentInstance } from "vue";
+  import {  reactive, onActivated, getCurrentInstance } from "vue";
   import { useStore } from "vuex";
-  const store = useStore();
   import { useRouter, onBeforeRouteLeave } from "vue-router";
+  const store = useStore();
   const router = useRouter();
 
   const { proxy } = getCurrentInstance();
@@ -123,7 +121,6 @@
     document.documentElement.scrollTop = data.scrollTop
   })
 
-
   //在离开该组件时执行，执行完后跳转
   // to:要去到的组件  from:离开的组件(本组件)  next():执行的函数，下一步
   onBeforeRouteLeave((to, from, next) => {
@@ -181,4 +178,7 @@
   .hotPath {
     fill: #428bff;
   }
+  /* .van-pull-refresh {
+    overflow: auto;
+} */
 </style>

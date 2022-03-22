@@ -1,0 +1,56 @@
+.adm-page-indicator {
+  display: flex;
+  width: auto;
+  --dot-color: rgba(0, 0, 0, 0.2);
+  --active-dot-color: var(--adm-color-primary);
+  --dot-size: 6px;
+  --active-dot-size: 26px;
+  --dot-border-radius: 2px;
+  --active-dot-border-radius: var(--dot-border-radius);
+  --dot-spacing: 6px;
+}
+
+.adm-page-indicator-dot {
+  display: block;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: var(--dot-border-radius);
+  background: var(--dot-color);
+}
+
+.adm-page-indicator-dot:last-child {
+  margin-right: 0;
+}
+
+.adm-page-indicator-dot-active {
+  border-radius: var(--active-dot-border-radius);
+  background: var(--active-dot-color);
+}
+
+.adm-page-indicator-color-white {
+  --active-dot-color: var(--adm-color-white);
+}
+
+.adm-page-indicator-horizontal {
+  flex-direction: row;
+}
+
+.adm-page-indicator-horizontal .adm-page-indicator-dot {
+  margin-right: var(--dot-spacing);
+}
+
+.adm-page-indicator-horizontal .adm-page-indicator-dot-active {
+  width: var(--active-dot-size);
+}
+
+.adm-page-indicator-vertical {
+  flex-direction: column;
+}
+
+.adm-page-indicator-vertical .adm-page-indicator-dot {
+  margin-bottom: var(--dot-spacing);
+}
+
+.adm-page-indicator-vertical .adm-page-indicator-dot-active {
+  height: var(--active-dot-size);
+}

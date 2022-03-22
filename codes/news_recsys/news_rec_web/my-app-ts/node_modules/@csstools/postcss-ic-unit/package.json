@@ -1,0 +1,62 @@
+{
+  "name": "@csstools/postcss-ic-unit",
+  "version": "1.0.0",
+  "description": "Use the ic length unit",
+  "author": "Jonathan Neal <jonathantneal@hotmail.com>",
+  "license": "CC0-1.0",
+  "engines": {
+    "node": "^12 || ^14 || >=16"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "CHANGELOG.md",
+    "LICENSE.md",
+    "README.md",
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c ../../rollup/default.js",
+    "clean": "node -e \"fs.rmSync('./dist', { recursive: true, force: true });\"",
+    "lint": "eslint ./src --ext .js --ext .ts --ext .mjs --no-error-on-unmatched-pattern",
+    "prepublishOnly": "npm run clean && npm run build && npm run test",
+    "stryker": "stryker run --logLevel error",
+    "test": "node .tape.mjs && npm run test:exports",
+    "test:rewrite-expects": "REWRITE_EXPECTS=true node .tape.mjs",
+    "test:exports": "node ./test/_import.mjs && node ./test/_require.cjs"
+  },
+  "peerDependencies": {
+    "postcss": "^8.3"
+  },
+  "keywords": [
+    "postcss-plugin",
+    "ic",
+    "css",
+    "values",
+    "length",
+    "glyph",
+    "CJK water ideograph"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/csstools/postcss-plugins.git",
+    "directory": "plugins/postcss-ic-unit"
+  },
+  "volta": {
+    "extends": "../../package.json"
+  },
+  "homepage": "https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-ic-unit#readme",
+  "bugs": "https://github.com/csstools/postcss-plugins/issues",
+  "dependencies": {
+    "@csstools/postcss-progressive-custom-properties": "^1.1.0",
+    "postcss-value-parser": "^4.2.0"
+  }
+}

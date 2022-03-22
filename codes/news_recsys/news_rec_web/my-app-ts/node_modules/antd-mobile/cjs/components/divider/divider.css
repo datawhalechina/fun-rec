@@ -1,0 +1,29 @@
+.adm-divider {
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+  color: var(--adm-color-weak);
+  font-size: 14px;
+  border-width: 0;
+  border-color: var(--adm-border-color);
+  border-style: solid;
+}
+.adm-divider-left.adm-divider::before {
+  max-width: 10%;
+}
+.adm-divider-right.adm-divider::after {
+  max-width: 10%;
+}
+.adm-divider::after,
+.adm-divider::before {
+  flex: auto;
+  display: block;
+  content: '';
+  border-style: inherit;
+  border-color: inherit;
+  border-width: 1px 0 0;
+}
+.adm-divider-content {
+  flex: none;
+  padding: 0 16px;
+}

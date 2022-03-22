@@ -1,10 +1,10 @@
 <template>
-  <div ref="content">
-    <div class="tabs" ref="tabs">
+  <div>
+    <div class="tabs">
       <input type="radio" id="tab1" name="tab-control" checked>
       <input type="radio" id="tab2" name="tab-control">
       <ul>
-        <li title="Features" class="rec" @click="toRec">
+        <li title="Features" class="rec">
           <label for="tab1" role="button" class="recCont">
             <svg viewBox="0 0 24 24" class="recPath">
               <path d="M14,2A8,8 0 0,0 6,10A8,8 0 0,0 14,18A8,8 0 0,0 22,10H20C20,13.32 17.32,16 14,16A6,6 0 0,1 8,10A6,6 0 0,1 14,4C14.43,4 14.86,4.05 15.27,4.14L16.88,2.54C15.96,2.18 15,2 14,2M20.59,3.58L14,10.17L11.62,7.79L10.21,9.21L14,13L22,5M4.93,5.82C3.08,7.34 2,9.61 2,12A8,8 0 0,0 10,20C10.64,20 11.27,19.92 11.88,19.77C10.12,19.38 8.5,18.5 7.17,17.29C5.22,16.25 4,14.21 4,12C4,11.7 4.03,11.41 4.07,11.11C4.03,10.74 4,10.37 4,10C4,8.56 4.32,7.13 4.93,5.82Z" />
@@ -26,10 +26,10 @@
     </div>
   
     <van-pull-refresh v-model="data.isLoading" @refresh="onRefresh">
-      <div class="lists" ref="lists">
-        <van-list v-model="data.vanListLoading" :finished="data.finished" :finished-text="data.finishedText" @load="onLoad" :offset=300>
-          <!-- 循环$store.state.hotList内的每一个item并显示 -->
-          <van-cell v-for="(item,i) in store.state.recList" :key="i">
+      <div class="lists">
+        <van-list v-model:loading="data.vanListLoading" :finished="data.finished" :finished-text="data.finishedText" @load="onLoad" :offset=300>
+          <!-- 循环store.state.recList内的每一个item并显示 -->
+          <van-cell v-for="(item) in store.state.recList" :key="item.news_id">
             <!-- 路由地址传参,需要前面加：号，表示这个参数不是字符串 -->
             <router-link :to="{name:'NewsInfo' ,params:{id:item.news_id,likes:item.likes,collections:item.collections,cate:item.cate}}">
               <div>
@@ -61,14 +61,13 @@
   import bottomBar from "@/components/bottomBar.vue";
   import {  reactive, onActivated, getCurrentInstance } from "vue";
   import { useStore } from "vuex";
-  const store = useStore();
   import { useRouter, onBeforeRouteLeave } from "vue-router";
+  const store = useStore();
   const router = useRouter();
 
   const { proxy } = getCurrentInstance();
 
   const data = reactive({
-    isActive: true,
     vanListLoading: false, // 加载状态
     finished: false, // 是否加载
     finishedText: '', // 加载完成后的提示文案
@@ -77,15 +76,22 @@
   });
 
   function onRefresh() {
-    setTimeout(() => {
+      // data.isLoading = false;
+      // store.commit('clearList', "recList")
+      // getList()
+      // data.isLoading = true;
+      // data.finished = false;
+      // data.isLoading = true;
+      // getList()
+      setTimeout(() => {
       data.isLoading = false;
       store.commit('clearList', "hotList")
-      this.getList()
+      getList()
     }, 1000);
   }
 
   async function getList() {
-    var url;
+    let url;
     if(store.state.type == 'signIn'){
       url = '/recsys/rec_list?' + 'user_id=' + store.state.user.username
     }else if(store.state.type == 'signUp'){
@@ -98,7 +104,8 @@
         return res
       })
     }else {
-      successData = await proxy.axios.get("/recList").then((res)=>{
+      successData = await proxy.axios.get("/recList").then(res => {
+        console.log(store.state.recList,'recList')
         return res
       })
     }
@@ -184,4 +191,8 @@
   .recPath {
     fill: #428bff;
   }
+
+/* .van-pull-refresh {
+    overflow: auto;
+} */
 </style>

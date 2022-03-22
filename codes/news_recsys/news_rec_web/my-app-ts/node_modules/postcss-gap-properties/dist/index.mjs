@@ -1,0 +1,1 @@
+const e=/^(column-gap|gap|row-gap)$/i,p=e=>"display"===e.prop&&"grid"===e.value;function o(o){const r=!("preserve"in Object(o))||Boolean(o.preserve);return{postcssPlugin:"postcss-gap-properties",Declaration(o){e.test(o.prop)&&o.parent.some(p)&&(o.cloneBefore({prop:`grid-${o.prop}`}),r||o.remove())}}}o.postcss=!0;export{o as default};

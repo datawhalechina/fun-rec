@@ -1,0 +1,35 @@
+{
+    "name": "@types/resize-observer-browser",
+    "version": "0.1.7",
+    "description": "TypeScript definitions for resize-observer-browser",
+    "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/resize-observer-browser",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Chives",
+            "url": "https://github.com/chivesrs",
+            "githubUsername": "chivesrs"
+        },
+        {
+            "name": "William Furr",
+            "url": "https://github.com/wffurr",
+            "githubUsername": "wffurr"
+        },
+        {
+            "name": "Alexander Shushunov",
+            "url": "https://github.com/AlexanderShushunov",
+            "githubUsername": "AlexanderShushunov"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/resize-observer-browser"
+    },
+    "scripts": {},
+    "dependencies": {},
+    "typesPublisherContentHash": "2649700e35d6abca34e474ff6c4a6c0bc82df28f3811a3685d01485d0d109623",
+    "typeScriptVersion": "3.8"
+}

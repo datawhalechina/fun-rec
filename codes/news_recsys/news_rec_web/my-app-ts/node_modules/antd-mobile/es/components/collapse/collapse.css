@@ -1,0 +1,15 @@
+.adm-collapse-panel-header .adm-list-item-content-main {
+  padding: 12px 0;
+}
+.adm-collapse-arrow {
+  transform: rotate(0deg);
+  transition: all ease 0.3s;
+}
+.adm-collapse-arrow-active {
+  transform: rotate(-180deg);
+}
+.adm-collapse-panel-content {
+  font-size: var(--adm-font-size-main);
+  color: var(--adm-color-weak);
+  overflow: hidden;
+}

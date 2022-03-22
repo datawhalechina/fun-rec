@@ -1,0 +1,166 @@
+.adm-passcode-input {
+  position: relative;
+  display: inline-block;
+  --cell-size: 80px;
+  --cell-gap: 12px;
+  --dot-size: 20px;
+  --border-color: #e5e5e5;
+  --border-radius: 16px;
+}
+
+.adm-passcode-input-cell-container {
+  display: inline-flex;
+  vertical-align: top;
+}
+
+.adm-passcode-input-cell {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-size: 36px;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background: var(--adm-color-white);
+}
+
+.adm-passcode-input:not(.seperated) {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 2px solid var(--border-color);
+}
+
+.adm-passcode-input:not(.seperated) .adm-passcode-input-cell:not(:last-child) {
+  border-right: 2px solid var(--border-color);
+}
+
+.adm-passcode-input:not(.seperated).focused {
+  border-color: var(--adm-color-primary);
+  box-shadow: 0 0 4px 0 var(--adm-color-primary);
+  outline: none;
+}
+
+.adm-passcode-input:not(.seperated).error {
+  border-color: var(--adm-color-danger);
+  box-shadow: 0 0 4px 0 var(--adm-color-danger);
+  animation: 100ms ease-in-out 0s 3 normal none running adm-shake-horizontal;
+}
+
+.adm-passcode-input.seperated .adm-passcode-input-cell {
+  border-radius: var(--border-radius);
+  border: 2px solid var(--border-color);
+}
+
+.adm-passcode-input.seperated .adm-passcode-input-cell:not(:last-child) {
+  margin-right: var(--cell-gap);
+}
+
+.adm-passcode-input.seperated .adm-passcode-input-cell.focused {
+  border-color: var(--adm-color-primary);
+  box-shadow: 0 0 4px 0 var(--adm-color-primary);
+}
+
+.adm-passcode-input.seperated.focused {
+  outline: none;
+}
+
+.adm-passcode-input.seperated.error {
+  animation: 100ms ease-in-out 0s 3 normal none running adm-shake-horizontal;
+}
+
+.adm-passcode-input.seperated.error .adm-passcode-input-cell {
+  border-color: var(--adm-color-danger);
+  box-shadow: 0 0 4px 0 var(--adm-color-danger);
+}
+
+.adm-passcode-input-cell.dot::before {
+  content: '';
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 50%;
+  background: var(--adm-color-text);
+}
+
+.adm-passcode-input-cell.caret::after {
+  content: '';
+  width: 4px;
+  height: 1.1em;
+  margin-left: 2px;
+  background: var(--adm-color-primary);
+  animation: 1s linear infinite adm-caret-blink;
+}
+
+.adm-passcode-input > .adm-passcode-input-native-input {
+  position: absolute;
+  left: -200vw;
+  top: 0;
+  display: block;
+  width: 100px;
+  height: 40px;
+  opacity: 0.5;
+}
+
+@keyframes adm-shake-horizontal {
+  0% {
+    transform: translateX(0);
+  }
+
+  10% {
+    transform: translateX(-8px);
+  }
+
+  20% {
+    transform: translateX(10px);
+  }
+
+  30% {
+    transform: translateX(-2px);
+  }
+
+  40% {
+    transform: translateX(16px);
+  }
+
+  50% {
+    transform: translateX(0);
+  }
+
+  60% {
+    transform: translateX(-16px);
+  }
+
+  70% {
+    transform: translateX(2px);
+  }
+
+  80% {
+    transform: translateX(-10px);
+  }
+
+  90% {
+    transform: translateX(8px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes adm-caret-blink {
+  from {
+    opacity: 1;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

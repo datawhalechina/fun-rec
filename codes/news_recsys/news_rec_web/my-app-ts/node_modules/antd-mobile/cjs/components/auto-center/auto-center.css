@@ -1,0 +1,7 @@
+.adm-auto-center {
+  display: flex;
+  justify-content: center;
+}
+.adm-auto-center-content {
+  flex: 0 1 auto;
+}

@@ -1,0 +1,25 @@
+import { click, dblClick } from './click';
+import { type } from './type';
+import { clear } from './clear';
+import { tab } from './tab';
+import { hover, unhover } from './hover';
+import { upload } from './upload';
+import { paste } from './paste';
+import { keyboard, specialCharMap } from './keyboard';
+declare const userEvent: {
+    click: typeof click;
+    dblClick: typeof dblClick;
+    type: typeof type;
+    clear: typeof clear;
+    tab: typeof tab;
+    hover: typeof hover;
+    unhover: typeof unhover;
+    upload: typeof upload;
+    selectOptions: (args_0: Element, args_1: string | string[] | HTMLElement | HTMLElement[], args_2?: MouseEventInit | undefined, args_3?: import("./utils").PointerOptions | undefined) => void;
+    deselectOptions: (args_0: Element, args_1: string | string[] | HTMLElement | HTMLElement[], args_2?: MouseEventInit | undefined, args_3?: import("./utils").PointerOptions | undefined) => void;
+    paste: typeof paste;
+    keyboard: typeof keyboard;
+};
+export default userEvent;
+export { specialCharMap as specialChars };
+export type { keyboardKey } from './keyboard';

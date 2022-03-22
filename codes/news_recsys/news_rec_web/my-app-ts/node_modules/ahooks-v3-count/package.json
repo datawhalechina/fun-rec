@@ -1,0 +1,15 @@
+{
+  "name": "ahooks-v3-count",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:brickspert/ahooks-v3-count.git",
+  "license": "MIT",
+  "private": false,
+  "files": [
+    "LICENSE",
+    "index.js"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  }
+}

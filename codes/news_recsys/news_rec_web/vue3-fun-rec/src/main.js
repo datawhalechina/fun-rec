@@ -26,6 +26,7 @@ axios.post('http://47.108.56.188:3000/recsys/login?username=11&passwd=111111').t
     store.state.flag = true
 }).catch((e)=>{
     store.state.flag = false
+    console.log(e)
 })
 !store.state.flag && require("./mock/index.js")
 

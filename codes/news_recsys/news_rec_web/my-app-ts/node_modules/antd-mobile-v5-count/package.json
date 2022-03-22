@@ -1,0 +1,12 @@
+{
+  "name": "antd-mobile-v5-count",
+  "version": "1.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:awmleer/antd-mobile-v5-download-count.git",
+  "license": "MIT",
+  "private": false,
+  "files": ["LICENSE", "index.js"],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  }
+}

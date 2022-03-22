@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "allowJs": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "target": "ES5"
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "rootDir": "."
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

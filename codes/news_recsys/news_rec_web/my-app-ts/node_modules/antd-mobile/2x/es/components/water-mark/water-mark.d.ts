@@ -1,0 +1,21 @@
+import { FC } from 'react';
+import { NativeProps } from '../../utils/native-props';
+export declare type WaterMarkProps = {
+    gapX?: number;
+    gapY?: number;
+    zIndex?: number;
+    width?: number;
+    height?: number;
+    rotate?: number;
+    image?: string;
+    imageWidth?: number;
+    imageHeight?: number;
+    content?: string;
+    fontColor?: string;
+    fontStyle?: 'none' | 'normal' | 'italic' | 'oblique';
+    fontFamily?: string;
+    fontWeight?: 'normal' | 'light' | 'weight' | number;
+    fontSize?: number | string;
+    fullPage?: boolean;
+} & NativeProps<'--z-index'>;
+export declare const WaterMark: FC<WaterMarkProps>;

@@ -1,0 +1,15 @@
+.adm-pull-to-refresh-head {
+  overflow: hidden;
+  position: relative;
+}
+
+.adm-pull-to-refresh-head-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  color: var(--adm-color-weak);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
