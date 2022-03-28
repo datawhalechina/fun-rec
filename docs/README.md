@@ -1,4 +1,5 @@
 # Fun-Rec项目介绍
+
 <p align="left">
   <img src='[https://img.shields.io/badge/python-3.8+-blue](https://img.shields.io/badge/python-3.8+-blue)'>
   <img src='[https://img.shields.io/badge/Tensorflow-2.2+-blue](https://img.shields.io/badge/Tensorflow-2.2+-blue)'>
@@ -6,6 +7,7 @@
   <img src='[https://img.shields.io/badge/pandas-1.4.1-brightgreen](https://img.shields.io/badge/pandas-1.4.1-brightgreen)'>
   <img src='[https://img.shields.io/badge/sklearn-1.0.2-brightgreen](https://img.shields.io/badge/sklearn-1.0.2-brightgreen)'>
 </p> 
+
 本教程主要是针对具有机器学习基础并想找推荐算法岗位的同学，由推荐算法基础、推荐算法入门赛、新闻推荐项目及推荐算法面经组成，形成了一个完整的从基础到实战再到面试的闭环。主要分为三个阶段，分别是推荐系统基础、推荐系统进阶和推荐算法面经，每个阶段的具体内容如下：
 - **推荐系统基础**，这部分内容包括机器学习基础（建议系统学习机器学习基础，这里只是简单介绍）、经典推荐算法及深度推荐模型（深度推荐模型也会不定时更新一些比较新的模型）。这部分内容使用tensorflow实现了所有模型。
 - **推荐系统实战**，这部分内容主要是推荐系统的实战内容，包含推荐系统竞赛实战和新闻推荐系统的实践。其中推荐系统竞赛实战是结合阿里天池上的新闻推荐入门赛做的相关内容。新闻推荐系统实践是实现一个具有前后端交互及整个推荐链路的项目，该项目是一个新闻推荐系统的demo没有实际的商业化价值，也就是使用现有的一些技术实现了推荐的整个流程，具体细节可以参考下面的目录。
