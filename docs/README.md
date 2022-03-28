@@ -40,6 +40,7 @@
     - TDM
 
 #### 经典排序模型
+- **GBDT+LR**
 - **特征交叉**
     - FM
     - PNN
@@ -207,7 +208,6 @@
 <p>扫描下方二维码关注公众号：Datawhale</p>
 <img src="https://raw.githubusercontent.com/datawhalechina/pumpkin-book/master/res/qrcode.jpeg" width = "180" height = "180">
 </div>
-
 
 ## LICENSE
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey" /></a>
