@@ -1,11 +1,11 @@
 # Fun-Rec
 
 <p align="left">
-  <img src='[https://img.shields.io/badge/python-3.8+-blue](https://img.shields.io/badge/python-3.8+-blue)'>
-  <img src='[https://img.shields.io/badge/Tensorflow-2.2+-blue](https://img.shields.io/badge/Tensorflow-2.2+-blue)'>
-  <img src='[https://img.shields.io/badge/NumPy-1.22.3-brightgreen](https://img.shields.io/badge/NumPy-1.22.3-brightgreen)'>
-  <img src='[https://img.shields.io/badge/pandas-1.4.1-brightgreen](https://img.shields.io/badge/pandas-1.4.1-brightgreen)'>
-  <img src='[https://img.shields.io/badge/sklearn-1.0.2-brightgreen](https://img.shields.io/badge/sklearn-1.0.2-brightgreen)'>
+  <img src='https://img.shields.io/badge/python-3.8+-blue'>
+  <img src='https://img.shields.io/badge/Tensorflow-2.2+-blue'>
+  <img src='https://img.shields.io/badge/NumPy-1.22.3-brightgreen'>
+  <img src='https://img.shields.io/badge/pandas-1.4.1-brightgreen'>
+  <img src='https://img.shields.io/badge/sklearn-1.0.2-brightgreen'>
 </p> 
 
 本教程主要是针对具有机器学习基础并想找推荐算法岗位的同学，由推荐算法基础、推荐算法入门赛、新闻推荐项目及推荐算法面经组成，形成了一个完整的从基础到实战再到面试的闭环。主要分为三个阶段，分别是推荐系统基础、推荐系统进阶和推荐算法面经，每个阶段的具体内容如下：
