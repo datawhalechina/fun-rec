@@ -42,7 +42,7 @@
         - Youtube双塔【未完成】
         - MOBIUS【未完成】
     - 图召回
-        - EGES【未完成】
+        - EGES【完成一半，待优化】
         - PinSAGE【未完成】
     - 序列召回
         - MIND【已完成，待优化】
