@@ -36,7 +36,7 @@
     - word2vec召回
         - word2vec原理【未完成】
         - Airbnb召回【未完成】
-    - YoutubeDNN召回【未完成】
+    - YoutubeDNN召回【完成一半，待优化】
     - 双塔召回
         - DSSM【未完成】
         - Youtube双塔【未完成】
@@ -46,7 +46,7 @@
         - PinSAGE【未完成】
     - 序列召回
         - MIND【已完成，待优化】
-        - SDM【未完成】
+        - SDM【完成一半，待优化】
 - **树模型召回**
     - TDM【未完成】
 
