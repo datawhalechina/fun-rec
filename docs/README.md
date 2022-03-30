@@ -56,8 +56,8 @@
     - FM【已完成】
     - PNN【已完成】
     - DCN【已完成】
-    - AutoInt【未完成】
-    - FiBiNET【未完成】
+    - AutoInt【完成一半，待优化】
+    - FiBiNET【完成一半，待优化】
 - **WideNDeep系列**
     - Wide&Deep【已完成】
     - 改进Deep侧
