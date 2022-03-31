@@ -220,8 +220,9 @@ class FeatureEncoder(object):
             for fc in self.feature_column_list:
                 if isinstance(fc, DenseFeat):
                     dense_feature_dict[fc.name] = \
-                        self.feature_input_layer_dict[fc] 
-
+                        self.feature_input_layer_dict[fc.name] 
+        
+        embedding_layers_dict = {}
         if len(self.sparse_feature_columns) > 0 or \
             len(self.varlen_sparse_feature_columns) > 0:
             embedding_layers_dict = self.create_embedding_layers_dict(
