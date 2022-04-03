@@ -1,7 +1,8 @@
 import tensorflow as tf
 from tensorflow.keras.layers import Layer, Dense, Activation, Dropout, \
     BatchNormalization
-from tensorflow.keras.initializers import Zeros
+from tensorflow.keras.layers import *
+from tensorflow.python.keras.initializers import RandomNormal, Zeros, glorot_normal, TruncatedNormal, Ones
 
 
 class DNN(Layer):
@@ -127,9 +128,98 @@ class PredictLayer(Layer):
         base_config = super(PredictLayer, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))
 
+class EmbeddingIndex(Layer):
+    def __init__(self, index, **kwargs):
+        self.index = index
+        super(EmbeddingIndex, self).__init__(**kwargs)
+
+    def build(self, input_shape):
+        super(EmbeddingIndex, self).build(input_shape)  # Be sure to call this somewhere!
+
+    def call(self, x, **kwargs):
+        return tf.constant(self.index)
 
 # TODO Activation
-
+class SampledSoftmaxLayer(Layer):
+    def __init__(self, num_sampled=5, **kwargs):
+        self.num_sampled = num_sampled
+        super(SampledSoftmaxLayer, self).__init__(**kwargs)
+    def build(self, input_shape):
+        self.size = input_shape[0][0]   # docs num
+        self.zero_bias = self.add_weight(shape=[self.size], initializer=Zeros, dtype=tf.float32, trainable=False, name='bias')
+        super(SampledSoftmaxLayer, self).build(input_shape)
+    def call(self, inputs_with_label_idx):
+        embeddings, inputs, label_idx = inputs_with_label_idx
+        # 这里盲猜下这个操作，应该是有了label_idx，就能拿到其embedding，这个是用户行为过多
+        # 所以(user_embedding, embedding[label_idx])就是正样本
+        # 然后根据num_sampled，再从传入的embeddings字典里面随机取num_sampled个负样本
+        # 根据公式log(sigmoid(user_embedding, embedding[label_idx])) + 求和(log(sigmoid(-user_embedding, embedding[负样本])))得到损失
+        loss = tf.nn.sampled_softmax_loss(weights=embeddings,   # (numclass, dim)
+                                          biases=self.zero_bias,  # (numclass)
+                                          labels=label_idx,   # (batch, num_true)
+                                          inputs=inputs,  # (batch, dim)
+                                          num_sampled=self.num_sampled, # 负采样个数
+                                          num_classes=self.size  # 类别数量
+                                         )
+        return tf.expand_dims(loss, axis=1)
 
 # TODO Normalization
+class LayerNormalization(Layer):
+    def __init__(self, axis=-1, eps=1e-9, center=True,
+                 scale=True, **kwargs):
+        self.axis = axis
+        self.eps = eps
+        self.center = center
+        self.scale = scale
+        super(LayerNormalization, self).__init__(**kwargs)
 
+    def build(self, input_shape):
+        self.gamma = self.add_weight(name='gamma', shape=input_shape[-1:],
+                                     initializer=Ones(), trainable=True)
+        self.beta = self.add_weight(name='beta', shape=input_shape[-1:],
+                                    initializer=Zeros(), trainable=True)
+        super(LayerNormalization, self).build(input_shape)
+
+    def call(self, inputs):
+        mean = K.mean(inputs, axis=self.axis, keepdims=True)
+        variance = K.mean(K.square(inputs - mean), axis=-1, keepdims=True)
+        std = K.sqrt(variance + self.eps)
+        outputs = (inputs - mean) / std
+        if self.scale:
+            outputs *= self.gamma
+        if self.center:
+            outputs += self.beta
+        return outputs
+
+class PoolingLayer(Layer):
+    def __init__(self, mode='mean', supports_masking=False, **kwargs):
+        if mode not in ['sum', 'mean', 'max']:
+            raise ValueError("mode must be sum or mean")
+        self.mode = mode
+        self.eps = tf.constant(1e-8, tf.float32)
+        super(PoolingLayer, self).__init__(**kwargs)
+        self.supports_masking = supports_masking
+
+    def build(self, input_shape):
+        super(PoolingLayer, self).build(
+            input_shape)  # Be sure to call this somewhere!
+
+    def call(self, seq_value_len_list, mask=None, **kwargs):
+        if not isinstance(seq_value_len_list, list):
+            seq_value_len_list = [seq_value_len_list]
+        if len(seq_value_len_list) == 1:
+            return seq_value_len_list[0]
+        expand_seq_value_len_list = list(map(lambda x: tf.expand_dims(x, axis=-1), seq_value_len_list))
+        a = concat_func(expand_seq_value_len_list)
+        if self.mode == "mean":
+            hist = reduce_mean(a, axis=-1, )
+        if self.mode == "sum":
+            hist = reduce_sum(a, axis=-1, )
+        if self.mode == "max":
+            hist = reduce_max(a, axis=-1, )
+        return hist
+
+    def get_config(self, ):
+        config = {'mode': self.mode, 'supports_masking': self.supports_masking}
+        base_config = super(PoolingLayer, self).get_config()
+        return dict(list(base_config.items()) + list(config.items()))
