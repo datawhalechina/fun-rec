@@ -10,13 +10,14 @@ PNN模型其实是对IPNN和OPNN的总称，两者分别对应的是不同的Pro
 
 PNN模型的整体架构如下图所示：
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210308142624189.png" alt="image-20210308142624189" style="zoom: 50%;" />
+<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210308142624189.png" alt="image-20210308142624189" style="zoom: 50%;" /> </div>
 
 一共分为五层，其中除了Product Layer别的layer都是比较常规的处理方法，均可以从前面的章节进一步了解。模型中最重要的部分就是通过Product层对embedding特征进行交叉组合，也就是上图中红框所显示的部分。
 
 Product层主要有线性部分和非线性部分组成，分别用$l_z$和$l_p$来表示，
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210308143101261.png" alt="image-20210308143101261" style="zoom: 50%;" />
+<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210308143101261.png" alt="image-20210308143101261" style="zoom: 50%;" />
+</div>
 
 1. 线性模块，一阶特征(未经过显示特征交叉处理)，对应论文中的$l_z=(l_z^1,l_z^2, ..., l_z^{D_1})$
 2. 非线性模块，高阶特征(经过显示特征交叉处理)，对应论文中的$l_p=(l_p^1,l_p^2, ..., l_p^{D_1})$
@@ -231,7 +232,8 @@ class ProductLayer(Layer):
 
 下面是一个通过keras画的模型结构图，为了更好的显示，类别特征都只是选择了一小部分，画图的代码也在github中。
 
-![PNN](http://ryluo.oss-cn-chengdu.aliyuncs.com/图片PNN.png)
+<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片PNN.png" alt="image-20210308143101261" style="zoom: 50%;" />
+</div>
 
 ## 思考题
 
