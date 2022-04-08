@@ -61,10 +61,10 @@
     - AutoInt【完成一半，待优化】
     - FiBiNET【完成一半，待优化】
 - **WideNDeep系列**
-    - Wide&Deep【已完成】
+    - [Wide&Deep](/推荐算法基础/经典排序模型/Wide&Deep系列/Wide&Deep)
     - 改进Deep侧
-        - NFM【已完成】
-        - AFM【已完成】
+        - [NFM](/推荐算法基础/经典排序模型/Wide&Deep系列/NFM)
+        - [AFM](/推荐算法基础/经典排序模型/Wide&Deep系列/AFM)
     - 改进Wide侧
         - DeepFM【已完成】
         - xDeepFM【未完成】
