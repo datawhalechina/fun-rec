@@ -82,12 +82,18 @@
 ### 推荐系统实战
 
 #### 竞赛实践(天池入门赛-新闻推荐)
-- 入门赛讲解视频【已完成】
-- 赛题理解&Baseline【已完成】
-- 数据分析【已完成】
-- 多路召回【已完成】
-- 特征工程【已完成】
-- 排序模型&模型融合【已完成】
+- **视频**
+  - [赛题理解](https://www.bilibili.com/video/BV1do4y1d7FP?p=1)
+  - [多路召回](https://www.bilibili.com/video/BV1do4y1d7FP?p=4)
+  - [特征工程](https://www.bilibili.com/video/BV1do4y1d7FP?p=2)
+  - [上分技巧](https://www.bilibili.com/video/BV1do4y1d7FP?p=3)
+- **文档**
+  - 入门赛讲解视频【已完成】
+  - 赛题理解&Baseline【已完成】
+  - 数据分析【已完成】
+  - 多路召回【已完成】
+  - 特征工程【已完成】
+  - 排序模型&模型融合【已完成】
 
 #### 新闻推荐系统实践
 - 新闻推荐系统流程的构建视频讲解【已完成】
