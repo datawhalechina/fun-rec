@@ -84,7 +84,7 @@ $$
 $$
 p=\sigma\left(\left[\mathbf{x}_{L_{1}}^{T}, \mathbf{h}_{L_{2}}^{T}\right] \mathbf{w}_{\text {logits }}\right)
 $$
-其中$\mathbf{x}_{L_{1}}^{T}$$\mathbf{h}_{L_{2}}^{T}$表示交叉网络和深度网络的输出。
+其中$\mathbf{x}_{L_{1}}^{T}$和$\mathbf{h}_{L_{2}}^{T}$分别表示交叉网络和深度网络的输出。
 最后二分类的损失函数依然是交叉熵损失：
 $$
 \text { loss }=-\frac{1}{N} \sum_{i=1}^{N} y_{i} \log \left(p_{i}\right)+\left(1-y_{i}\right) \log \left(1-p_{i}\right)+\lambda \sum_{l}\left\|\mathbf{w}_{i}\right\|^{2}
