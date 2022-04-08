@@ -88,12 +88,11 @@
   - [特征工程](https://www.bilibili.com/video/BV1do4y1d7FP?p=2)
   - [上分技巧](https://www.bilibili.com/video/BV1do4y1d7FP?p=3)
 - **文档**
-  - 入门赛讲解视频【已完成】
-  - 赛题理解&Baseline【已完成】
-  - 数据分析【已完成】
-  - 多路召回【已完成】
-  - 特征工程【已完成】
-  - 排序模型&模型融合【已完成】
+  - [赛题理解&Baseline](/推荐系统实战/jupyter/赛题理解+Baseline.ipynb)
+  - [数据分析](/推荐系统实战/jupyter/数据分析.ipynb)
+  - [多路召回](/推荐系统实战/jupyter/多路召回.ipynb)
+  - [特征工程](/推荐系统实战/jupyter/特征工程.ipynb)
+  - [排序模型&模型融合](/推荐系统实战/jupyter/排序模型+模型融合.ipynb)
 
 #### 新闻推荐系统实践
 - 新闻推荐系统流程的构建视频讲解【已完成】
