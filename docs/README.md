@@ -61,11 +61,11 @@
     - AutoInt【完成一半，待优化】
     - FiBiNET【完成一半，待优化】
 - **WideNDeep系列**
-    - [Wide&Deep](/推荐算法基础/经典排序模型/Wide&Deep系列/Wide&Deep)
-    - 改进Deep侧
+    - **[Wide&Deep](/推荐算法基础/经典排序模型/Wide&Deep系列/Wide&Deep)**
+    - **改进Deep侧**
         - [NFM](/推荐算法基础/经典排序模型/Wide&Deep系列/NFM)
         - [AFM](/推荐算法基础/经典排序模型/Wide&Deep系列/AFM)
-    - 改进Wide侧
+    - **改进Wide侧**
         - DeepFM【已完成】
         - xDeepFM【未完成】
 - **序列模型**
@@ -88,11 +88,11 @@
   - [特征工程](https://www.bilibili.com/video/BV1do4y1d7FP?p=2)
   - [上分技巧](https://www.bilibili.com/video/BV1do4y1d7FP?p=3)
 - **文档**
-  - [赛题理解&Baseline](/推荐系统实战/jupyter/赛题理解+Baseline.ipynb)
-  - [数据分析](/推荐系统实战/jupyter/数据分析.ipynb)
-  - [多路召回](/推荐系统实战/jupyter/多路召回.ipynb)
-  - [特征工程](/推荐系统实战/jupyter/特征工程.ipynb)
-  - [排序模型&模型融合](/推荐系统实战/jupyter/排序模型+模型融合.ipynb)
+  - [赛题理解&Baseline](/推荐系统实战/markdown/赛题理解+Baseline)
+  - [数据分析](/推荐系统实战/markdown/数据分析)
+  - [多路召回](/推荐系统实战/markdown/多路召回)
+  - [特征工程](/推荐系统实战/markdown/特征工程)
+  - [排序模型&模型融合](/推荐系统实战/markdown/排序模型+模型融合)
 
 #### 新闻推荐系统实践
 - 新闻推荐系统流程的构建视频讲解【已完成】
