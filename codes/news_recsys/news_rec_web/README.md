@@ -50,6 +50,18 @@ http://theneverlemon.gitee.io/vue3-fun-rec-project/#/
 - 测试用户名: `11`   测试密码: `111111` (连接远程服务器，具有推荐功能，优先使用这个)
 - 测试用户名: `user`   测试密码: `pass` (mock数据模拟，远程服务器获取不到数据时使用，没有推荐功能)
 
+<br>
+
+#### react
+
+**源代码:**
+[GitHub](https://github.com/datawhalechina/fun-rec/tree/master/codes/news_recsys/news_rec_web/react-fun-rec) 　[Gitee](https://gitee.com/theNeverLemon/react-fun-rec)
+
+**演示链接:**
+http://theneverlemon.gitee.io/react-fun-rec/
+
+- 测试用户名: `user`   测试密码: `pass` (mock数据模拟，远程服务器获取不到数据时使用，没有推荐功能)
+- 
 ---
 
 
@@ -62,7 +74,7 @@ http://theneverlemon.gitee.io/vue3-fun-rec-project/#/
 
 
 <div  align="center">    
-<img src="https://gitee.com/theNeverLemon/news-img/raw/master/img/登录.jpg" width = "30%" height = "30%" alt="登录"/>
+<img src="https://raw.githubusercontent.com/kenken-xr/image/main/fun-rec-img%E7%99%BB%E5%BD%95.jpg" width = "30%" height = "30%" alt="登录"/>
 </div>
 
 
@@ -77,7 +89,7 @@ http://theneverlemon.gitee.io/vue3-fun-rec-project/#/
 - 注册成功后将跳转至主页面
 
 <div  align="center">    
-<img src="https://gitee.com/theNeverLemon/news-img/raw/master/img/注册.jpg" width = "30%" height = "30%" alt="注册"/>
+<img src="https://raw.githubusercontent.com/kenken-xr/image/main/fun-rec-img%E6%B3%A8%E5%86%8C.jpg" width = "30%" height = "30%" alt="注册"/>
 </div>
 
 
@@ -88,8 +100,8 @@ http://theneverlemon.gitee.io/vue3-fun-rec-project/#/
 - 点进新闻详情页后阅读次数会实时增加
 
 <div  align="center">    
-<img src="https://gitee.com/theNeverLemon/news-img/raw/master/img/推荐.jpg" width = "30%" height = "30%" alt="推荐"/>  
-<img src="https://gitee.com/theNeverLemon/news-img/raw/master/img/热门.jpg" width = "30%" height = "30%" alt="热门"/>
+<img src="https://raw.githubusercontent.com/kenken-xr/image/main/fun-rec-img%E6%8E%A8%E8%8D%90.jpg" width = "30%" height = "30%" alt="推荐"/>  
+<img src="https://raw.githubusercontent.com/kenken-xr/image/main/fun-rec-img%E7%83%AD%E9%97%A8.jpg" width = "30%" height = "30%" alt="热门"/>
 </div>
 
 
@@ -100,8 +112,8 @@ http://theneverlemon.gitee.io/vue3-fun-rec-project/#/
 - 底部点击`喜欢`或者`收藏`可以记录将当前用户行为，并在列表页相应增加
 
 <div  align="center">    
-<img src="https://gitee.com/theNeverLemon/news-img/raw/master/img/新闻详情.jpg" width = "30%" height = "30%" alt="新闻详情"/>
-<img src="https://gitee.com/theNeverLemon/news-img/raw/master/img/新闻详情2.jpg" width = "30%" height = "30%" alt="新闻详情2"/>
+<img src="https://raw.githubusercontent.com/kenken-xr/image/main/fun-rec-img%E6%96%B0%E9%97%BB%E8%AF%A6%E6%83%85.jpg" width = "30%" height = "30%" alt="新闻详情"/>
+<img src="https://raw.githubusercontent.com/kenken-xr/image/main/fun-rec-img%E6%96%B0%E9%97%BB%E8%AF%A6%E6%83%852.jpg" width = "30%" height = "30%" alt="新闻详情2"/>
 </div>
 
 - [X] **个人中心** —— 记录用户的头像和用户名
@@ -113,6 +125,6 @@ http://theneverlemon.gitee.io/vue3-fun-rec-project/#/
 - 点击`退出登录`回到登录页
 
 <div  align="center">    
-<img src="https://gitee.com/theNeverLemon/news-img/raw/master/img/个人中心1.jpg" width = "30%" height = "30%" alt="个人中心1"/> 
-<img src="https://gitee.com/theNeverLemon/news-img/raw/master/img/个人中心2.jpg" width = "30%" height = "30%" alt="个人中心2"/>
+<img src="https://raw.githubusercontent.com/kenken-xr/image/main/fun-rec-img%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%831.jpg" width = "30%" height = "30%" alt="个人中心1"/> 
+<img src="https://raw.githubusercontent.com/kenken-xr/image/main/fun-rec-img%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%832.jpg" width = "30%" height = "30%" alt="个人中心2"/>
 </div>

@@ -1,5 +1,0 @@
-export declare const getSuggestion: ({ value, suggestions, format, }: {
-    value: string;
-    suggestions: string[];
-    format?: ((suggestion: string) => string) | undefined;
-}) => string;
