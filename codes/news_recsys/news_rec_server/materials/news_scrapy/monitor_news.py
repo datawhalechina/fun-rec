@@ -18,6 +18,6 @@ if __name__ == "__main__":
     # 查找当前集合中所有文档的数量
     cur_news_num = collection.count()
 
-    if (cur_news_num < news_num):
+    if cur_news_num < news_num:
         print("the news nums of {}_{} collection is {} and less then {}.".\
             format(COLLECTION_NAME_PRFIX, time_str, cur_news_num, news_num))

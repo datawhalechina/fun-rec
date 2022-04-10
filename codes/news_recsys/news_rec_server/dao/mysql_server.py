@@ -2,12 +2,13 @@ import sys
 sys.path.append("../")
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from conf.dao_config import loginfo_db_name, user_info_db_name
- 
+from conf.dao_config import loginfo_db_name, user_info_db_name, contest_loginfo_db_name
+
 
 class MysqlServer(object):
-    def __init__(self, username="root", passwd="123456", hostname="localhost", port="3306", 
-        user_info_db_name=user_info_db_name, loginfo_db_name=loginfo_db_name):
+    def __init__(self, username="root", passwd="123456", hostname="localhost", port="3306", \
+            user_info_db_name=user_info_db_name, loginfo_db_name=loginfo_db_name, \
+            contest_loginfo_db_name=contest_loginfo_db_name):
 
         self.username = username
         self.passwd = passwd
@@ -15,6 +16,7 @@ class MysqlServer(object):
         self.port = port
         self.user_info_db_name = user_info_db_name
         self.loginfo_db_name = loginfo_db_name
+        self.contest_loginfo_db_name = contest_loginfo_db_name
 
     def session(self, db_name):
         """链接数据库，绑定映射关系
@@ -63,6 +65,12 @@ class MysqlServer(object):
         """
         _, sess = self.session(self.user_info_db_name)
         return sess
+    
+    def get_contest_loginfo_session(self):
+        """获取用户阅读的session
+        """
+        _, sess = self.session(self.contest_loginfo_db_name)
+        return sess
 
     def get_register_user_engine(self):
         """
@@ -100,3 +108,8 @@ class MysqlServer(object):
         engine, _ = self.session(self.user_info_db_name) 
         return engine  
 
+    def get_contest_loginfo_engine(self):
+        """
+        """
+        engine, _ = self.session(self.contest_loginfo_db_name) 
+        return engine
