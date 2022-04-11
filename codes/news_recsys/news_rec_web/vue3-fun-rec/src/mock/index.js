@@ -54,18 +54,20 @@ for(let i = 0; i < 10; i ++){
     })
 }
 Mock.mock('/recList', 'get', () => {
-    return {
-        code:200,
-        data:Data
-    }
-  })
+  console.log('recListMock',Data)
+  return {
+      code:200,
+      data:Data
+  }
+})
 
 
 Mock.mock('/hotList', 'get', () => {
-    return {
-        code:200,
-        data:Data
-    }
+  console.log('hotListMock',Data)
+  return {
+      code:200,
+      data:Data
+  }
 })
 
 Mock.mock(RegExp("/newsInfo" + ".*"), 'get', (option) => {

@@ -31,11 +31,11 @@
 
 <script setup>
   import bottomBarVue from "@/components/bottomBar.vue"
+  import { routerKey, useRouter } from "vue-router";
   import { Toast } from 'vant'
   import { reactive, getCurrentInstance } from "vue";
   import { useStore } from "vuex";
   const store = useStore();
-  import { routerKey, useRouter } from "vue-router";
   const router = useRouter();
 
   const { proxy } = getCurrentInstance();

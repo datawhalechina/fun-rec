@@ -36,10 +36,10 @@
 
 <script setup>
   import { Toast } from 'vant'
-  import {  reactive, getCurrentInstance } from "vue";
+  import {  reactive, getCurrentInstance, onMounted } from "vue";
   import { useStore } from "vuex";
-  const store = useStore();
   import { useRouter, useRoute  } from "vue-router";
+  const store = useStore();
   const router = useRouter();
   const route = useRoute();
   const { proxy } = getCurrentInstance();
@@ -76,6 +76,8 @@
         return res
       })
     }
+
+    console.log(successData);
 
     if (successData.status === 200) {
       data.news_content = successData.data.data
@@ -185,9 +187,9 @@
   }
   
 
-    // 创建页面时调用函数
-    getNewsInfo()
-    sendInfo()
+  // 创建页面时调用函数
+  getNewsInfo()
+  sendInfo()
 
   
 </script>

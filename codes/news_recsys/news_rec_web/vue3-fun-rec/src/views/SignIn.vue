@@ -93,7 +93,7 @@ async function login() {
     const timer = setInterval(() => {
       second--;
       if (!second) {
-          clearInterval(timer);
+        clearInterval(timer);
         // 手动清除 Toast
         Toast.clear();
         router.push({name:'recLists' ,params:{type:'signIn',username:data.model.username}})
