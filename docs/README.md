@@ -31,7 +31,7 @@
 - **基于协同过滤的召回**
     - UserCF【已完成，待优化】
     - ItemCF【已完成，待优化】
-    - Swing(Graph-based)【未完成】
+    - [Swing(Graph-based)](/推荐算法基础/经典召回模型/基于协同过滤的召回/Swing(Graph-based))
     - 矩阵分解系列(ALS,SVD++)【已完成，待优化】
 - **基于向量的召回**
     - FM召回【未完成】
