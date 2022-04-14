@@ -131,99 +131,17 @@
 
 
 ## 致谢
-<table align="center" style="width:80%;">
-<thead>
-  <tr>
-    <th>成员</th>
-    <th>个人简介及贡献</th>
-    <th>个人主页</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">罗如意</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，西安电子科技大学硕士，项目负责人, 核心贡献者</td>
-    <td><a href="https://github.com/ruyiluo">Github</a></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">吴忠强</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，东北大学硕士，CSDN博客专家，核心贡献者</td>
-    <td><a href="https://blog.csdn.net/wuzhongqiang">CSDN</a></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">何世福</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，课程设计及内容审核</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">徐何军</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，内容审核</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">李万业</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，同济大学硕士，新闻推荐入门赛贡献部分内容</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">陈琰钰</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，清华大学硕士，新闻推荐入门赛贡献部分内容</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">陈锴</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，中山大学本科，推荐算法基础贡献部分内容</td>
-    <td></td>
-  </tr>
-   <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">梁家晖</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，公众号：可能好玩，基础推荐算法贡献部分内容</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王贺</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，新闻推荐入门赛赛题设计者</td>
-    <td><a href="https://www.zhihu.com/people/wang-he-13-93">鱼遇雨欲语与余</a></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宁彦吉</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，算法工程师，深度推荐模型章节贡献部分内容</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">田雨</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，武汉大学硕士，深度推荐模型章节贡献部分内容</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">赖敏材</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale成员，上海科技大学硕士，深度模型及面经贡献部分内容</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">汪志鸿</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale意向成员，东北大学硕士，新闻推荐系统实践贡献部分内容</td>
-    <td></td>
-  </tr>
-   <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">王辰玥</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale意向成员，中国地质大学，新闻推荐系统实践前端负责人</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">唐鑫</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale意向成员，西安电子科技大学硕士，机器学习基础贡献部分内容</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">宋禹成</span></td>
-    <td><span style="font-weight:normal;font-style:normal;text-decoration:none">Datawhale意向成员，东北大学硕士，新闻推荐系统贡献部分内容</td>
-    <td></td>
-  </tr>
-</tbody>
-</table> 
+**核心贡献者**
+- 罗如意-项目负责人（Datawhale成员-西安电子科技大学-算法工程师）
+- 何世福-项目发起者（Datawhale成员-大连理工大学-算法工程师）
+- 吴忠强（Datawhale成员-东北大学-算法工程师-CSDN博客专家）
+- 赖敏材（Datawhale成员-上海科技大学-算法工程师）
+- 汪志鸿（Datawhale成员-东北大学-算法工程师）
+- 王辰玥（Datawhale意向成员-武汉理工大学-在校生）
 
-<font color='red'>感谢Datawhale成员刘雯静、吕豪杰及意向成员张汉隆、吴丹飞、王云川、肖桐、管柯琴、陈雨龙和宋禹成等人在开源项目组队学习中担任助教时的辛苦付出！</font>
+**其他** 
+
+感谢徐何军，李万业，陈琰钰，陈锴，梁家晖，王贺，宁彦吉，田雨，唐鑫，宋禹成，刘雯静，吕豪杰，张汉隆，吴丹飞，王云川，肖桐，管柯琴，陈雨龙，宋禹成等在最早期的时候对fun-rec所做的贡献!
 
 ## 关注我们
 <div align=center>
