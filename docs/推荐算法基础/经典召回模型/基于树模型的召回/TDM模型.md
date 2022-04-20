@@ -10,7 +10,7 @@
 
 **树结构**
 
-<img src="/Users/jiahongxie/Library/Application Support/typora-user-images/image-20220420213149324.png" alt="image-20220420213149324" style="zoom: 15%;" />
+<img src="./img/image-20220420213149324.png" alt="image-20220420213149324" style="zoom: 15%;" />
 
 如上图，树中的每一个叶子节点对应一个商品item，非叶子结点表示的是item的集合**（这里的树不限于二叉树）**。这种层次化结构体现了粒度从粗到细的item架构。
 
@@ -18,7 +18,7 @@
 
 **整体结构**
 
-![image-20220420200433442](/Users/jiahongxie/Library/Application Support/typora-user-images/image-20220420200433442.png)
+![image-20220420200433442](./img/image-20220420200433442.png)
 
 # 算法详解
 
@@ -34,7 +34,7 @@
 
 2. 对兴趣进行建模
 
-   <img src="/Users/jiahongxie/Library/Application Support/typora-user-images/image-20220420214040264.png" alt="image-20220420214040264" style="zoom:50%;" />
+   <img src="./img/image-20220420214040264.png" alt="image-20220420214040264" style="zoom:50%;" />
 
    ​	如上图，用户对叶子层item6感兴趣，可以认为它的兴趣是1，同层别的候选节点的兴趣为0，顺着着绿色线路上去的节点都标记为1，路线上的同层别的候选节点都标记为0。这样的操作就可以根据1和0构建用于每一层的正负样本。
 
@@ -42,7 +42,7 @@
 
 3. 训练过程
 
-   <img src="/Users/jiahongxie/Library/Application Support/typora-user-images/image-20220420220831318.png" alt="image-20220420220831318" style="zoom:20%;" />
+   <img src="./img/image-20220420220831318.png" alt="image-20220420220831318" style="zoom:20%;" />
 
    整体联合训练的方式如下：
 
@@ -60,13 +60,13 @@
 
 # 参考
 
-阿里妈妈深度树检索技术(TDM) 及应用框架的探索实践 https://mp.weixin.qq.com/s/sw16_sUsyYuzpqqy39RsdQ
+[阿里妈妈深度树检索技术(TDM) 及应用框架的探索实践](https://mp.weixin.qq.com/s/sw16_sUsyYuzpqqy39RsdQ)
 
-阿里TDM：Tree-based Deep Model https://zhuanlan.zhihu.com/p/78941783
+[阿里TDM：Tree-based Deep Model](https://zhuanlan.zhihu.com/p/78941783)
 
-阿里妈妈TDM模型详解 https://zhuanlan.zhihu.com/p/93201318
+[阿里妈妈TDM模型详解](https://zhuanlan.zhihu.com/p/93201318)
 
-Paddle TDM 模型实现 https://github.com/PaddlePaddle/PaddleRec/blob/master/models/treebased/README.md
+[Paddle TDM 模型实现](https://github.com/PaddlePaddle/PaddleRec/blob/master/models/treebased/README.md)
 
 
 
