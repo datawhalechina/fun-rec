@@ -129,6 +129,23 @@
   - [HR及其他](ch04/ch4.5)
 
 
+### 备注
+
+[2.1 竞赛实践(天池入门赛-新闻推荐)](https://tianchi.aliyun.com/competition/entrance/531842/forum)
+
+<div align=center>
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211213165802957.png" alt="image-20211213165802957" style="zoom:58%;" />
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211213165847593.png" alt="image-20211213165847593" style="zoom:58%;" />
+</div>
+
+**2.2 新闻推荐系统实践前端展示和后端逻辑(项目没有任何商用价值仅供入门者学习)**
+
+<div align=center> 
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211205142026937.png" alt="image-20211205142026937" style="zoom:57%;" />
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Fun-Rec新闻推荐系统.png" alt="Fun-Rec新闻推荐系统" style="zoom:50%;" />
+</div>
+
+
 ## 致谢
 **核心贡献者**
 - 罗如意-项目负责人（Datawhale成员-西安电子科技大学-算法工程师）
