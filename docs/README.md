@@ -58,7 +58,7 @@
     - [PNN](ch02/ch2.2/ch2.2.2/PNN)
     - [DCN](ch02/ch2.2/ch2.2.2/DCN)
     - [AutoInt](ch02/ch2.2/ch2.2.2/AutoInt)
-    - FiBiNET
+    - [FiBiNET](ch02/ch2.2/ch2.2.2/FiBiNet)
 - **WideNDeep系列**
     - **[Wide&Deep](ch02/ch2.2/ch2.2.3/WideNDeep)**
     - **改进Deep侧**
