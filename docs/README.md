@@ -49,7 +49,7 @@
         - [MIND](ch02/ch2.1/ch2.1.4/MIND)
         - [SDM](ch02/ch2.1/ch2.1.4/SDM)
 - **树模型召回**
-    - TDM
+    - [TDM](ch02/ch2.1/ch2.1.5/TDM)
 
 #### 经典排序模型
 - **[GBDT+LR](ch02/ch2.2/ch2.2.1)**
