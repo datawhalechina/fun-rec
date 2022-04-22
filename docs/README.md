@@ -34,10 +34,11 @@
   - 矩阵分解
 - **基于向量的召回**
     - FM召回
-    - **word2vec召回**
+    - **item2vec召回系列**
         - word2vec原理
+        - item2vec召回
         - Airbnb召回
-    - YoutubeDNN召回
+    - [YoutubeDNN召回](ch02/ch2.1/ch2.1.2/YoutubeDNN)
     - **双塔召回**
         - 经典双塔
         - Youtube双塔
