@@ -36,7 +36,7 @@
                 - [FM](ch02/ch2.2/ch2.2.2/FM)
                 - [PNN](ch02/ch2.2/ch2.2.2/PNN)
                 - [DCN](ch02/ch2.2/ch2.2.2/DCN)
-                - AutoInt
+                - [AutoInt](ch02/ch2.2/ch2.2.2/AutoInt)
                 - FiBiNet
             - 2.2.3 Wide&Deep系列
                 - [Wide&Deep](ch02/ch2.2/ch2.2.3/WideNDeep)
