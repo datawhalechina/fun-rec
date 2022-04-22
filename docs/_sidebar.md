@@ -43,7 +43,7 @@
                 - [NFM](ch02/ch2.2/ch2.2.3/NFM)
                 - [AFM](ch02/ch2.2/ch2.2.3/AFM)
                 - [DeepFM](ch02/ch2.2/ch2.2.3/DeepFM)
-                - xDeepFM
+                - [xDeepFM](ch02/ch2.2/ch2.2.3/xDeepFM)
             - 2.2.4 序列模型
                 - [DIN](ch02/ch2.2/ch2.2.4/DIN)
                 - [DIEN](ch02/ch2.2/ch2.2.4/DIEN)

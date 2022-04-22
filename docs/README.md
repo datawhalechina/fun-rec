@@ -66,7 +66,7 @@
         - [AFM](ch02/ch2.2/ch2.2.3/AFM)
     - **改进Wide侧**
         - [DeepFM](ch02/ch2.2/ch2.2.3/DeepFM)
-        - xDeepFM
+        - [xDeepFM](ch02/ch2.2/ch2.2.3/xDeepFM)
 - **序列模型**
     - [DIN](ch02/ch2.2/ch2.2.4/DIN)
     - [DIEN](ch02/ch2.2/ch2.2.4/DIEN)
