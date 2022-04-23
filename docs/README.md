@@ -45,7 +45,7 @@
         - MOBIUS
     - **图召回**
         - [EGES](ch02/ch2.1/ch2.1.3/EGES)
-        - PinSAGE
+        - [PinSAGE](ch02/ch2.1/ch2.1.3/PinSage)
     - **序列召回**
         - [MIND](ch02/ch2.1/ch2.1.4/MIND)
         - [SDM](ch02/ch2.1/ch2.1.4/SDM)
@@ -76,7 +76,7 @@
 - **多任务学习**
     - SharedBottom
     - ESSM
-    - MMOE
+    - [MMOE](ch02/ch2.2/ch2.2.5/MMOE)
     - PLE
 
 ### 推荐系统实战

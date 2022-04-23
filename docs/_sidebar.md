@@ -25,7 +25,7 @@
                     - MOBIUS
             - 2.1.3 基于图的召回
                 - [EGES](ch02/ch2.1/ch2.1.3/EGES)
-                - PinSAGE
+                - [PinSAGE](ch02/ch2.1/ch2.1.3/PinSage)
             - 2.1.4 基于序列的召回
                 - [MIND](ch02/ch2.1/ch2.1.4/MIND)
                 - [SDM](ch02/ch2.1/ch2.1.4/SDM)
@@ -53,7 +53,7 @@
             - 2.2.5 多任务学习
                 - SharedBottom
                 - ESSM
-                - MMOE
+                - [MMOE](ch02/ch2.2/ch2.2.5/MMOE)
                 - PLE
     - 第三章 推荐系统实战
         - 3.1 天池入门赛-新闻推荐

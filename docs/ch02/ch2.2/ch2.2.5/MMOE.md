@@ -1,21 +1,16 @@
-﻿## 1. 写在前面
+﻿## 写在前面
 MMOE是2018年谷歌提出的，全称是Multi-gate Mixture-of-Experts， 对于多个优化任务，引入了多个专家进行不同的决策和组合，最终完成多目标的预测。解决的是硬共享里面如果多个任务相似性不是很强，底层的embedding学习反而相互影响，最终都学不好的痛点。 
 
 本篇文章首先是先了解下Hard-parameter sharing以及存在的问题，然后引出MMOE，对理论部分进行整理，最后是参考deepctr简单复现。
 
-**主要内容**：
-* 背景与动机
-* MMOE模型的理论
-* MMOE模型代码复现
-* 小总
-
-## 2.  背景与动机
+## 背景与动机
 推荐系统中，即使同一个场景，常常也不只有一个业务目标。 在Youtube的视频推荐中，推荐排序任务不仅需要考虑到用户点击率，完播率，也需要考虑到一些满意度指标，例如，对视频是否喜欢，用户观看后对视频的评分；在淘宝的信息流商品推荐中，需要考虑到点击率，也需要考虑转化率；而在一些内容场景中，需要考虑到点击和互动、关注、停留时长等指标。
 
 模型中，如果采用一个网络同时完成多个任务，就可以把这样的网络模型称为多任务模型， 这种模型能在不同任务之间学习共性以及差异性，能够提高建模的质量以及效率。  常见的多任务模型的设计范式大致可以分为三大类： 
 * hard parameter sharing 方法： 这是非常经典的一种方式，底层是共享的隐藏层，学习各个任务的共同模式，上层用一些特定的全连接层学习特定任务模式。  
-
-	![在这里插入图片描述](https://img-blog.csdnimg.cn/ed10df1df313413daf2a6a6174ef4f8c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center)
+    <div align=center>
+    <img src="https://img-blog.csdnimg.cn/ed10df1df313413daf2a6a6174ef4f8c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+    </div>
 	这种方法目前用的也有，比如美团的猜你喜欢，知乎推荐的Ranking等， 这种方法最大的优势是Task越多， 单任务更加不可能过拟合，即可以减少任务之间过拟合的风险。 但是劣势也非常明显，就是底层强制的shared layers难以学习到适用于所有任务的有效表达。 **尤其是任务之间存在冲突的时候**。MMOE中给出了实验结论，当两个任务相关性没那么好(比如排序中的点击率与互动，点击与停留时长)，此时这种结果会遭受训练困境，毕竟所有任务底层用的是同一组参数。
 * soft parameter sharing: 硬的不行，那就来软的，这个范式对应的结果从`MOE->MMOE->PLE`等。 即底层不是使用共享的一个shared bottom，而是有多个tower， 称为多个专家，然后往往再有一个gating networks在多任务学习时，给不同的tower分配不同的权重，那么这样对于不同的任务，可以允许使用底层不同的专家组合去进行预测，相较于上面所有任务共享底层，这个方式显得更加灵活
 * 任务序列依赖关系建模：这种适合于不同任务之间有一定的序列依赖关系。比如电商场景里面的ctr和cvr，其中cvr这个行为只有在点击之后才会发生。所以这种依赖关系如果能加以利用，可以解决任务预估中的样本选择偏差(SSB)和数据稀疏性(DS)问题
@@ -28,13 +23,16 @@ MMOE是2018年谷歌提出的，全称是Multi-gate Mixture-of-Experts， 对于
 
 带着这两个问题，下面看下MMOE的细节。
 
-## 3. MMOE模型的理论及论文细节
+## MMOE模型的理论及论文细节
 MMOE模型结构图如下。
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/29c5624f2c8a46c097f097af7dbf4b45.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_2,color_FFFFFF,t_70,g_se,x_16#pic_center)
+<div align=center>
+<img src="https://img-blog.csdnimg.cn/29c5624f2c8a46c097f097af7dbf4b45.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_2,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+</div>
+
 这其实是一个演进的过程，首先hard parameter sharing这个就不用过多描述了， 下面主要是看MOE模型以及MMOE模型。
 
-### 3.1 混合专家模型
+### 混合专家模型
 我们知道共享的这种模型结构，会遭受任务之间冲突而导致可能无法很好的收敛，从而无法学习到任务之间的共同模式。这个结构也可以看成是多个任务共用了一个专家。
 
 先抛开任务关系， 我们发现一个专家在多任务学习上的表达能力很有限，于是乎，尝试引入多个专家，这就慢慢的演化出了混合专家模型。 公式表达如下：
@@ -50,7 +48,7 @@ MOE使用了多个混合专家增加了各种表达能力，但是， 一个门�
 
 所以，这种方式的缺口很明显，这样，也更能理解为啥提出多门控控制的专家混合模型了。
 
-### 3.2 MMOE结构
+### MMOE结构
 Multi-gate Mixture-of-Experts(MMOE)的魅力就在于在OMOE的基础上，对于每个任务都会涉及一个门控网络，这样，对于每个特定的任务，都能有一组对应的专家组合去进行预测。更关键的时候，参数量还不会增加太多。公式如下：
 
 $$
@@ -78,8 +76,8 @@ OK， 到这里就把MMOE的故事整理完了，模型结构本身并不是很�
 > - 互相促进： 可以把多任务模型之间的关系看作是互相先验知识，也称为归纳迁移，有了对模型的先验假设，可以更好提升模型的效果。解决数据稀疏性其实本身也是迁移学习的一个特性，多任务学习中也同样会体现
 >- 泛化作用：不同模型学到的表征不同，可能A模型学到的是B模型所没有学好的，B模型也有其自身的特点，而这一点很可能A学不好，这样一来模型健壮性更强
 
-## 4. MMOE模型的简单复现之多任务预测
-### 4.1 模型概貌
+## MMOE模型的简单复现之多任务预测
+### 模型概貌
 这里是MMOE模型的简单复现，参考的deepctr。
 
 由于MMOE模型不是很复杂，所以这里就可以直接上代码，然后简单解释：
@@ -164,8 +162,7 @@ dnn_features_columns = [SparseFeat(feat, feature_max_idx[feat], embedding_dim=4)
 这就是整个MMOE网络的搭建逻辑。
 
 
-
-**参考**:
+**参考资料**:
 * [MMOE论文](https://dl.acm.org/doi/pdf/10.1145/3219819.3220007)
 * [Recommending What Video to Watch Next: A Multitask
 Ranking System](https://dl.acm.org/doi/pdf/10.1145/3298689.3346997)
