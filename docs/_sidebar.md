@@ -48,7 +48,7 @@
             - 2.2.4 序列模型
                 - [DIN](ch02/ch2.2/ch2.2.4/DIN)
                 - [DIEN](ch02/ch2.2/ch2.2.4/DIEN)
-                - DISN
+                - [DISN](ch02/ch2.2/ch2.2.4/DSIN)
                 - BST
             - 2.2.5 多任务学习
                 - SharedBottom
