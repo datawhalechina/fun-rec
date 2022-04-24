@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e8fd533f-1297-4a63-be28-1460036a5271" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础/word2vec_pictures/9.png" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="28Che2OJbCozJgAtlkwMu31utAW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/docs/第一章 推荐系统基础/1.0 机器学习基础" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\1a_my files\github_pull\fun-rec\docs\第一章 推荐系统基础\1.0 机器学习基础" />
+      <recent name="D:\1a_my files\github_pull\fun-rec\docs\第一章 推荐系统基础" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\1a_my files\github_pull\fun-rec\docs\第一章 推荐系统基础\1.0 机器学习基础" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e8fd533f-1297-4a63-be28-1460036a5271" name="Changes" comment="" />
+      <created>1650726567145</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1650726567145</updated>
+      <workItem from="1650726568431" duration="742000" />
+      <workItem from="1650764926216" duration="892000" />
+      <workItem from="1650765956160" duration="379000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
