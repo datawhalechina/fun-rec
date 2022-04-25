@@ -71,8 +71,8 @@ one-hot向量的维度是词汇表的大小（如：500，000）
 我们先引入上下文context的概念：当单词 w 出现在文本中时，其**上下文context**是出现在w附近的一组单词（在固定大小的窗口内），如下图
 
 <div align=center>
-<img src="./word2vec_pictures/2.png" alt="在这里插入图片描述" style="zoom:60%;" /> 
-</div>
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片2.png" alt="在这里插入图片描述" style="zoom:60%;" />
+</div> 
 
 这些上下文单词context words决定了banking的意义
 
