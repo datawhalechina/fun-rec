@@ -140,15 +140,15 @@
 [2.1 竞赛实践(天池入门赛-新闻推荐)](https://tianchi.aliyun.com/competition/entrance/531842/forum)
 
 <div align=center>
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211213165802957.png" alt="image-20211213165802957" width="600px" />
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211213165847593.png" alt="image-20211213165847593" width="600px" />
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211213165802957.png" alt="image-20211213165802957" width="800px" />
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211213165847593.png" alt="image-20211213165847593" width="800px" />
 </div>
 
 **2.2 新闻推荐系统实践前端展示和后端逻辑(项目没有任何商用价值仅供入门者学习)**
 
 <div align=center> 
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211205142026937.png" alt="image-20211205142026937" width="600px" />
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Fun-Rec新闻推荐系统.png" alt="Fun-Rec新闻推荐系统" width="610px" />
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211205142026937.png" alt="image-20211205142026937" width="800px" />
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Fun-Rec新闻推荐系统.png" alt="Fun-Rec新闻推荐系统" width="810px" />
 </div>
 
 
