@@ -16,9 +16,10 @@
 
 项目在Datawhale的组队学习过程中不断的迭代和优化，通过大家的反馈来修正或者补充相关的内容，如果对项目内容设计有更好的意见欢迎给我们反馈。为了方便学习和交流，建了一个fun-rec微信交流群，由于微信群的二维码只有7天内有效，所以直接加下面这个微信，备注：**Fun-Rec**，会被拉到Fun-Rec交流群。由于现在已经有了好几个微信群，为了更方便沉淀内容，我们创建了一个Fun-Rec学习小组知识星球，由于我们的内容面向的人群主要是学生，所以知识星球永久免费，感兴趣的可以加入星球讨论（加入星球的同学先看置定的必读帖）。
 <div align=center> 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220408193745249.png" alt="image-20220408193745249" style="zoom:20%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220408193745249.png" alt="image-20220408193745249" width="500px";" />
 </div>
 
+**注意：不建议直接再github上面阅读（公式图片容易解析错误），推荐点击上面的在线阅读或者离线下载下来之后使用markdown工具（如typora）查看！**                                                                                                                               
 ## 内容导航 
 ### 推荐系统概述
 - [1.1 推荐系统的意义](docs/ch01/ch1.1.md)
@@ -136,15 +137,15 @@
 [2.1 竞赛实践(天池入门赛-新闻推荐)](https://tianchi.aliyun.com/competition/entrance/531842/forum)
 
 <div align=center>
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211213165802957.png" alt="image-20211213165802957" style="zoom:58%;" />
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211213165847593.png" alt="image-20211213165847593" style="zoom:58%;" />
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211213165802957.png" alt="image-20211213165802957" width="800px" />
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211213165847593.png" alt="image-20211213165847593" width="800px" />
 </div>
 
 **2.2 新闻推荐系统实践前端展示和后端逻辑(项目没有任何商用价值仅供入门者学习)**
 
 <div align=center> 
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211205142026937.png" alt="image-20211205142026937" style="zoom:57%;" />
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Fun-Rec新闻推荐系统.png" alt="Fun-Rec新闻推荐系统" style="zoom:50%;" />
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20211205142026937.png" alt="image-20211205142026937" width="800px" />
+    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Fun-Rec新闻推荐系统.png" alt="Fun-Rec新闻推荐系统" width="800px" />
 </div>
 
 
