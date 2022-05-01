@@ -16,67 +16,67 @@
 
 项目在Datawhale的组队学习过程中不断的迭代和优化，通过大家的反馈来修正或者补充相关的内容，如果对项目内容设计有更好的意见欢迎给我们反馈。为了方便学习和交流，建了一个fun-rec微信交流群，由于微信群的二维码只有7天内有效，所以直接加下面这个微信，备注：**Fun-Rec**，会被拉到Fun-Rec交流群。由于现在已经有了好几个微信群，为了更方便沉淀内容，我们创建了一个Fun-Rec学习小组知识星球，由于我们的内容面向的人群主要是学生，所以知识星球永久免费，感兴趣的可以加入星球讨论（加入星球的同学先看置定的必读帖）。
 <div align=center> 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220408193745249.png" alt="image-20220408193745249" style="zoom:40%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220408193745249.png" alt="image-20220408193745249" style="zoom:20%;" />
 </div>
 
 ## 内容导航 
 ### 推荐系统概述
-- [1.1 推荐系统的意义](docs/ch01/ch1.1)
-- [1.2 推荐系统架构](docs/ch01/ch1.2)
-- [1.3 推荐系统技术栈](docs/ch01/ch1.3)
+- [1.1 推荐系统的意义](docs/ch01/ch1.1.md)
+- [1.2 推荐系统架构](docs/ch01/ch1.2.md)
+- [1.3 推荐系统技术栈](docs/ch01/ch1.3.md)
 
 ### 推荐系统算法基础 
 #### **经典召回模型**
 - **基于协同过滤的召回**
-  - [UserCF](docs/ch02/ch2.1/ch2.1.1/usercf)
-  - [ItemCF](docs/ch02/ch2.1/ch2.1.1/itemcf)
-  - [Swing](docs/ch02/ch2.1/ch2.1.1/Swing)
-  - [矩阵分解](docs/ch02/ch2.1/ch2.1.1/mf)
+  - [UserCF](docs/ch02/ch2.1/ch2.1.1/usercf.md)
+  - [ItemCF](docs/ch02/ch2.1/ch2.1.1/itemcf.md)
+  - [Swing](docs/ch02/ch2.1/ch2.1.1/Swing.md)
+  - [矩阵分解](docs/ch02/ch2.1/ch2.1.1/mf.md)
 - **基于向量的召回**
     - FM召回
     - **item2vec召回系列**
-        - [word2vec原理](docs/ch02/ch2.1/ch2.1.2/word2vec)
+        - [word2vec原理](docs/ch02/ch2.1/ch2.1.2/word2vec.md)
         - item2vec召回
         - Airbnb召回
-    - [YoutubeDNN召回](docs/ch02/ch2.1/ch2.1.2/YoutubeDNN)
+    - [YoutubeDNN召回](docs/ch02/ch2.1/ch2.1.2/YoutubeDNN.md)
     - **双塔召回**
         - 经典双塔
         - EBR
         - Youtube双塔
     - **图召回**
-        - [EGES](docs/ch02/ch2.1/ch2.1.3/EGES)
-        - [PinSAGE](docs/ch02/ch2.1/ch2.1.3/PinSage)
+        - [EGES](docs/ch02/ch2.1/ch2.1.3/EGES.md)
+        - [PinSAGE](docs/ch02/ch2.1/ch2.1.3/PinSage.md)
     - **序列召回**
-        - [MIND](docs/ch02/ch2.1/ch2.1.4/MIND)
-        - [SDM](docs/ch02/ch2.1/ch2.1.4/SDM)
+        - [MIND](docs/ch02/ch2.1/ch2.1.4/MIND.md)
+        - [SDM](docs/ch02/ch2.1/ch2.1.4/SDM.md)
 - **树模型召回**
-    - [TDM](docs/ch02/ch2.1/ch2.1.5/TDM)
+    - [TDM](docs/ch02/ch2.1/ch2.1.5/TDM.md)
 
 #### **经典排序模型**
-- **[GBDT+LR](docs/ch02/ch2.2/ch2.2.1)**
+- **[GBDT+LR](docs/ch02/ch2.2/ch2.2.1.md)**
 - **特征交叉**
-    - [FM](docs/ch02/ch2.2/ch2.2.2/FM)
-    - [PNN](docs/ch02/ch2.2/ch2.2.2/PNN)
-    - [DCN](docs/ch02/ch2.2/ch2.2.2/DCN)
-    - [AutoInt](docs/ch02/ch2.2/ch2.2.2/AutoInt)
-    - [FiBiNET](docs/ch02/ch2.2/ch2.2.2/FiBiNet)
+    - [FM](docs/ch02/ch2.2/ch2.2.2/FM.md)
+    - [PNN](docs/ch02/ch2.2/ch2.2.2/PNN.md)
+    - [DCN](docs/ch02/ch2.2/ch2.2.2/DCN.md)
+    - [AutoInt](docs/ch02/ch2.2/ch2.2.2/AutoInt.md)
+    - [FiBiNET](docs/ch02/ch2.2/ch2.2.2/FiBiNet.md)
 - **WideNDeep系列**
-    - **[Wide&Deep](docs/ch02/ch2.2/ch2.2.3/WideNDeep)**
+    - **[Wide&Deep](docs/ch02/ch2.2/ch2.2.3/WideNDeep.md)**
     - **改进Deep侧**
-        - [NFM](docs/ch02/ch2.2/ch2.2.3/NFM)
-        - [AFM](docs/ch02/ch2.2/ch2.2.3/AFM)
+        - [NFM](docs/ch02/ch2.2/ch2.2.3/NFM.md)
+        - [AFM](docs/ch02/ch2.2/ch2.2.3/AFM.md)
     - **改进Wide侧**
-        - [DeepFM](docs/ch02/ch2.2/ch2.2.3/DeepFM)
-        - [xDeepFM](docs/ch02/ch2.2/ch2.2.3/xDeepFM)
+        - [DeepFM](docs/ch02/ch2.2/ch2.2.3/DeepFM.md)
+        - [xDeepFM](docs/ch02/ch2.2/ch2.2.3/xDeepFM.md)
 - **序列模型**
-    - [DIN](docs/ch02/ch2.2/ch2.2.4/DIN)
-    - [DIEN](docs/ch02/ch2.2/ch2.2.4/DIEN)
-    - [DISN](docs/ch02/ch2.2/ch2.2.4/DSIN)
+    - [DIN](docs/ch02/ch2.2/ch2.2.4/DIN.md)
+    - [DIEN](docs/ch02/ch2.2/ch2.2.4/DIEN.md)
+    - [DISN](docs/ch02/ch2.2/ch2.2.4/DSIN.md)
     - BST
 - **多任务学习**
     - SharedBottom
     - ESSM
-    - [MMOE](docs/ch02/ch2.2/ch2.2.5/MMOE)
+    - [MMOE](docs/ch02/ch2.2/ch2.2.5/MMOE.md)
     - PLE
 
 ### 推荐系统实战
@@ -88,47 +88,47 @@
   - [特征工程](https://www.bilibili.com/video/BV1do4y1d7FP?p=2)
   - [上分技巧](https://www.bilibili.com/video/BV1do4y1d7FP?p=3)
 - **文档**
-  - [赛题理解&Baseline](docs/ch03/ch3.1/markdown/ch3.1.1)
-  - [数据分析](docs/ch03/ch3.1/markdown/ch3.1.2)
-  - [多路召回](docs/ch03/ch3.1/markdown/ch3.1.3)
-  - [特征工程](docs/ch03/ch3.1/markdown/ch3.1.4)
-  - [排序模型&模型融合](docs/ch03/ch3.1/markdown/ch3.1.5)
+  - [赛题理解&Baseline](docs/ch03/ch3.1/markdown/ch3.1.1.md)
+  - [数据分析](docs/ch03/ch3.1/markdown/ch3.1.2.md)
+  - [多路召回](docs/ch03/ch3.1/markdown/ch3.1.3.md)
+  - [特征工程](docs/ch03/ch3.1/markdown/ch3.1.4.md)
+  - [排序模型&模型融合](docs/ch03/ch3.1/markdown/ch3.1.5.md)
 
 #### **新闻推荐系统实践**
-- [3.2.0 特别说明(必看)](docs/ch03/ch3.2/3.2)
+- [3.2.0 特别说明(必看)](docs/ch03/ch3.2/3.2.md)
 - **视频**
   - [新闻推荐系统流程的构建视频讲解](https://datawhale.feishu.cn/minutes/obcnzns778b725r5l535j32o)
 - **文档**
   - **离线物料系统的构建**
-      - [Mysql基础](docs/ch03/ch3.2/3.2.1.1)
-      - [MongoDB基础](docs/ch03/ch3.2/3.2.1.2)
-      - [Redis基础](docs/ch03/ch3.2/3.2.1.3)
-      - [Scrapy基础及新闻爬取实战](docs/ch03/ch3.2/3.2.1.4)
-      - [自动化构建用户及物料画像](docs/ch03/ch3.2/3.2.1.5)
+      - [Mysql基础](docs/ch03/ch3.2/3.2.1.1.md)
+      - [MongoDB基础](docs/ch03/ch3.2/3.2.1.2.md)
+      - [Redis基础](docs/ch03/ch3.2/3.2.1.3.md)
+      - [Scrapy基础及新闻爬取实战](docs/ch03/ch3.2/3.2.1.4.md)
+      - [自动化构建用户及物料画像](docs/ch03/ch3.2/3.2.1.5.md)
   - **前后端基础及交互**
-      - [前端基础及Vue实战](docs/ch03/ch3.2/3.2.2.1)
-      - [flask简介及基础](docs/ch03/ch3.2/3.2.2.2)
-      - [前后端交互](docs/ch03/ch3.2/3.2.2.3)
-  - [推荐系统流程的构建](docs/ch03/ch3.2/3.2.3)
+      - [前端基础及Vue实战](docs/ch03/ch3.2/3.2.2.1.md)
+      - [flask简介及基础](docs/ch03/ch3.2/3.2.2.2.md)
+      - [前后端交互](docs/ch03/ch3.2/3.2.2.3.md)
+  - [推荐系统流程的构建](docs/ch03/ch3.2/3.2.3.md)
   - **召回**
       - 热度召回
       - 地域召回
-      - [YoutubeDNN召回](docs/ch03/ch3.2/3.2.4.3)
-      - [DSSM召回](docs/ch03/ch3.2/3.2.4.4)
-  - [DeepFM排序模型](docs/ch03/ch3.2/3.2.5)
+      - [YoutubeDNN召回](docs/ch03/ch3.2/3.2.4.3.md)
+      - [DSSM召回](docs/ch03/ch3.2/3.2.4.4.md)
+  - [DeepFM排序模型](docs/ch03/ch3.2/3.2.5.md)
   - 规则与重排
   - 任务监控与调度
 - **当前问题汇总**
-  - [熟悉推荐系统基本流程问答整理](docs/ch03/ch3.2/3.2.8.1)
-  - [数据库的基本使用问答整理](docs/ch03/ch3.2/3.2.8.2)
-  - [离线物料系统的构建问答整理](docs/ch03/ch3.2/3.2.8.3)
+  - [熟悉推荐系统基本流程问答整理](docs/ch03/ch3.2/3.2.8.1.md)
+  - [数据库的基本使用问答整理](docs/ch03/ch3.2/3.2.8.2.md)
+  - [离线物料系统的构建问答整理](docs/ch03/ch3.2/3.2.8.3.md)
 
 ### 推荐系统算法面经
-  - [ML与DL基础](docs/ch04/ch4.1)
-  - [推荐模型相关](docs/ch04/ch4.2)
-  - [热门技术相关](docs/ch04/ch4.3)
-  - [业务场景相关](docs/ch04/ch4.4)
-  - [HR及其他](docs/ch04/ch4.5)
+  - [ML与DL基础](docs/ch04/ch4.1.md)
+  - [推荐模型相关](docs/ch04/ch4.2.md)
+  - [热门技术相关](docs/ch04/ch4.3.md)
+  - [业务场景相关](docs/ch04/ch4.4.md)
+  - [HR及其他](docs/ch04/ch4.5.md)
 
 
 ### 备注
@@ -149,7 +149,9 @@
 
 
 ## 致谢
+
 **核心贡献者**
+
 - 罗如意-项目负责人（Datawhale成员-西安电子科技大学-算法工程师）
 - 何世福-项目发起者（Datawhale成员-大连理工大学-算法工程师）
 - 吴忠强（Datawhale成员-东北大学-算法工程师-CSDN博客专家）
@@ -158,10 +160,12 @@
 - 王辰玥（Datawhale意向成员-中国地质大学(武汉)-在校生）
 
 **重要贡献者（根据内容+社区贡献程度筛选）**
+
 - 唐鑫（Datawhale意向成员-西安电子科技大学-在校生）
 - 王宇宸（Datawhale意向成员-上海科技大学-在校生）
 
-**其他** 
+**其他**  
+
 感谢徐何军，李万业，陈琰钰，陈锴，梁家晖，王贺，宁彦吉，田雨，宋禹成，刘雯静，吕豪杰，张汉隆，吴丹飞，王云川，肖桐，管柯琴，陈雨龙，宋禹成等在最早期的时候对fun-rec所做的贡献!
 
 ## 关注我们
