@@ -8,10 +8,10 @@
     - 第二章 推荐系统算法基础
         - 2.1 经典召回模型
             - 2.1.1 基于协同过滤的召回
-                - UserCF
-                - ItemCF
+                - [UserCF](ch02/ch2.1/ch2.1.1/usercf)
+                - [ItemCF](ch02/ch2.1/ch2.1.1/itemcf)
                 - [Swing](ch02/ch2.1/ch2.1.1/Swing)
-                - 矩阵分解
+                - [矩阵分解](ch02/ch2.1/ch2.1.1/mf)
             - 2.1.2 基于向量的召回
                 - FM召回
                 - item2vec召回系列

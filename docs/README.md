@@ -28,10 +28,10 @@
 ### 推荐系统算法基础 
 #### 经典召回模型 {docsify-ignore}
 - **基于协同过滤的召回**
-  - UserCF
-  - ItemCF
+  - [UserCF](ch02/ch2.1/ch2.1.1/usercf)
+  - [ItemCF](ch02/ch2.1/ch2.1.1/itemcf)
   - [Swing](ch02/ch2.1/ch2.1.1/Swing)
-  - 矩阵分解
+  - [矩阵分解](ch02/ch2.1/ch2.1.1/mf)
 - **基于向量的召回**
     - FM召回
     - **item2vec召回系列**
