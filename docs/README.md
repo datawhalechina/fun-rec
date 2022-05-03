@@ -77,7 +77,7 @@
     - BST
 - **多任务学习**
     - [多任务学习概述](ch02/ch2.2/ch2.2.5/多任务学习概述)
-    - [ESMM](ch02/ch2.2/ch2.2.5/ESSM)
+    - [ESMM](ch02/ch2.2/ch2.2.5/ESMM)
     - [MMOE](ch02/ch2.2/ch2.2.5/MMOE)
     - [PLE](ch02/ch2.2/ch2.2.5/PLE)
 
