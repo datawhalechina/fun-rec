@@ -250,7 +250,6 @@ def _simulate_walks(self, nodes, num_walks, walk_length,):
 
 ```python
 sku_side_info = pd.merge(all_skus, product_data, on='sku_id', how='left').fillna(0) # 为商品加载side information
-
 for feat in sku_side_info.columns:
     if feat != 'sku_id':
         lbe = LabelEncoder()
@@ -282,48 +281,54 @@ def get_graph_context_all_pairs(walks, window_size):
 构造完数据之后，在funrec的基础上实现了EGES模型：
 
 ```python
-def EGES(side_information_columns, items_columns, merge_type = "weight", share_flag=True,l2_reg=0.0001, seed=1024):
-    # 获取 item 特征的列信息
+def EGES(side_information_columns, items_columns, merge_type = "weight", share_flag=True,
+        l2_reg=0.0001, seed=1024):
+    # side_information 所对应的特征
     feature_columns = list(set(side_information_columns))
-    # 根据feature_coulmns初始化模型的 input
+    # 获取输入层，查字典
     feature_encode = FeatureEncoder(feature_columns,  linear_sparse_feature=None)
-    # 得到模型的输入值
+    # 输入的值
     feature_inputs_list = list(feature_encode.feature_input_layer_dict.values())
-
-    items_Map = FeatureMap(items_columns) # 将item ID初始化input
+    # item id  获取输入层的值
+    items_Map = FeatureMap(items_columns)
     items_inputs_list = list(items_Map.feature_input_layer_dict.values())
 
-    label_columns = [DenseFeat('label_id', 1)] # 用于smaple softmax里的参数label
+    # 正样本的id，在softmax中需要传入正样本的id
+    label_columns = [DenseFeat('label_id', 1)]
     label_Map = FeatureMap(label_columns)
     label_inputs_list = list(label_Map.feature_input_layer_dict.values())
-	# 为 item 特征获取embedding
+
+    # 通过输入的值查side_information的embedding，返回所有side_information的embedding的list
     side_embedding_list = process_feature(side_information_columns, feature_encode)
-	
+    # 拼接  N x num_feature X Dim
     side_embeddings = Concatenate(axis=1)(side_embedding_list)
+
+    # items_inputs_list[0] 为了查找每个item 用于计算权重的 aplha 向量
     eges_inputs = [side_embeddings, items_inputs_list[0]]
-	# 初始化EGES模块
-    merge_emb = EGESLayer(items_columns[0].vocabulary_size, 
-                items_columns[0].embedding_dim, merge_type=merge_type, 
+
+    merge_emb = EGESLayer(items_columns[0].vocabulary_size, merge_type=merge_type, 
                 l2_reg=l2_reg, seed=seed)(eges_inputs)  # B * emb_dim
     
     label_idx = label_Map.feature_input_layer_dict[label_columns[0].name]
     softmaxloss_inputs = [merge_emb,label_idx]
-    # item的总数，用于smaple softmax里的 item embedding matrix
+    
     item_vocabulary_size = items_columns[0].vocabulary_size
-    
-    # 这里share_flag用于考虑是否在smaple softmax共享embedding层中的item embedding matrix
+
+    all_items_idx = EmbeddingIndex(list(range(item_vocabulary_size)))
+    all_items_embeddings = feature_encode.embedding_layers_dict[side_information_columns[0].name](all_items_idx)
+
     if share_flag:
-        all_items_idx = EmbeddingIndex(list(range(item_vocabulary_size)))
-        all_items_embeddings = feature_encode.embedding_layers_dict[side_information_columns[0].name](all_items_idx)
         softmaxloss_inputs.append(all_items_embeddings)
-    # smaple softmax 层
-    output = SampledSoftmaxLayer(num_items=item_vocabulary_size, share_flage=share_flag,
-                       emb_dim=side_information_columns[0].embedding_dim,num_sampled=10)(softmaxloss_inputs)
     
+    output = SampledSoftmaxLayer(num_items=item_vocabulary_size, share_flage=share_flag,
+              emb_dim=side_information_columns[0].embedding_dim,num_sampled=10)(softmaxloss_inputs)
+
     model = Model(feature_inputs_list + items_inputs_list + label_inputs_list, output)
+    
     model.__setattr__("feature_inputs_list", feature_inputs_list)
     model.__setattr__("label_inputs_list", label_inputs_list)
     model.__setattr__("merge_embedding", merge_emb)
+    model.__setattr__("item_embedding", get_item_embedding(all_items_embeddings,                          								items_Map.feature_input_layer_dict[items_columns[0].name]))
     return model
 
 ```
@@ -332,12 +337,10 @@ def EGES(side_information_columns, items_columns, merge_type = "weight", share_f
 
 ```python
 class EGESLayer(Layer):
-    def __init__(self,item_nums, feat_nums, merge_type="weight",l2_reg=0.001,seed=1024, **kwargs):
+    def __init__(self,item_nums, merge_type="weight",l2_reg=0.001,seed=1024, **kwargs):
         super(EGESLayer, self).__init__(**kwargs)
-        self.item_nums = item_nums
-        self.feat_nums = feat_nums
-        #聚合side information方式
-        self.merge_type = merge_type   
+        self.item_nums = item_nums 
+        self.merge_type = merge_type   #聚合方式
         self.l2_reg = l2_reg
         self.seed = seed
 
@@ -345,29 +348,27 @@ class EGESLayer(Layer):
         if not isinstance(input_shape, list) or len(input_shape) < 2:
             raise ValueError('`EGESLayer` layer should be called \
                 on a list of at least 2 inputs')
+        self.feat_nums = input_shape[0][1]
+        
         if self.merge_type == "weight":
-            # 初始化用于计算权重的参数 e^v
             self.alpha_embeddings = self.add_weight(
-                  name='alpha_attention',
-                  shape=(self.item_nums, self.feat_nums),
-                  dtype=tf.float32, 
-                  initializer=tf.keras.initializers.RandomUniform(minval=-1, maxval=1, seed=self.seed),
-                  regularizer=l2(self.l2_reg))
+                                name='alpha_attention',
+                                shape=(self.item_nums, self.feat_nums),
+                                dtype=tf.float32, 
+                                initializer=tf.keras.initializers.RandomUniform(minval=-1, maxval=1,                                               seed=self.seed),
+                                regularizer=l2(self.l2_reg))
 
     def call(self, inputs, **kwargs):
-        if self.merge_type == "weight":
+        if self.merge_type == "weight": 
             stack_embedding = inputs[0]  # (B * num_feate * embedding_size)
-            item_input = inputs[1]  # (B * 1)
-            # 先根据id查找 用于计算权重的参数
-            alpha_embedding = tf.nn.embedding_lookup(self.alpha_embeddings, item_input) #(B * 1 * embedding_size)
-            alpha_emb = tf.exp(alpha_embedding)
-            # 聚合的权重参数
-            alpha_i_sum = tf.reduce_sum(alpha_emb, axis=-1)
-            merge_embedding = tf.squeeze(tf.matmul(alpha_emb,stack_embedding),axis=1) / alpha_i_sum
+            item_input = inputs[1]       # (B * 1)  
+            alpha_embedding = tf.nn.embedding_lookup(self.alpha_embeddings, item_input) #(B * 1 * num_feate)
+            alpha_emb = tf.exp(alpha_embedding) 
+            alpha_i_sum = tf.reduce_sum(alpha_emb, axis=-1) 
+            merge_embedding = tf.squeeze(tf.matmul(alpha_emb, stack_embedding),axis=1) / alpha_i_sum
         else:
             stack_embedding = inputs[0]  # (B * num_feate * embedding_size)
-            # 均值聚合
-            merge_embedding = tf.squeeze(tf.reduce_mean(stack_embedding, axis=1),axis=1) # (B * embedding_size)
+            merge_embedding = tf.squeeze(tf.reduce_mean(alpha_emb, axis=1),axis=1) # (B * embedding_size)
         
         return merge_embedding
 
