@@ -6,7 +6,7 @@
 
 传统的CVR预估问题存在着两个主要的问题：**样本选择偏差**和**稀疏数据**。下图的白色背景是曝光数据，灰色背景是点击行为数据，黑色背景是购买行为数据。传统CVR预估使用的训练样本仅为灰色和黑色的数据。
 
-![img](https://pic4.zhimg.com/80/v2-2f0df0f6933dd8405c478fcce91f7b6f_1440w.jpg)
+<img src="https://pic4.zhimg.com/80/v2-2f0df0f6933dd8405c478fcce91f7b6f_1440w.jpg" alt="img" style="zoom:33%;" />
 
 这会导致两个问题：
 
@@ -28,21 +28,21 @@
 
 三个任务之间的关系为：
 
-![img](https://pic1.zhimg.com/80/v2-7bbeb8767db5d6a157852c8cd4221548_1440w.jpg)
+<img src="https://pic1.zhimg.com/80/v2-7bbeb8767db5d6a157852c8cd4221548_1440w.jpg" alt="img" style="zoom: 50%;" />
 
 其中x表示曝光，y表示点击，z表示转化。针对这三个任务，设计了如图所示的模型结构：
 
-![img](https://pic1.zhimg.com/80/v2-6d8189bfe378dc4bf6f0db2ba0255eac_1440w.jpg)
+<img src="https://pic1.zhimg.com/80/v2-6d8189bfe378dc4bf6f0db2ba0255eac_1440w.jpg" alt="img" style="zoom:67%;" />
 
 如图，主任务和辅助任务共享特征，不同任务输出层使用不同的网络，将cvr的预测值*ctr的预测值作为ctcvr任务的预测值，利用ctcvr和ctr的label构造损失函数：
 
-![img](https://pic3.zhimg.com/80/v2-0098ab4556a8c67a1c12322ea3f89606_1440w.jpg)
+<img src="https://pic3.zhimg.com/80/v2-0098ab4556a8c67a1c12322ea3f89606_1440w.jpg" alt="img" style="zoom: 33%;" />
 
 该架构具有两大特点，分别给出上述两个问题的解决方案：
 
 - 帮助CVR模型在完整样本空间建模（即曝光空间X）。
 
-![img](https://pic1.zhimg.com/80/v2-0b0c6dc7d4c38fa422a2876b7c4cc638_1440w.jpg)
+<img src="https://pic1.zhimg.com/80/v2-0b0c6dc7d4c38fa422a2876b7c4cc638_1440w.jpg" alt="img" style="zoom:33%;" />
 
 ​	从公式中可以看出，pCVR 可以由pCTR 和pCTCVR推导出。从原理上来说，相当于分别单独训练两个模型拟合出p	CTR 和pCTCVR，再通过pCTCVR 除以pCTR 得到最终的拟合目标pCVR 。
 ​	在训练过程中，模型只需要预测pCTCVR和pCTR，利用两种相加组成的联合loss更新参数。pCVR 只是一个中间变	量。而pCTCVR和pCTR的数据是在完整样本空间中提取的，从而相当于pCVR也是在整个曝光样本空间中建模。
@@ -77,7 +77,9 @@
 
    - 美团的[AITM](https://zhuanlan.zhihu.com/p/508876139/[https://cloud.tencent.com/developer/article/1868117](https://cloud.tencent.com/developer/article/1868117))：信用卡业务中，用户转化通常是一个**曝光->点击->申请->核卡->激活**的过程，具有5层的链路。
 
-     ![img](https://pic4.zhimg.com/80/v2-0ecf42e999795511f40ac6cd7b85eccf_1440w.jpg)美团提出了一种自适应信息迁移多任务（**Adaptive Information Transfer Multi-task，AITM**）框架，该框架通过自适应信息迁移（AIT)模块对用户多步转化之间的序列依赖进行建模。AIT模块可以自适应地学习在不同的转化阶段需要迁移什么和迁移多少信息。
+     <img src="https://pic4.zhimg.com/80/v2-0ecf42e999795511f40ac6cd7b85eccf_1440w.jpg" alt="img" style="zoom:50%;" />
+     
+     美团提出了一种自适应信息迁移多任务（**Adaptive Information Transfer Multi-task，AITM**）框架，该框架通过自适应信息迁移（AIT)模块对用户多步转化之间的序列依赖进行建模。AIT模块可以自适应地学习在不同的转化阶段需要迁移什么和迁移多少信息。
 
 总结：
 

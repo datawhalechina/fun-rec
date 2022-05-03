@@ -76,10 +76,10 @@
     - [DISN](ch02/ch2.2/ch2.2.4/DSIN)
     - BST
 - **多任务学习**
-    - SharedBottom
-    - ESSM
+    - [多任务学习概述](ch02/ch2.2/ch2.2.5/多任务学习概述)
+    - [ESMM](ch02/ch2.2/ch2.2.5/ESSM)
     - [MMOE](ch02/ch2.2/ch2.2.5/MMOE)
-    - PLE
+    - [PLE](ch02/ch2.2/ch2.2.5/PLE)
 
 ### 推荐系统实战
 
