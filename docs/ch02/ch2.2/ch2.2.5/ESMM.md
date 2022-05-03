@@ -5,17 +5,11 @@
 ## 背景与动机
 
 传统的CVR预估问题存在着两个主要的问题：**样本选择偏差**和**稀疏数据**。下图的白色背景是曝光数据，灰色背景是点击行为数据，黑色背景是购买行为数据。传统CVR预估使用的训练样本仅为灰色和黑色的数据。
-
-<div align=center>
-
 <div align=center>
 <img src="https://pic4.zhimg.com/80/v2-2f0df0f6933dd8405c478fcce91f7b6f_1440w.jpg" alt="img" style="zoom:33%;" />
 </div>  
 
-
-
 这会导致两个问题：
-
 - 样本选择偏差（sample selection bias，SSB）：如图所示，CVR模型的正负样本集合={点击后未转化的负样本+点击后转化的正样本}，但是线上预测的时候是样本一旦曝光，就需要预测出CVR和CTR以排序，样本集合={曝光的样本}。构建的训练样本集相当于是从一个与真实分布不一致的分布中采样得到的，这一定程度上违背了机器学习中训练数据和测试数据独立同分布的假设。
 - 训练数据稀疏（data sparsity，DS）：点击样本只占整个曝光样本的很小一部分，而转化样本又只占点击样本的很小一部分。如果只用点击后的数据训练CVR模型，可用的样本将极其稀疏。
 
@@ -45,7 +39,6 @@
 </div>
 
 
-
 如图，主任务和辅助任务共享特征，不同任务输出层使用不同的网络，将cvr的预测值*ctr的预测值作为ctcvr任务的预测值，利用ctcvr和ctr的label构造损失函数：
 
 <div align=center>
@@ -64,8 +57,7 @@
 
 
 
-​	从公式中可以看出，pCVR 可以由pCTR 和pCTCVR推导出。从原理上来说，相当于分别单独训练两个模型拟合出p	CTR 和pCTCVR，再通过pCTCVR 除以pCTR 得到最终的拟合目标pCVR 。
-​	在训练过程中，模型只需要预测pCTCVR和pCTR，利用两种相加组成的联合loss更新参数。pCVR 只是一个中间变	量。而pCTCVR和pCTR的数据是在完整样本空间中提取的，从而相当于pCVR也是在整个曝光样本空间中建模。
+​	从公式中可以看出，pCVR 可以由pCTR 和pCTCVR推导出。从原理上来说，相当于分别单独训练两个模型拟合出pCTR 和pCTCVR，再通过pCTCVR 除以pCTR 得到最终的拟合目标pCVR 。在训练过程中，模型只需要预测pCTCVR和pCTR，利用两种相加组成的联合loss更新参数。pCVR 只是一个中间变量。而pCTCVR和pCTR的数据是在完整样本空间中提取的，从而相当于pCVR也是在整个曝光样本空间中建模。
 
 - 提供特征表达的迁移学习（embedding层共享）。CVR和CTR任务的两个子网络共享embedding层，网络的embedding层把大规模稀疏的输入数据映射到低维的表示向量，该层的参数占了整个网络参数的绝大部分，需要大量的训练样本才能充分学习得到。由于CTR任务的训练样本量要大大超过CVR任务的训练样本量，ESMM模型中特征表示共享的机制能够使得CVR子任务也能够从只有展现没有点击的样本中学习，从而能够极大地有利于缓解训练数据稀疏性问题。
 
@@ -91,23 +83,23 @@
 4. 更长的序列依赖建模？
    有些业务的依赖关系不止有曝光-点击-转化三层，后续的改进模型提出了更深层次的任务依赖关系建模。
 
-   - 阿里的ESMM2: 在点击到购买之前，用户还有可能产生加入购物车（Cart）、加入心愿单（Wish）等行为。
+   阿里的ESMM2: 在点击到购买之前，用户还有可能产生加入购物车（Cart）、加入心愿单（Wish）等行为。
 
-     <div align=center>
-     <img src="https://pic2.zhimg.com/80/v2-4f9f5508412086315f85d1b7fda733e9_1440w.jpg" alt="img" style="zoom:53%;" />
-     </div>
+<div align=center>
+<img src="https://pic2.zhimg.com/80/v2-4f9f5508412086315f85d1b7fda733e9_1440w.jpg" alt="img" style="zoom:53%;" />
+</div>
 
-     相较于直接学习 click->buy (稀疏度约2.6%)，可以通过Action路径将目标分解，以Cart为例：click->cart (稀疏度为10%)，cart->buy(稀疏度为12%)，通过分解路径，建立多任务学习模型来分步求解CVR模型，缓解稀疏问题，该模型同样也引入了特征共享机制。
+​			相较于直接学习 click->buy (稀疏度约2.6%)，可以通过Action路径将目标分解，以Cart为例：click->cart (稀疏	度为10%)，cart->buy(稀疏度为12%)，通过分解路径，建立多任务学习模型来分步求解CVR模型，缓解稀疏问题，该模型同样也引入了特征共享机制。
 
-5. - 美团的[AITM](https://zhuanlan.zhihu.com/p/508876139/[https://cloud.tencent.com/developer/article/1868117](https://cloud.tencent.com/developer/article/1868117))：信用卡业务中，用户转化通常是一个**曝光->点击->申请->核卡->激活**的过程，具有5层的链路。
+​	美团的[AITM](https://zhuanlan.zhihu.com/p/508876139/[https://cloud.tencent.com/developer/article/1868117](https://cloud.tencent.com/developer/article/1868117))：信用卡业务中，用户转化通常是一个**曝光->点击->申请->核卡->激活**的过程，具有5层的链路。
 
-    <div align=center>
-    <img src="https://pic4.zhimg.com/80/v2-0ecf42e999795511f40ac6cd7b85eccf_1440w.jpg" alt="img" style="zoom:50%;" />
-    </div>
+ <div align=center>
+ <img src="https://pic4.zhimg.com/80/v2-0ecf42e999795511f40ac6cd7b85eccf_1440w.jpg" alt="img" style="zoom:50%;" />
+ </div>
 
   
 
-  ​		美团提出了一种自适应信息迁移多任务（**Adaptive Information Transfer Multi-task，AITM**）框架，该框架		通过自适应信息迁移（AIT)模块对用户多步转化之间的序列依赖进行建模。AIT模块可以自适应地学习在		不同的转化阶段需要迁移什么和迁移多少信息。
+ 	美团提出了一种自适应信息迁移多任务（**Adaptive Information Transfer Multi-task，AITM**）框架，该框架通过自适应信息迁移（AIT)模块对用户多步转化之间的序列依赖进行建模。AIT模块可以自适应地学习在不同的转化阶段需要迁移什么和迁移多少信息。
 
 总结：
 
