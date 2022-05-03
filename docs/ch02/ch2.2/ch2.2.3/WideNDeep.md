@@ -115,4 +115,3 @@ def WideNDeep(linear_feature_columns, dnn_feature_columns):
 - [tensorflow官网的WideDeepModel](https://www.tensorflow.org/api_docs/python/tf/keras/experimental/WideDeepModel)
 - [详解 Wide & Deep 结构背后的动机](https://zhuanlan.zhihu.com/p/53361519)
 
-

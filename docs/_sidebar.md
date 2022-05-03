@@ -51,10 +51,10 @@
                 - [DISN](ch02/ch2.2/ch2.2.4/DSIN)
                 - BST
             - 2.2.5 多任务学习
-                - SharedBottom
-                - ESSM
+                - [多任务学习概述](ch02/ch2.2/ch2.2.5/多任务学习概述)
+                - [ESMM](ch02/ch2.2/ch2.2.5/ESSM)
                 - [MMOE](ch02/ch2.2/ch2.2.5/MMOE)
-                - PLE
+                - [PLE](ch02/ch2.2/ch2.2.5/PLE)
     - 第三章 推荐系统实战
         - 3.1 天池入门赛-新闻推荐
             - [3.1.1 赛题理解&Baseline](ch03/ch3.1/markdown/ch3.1.1)
