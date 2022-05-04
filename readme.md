@@ -76,9 +76,8 @@
     - [DIN](docs/ch02/ch2.2/ch2.2.4/DIN.md)
     - [DIEN](docs/ch02/ch2.2/ch2.2.4/DIEN.md)
     - [DISN](docs/ch02/ch2.2/ch2.2.4/DSIN.md)
-    - BST
 - **多任务学习**
-    - [多任务学习概述](docs/ch02/ch2.2/ch2.2.5/多任务学习概述.md)
+    - [多任务学习概述](docs/ch02/ch2.2/ch2.2.5/2.2.5.0.md)
     - [ESMM](docs/ch02/ch2.2/ch2.2.5/ESMM.md)
     - [MMOE](docs/ch02/ch2.2/ch2.2.5/MMOE.md)
     - [PLE](docs/ch02/ch2.2/ch2.2.5/PLE.md)
