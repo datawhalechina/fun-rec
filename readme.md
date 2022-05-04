@@ -114,8 +114,7 @@
       - [前后端交互](docs/ch03/ch3.2/3.2.2.3.md)
   - [推荐系统流程的构建](docs/ch03/ch3.2/3.2.3.md)
   - **召回**
-      - 热度召回
-      - 地域召回
+      - [规则类召回](docs/ch03/ch3.2/3.2.4.1.md)
       - [YoutubeDNN召回](docs/ch03/ch3.2/3.2.4.3.md)
       - [DSSM召回](docs/ch03/ch3.2/3.2.4.4.md)
   - [DeepFM排序模型](docs/ch03/ch3.2/3.2.5.md)
