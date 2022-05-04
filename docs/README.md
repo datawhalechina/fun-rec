@@ -72,7 +72,7 @@
 - **序列模型**
     - [DIN](ch02/ch2.2/ch2.2.4/DIN)
     - [DIEN](ch02/ch2.2/ch2.2.4/DIEN)
-    - [DISN](ch02/ch2.2/ch2.2.4/DSIN)
+    - [DSIN](ch02/ch2.2/ch2.2.4/DSIN)
 - **多任务学习**
     - [多任务学习概述](ch02/ch2.2/ch2.2.5/2.2.5.0)
     - [ESMM](ch02/ch2.2/ch2.2.5/ESMM)
