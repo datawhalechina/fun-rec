@@ -115,8 +115,8 @@
   - [推荐系统流程的构建](docs/ch03/ch3.2/3.2.3.md)
   - **召回**
       - [规则类召回](docs/ch03/ch3.2/3.2.4.1.md)
-      - [YoutubeDNN召回](docs/ch03/ch3.2/3.2.4.3.md)
-      - [DSSM召回](docs/ch03/ch3.2/3.2.4.4.md)
+      - [YoutubeDNN召回](docs/ch03/ch3.2/3.2.4.2.md)
+      - [DSSM召回](docs/ch03/ch3.2/3.2.4.3.md)
   - [DeepFM排序模型](docs/ch03/ch3.2/3.2.5.md)
   - 规则与重排
   - 任务监控与调度
