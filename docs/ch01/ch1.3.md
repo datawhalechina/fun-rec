@@ -175,7 +175,7 @@
 - 模型部署：Linux、Docker、K8S；
 - RPC框架：gRPC；
 - 数据存储：mysql、redis、mangodb、hive、kafka、es、hbase；
-- 相似计算：annoy、fassi、kgraph
+- 相似计算：annoy、faiss、kgraph
 - 实时计算：Spark Streaming、Storm
 - 分布式计算：Hadoop、Spark
 
