@@ -13,7 +13,7 @@
                 - [Swing](ch02/ch2.1/ch2.1.1/Swing)
                 - [矩阵分解](ch02/ch2.1/ch2.1.1/mf)
             - 2.1.2 基于向量的召回
-                - FM召回
+                - [FM召回](ch02/ch2.1/ch2.1.2/FM)
                 - item2vec召回系列
                     - [word2vec原理](ch02/ch2.1/ch2.1.2/word2vec)
                     - item2vec召回
@@ -21,7 +21,7 @@
                 - [YoutubeDNN召回](ch02/ch2.1/ch2.1.2/YoutubeDNN)
                 - 双塔召回
                     - 经典双塔
-                    - Youtube双塔
+                    - [Youtube双塔](ch02/ch2.1/ch2.1.2/YoutubeDSSM)
             - 2.1.3 基于图的召回
                 - [EGES](ch02/ch2.1/ch2.1.3/EGES)
                 - [PinSAGE](ch02/ch2.1/ch2.1.3/PinSage)
