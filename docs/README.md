@@ -43,7 +43,7 @@
     - [YoutubeDNN召回](ch02/ch2.1/ch2.1.2/YoutubeDNN)
     - **双塔召回**
         - 经典双塔
-        - [Youtube双塔](ch02/ch2.1/ch2.1.2/YoutubeDSSM)
+        - [Youtube双塔](ch02/ch2.1/ch2.1.2/YoutubeTwoTower)
     - **图召回**
         - [EGES](ch02/ch2.1/ch2.1.3/EGES)
         - [PinSAGE](ch02/ch2.1/ch2.1.3/PinSage)
