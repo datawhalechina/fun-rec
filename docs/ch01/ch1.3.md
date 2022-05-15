@@ -172,8 +172,6 @@
 - **编程语言**：Python、Java（scala）、C++、sql、shell；
 - **机器学习**：Tensorflow/Pytorch、GraphLab/GraphCHI、LGB/Xgboost、SKLearn；
 - **数据分析**：Pandas、Numpy、Seaborn、Spark；
-- 模型部署：Linux、、Docker、K8S；
-- RPC框架：gRPC；
 - 数据存储：mysql、redis、mangodb、hive、kafka、es、hbase；
 - 相似计算：annoy、faiss、kgraph
 - 流计算：Spark Streaming、Flink
