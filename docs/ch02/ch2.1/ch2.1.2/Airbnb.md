@@ -103,12 +103,12 @@ $$
    - 理论上，同一区域的房源相似性应该更高，不同区域房源相似性更低。
    - Airbnb 利用 k-means 聚类，将加利福尼亚州的房源聚成100个集群，来验证类似位置的房源是否聚集在一起。
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653053823336-0564b2da-c993-46aa-9b22-f5cbb784dae2-16532103399064.png" alt="img" style="zoom:50%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653056809526-15401069-6fff-40d8-ac5e-35871d3f254a.png" alt="img" style="zoom:50%;" />
 
 - 评估不同类型、价格区间的房源之间的相似性。
    - 简而言之，我们希望类型相同、价格区间一致的房源它们之间的相似度更高。
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653053823336-0564b2da-c993-46aa-9b22-f5cbb784dae2-16532103543016.png" alt="img" style="zoom:50%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653056981037-18edee91-493a-4d5b-b066-57f0b200032d.png" alt="img" style="zoom:50%;" />
 
 - 评估房源的隐式特征
    - Airbnb 在训练房源（listing）的 Embedding时，并没有用到房源的图像信息。
@@ -117,9 +117,10 @@ $$
       - 大致原理就是，利用训练好的 Embedding 进行 K 近邻相似度检索。
       - 如下，与查询房源在 Embedding 相似性高的其他房源，它们之间的外观风格也很相似。
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653053823336-0564b2da-c993-46aa-9b22-f5cbb784dae2-16532103625888.png" alt="img" style="zoom:50%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653057336798-fd8451cb-84b6-40fb-8733-1e3d08a39793.png" alt="img"  />
 
 ## User-type & Listing-type Embedding
+
 前面提到的 Listing Embedding，它是基于用户的点击 sessions 学习得到的。
 
 - 同一个 session 内的点击时间间隔低于30分钟，所以**它们更适合短期，session 内的个性化需求**。
@@ -168,7 +169,7 @@ Airbnb 除了挖掘 Listing 的短期兴趣特征表示外，还对 User 和 Lis
 - 所有的属性，都基于一定的规则进行了分桶（buckets）。例如21岁，被分桶到 20-30 岁的区间。
 - 对于首次预定的用户，他的属性为 buckets 的前5行，因为预定之前没有历史预定相关的信息。
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653053823336-0564b2da-c993-46aa-9b22-f5cbb784dae2-165321037241910.png" alt="img" style="zoom:50%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653125260611-7d33731b-9167-4fcc-b83b-0a2407ea89ca.png" alt="img" style="zoom: 67%;" />
 
 看到过前面那个简单的例子后，现在可以看一个原文的 Listing-type 的例子：
 
@@ -232,7 +233,7 @@ Type Embedding 的学习同样是基于 Skip-Gram 模型，但是有两点需要
         \end{aligned}
         $$
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653131985447-e033cb39-235b-4f46-9634-3b7faec284be-16532113549961.png" alt="img" style="zoom:50%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653131985447-e033cb39-235b-4f46-9634-3b7faec284be.png" alt="img" style="zoom:50%;" />
 
 # 实验部分
 
@@ -281,9 +282,10 @@ Airbnb 的搜索排名的大致流程为：
 
 - Airbnb 保留了用户过去两周6种不同类型的历史行为，如下图：
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653140202230-1f49e1dd-5c8c-4445-bd0b-9a17788a7b3f.png" alt="img" style="zoom: 50%;" />
+<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653140202230-1f49e1dd-5c8c-4445-bd0b-9a17788a7b3f.png" alt="img" style="zoom:50%;" />
 
 - 对于每个行为，还要将其按照 market （地域）进行划分。以 $ H_c $ 为例：
+
    - 假如 $ H_c $ 包含了 New YorK 和 Los Angeles 两个 market 的点击记录，则划分为 $ H_c(NY) $ 和 $ H_c(LA) $ 。
 
    -  计算候选房源和不同行为之间的相似度。
