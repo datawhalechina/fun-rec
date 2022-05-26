@@ -41,7 +41,7 @@
     - **item2vec召回系列**
         - [word2vec原理](docs/ch02/ch2.1/ch2.1.2/word2vec.md)
         - item2vec召回
-        - Airbnb召回
+        - [Airbnb召回](ch02/ch2.1/ch2.1.2/Airbnb)
     - [YoutubeDNN召回](docs/ch02/ch2.1/ch2.1.2/YoutubeDNN.md)
     - **双塔召回**
         - 经典双塔
