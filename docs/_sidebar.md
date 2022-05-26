@@ -20,7 +20,7 @@
                     - [Airbnb召回](ch02/ch2.1/ch2.1.2/Airbnb)
                 - [YoutubeDNN召回](ch02/ch2.1/ch2.1.2/YoutubeDNN)
                 - 双塔召回
-                    - [经典双塔](docs/ch02/ch2.1/ch2.1.2/DSSM.md)
+                    - [经典双塔](docs/ch02/ch2.1/ch2.1.2/DSSM)
                     - [Youtube双塔](ch02/ch2.1/ch2.1.2/YoutubeTwoTower)
             - 2.1.3 基于图的召回
                 - [EGES](ch02/ch2.1/ch2.1.3/EGES)
