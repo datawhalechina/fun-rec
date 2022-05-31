@@ -38,7 +38,7 @@
     - [FM召回](ch02/ch2.1/ch2.1.2/FM)
     - **item2vec召回系列**
         - [word2vec原理](ch02/ch2.1/ch2.1.2/word2vec)
-        - item2vec召回
+        - [item2vec召回](ch02/ch2.1/ch2.1.2/item2vec)
         - [Airbnb召回](ch02/ch2.1/ch2.1.2/Airbnb)
     - [YoutubeDNN召回](ch02/ch2.1/ch2.1.2/YoutubeDNN)
     - **双塔召回**
