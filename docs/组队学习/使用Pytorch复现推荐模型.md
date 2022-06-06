@@ -29,7 +29,7 @@
 | ------------------------------------------------------------ | -------- |
 | xx月xx日正式开始                                             |          |
 | Task01：熟悉Torch-RecHub框架设计与使用方法（2天）[RecHub Wiki](https://www.wolai.com/mincai/2qjdg3DPy1179e1vpcHZQC) |          |
-| Task02：精排模型：[DeepFM](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.2/ch2.2.3/DeepFM)、(DIN)[https://datawhalechina.github.io/fun-rec/#/ch02/ch2.2/ch2.2.4/DIN]（5天） [代码](https://github.com/datawhalechina/torch-rechub/tree/main/torch_rechub/models/ranking) |          |
+| Task02：精排模型：[DeepFM](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.2/ch2.2.3/DeepFM)、[DIN](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.2/ch2.2.4/DIN)（5天） [代码](https://github.com/datawhalechina/torch-rechub/tree/main/torch_rechub/models/ranking) |          |
 | Task03：召回模型：[DSSM](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.1/ch2.1.2/DSSM)、[YoutubeDNN](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.1/ch2.1.2/YoutubeTwoTower)（4天）[代码](https://github.com/datawhalechina/torch-rechub/tree/main/torch_rechub/models/ranking) |          |
 | Task04：多任务模型：[ESMM](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.2/ch2.2.5/ESMM)、[MMOE](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.2/ch2.2.5/MMOE)（4天）[代码](https://github.com/datawhalechina/torch-rechub/tree/main/torch_rechub/models/multi_task) |          |
 
