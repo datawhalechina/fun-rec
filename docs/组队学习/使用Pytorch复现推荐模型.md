@@ -10,7 +10,7 @@
 
 - 开源内容：
   - 【Pytorch代码】：https://github.com/datawhalechina/torch-rechub
-  - 【论文解析】：https://datawhalechina.github.io/fun-rec
+  - 【模型解析】：https://datawhalechina.github.io/fun-rec
 
 - 内容属性：推荐系统实践专题
 - 定位人群：有一定的Pytorch基础，熟悉深度学习，了解推荐系统基本算法，想进一步熟悉业界应用较广泛的深度推荐模型
@@ -25,13 +25,13 @@
 
 - 学习周期：15天
 
-| 任务信息                                          | 截止时间 |
-| ------------------------------------------------- | -------- |
-| xx月xx日正式开始                                  |          |
-| Task01：熟悉Torch-RecHub框架设计与使用方法（2天） |          |
-| Task02：精排模型：DeepFM、DIN（5天）              |          |
-| Task03：召回模型：YoutubeDNN、YoutubeDSSM（4天）  |          |
-| Task04：多任务模型：ESMM、MMOE（4天）             |          |
+| 任务信息                                                     | 截止时间 |
+| ------------------------------------------------------------ | -------- |
+| xx月xx日正式开始                                             |          |
+| Task01：熟悉Torch-RecHub框架设计与使用方法（2天）[RecHub Wiki](https://www.wolai.com/mincai/2qjdg3DPy1179e1vpcHZQC) |          |
+| Task02：精排模型：[DeepFM](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.2/ch2.2.3/DeepFM)、(DIN)[https://datawhalechina.github.io/fun-rec/#/ch02/ch2.2/ch2.2.4/DIN]（5天） [代码](https://github.com/datawhalechina/torch-rechub/tree/main/torch_rechub/models/ranking) |          |
+| Task03：召回模型：[DSSM](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.1/ch2.1.2/DSSM)、[YoutubeDNN](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.1/ch2.1.2/YoutubeTwoTower)（4天）[代码](https://github.com/datawhalechina/torch-rechub/tree/main/torch_rechub/models/ranking) |          |
+| Task04：多任务模型：[ESMM](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.2/ch2.2.5/ESMM)、[MMOE](https://datawhalechina.github.io/fun-rec/#/ch02/ch2.2/ch2.2.5/MMOE)（4天）[代码](https://github.com/datawhalechina/torch-rechub/tree/main/torch_rechub/models/multi_task) |          |
 
 
 
