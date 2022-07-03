@@ -33,7 +33,7 @@
    >
    >+ 下面计算物品 5 和物品 1 之间的余弦相似性:
    > $$
-   > \operatorname{sim}(\text { 物品1, 物品5 })=\operatorname{cosine}(\text { 物品1, 物品5 } )=\frac{9+20+12+1}{\operatorname{sqrt}(9+16+9+1)+\operatorname{sqrt}(9+25+16+1)}
+   > \operatorname{sim}(\text { 物品1, 物品5 })=\operatorname{cosine}(\text { 物品1, 物品5 } )=\frac{9+20+12+1}{\operatorname{sqrt}(9+16+9+1)*\operatorname{sqrt}(9+25+16+1)}
    > $$
    >
    >+ 皮尔逊相关系数类似。

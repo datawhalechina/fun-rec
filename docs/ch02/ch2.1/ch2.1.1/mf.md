@@ -100,6 +100,7 @@
 <div align=center>
 <img src="https://img-blog.csdnimg.cn/20200823101513233.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:70%;" />
 </div>
+
 + 矩阵分解算法将 $m\times n$ 维的共享矩阵 $R$ ，分解成 $m \times k$ 维的用户矩阵 $U$ 和 $k \times n$ 维的物品矩阵 $V$ 相乘的形式。
 + 其中，$m$ 是用户数量， $n$ 是物品数量， $k$ 是隐向量维度， 也就是隐含特征个数。
 + 这里的隐含特征没有太好的可解释性，需要模型自己去学习。
