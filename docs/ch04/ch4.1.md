@@ -349,7 +349,7 @@
 
 - bagging与boosting分别从什么角度降低过拟合
 
-  - bagging降低方差，boosting降低方差
+  - bagging降低方差，boosting降低偏差
 
 - 逻辑回归如何避免过拟合
 
