@@ -83,7 +83,7 @@
 
 ### 推荐系统实战
 
-#### **竞赛实践(天池入门赛-新闻推荐)**
+#### **竞赛实践(天池入门赛-新闻推荐【建议使用tf1.14】)**
 - **视频**
   - [赛题理解](https://www.bilibili.com/video/BV1do4y1d7FP?p=1)
   - [多路召回](https://www.bilibili.com/video/BV1do4y1d7FP?p=4)
