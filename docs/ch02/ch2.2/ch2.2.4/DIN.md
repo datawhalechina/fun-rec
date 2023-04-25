@@ -158,13 +158,13 @@ def DIN(feature_columns, behavior_feature_list, behavior_seq_feature_list):
 关于每一块的细节，这里就不解释了，在我们给出的GitHub代码中，我们已经加了非常详细的注释，大家看那个应该很容易看明白， 为了方便大家的阅读，我们这里还给大家画了一个整体的模型架构图，帮助大家更好的了解每一块以及前向传播。（画的图不是很规范，先将就看一下，后面我们会统一在优化一下这个手工图）。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片DIN_aaaa.png" alt="DIN_aaaa" style="zoom: 70%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片DIN_aaaa.png" alt="DIN_aaaa" style="zoom: 70%;" />
 </div>
 
 下面是一个通过keras画的模型结构图，为了更好的显示，数值特征和类别特征都只是选择了一小部分，画图的代码也在github中。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片din.png" alt="DIN_aaaa" style="zoom: 50%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片din.png" alt="DIN_aaaa" style="zoom: 50%;" />
 </div>
 
 ## 思考

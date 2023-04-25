@@ -3,7 +3,7 @@
 大规模推荐系统需要实时对用户行为做出海量预测，为了保证这种实时性，大规模的推荐系统通常严重依赖于预先计算好的产品索引。产品索引的功能为：给定种子产品返回排序后的候选相关产品列表。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片2relations.png" alt="在这里插入图片描述" style="zoom:30%;" /> 
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片2relations.png" alt="在这里插入图片描述" style="zoom:30%;" /> 
 </div>
 
 相关性产品索引主要包含两部分：替代性产品和互补性产品。例如图中的不同种类的衬衫构成了替代关系，而衬衫和风衣裤子等构成了互补关系。用户通常希望在完成购买行为之前尽可能看更多的衬衫，而用户购买过衬衫之后更希望看到与之搭配的单品而不是其他衬衫了。
@@ -23,7 +23,7 @@ Swing 通过利用 User-Item-User 路径中所包含的信息，考虑 User-Item
 - 什么是内部子结构？
   以经典的啤酒尿布故事为例，张三同时购买了啤酒和尿布，这可能是一种巧合。但两个甚至多个顾客都同时购买了啤酒尿布，这就证明啤酒和尿布具有相关关系。这样共同购买啤酒和尿布的用户越多，啤酒和尿布的相关度就会越高。
   <div align=center>
-  <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片example_of_swing.png" alt="在这里插入图片描述" style="zoom:30%;" /> 
+  <img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片example_of_swing.png" alt="在这里插入图片描述" style="zoom:30%;" /> 
   </div>
   图中的红色四边形就是一种Swing子结构，这种子结构可以作为给王五推荐尿布的依据。
 
@@ -256,7 +256,7 @@ Swing 通过利用 User-Item-User 路径中所包含的信息，考虑 User-Item
   由于类别直接的种类差异，每个类别的相关类数量存在差异，因此采用最大相对落点来作为划分阈值。
 
   <div align=center>
-  <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片max_drop.png" alt="在这里插入图片描述" style="zoom:30%;" /> 
+  <img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片max_drop.png" alt="在这里插入图片描述" style="zoom:30%;" /> 
   </div>
 
   例如图(a)中T恤的相关类选择前八个，图(b)中手机的相关类选择前三个。

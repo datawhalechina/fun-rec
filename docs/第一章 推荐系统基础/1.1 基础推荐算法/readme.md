@@ -19,11 +19,11 @@
 
 传统推荐系统：
 
-![](http://ryluo.oss-cn-chengdu.aliyuncs.com/Javaimage-20200923143443499.png)
+![](https://ryluo.oss-cn-chengdu.aliyuncs.com/Javaimage-20200923143443499.png)
 
 深度学习推荐系统:
 
-![](http://ryluo.oss-cn-chengdu.aliyuncs.com/Javaimage-20200923143559968.png)
+![](https://ryluo.oss-cn-chengdu.aliyuncs.com/Javaimage-20200923143559968.png)
 
 
 **本开源内容的目标是掌握以下算法：**
