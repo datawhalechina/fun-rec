@@ -143,5 +143,5 @@ class FM(Layer):
 **参考资料**
 * [FM：推荐算法中的瑞士军刀](https://zhuanlan.zhihu.com/p/343174108)
 * [FM算法解析](https://zhuanlan.zhihu.com/p/37963267)
-* [FM论文原文]([https://www.csie.ntu.edu.tw/~b97053/paper/Rendle2010FM.pdf](https://www.csie.ntu.edu.tw/~b97053/paper/Rendle2010FM.pdf))
+* [FM论文原文](https://www.csie.ntu.edu.tw/~b97053/paper/Rendle2010FM.pdf)
 * [AI上推荐 之 FM和FFM](https://blog.csdn.net/wuzhongqiang/article/details/108719417)
