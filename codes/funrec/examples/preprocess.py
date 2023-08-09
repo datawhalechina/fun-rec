@@ -1,10 +1,11 @@
 from random import sample, seed
 import sys
+
 sys.path.append("..")
-import os 
-import time 
+import os
+import time
 import numpy as np
-import pandas as pd 
+import pandas as pd
 from datetime import date, datetime
 from sklearn.preprocessing import LabelEncoder
 from features import DenseFeat, SparseFeat, VarLenSparseFeat
@@ -38,23 +39,23 @@ def process_data(sample_num=5000000):
     del all_df['hour']
 
     sparse_features = ['id', 'C1', 'banner_pos', 'site_id', 'site_domain',
-        'site_category', 'app_id', 'app_domain', 'app_category', 'device_id',
-        'device_ip', 'device_model', 'device_type', 'device_conn_type', 'C14',
-        'C15', 'C16', 'C17', 'C18', 'C19', 'C20', 'C21', 'is_weekend',
-        'weekday', 'hour_v2']
+                       'site_category', 'app_id', 'app_domain', 'app_category', 'device_id',
+                       'device_ip', 'device_model', 'device_type', 'device_conn_type', 'C14',
+                       'C15', 'C16', 'C17', 'C18', 'C19', 'C20', 'C21', 'is_weekend',
+                       'weekday', 'hour_v2']
 
     print("start label encode ... ")
     feature_max_index_dict = {}
     for feat in sparse_features:
         lbe = LabelEncoder()
-        all_df[feat] = lbe.fit_transform(all_df[feat]) + 1 # 让id从1开始，0可能会被做掩码
-        feature_max_index_dict[feat] = all_df[feat].max() + 1 
-    
+        all_df[feat] = lbe.fit_transform(all_df[feat]) + 1  # 让id从1开始，0可能会被做掩码
+        feature_max_index_dict[feat] = all_df[feat].max() + 1
+
     train_df = all_df
     feature_names = train_df.columns
     train_input_dict = {}
     for name in feature_names:
-        train_input_dict[name] = np.array(train_df[name].values) 
+        train_input_dict[name] = np.array(train_df[name].values)
 
     train_label = np.array(train_df['click'])
     train_df.pop('click')

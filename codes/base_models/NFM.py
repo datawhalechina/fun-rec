@@ -1,4 +1,5 @@
 import warnings
+
 warnings.filterwarnings("ignore")
 import itertools
 import pandas as pd
@@ -11,7 +12,7 @@ from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import  MinMaxScaler, LabelEncoder
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 
 from utils import SparseFeat, DenseFeat, VarLenSparseFeat
 
@@ -20,13 +21,13 @@ from utils import SparseFeat, DenseFeat, VarLenSparseFeat
 def data_process(data_df, dense_features, sparse_features):
     data_df[dense_features] = data_df[dense_features].fillna(0.0)
     for f in dense_features:
-        data_df[f] = data_df[f].apply(lambda x: np.log(x+1) if x > -1 else -1)
-        
+        data_df[f] = data_df[f].apply(lambda x: np.log(x + 1) if x > -1 else -1)
+
     data_df[sparse_features] = data_df[sparse_features].fillna("-1")
     for f in sparse_features:
         lbe = LabelEncoder()
         data_df[f] = lbe.fit_transform(data_df[f])
-    
+
     return data_df[dense_features + sparse_features]
 
 
@@ -36,20 +37,21 @@ def build_input_layers(feature_columns):
 
     for fc in feature_columns:
         if isinstance(fc, SparseFeat):
-            sparse_input_dict[fc.name] = Input(shape=(1, ), name=fc.name)
+            sparse_input_dict[fc.name] = Input(shape=(1,), name=fc.name)
         elif isinstance(fc, DenseFeat):
-            dense_input_dict[fc.name] = Input(shape=(fc.dimension, ), name=fc.name)
-        
+            dense_input_dict[fc.name] = Input(shape=(fc.dimension,), name=fc.name)
+
     return dense_input_dict, sparse_input_dict
 
 
 def build_embedding_layers(feature_columns, input_layers_dict, is_linear):
     # 定义一个embedding层对应的字典
     embedding_layers_dict = dict()
-    
+
     # 将特征中的sparse特征筛选出来
-    sparse_feature_columns = list(filter(lambda x: isinstance(x, SparseFeat), feature_columns)) if feature_columns else []
-    
+    sparse_feature_columns = list(
+        filter(lambda x: isinstance(x, SparseFeat), feature_columns)) if feature_columns else []
+
     # 如果是用于线性部分的embedding层，其维度为1，否则维度就是自己定义的embedding维度
     if is_linear:
         for fc in sparse_feature_columns:
@@ -57,7 +59,7 @@ def build_embedding_layers(feature_columns, input_layers_dict, is_linear):
     else:
         for fc in sparse_feature_columns:
             embedding_layers_dict[fc.name] = Embedding(fc.vocabulary_size, fc.embedding_dim, name='kd_emb_' + fc.name)
-    
+
     return embedding_layers_dict
 
 
@@ -65,12 +67,12 @@ def get_linear_logits(dense_input_dict, sparse_input_dict, sparse_feature_column
     # 将所有的dense特征的Input层，然后经过一个全连接层得到dense特征的logits
     concat_dense_inputs = Concatenate(axis=1)(list(dense_input_dict.values()))
     dense_logits_output = Dense(1)(concat_dense_inputs)
-    
+
     # 获取linear部分sparse特征的embedding层，这里使用embedding的原因是：
     # 对于linear部分直接将特征进行onehot然后通过一个全连接层，当维度特别大的时候，计算比较慢
     # 使用embedding层的好处就是可以通过查表的方式获取到哪些非零的元素对应的权重，然后在将这些权重相加，效率比较高
     linear_embedding_layers = build_embedding_layers(sparse_feature_columns, sparse_input_dict, is_linear=True)
-    
+
     # 将一维的embedding拼接，注意这里需要使用一个Flatten层，使维度对应
     sparse_1d_embed = []
     for fc in sparse_feature_columns:
@@ -93,11 +95,11 @@ class BiInteractionPooling(Layer):
 
     def call(self, inputs):
         # 优化后的公式为： 0.5 * （和的平方-平方的和）  =>> B x k
-        concated_embeds_value = inputs # B x n x k
+        concated_embeds_value = inputs  # B x n x k
 
-        square_of_sum = tf.square(tf.reduce_sum(concated_embeds_value, axis=1, keepdims=False)) # B x k
-        sum_of_square = tf.reduce_sum(concated_embeds_value * concated_embeds_value, axis=1, keepdims=False) # B x k
-        cross_term = 0.5 * (square_of_sum - sum_of_square) # B x k
+        square_of_sum = tf.square(tf.reduce_sum(concated_embeds_value, axis=1, keepdims=False))  # B x k
+        sum_of_square = tf.reduce_sum(concated_embeds_value * concated_embeds_value, axis=1, keepdims=False)  # B x k
+        cross_term = 0.5 * (square_of_sum - sum_of_square)  # B x k
 
         return cross_term
 
@@ -112,12 +114,12 @@ def get_bi_interaction_pooling_output(sparse_input_dict, sparse_feature_columns,
     sparse_kd_embed = []
     for fc in sparse_feature_columns:
         feat_input = sparse_input_dict[fc.name]
-        _embed = dnn_embedding_layers[fc.name](feat_input) # B x 1 x k
+        _embed = dnn_embedding_layers[fc.name](feat_input)  # B x 1 x k
         sparse_kd_embed.append(_embed)
 
     # 将所有sparse的embedding拼接起来，得到 (n, k)的矩阵，其中n为特征数，k为embedding大小
-    concat_sparse_kd_embed = Concatenate(axis=1)(sparse_kd_embed) # B x n x k
-    
+    concat_sparse_kd_embed = Concatenate(axis=1)(sparse_kd_embed)  # B x n x k
+
     pooling_out = BiInteractionPooling()(concat_sparse_kd_embed)
 
     return pooling_out
@@ -126,13 +128,14 @@ def get_bi_interaction_pooling_output(sparse_input_dict, sparse_feature_columns,
 def get_dnn_logits(pooling_out):
     # dnn层，这里的Dropout参数，Dense中的参数都可以自己设定, 论文中还说使用了BN, 但是个人觉得BN和dropout同时使用
     # 可能会出现一些问题，感兴趣的可以尝试一些，这里就先不加上了
-    dnn_out = Dropout(0.5)(Dense(1024, activation='relu')(pooling_out))  
+    dnn_out = Dropout(0.5)(Dense(1024, activation='relu')(pooling_out))
     dnn_out = Dropout(0.3)(Dense(512, activation='relu')(dnn_out))
     dnn_out = Dropout(0.1)(Dense(256, activation='relu')(dnn_out))
 
     dnn_logits = Dense(1)(dnn_out)
 
     return dnn_logits
+
 
 def NFM(linear_feature_columns, dnn_feature_columns):
     # 构建输入层，即所有特征对应的Input()层，这里使用字典的形式返回，方便后续构建模型
@@ -155,13 +158,14 @@ def NFM(linear_feature_columns, dnn_feature_columns):
     # 将输入到dnn中的sparse特征筛选出来
     dnn_sparse_feature_columns = list(filter(lambda x: isinstance(x, SparseFeat), dnn_feature_columns))
 
-    pooling_output = get_bi_interaction_pooling_output(sparse_input_dict, dnn_sparse_feature_columns, embedding_layers) # B x (n(n-1)/2)
-    
+    pooling_output = get_bi_interaction_pooling_output(sparse_input_dict, dnn_sparse_feature_columns,
+                                                       embedding_layers)  # B x (n(n-1)/2)
+
     # 论文中说到在池化之后加上了BN操作
     pooling_output = BatchNormalization()(pooling_output)
 
     dnn_logits = get_dnn_logits(pooling_output)
-    
+
     # 将linear,dnn的logits相加作为最终的logits
     output_logits = Add()([linear_logits, dnn_logits])
 
@@ -186,23 +190,23 @@ if __name__ == "__main__":
     train_data['label'] = data['label']
 
     # 将特征分组，分成linear部分和dnn部分(根据实际场景进行选择)，并将分组之后的特征做标记（使用DenseFeat, SparseFeat）
-    linear_feature_columns = [SparseFeat(feat, vocabulary_size=data[feat].nunique(),embedding_dim=4)
-                            for i,feat in enumerate(sparse_features)] + [DenseFeat(feat, 1,)
-                            for feat in dense_features]
+    linear_feature_columns = [SparseFeat(feat, vocabulary_size=data[feat].nunique(), embedding_dim=4)
+                              for i, feat in enumerate(sparse_features)] + [DenseFeat(feat, 1, )
+                                                                            for feat in dense_features]
 
-    dnn_feature_columns = [SparseFeat(feat, vocabulary_size=data[feat].nunique(),embedding_dim=4)
-                            for i,feat in enumerate(sparse_features)] + [DenseFeat(feat, 1,)
-                            for feat in dense_features]
+    dnn_feature_columns = [SparseFeat(feat, vocabulary_size=data[feat].nunique(), embedding_dim=4)
+                           for i, feat in enumerate(sparse_features)] + [DenseFeat(feat, 1, )
+                                                                         for feat in dense_features]
 
     # 构建NFM模型
     history = NFM(linear_feature_columns, dnn_feature_columns)
     history.summary()
-    history.compile(optimizer="adam", 
-                loss="binary_crossentropy", 
-                metrics=["binary_crossentropy", tf.keras.metrics.AUC(name='auc')])
+    history.compile(optimizer="adam",
+                    loss="binary_crossentropy",
+                    metrics=["binary_crossentropy", tf.keras.metrics.AUC(name='auc')])
 
     # 将输入数据转化成字典的形式输入
     train_model_input = {name: data[name] for name in dense_features + sparse_features}
     # 模型训练
     history.fit(train_model_input, train_data['label'].values,
-            batch_size=64, epochs=5, validation_split=0.2, )
+                batch_size=64, epochs=5, validation_split=0.2, )

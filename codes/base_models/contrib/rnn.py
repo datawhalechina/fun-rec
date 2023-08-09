@@ -814,7 +814,7 @@ def dynamic_rnn(cell, inputs, att_scores=None, sequence_length=None, initial_sta
 
     # Variable using the same placement as for the rest of the RNN.
 
-    with vs.variable_scope(scope or "rnn",reuse=tf.AUTO_REUSE) as varscope:#TODO:user defined reuse
+    with vs.variable_scope(scope or "rnn", reuse=tf.AUTO_REUSE) as varscope:  # TODO:user defined reuse
 
         if varscope.caching_device is None:
             varscope.set_caching_device(lambda op: op.device)

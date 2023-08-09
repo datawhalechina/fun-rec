@@ -3,19 +3,20 @@ from collections import namedtuple
 from tensorflow.keras.initializers import RandomNormal
 
 # 默认分组名称
-DEFAULT_GROUP_NAME="default_group"
+DEFAULT_GROUP_NAME = "default_group"
 
 # 定义feature columns父类
-BaseDenseFeat = namedtuple('DenseFeat', 
-                            ['name', 'dimension', 'dtype', 'transform_fn'])
+BaseDenseFeat = namedtuple('DenseFeat',
+                           ['name', 'dimension', 'dtype', 'transform_fn'])
 BaseSparseFeat = namedtuple('SparseFeat',
-                            ['name', 'vocabulary_size', 'embedding_dim', 
-                            'use_hash', 'vocabulary_path', 'dtype', 
-                            'embeddings_initializer','embedding_name',
-                            'group_name', 'trainable'])
+                            ['name', 'vocabulary_size', 'embedding_dim',
+                             'use_hash', 'vocabulary_path', 'dtype',
+                             'embeddings_initializer', 'embedding_name',
+                             'group_name', 'trainable'])
 BaseVarLenSparseFeat = namedtuple('VarLenSparseFeat',
-                                  ['sparsefeat', 'maxlen', 'combiner', 
-                                  'length_name', 'weight_name', 'weight_norm'])
+                                  ['sparsefeat', 'maxlen', 'combiner',
+                                   'length_name', 'weight_name', 'weight_norm'])
+
 
 class DenseFeat(BaseDenseFeat):
     """ Dense feature
@@ -43,9 +44,9 @@ class DenseFeat(BaseDenseFeat):
 class SparseFeat(BaseSparseFeat):
     __slots__ = ()
 
-    def __new__(cls, name, vocabulary_size, embedding_dim=4, use_hash=False, 
-            vocabulary_path=None, dtype="int32", embeddings_initializer=None,
-            embedding_name=None, group_name=DEFAULT_GROUP_NAME, trainable=True):
+    def __new__(cls, name, vocabulary_size, embedding_dim=4, use_hash=False,
+                vocabulary_path=None, dtype="int32", embeddings_initializer=None,
+                embedding_name=None, group_name=DEFAULT_GROUP_NAME, trainable=True):
 
         if embedding_dim == "auto":
             embedding_dim = 6 * int(pow(vocabulary_size, 0.25))
@@ -57,9 +58,9 @@ class SparseFeat(BaseSparseFeat):
         if embedding_name is None:
             embedding_name = name
 
-        return super(SparseFeat, cls).__new__(cls, name, vocabulary_size, 
-            embedding_dim, use_hash, vocabulary_path, dtype, 
-            embeddings_initializer, embedding_name, group_name, trainable)
+        return super(SparseFeat, cls).__new__(cls, name, vocabulary_size,
+                                              embedding_dim, use_hash, vocabulary_path, dtype,
+                                              embeddings_initializer, embedding_name, group_name, trainable)
 
     def __hash__(self):
         return self.name.__hash__()
@@ -68,10 +69,10 @@ class SparseFeat(BaseSparseFeat):
 class VarLenSparseFeat(BaseVarLenSparseFeat):
     __slots__ = ()
 
-    def __new__(cls, sparsefeat, maxlen, combiner="mean", length_name=None, 
-                    weight_name=None, weight_norm=True):
-        return super(VarLenSparseFeat, cls).__new__(cls, sparsefeat, maxlen, 
-            combiner, length_name, weight_name, weight_norm)
+    def __new__(cls, sparsefeat, maxlen, combiner="mean", length_name=None,
+                weight_name=None, weight_norm=True):
+        return super(VarLenSparseFeat, cls).__new__(cls, sparsefeat, maxlen,
+                                                    combiner, length_name, weight_name, weight_norm)
 
     @property
     def name(self):

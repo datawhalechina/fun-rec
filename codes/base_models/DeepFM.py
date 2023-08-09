@@ -1,19 +1,16 @@
 import warnings
 warnings.filterwarnings("ignore")
-import itertools
+
 import pandas as pd
 import numpy as np
-from tqdm import tqdm
-from collections import namedtuple
+
 
 import tensorflow as tf
 from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
+from sklearn.preprocessing import LabelEncoder
 
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import  MinMaxScaler, LabelEncoder
-
-from utils import SparseFeat, DenseFeat, VarLenSparseFeat
+from utils import SparseFeat, DenseFeat
 
 
 # 简单处理特征，包括填充缺失值，数值处理，类别编码

@@ -11,8 +11,8 @@ from deepctr.layers.utils import combined_dnn_input
 
 
 def ESSM(dnn_feature_columns, task_type='binary', task_names=['ctr', 'ctcvr'],
-         tower_dnn_units_lists=[[128, 128],[128, 128]], l2_reg_embedding=0.00001, l2_reg_dnn=0,
-         seed=1024, dnn_dropout=0,dnn_activation='relu', dnn_use_bn=False):
+         tower_dnn_units_lists=[[128, 128], [128, 128]], l2_reg_embedding=0.00001, l2_reg_dnn=0,
+         seed=1024, dnn_dropout=0, dnn_activation='relu', dnn_use_bn=False):
     """Instantiates the Entire Space Multi-Task Model architecture.
 
     :param dnn_feature_columns: An iterable containing all the features used by deep part of the model.
@@ -29,21 +29,24 @@ def ESSM(dnn_feature_columns, task_type='binary', task_names=['ctr', 'ctcvr'],
     :param dnn_use_bn: bool. Whether use BatchNormalization before activation or not in DNN
     :return: A Keras model instance.
     """
-    if len(task_names)!=2:
+    if len(task_names) != 2:
         raise ValueError("the length of task_names must be equal to 2")
 
-    if len(tower_dnn_units_lists)!=2:
+    if len(tower_dnn_units_lists) != 2:
         raise ValueError("the length of tower_dnn_units_lists must be equal to 2")
 
     features = build_input_features(dnn_feature_columns)
     inputs_list = list(features.values())
 
-    sparse_embedding_list, dense_value_list = input_from_feature_columns(features, dnn_feature_columns, l2_reg_embedding,seed)
+    sparse_embedding_list, dense_value_list = input_from_feature_columns(features, dnn_feature_columns,
+                                                                         l2_reg_embedding, seed)
 
     dnn_input = combined_dnn_input(sparse_embedding_list, dense_value_list)
 
-    ctr_output = DNN(tower_dnn_units_lists[0], dnn_activation, l2_reg_dnn, dnn_dropout, dnn_use_bn, seed=seed)(dnn_input)
-    cvr_output = DNN(tower_dnn_units_lists[1], dnn_activation, l2_reg_dnn, dnn_dropout, dnn_use_bn, seed=seed)(dnn_input)
+    ctr_output = DNN(tower_dnn_units_lists[0], dnn_activation, l2_reg_dnn, dnn_dropout, dnn_use_bn, seed=seed)(
+        dnn_input)
+    cvr_output = DNN(tower_dnn_units_lists[1], dnn_activation, l2_reg_dnn, dnn_dropout, dnn_use_bn, seed=seed)(
+        dnn_input)
 
     ctr_logit = tf.keras.layers.Dense(1, use_bias=False, activation=None)(ctr_output)
     cvr_logit = tf.keras.layers.Dense(1, use_bias=False, activation=None)(cvr_output)
@@ -51,14 +54,17 @@ def ESSM(dnn_feature_columns, task_type='binary', task_names=['ctr', 'ctcvr'],
     ctr_pred = PredictionLayer(task_type, name=task_names[0])(ctr_logit)
     cvr_pred = PredictionLayer(task_type)(cvr_logit)
 
-    ctcvr_pred = tf.keras.layers.Multiply(name=task_names[1])([ctr_pred, cvr_pred])#CTCVR = CTR * CVR
+    ctcvr_pred = tf.keras.layers.Multiply(name=task_names[1])([ctr_pred, cvr_pred])  # CTCVR = CTR * CVR
 
     model = tf.keras.models.Model(inputs=inputs_list, outputs=[ctr_pred, ctcvr_pred])
     return model
 
+
 if __name__ == "__main__":
     from utils import get_mtl_data
+
     dnn_feature_columns, train_model_input, test_model_input, y_list = get_mtl_data()
-    model = ESSM(dnn_feature_columns, task_type='binary', task_names=['label_marital', 'label_income'], tower_dnn_units_lists=[[8],[8]])
+    model = ESSM(dnn_feature_columns, task_type='binary', task_names=['label_marital', 'label_income'],
+                 tower_dnn_units_lists=[[8], [8]])
     model.compile("adam", loss=["binary_crossentropy", "binary_crossentropy"], metrics=['AUC'])
-    history = model.fit(train_model_input, y_list, batch_size=256, epochs=5, verbose=2, validation_split=0.0 )
+    history = model.fit(train_model_input, y_list, batch_size=256, epochs=5, verbose=2, validation_split=0.0)

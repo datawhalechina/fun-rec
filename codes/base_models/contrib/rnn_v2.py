@@ -1070,7 +1070,7 @@ def dynamic_rnn(cell, inputs, att_scores=None, sequence_length=None, initial_sta
     except:
         resue = tf.compat.v1.AUTO_REUSE
 
-    with vs.variable_scope(scope or "rnn",reuse=resue) as varscope:#TODO:user defined reuse
+    with vs.variable_scope(scope or "rnn", reuse=resue) as varscope:  # TODO:user defined reuse
 
         if varscope.caching_device is None:
             varscope.set_caching_device(lambda op: op.device)

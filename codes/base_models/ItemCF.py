@@ -4,7 +4,9 @@ import warnings
 import random, math, os
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
+
 warnings.filterwarnings('ignore')
+
 
 # 评价指标
 # 推荐系统推荐正确的商品数量占用户实际点击的商品数量
@@ -25,6 +27,7 @@ def Recall(Rec_dict, Val_dict):
 
     return round(hit_items / all_items * 100, 2)
 
+
 # 推荐系统推荐正确的商品数量占给用户实际推荐的商品数
 def Precision(Rec_dict, Val_dict):
     '''
@@ -43,6 +46,7 @@ def Precision(Rec_dict, Val_dict):
 
     return round(hit_items / all_items * 100, 2)
 
+
 # 所有被推荐的用户中,推荐的商品数量占这些用户实际被点击的商品数量
 def Coverage(Rec_dict, Trn_dict):
     '''
@@ -58,6 +62,7 @@ def Coverage(Rec_dict, Trn_dict):
             rec_items.add(item)
     return round(len(rec_items) / len(all_items) * 100, 2)
 
+
 # 使用平均流行度度量新颖度,如果平均流行度很高(即推荐的商品比较热门),说明推荐的新颖度比较低
 def Popularity(Rec_dict, Trn_dict):
     '''
@@ -70,43 +75,46 @@ def Popularity(Rec_dict, Trn_dict):
             if item not in pop_items:
                 pop_items[item] = 0
             pop_items[item] += 1
-    
+
     pop, num = 0, 0
     for uid in Rec_dict:
         for item in Rec_dict[uid]:
-            pop += math.log(pop_items[item] + 1) # 物品流行度分布满足长尾分布,取对数可以使得平均值更稳定
-            num += 1  
+            pop += math.log(pop_items[item] + 1)  # 物品流行度分布满足长尾分布,取对数可以使得平均值更稳定
+            num += 1
     return round(pop / num, 3)
+
 
 # 将几个评价指标指标函数一起调用
 def rec_eval(val_rec_items, val_user_items, trn_user_items):
-    print('recall:',Recall(val_rec_items, val_user_items))
-    print('precision',Precision(val_rec_items, val_user_items))
-    print('coverage',Coverage(val_rec_items, trn_user_items))
-    print('Popularity',Popularity(val_rec_items, trn_user_items))
+    print('recall:', Recall(val_rec_items, val_user_items))
+    print('precision', Precision(val_rec_items, val_user_items))
+    print('coverage', Coverage(val_rec_items, trn_user_items))
+    print('Popularity', Popularity(val_rec_items, trn_user_items))
+
 
 def get_data(root_path):
     # 读取数据
-    rnames = ['user_id','movie_id','rating','timestamp']
+    rnames = ['user_id', 'movie_id', 'rating', 'timestamp']
     ratings = pd.read_csv(os.path.join(root_path, 'ratings.dat'), sep='::', engine='python', names=rnames)
-    
+
     # 分割训练和验证集
     trn_data, val_data, _, _ = train_test_split(ratings, ratings, test_size=0.2)
-    
+
     trn_data = trn_data.groupby('user_id')['movie_id'].apply(list).reset_index()
     val_data = val_data.groupby('user_id')['movie_id'].apply(list).reset_index()
 
     trn_user_items = {}
     val_user_items = {}
-    
+
     # 将数组构造成字典的形式{user_id: [item_id1, item_id2,...,item_idn]}
     for user, movies in zip(*(list(trn_data['user_id']), list(trn_data['movie_id']))):
         trn_user_items[user] = set(movies)
 
     for user, movies in zip(*(list(val_data['user_id']), list(val_data['movie_id']))):
         val_user_items[user] = set(movies)
-    
+
     return trn_user_items, val_user_items
+
 
 def Item_CF(trn_user_items, val_user_items, K, N):
     '''
@@ -119,7 +127,6 @@ def Item_CF(trn_user_items, val_user_items, K, N):
     # 建立user->item的倒排表
     # 倒排表的格式为: {user_id1: [item_id1, item_id2,...,item_idn], user_id2: ...} 也就是每个用户交互过的所有商品集合
     # 由于输入的训练数据trn_user_items,本身就是这中格式的，所以这里不需要进行额外的计算
-    
 
     # 计算商品协同过滤矩阵
     # 即利用user-items倒排表统计商品与商品之间被共同的用户交互的次数
@@ -130,7 +137,7 @@ def Item_CF(trn_user_items, val_user_items, K, N):
     num = {}
     print('构建相似性矩阵．．．')
     for uid, items in tqdm(trn_user_items.items()):
-        for i in items:    
+        for i in items:
             if i not in num:
                 num[i] = 0
             num[i] += 1
@@ -141,7 +148,7 @@ def Item_CF(trn_user_items, val_user_items, K, N):
                     sim[i][j] = 0
                 if i != j:
                     sim[i][j] += 1
-    
+
     # 计算物品的相似度矩阵
     # 商品协同过滤矩阵其实相当于是余弦相似度的分子部分,还需要除以分母,即两个商品被交互的用户数量的乘积
     # 两个商品被交互的用户数量就是上面统计的num字典
@@ -150,7 +157,6 @@ def Item_CF(trn_user_items, val_user_items, K, N):
         for j, score in items.items():
             if i != j:
                 sim[i][j] = score / math.sqrt(num[i] * num[j])
-    
 
     # 对验证数据中的每个用户进行TopN推荐
     # 在对用户进行推荐之前需要先通过商品相似度矩阵得到当前用户交互过的商品最相思的前K个商品，
@@ -159,14 +165,14 @@ def Item_CF(trn_user_items, val_user_items, K, N):
     items_rank = {}
     print('给用户进行推荐．．．')
     for uid, _ in tqdm(val_user_items.items()):
-        items_rank[uid] = {} # 存储用户候选的推荐商品
-        for hist_item in trn_user_items[uid]: # 遍历该用户历史喜欢的商品，用来下面寻找其相似的商品
+        items_rank[uid] = {}  # 存储用户候选的推荐商品
+        for hist_item in trn_user_items[uid]:  # 遍历该用户历史喜欢的商品，用来下面寻找其相似的商品
             for item, score in sorted(sim[hist_item].items(), key=lambda x: x[1], reverse=True)[:K]:
-                if item not in trn_user_items[uid]: # 进行推荐的商品一定不能在历史喜欢商品中出现
+                if item not in trn_user_items[uid]:  # 进行推荐的商品一定不能在历史喜欢商品中出现
                     if item not in items_rank[uid]:
                         items_rank[uid][item] = 0
                     items_rank[uid][item] += score
-    
+
     print('为每个用户筛选出相似度分数最高的Ｎ个商品...')
     items_rank = {k: sorted(v.items(), key=lambda x: x[1], reverse=True)[:N] for k, v in items_rank.items()}
     items_rank = {k: set([x[0] for x in v]) for k, v in items_rank.items()}
