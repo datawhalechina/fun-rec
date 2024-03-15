@@ -109,7 +109,7 @@ $$
 3. 从 Alice 购买过的物品中，选出与物品 `E` 最相似的 `num` 件物品。
 
    ```python
-   target_user = ' Alice '
+   target_user = 'Alice'
    target_item = 'E'
    num = 2
    
