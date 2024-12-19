@@ -46,45 +46,45 @@
 - **电商首页推荐(淘宝、京东、拼多多)**
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421190313917.png" alt="image-20220421190313917" style="zoom: 15%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421191138469.png" alt="image-20220421191138469" style="zoom:53%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421191441104.png" alt="image-20220421191441104" style="zoom:53%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421190313917.png" alt="image-20220421190313917" style="zoom: 15%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421191138469.png" alt="image-20220421191138469" style="zoom:53%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421191441104.png" alt="image-20220421191441104" style="zoom:53%;" />
 </div>
 
 - **视频推荐（抖音、快手、B站、爱奇艺）**
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421190629410.png" alt="image-20220421190629410" style="zoom:55%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421191849577.png" alt="image-20220421191849577" style="zoom: 53%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192047973.png" alt="image-20220421192047973" style="zoom:53%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192209412.png" alt="image-20220421192209412" style="zoom:55%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421190629410.png" alt="image-20220421190629410" style="zoom:55%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421191849577.png" alt="image-20220421191849577" style="zoom: 53%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192047973.png" alt="image-20220421192047973" style="zoom:53%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192209412.png" alt="image-20220421192209412" style="zoom:55%;" />
 </div>
 
 
 - **饮食推荐（美团、饿了么、叮咚买菜）**
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192623380.png" alt="image-20220421192623380" style="zoom:53%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192717773.png" alt="image-20220421192717773" style="zoom:55%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192749794.png" alt="image-20220421192749794" style="zoom:55%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192623380.png" alt="image-20220421192623380" style="zoom:53%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192717773.png" alt="image-20220421192717773" style="zoom:55%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192749794.png" alt="image-20220421192749794" style="zoom:55%;" />
 </div>
 
 
 - **音乐电台（网易云音乐、QQ音乐、喜马拉雅）**
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193139183.png" alt="image-20220421193139183" style="zoom: 57%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193447933.png" alt="image-20220421193447933" style="zoom:68%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193325921.png" alt="image-20220421193325921" style="zoom: 54%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193139183.png" alt="image-20220421193139183" style="zoom: 57%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193447933.png" alt="image-20220421193447933" style="zoom:68%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193325921.png" alt="image-20220421193325921" style="zoom: 54%;" />
 </div>
 
 
 - **资讯、阅读（头条、知乎、豆瓣）**
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193856262.png" alt="image-20220421193856262" style="zoom:53%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193923283.png" alt="image-20220421193923283" style="zoom:55%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421194244083.png" alt="image-20220421194244083" style="zoom:55%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193856262.png" alt="image-20220421193856262" style="zoom:53%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193923283.png" alt="image-20220421193923283" style="zoom:55%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421194244083.png" alt="image-20220421194244083" style="zoom:55%;" />
 </div>
 
 

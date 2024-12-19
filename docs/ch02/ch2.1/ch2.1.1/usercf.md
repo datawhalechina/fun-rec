@@ -99,13 +99,13 @@
 + 例如，我们要对用户 $A$ 进行物品推荐，可以先找到和他有相似兴趣的其他用户。
 + 然后，将共同兴趣用户喜欢的，但用户 $A$ 未交互过的物品推荐给 $A$。  
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210629232540289.png" alt="image-20210629232540289" style="zoom: 80%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210629232540289.png" alt="image-20210629232540289" style="zoom: 80%;" />
 
 ## 计算过程
 
 以下图为例，给用户推荐物品的过程可以形象化为一个猜测用户对物品进行打分的任务，表格里面是5个用户对于5件物品的一个打分情况，就可以理解为用户对物品的喜欢程度。
 
-![image-20210629232622758](http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210629232622758.png)
+![image-20210629232622758](https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210629232622758.png)
 
 UserCF算法的两个步骤：
 
@@ -164,7 +164,7 @@ UserCF算法的两个步骤：
 
    + 基于 sklearn 计算所有用户之间的皮尔逊相关系数。可以看出，与 Alice 相似度最高的用户为用户1和用户2。
 
-     <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/JavaWJkjP2fHH27Rajrj.png!thumbnail" alt="图片" style="zoom:80%;" />    
+     <img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/JavaWJkjP2fHH27Rajrj.png!thumbnail" alt="图片" style="zoom:80%;" />    
 
 2. **根据相似度用户计算 Alice对物品5的最终得分**
     用户1对物品5的评分是3， 用户2对物品5的打分是5， 那么根据上面的计算公式， 可以计算出 Alice 对物品5的最终得分是

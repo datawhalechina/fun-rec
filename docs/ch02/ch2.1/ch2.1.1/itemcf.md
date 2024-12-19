@@ -9,13 +9,13 @@
 
 举例来说，如果用户 1 喜欢物品 A ，而物品 A 和 C 非常相似，则可以将物品 C 推荐给用户1。ItemCF算法并不利用物品的内容属性计算物品之间的相似度， 主要通过分析用户的行为记录计算物品之间的相似度， 该算法认为， 物品 A 和物品 C 具有很大的相似度是因为喜欢物品 A 的用户极可能喜欢物品 C。
 
-![图片](http://ryluo.oss-cn-chengdu.aliyuncs.com/JavagdvaYX0HSW4PdssV.png!thumbnail)
+![图片](https://ryluo.oss-cn-chengdu.aliyuncs.com/JavagdvaYX0HSW4PdssV.png!thumbnail)
 
 ## 计算过程
 
 基于物品的协同过滤算法和基于用户的协同过滤算法很像，  所以我们这里直接还是拿上面 Alice 的那个例子来看。
 
-![图片](http://ryluo.oss-cn-chengdu.aliyuncs.com/JavaE306yXB4mGmjIxbn.png!thumbnail)
+![图片](https://ryluo.oss-cn-chengdu.aliyuncs.com/JavaE306yXB4mGmjIxbn.png!thumbnail)
 
 如果想知道 Alice 对物品5打多少分， 基于物品的协同过滤算法会这么做：
 
@@ -41,7 +41,7 @@
    
 2. 基于 `sklearn` 计算物品之间的皮尔逊相关系数：
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/JavaJOyFti58um61zPsa.png!thumbnail" alt="图片" style="zoom:80%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/JavaJOyFti58um61zPsa.png!thumbnail" alt="图片" style="zoom:80%;" />
 
 3. 根据皮尔逊相关系数， 可以找到与物品5最相似的2个物品是 item1 和 item4， 下面基于上面的公式计算最终得分：
 
@@ -196,7 +196,7 @@ $$
 
 比如下面这个例子：
 
-![图片](http://ryluo.oss-cn-chengdu.aliyuncs.com/JavaxxhHm3BAtMfsy2AV.png!thumbnail)
+![图片](https://ryluo.oss-cn-chengdu.aliyuncs.com/JavaxxhHm3BAtMfsy2AV.png!thumbnail)
 
 + 左边矩阵中，$A, B, C, D$ 表示的是物品。
 + 可以看出，$D $ 是一件热门物品，其与 $A、B、C$ 的相似度比较大。因此，推荐系统更可能将 $D$ 推荐给用过 $A、B、C$ 的用户。
@@ -242,7 +242,7 @@ $$
 >
 > 举例来说明，如下图（`X,Y,Z` 表示物品，`d,e,f`表示用户）：
 >
-> ![图片](http://ryluo.oss-cn-chengdu.aliyuncs.com/JavaWKvITKBhYOkfXrzs.png!thumbnail)
+> ![图片](https://ryluo.oss-cn-chengdu.aliyuncs.com/JavaWKvITKBhYOkfXrzs.png!thumbnail)
 >
 > + 如果使用余弦相似度进行计算，用户 d 和 e 之间较为相似。但是实际上，用户 d 和 f 之间应该更加相似。只不过由于 d 倾向于打高分，e 倾向于打低分导致二者之间的余弦相似度更高。
 > + 这种情况下，可以考虑使用皮尔逊相关系数计算用户之间的相似性关系。
