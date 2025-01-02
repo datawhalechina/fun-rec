@@ -1,3 +1,7 @@
+
+# 阿里云oss因欠费被删了，并且恢复不了了，这些图片我们会人工慢慢的补上去，目前涉及的图片数量400个左右，几乎贯穿整个项目，给大家带来的不便表示抱歉，我们尽力、尽快恢复
+
+
 # FunRec-[在线阅读](https://datawhalechina.github.io/fun-rec/#/)
 <p align="left">
   <img src='https://img.shields.io/badge/python-3.8+-blue'>
