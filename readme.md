@@ -148,7 +148,7 @@
 
 <div align=center> 
     <img src="imgs/readme/新闻推荐系统前后端逻辑.png" alt="image-20211205142026937" width="800px" />
-    <img src="imgs/readme/新闻推荐系统效果图.png" alt="Fun-Rec新闻推荐系统" width="810px" />
+    <img src="imgs/readme/新闻推荐系统效果图.png" alt="Fun-Rec新闻推荐系统" width="500px"/>
 </div>
 
 
