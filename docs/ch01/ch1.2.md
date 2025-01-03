@@ -30,12 +30,12 @@
 
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220409205047285.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220409205047285.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
 </div>
 
 上面是网飞的原图，我搬运了更加容易理解的线条梳理后的结构：
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220409204658032.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220409204658032.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 整个数据部分其实是一整个链路，主要是三块，分别是客户端及服务器实时数据处理、流处理平台准实时数据处理和大数据平台离线数据处理这三个部分。
 
@@ -62,7 +62,7 @@
 
 这里我们可以看出离线层的任务是最接近学校中我们处理数据、训练模型这种任务的，不同可能就是需要面临更大规模的数据。离线任务一般会按照天或者更久运行，比如每天晚上定期更新这一天的数据，然后重新训练模型，第二天上线新模型。
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220409205904314.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220409205904314.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
 </div>
 
 #### 离线层优势和不足
@@ -83,7 +83,7 @@
 
 近线层的发展得益于最近几年大数据技术的发展，很多流处理框架的提出大大促进了近线层的进步。如今Flink、Storm等工具一统天下。
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220409205830027.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220409205830027.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
 </div>
 
 ### 在线层
@@ -106,7 +106,7 @@
 所以一个通用的算法架构，设计思想就是对数据层层建模，层层筛选，帮助用户从海量数据中找出其真正感兴趣的部分。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220409211354342.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220409211354342.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 - 召回

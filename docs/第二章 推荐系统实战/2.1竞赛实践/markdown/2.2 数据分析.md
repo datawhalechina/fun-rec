@@ -66,7 +66,7 @@ trn_click = trn_click.merge(item_df, how='left', on=['click_article_id'])
 trn_click.head()
 ```
 
-![image-20201119112706647](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119112706647.png)
+![image-20201119112706647](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119112706647.png)
 
 **train_click_log.csv文件数据中每个字段的含义** 
 
@@ -86,7 +86,7 @@ trn_click.head()
 trn_click.info()
 ```
 
-![image-20201119112622939](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119112622939.png)
+![image-20201119112622939](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119112622939.png)
 
 
 
@@ -94,7 +94,7 @@ trn_click.info()
 trn_click.describe()
 ```
 
-![image-20201119112649376](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119112649376.png)
+![image-20201119112649376](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119112649376.png)
 
 
 ```python
@@ -133,7 +133,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-![在这里插入图片描述](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/20201118000820300.png)
+![在这里插入图片描述](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/20201118000820300.png)
 
 **从点击时间clik_timestamp来看，分布较为平均，可不做特殊处理。由于时间戳是13位的，后续将时间格式转换成10位方便计算。**
 
@@ -149,14 +149,14 @@ tst_click = tst_click.merge(item_df, how='left', on=['click_article_id'])
 tst_click.head()
 ```
 
-![image-20201119112952261](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119112952261.png)
+![image-20201119112952261](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119112952261.png)
 
 
 ```python
 tst_click.describe()
 ```
 
-![image-20201119113015529](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113015529.png)
+![image-20201119113015529](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113015529.png)
 
 **我们可以看出训练集和测试集的用户是完全不一样的**
 
@@ -187,14 +187,14 @@ tst_click.groupby('user_id')['click_article_id'].count().min() # 注意测试集
 item_df.head().append(item_df.tail())
 ```
 
-![image-20201119113118388](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113118388.png)
+![image-20201119113118388](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113118388.png)
 
 
 ```python
 item_df['words_count'].value_counts()
 ```
 
-![image-20201119113147240](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113147240.png)
+![image-20201119113147240](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113147240.png)
 
 
 ```python
@@ -219,7 +219,7 @@ item_df.shape       # 364047篇文章
 item_emb_df.head()
 ```
 
-![image-20201119113253455](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113253455.png)
+![image-20201119113253455](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113253455.png)
 
 ```python
 item_emb_df.shape
@@ -245,21 +245,21 @@ user_click_count = user_click_merge.groupby(['user_id', 'click_article_id'])['cl
 user_click_count[:10]
 ```
 
-![image-20201119113334727](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113334727.png)
+![image-20201119113334727](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113334727.png)
 
 
 ```python
 user_click_count[user_click_count['count']>7]
 ```
 
-![image-20201119113351807](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113351807.png)
+![image-20201119113351807](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113351807.png)
 
 
 ```python
 user_click_count['count'].unique()
 ```
 
-![image-20201119113429769](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113429769.png)
+![image-20201119113429769](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113429769.png)
 
 
 ```python
@@ -267,7 +267,7 @@ user_click_count['count'].unique()
 user_click_count.loc[:,'count'].value_counts() 
 ```
 
-![image-20201119113414785](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113414785.png)
+![image-20201119113414785](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113414785.png)
 
 **可以看出：有1605541（约占99.2%）的用户未重复阅读过文章，仅有极少数用户重复点击过某篇文章。 这个也可以单独制作成特征**
 
@@ -301,15 +301,15 @@ for _, user_df in sample_users.groupby('user_id'):
     plot_envs(user_df, cols, 2, 3)
 ```
 
-![image-20201119113624424](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113624424.png)
+![image-20201119113624424](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113624424.png)
 
-![image-20201119113637746](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113637746.png)
+![image-20201119113637746](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113637746.png)
 
-![image-20201119113652132](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113652132.png)
+![image-20201119113652132](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113652132.png)
 
-![image-20201119113702034](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113702034.png)
+![image-20201119113702034](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113702034.png)
 
-![image-20201119113714135](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113714135.png)
+![image-20201119113714135](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113714135.png)
 
 **可以看出绝大多数数的用户的点击环境是比较固定的。思路：可以基于这些环境的统计特征来代表该用户本身的属性**
 
@@ -322,7 +322,7 @@ plt.plot(user_click_item_count)
 ```
 
 
-![image-20201119113759490](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113759490.png)
+![image-20201119113759490](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113759490.png)
 
 **可以根据用户的点击文章次数看出用户的活跃度**
 
@@ -332,7 +332,7 @@ plt.plot(user_click_item_count)
 plt.plot(user_click_item_count[:50])
 ```
 
-![image-20201119113825586](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113825586.png)
+![image-20201119113825586](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113825586.png)
 
 **点击次数排前50的用户的点击次数都在100次以上。思路：我们可以定义点击次数大于等于100次的用户为活跃用户，这是一种简单的处理思路， 判断用户活跃度，更加全面的是再结合上点击时间，后面我们会基于点击次数和点击时间两个方面来判断用户活跃度。**
 
@@ -342,7 +342,7 @@ plt.plot(user_click_item_count[:50])
 plt.plot(user_click_item_count[25000:50000])
 ```
 
-![image-20201119113844946](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113844946.png)
+![image-20201119113844946](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113844946.png)
 
 **可以看出点击次数小于等于两次的用户非常的多，这些用户可以认为是非活跃用户**
 
@@ -358,14 +358,14 @@ item_click_count = sorted(user_click_merge.groupby('click_article_id')['user_id'
 plt.plot(item_click_count)
 ```
 
-![image-20201119113912912](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113912912.png)
+![image-20201119113912912](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113912912.png)
 
 
 ```python
 plt.plot(item_click_count[:100])
 ```
 
-![image-20201119113930745](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113930745.png)
+![image-20201119113930745](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113930745.png)
 
 **可以看出点击次数最多的前100篇新闻，点击次数大于1000次**
 
@@ -374,7 +374,7 @@ plt.plot(item_click_count[:100])
 plt.plot(item_click_count[:20])
 ```
 
-![image-20201119113958254](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113958254.png)
+![image-20201119113958254](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119113958254.png)
 
 **点击次数最多的前20篇新闻，点击次数大于2500。思路：可以定义这些新闻为热门新闻， 这个也是简单的处理方式，后面我们也是根据点击次数和时间进行文章热度的一个划分。**
 
@@ -383,7 +383,7 @@ plt.plot(item_click_count[:20])
 plt.plot(item_click_count[3500:])
 ```
 
-![image-20201119114017762](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114017762.png)
+![image-20201119114017762](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114017762.png)
 
 **可以发现很多新闻只被点击过一两次。思路：可以定义这些新闻是冷门新闻。**
 
@@ -397,7 +397,7 @@ union_item = tmp.groupby(['click_article_id','next_item'])['click_timestamp'].ag
 union_item[['count']].describe()
 ```
 
-![image-20201119114044351](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114044351.png)
+![image-20201119114044351](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114044351.png)
 
 **由统计数据可以看出，平均共现次数2.88，最高为1687。**
 
@@ -411,14 +411,14 @@ y = union_item['count']
 plt.scatter(x, y)
 ```
 
-![image-20201119114106223](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114106223.png)
+![image-20201119114106223](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114106223.png)
 
 
 ```python
 plt.plot(union_item['count'].values[40000:])
 ```
 
-![image-20201119114122557](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114122557.png)
+![image-20201119114122557](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114122557.png)
 
 **大概有70000个pair至少共现一次。**
 
@@ -432,7 +432,7 @@ plt.plot(union_item['count'].values[40000:])
 plt.plot(user_click_merge['category_id'].value_counts().values)
 ```
 
-![image-20201119114144058](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114144058.png)
+![image-20201119114144058](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114144058.png)
 
 
 ```python
@@ -440,7 +440,7 @@ plt.plot(user_click_merge['category_id'].value_counts().values)
 plt.plot(user_click_merge['category_id'].value_counts().values[150:])
 ```
 
-![image-20201119114201764](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114201764.png)
+![image-20201119114201764](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114201764.png)
 
 
 ```python
@@ -455,7 +455,7 @@ user_click_merge['words_count'].describe()
 plt.plot(user_click_merge['words_count'].values)
 ```
 
-![image-20201119114241194](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114241194.png)
+![image-20201119114241194](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114241194.png)
 
 
 
@@ -469,7 +469,7 @@ plt.plot(sorted(user_click_merge.groupby('user_id')['category_id'].nunique(), re
 ```
 
 
-![image-20201119114300286](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114300286.png)
+![image-20201119114300286](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114300286.png)
 
 **从上图中可以看出有一小部分用户阅读类型是极其广泛的，大部分人都处在20个新闻类型以下。**
 
@@ -478,7 +478,7 @@ plt.plot(sorted(user_click_merge.groupby('user_id')['category_id'].nunique(), re
 user_click_merge.groupby('user_id')['category_id'].nunique().reset_index().describe()
 ```
 
-![image-20201119114318523](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114318523.png)
+![image-20201119114318523](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114318523.png)
 
 ### 用户查看文章的长度的分布
 
@@ -490,7 +490,7 @@ plt.plot(sorted(user_click_merge.groupby('user_id')['words_count'].mean(), rever
 ```
 
 
-![image-20201119114337448](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114337448.png)
+![image-20201119114337448](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114337448.png)
 
 
 
@@ -504,7 +504,7 @@ plt.plot(sorted(user_click_merge.groupby('user_id')['words_count'].mean(), rever
 plt.plot(sorted(user_click_merge.groupby('user_id')['words_count'].mean(), reverse=True)[1000:45000])
 ```
 
-![image-20201119114355195](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114355195.png)
+![image-20201119114355195](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114355195.png)
 
 **可以发现大多数人都是看250字以下的文章**
 
@@ -514,7 +514,7 @@ plt.plot(sorted(user_click_merge.groupby('user_id')['words_count'].mean(), rever
 user_click_merge.groupby('user_id')['words_count'].mean().reset_index().describe()
 ```
 
-![image-20201119114418911](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114418911.png)
+![image-20201119114418911](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114418911.png)
 
 
 
@@ -536,7 +536,7 @@ user_click_merge = user_click_merge.sort_values('click_timestamp')
 user_click_merge.head()
 ```
 
-![image-20201119114447904](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114447904.png)
+![image-20201119114447904](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114447904.png)
 
 
 ```python
@@ -558,7 +558,7 @@ mean_diff_click_time = user_click_merge.groupby('user_id')['click_timestamp', 'c
 plt.plot(sorted(mean_diff_click_time.values, reverse=True))
 ```
 
-![image-20201119114505086](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114505086.png)
+![image-20201119114505086](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119114505086.png)
 
 **从上图可以发现不同用户点击文章的时间差是有差异的。**
 
@@ -573,7 +573,7 @@ mean_diff_created_time = user_click_merge.groupby('user_id')['click_timestamp', 
 plt.plot(sorted(mean_diff_created_time.values, reverse=True))
 ```
 
-![image-20201119122227666](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119122227666.png)
+![image-20201119122227666](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119122227666.png)
 
 **从图中可以发现用户先后点击文章，文章的创建时间也是有差异的**
 
@@ -602,7 +602,7 @@ sub_user_info = user_click_merge[user_click_merge['user_id'].isin(sub_user_ids)]
 sub_user_info.head()
 ```
 
-![image-20201119122251274](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119122251274.png)
+![image-20201119122251274](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119122251274.png)
 
 
 ```python
@@ -625,7 +625,7 @@ for _, user_df in sub_user_info.groupby('user_id'):
 ```
 
 
-![image-20201119122310969](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119122310969.png)
+![image-20201119122310969](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119122310969.png)
 
 
 
@@ -654,5 +654,5 @@ for _, user_df in sub_user_info.groupby('user_id'):
 
 **关于Datawhale：** Datawhale是一个专注于数据科学与AI领域的开源组织，汇集了众多领域院校和知名企业的优秀学习者，聚合了一群有开源精神和探索精神的团队成员。Datawhale 以“for the learner，和学习者一起成长”为愿景，鼓励真实地展现自我、开放包容、互信互助、敢于试错和勇于担当。同时 Datawhale 用开源的理念去探索开源内容、开源学习和开源方案，赋能人才培养，助力人才成长，建立起人与人，人与知识，人与企业和人与未来的联结。 本次数据挖掘路径学习，专题知识将在天池分享，详情可关注Datawhale：
 
-![image-20201119112159065](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119112159065.png)
+![image-20201119112159065](https://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119112159065.png)
 

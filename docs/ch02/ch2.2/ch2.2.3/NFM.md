@@ -10,11 +10,11 @@ $$
 我们对比FM， 就会发现变化的是第三项，前两项还是原来的， 因为我们说FM的一个问题，就是只能到二阶交叉， 且是线性模型， 这是他本身的一个局限性， 而如果想突破这个局限性， 就需要从他的公式本身下点功夫， 于是乎，作者在这里改进的思路就是**用一个表达能力更强的函数来替代原FM中二阶隐向量内积的部分**。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1.png" style="zoom:70%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片1.png" style="zoom:70%;" />
 </div>
 而这个表达能力更强的函数呢， 我们很容易就可以想到神经网络来充当，因为神经网络理论上可以拟合任何复杂能力的函数， 所以作者真的就把这个$f(x)$换成了一个神经网络，当然不是一个简单的DNN， 而是依然底层考虑了交叉，然后高层使用的DNN网络， 这个也就是我们最终的NFM网络了：
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片2.png" style="zoom:80%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片2.png" style="zoom:80%;" />
 </div>
 这个结构，如果前面看过了PNN的伙伴会发现，这个结构和PNN非常像，只不过那里是一个product_layer， 而这里换成了Bi-Interaction Pooling了， 这个也是NFM的核心结构了。这里注意， 这个结构中，忽略了一阶部分，只可视化出来了$f(x)$， 我们还是下面从底层一点点的对这个网络进行剖析。
 
@@ -130,11 +130,11 @@ def NFM(linear_feature_columns, dnn_feature_columns):
 
 有了上面的解释，这个模型的宏观层面相信就很容易理解了。关于这每一块的细节，这里就不解释了，在我们给出的GitHub代码中，我们已经加了非常详细的注释，大家看那个应该很容易看明白， 为了方便大家的阅读，我们这里还给大家画了一个整体的模型架构图，帮助大家更好的了解每一块以及前向传播。（画的图不是很规范，先将就看一下，后面我们会统一在优化一下这个手工图）。
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片NFM_aaaa.png" alt="NFM_aaaa" style="zoom: 50%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片NFM_aaaa.png" alt="NFM_aaaa" style="zoom: 50%;" />
 </div>
 下面是一个通过keras画的模型结构图，为了更好的显示，数值特征和类别特征都只是选择了一小部分，画图的代码也在github中。
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片nfm.png" alt="NFM_aaaa" style="zoom: 50%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片nfm.png" alt="NFM_aaaa" style="zoom: 50%;" />
 </div>
 
 ## 思考题

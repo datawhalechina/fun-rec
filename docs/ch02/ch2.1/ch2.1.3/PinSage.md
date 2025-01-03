@@ -128,7 +128,7 @@ PinSage在训练时采用的是 Margin Hinge Loss 损失函数，主要的思想
 - easy 负样本：这里对于mini-batch内的所有pair(训练样本对)会共享500负样本，这500个样本从batch之外的所有节点中随机采样得到。这么做可以减少在每个mini-batch中因计算所有节点的embedding所需的时间，文中指出这和为每个item采样一定数量负样本无差异。
 - hard 负样本：这里使用hard 负样本的原因是根据实际场景的问题出发，模型需要从20亿的物品item集合中识别出最相似的1000个，即模型需要从2百万 item 中识别出最相似的那一个 item。也就是说模型的区分能力不够细致，为了解决这个问题，加入了一些hard样本。对于hard 负样本，应该是与 q 相似 以及和 i 不相似的物品，具体地的生成方式是将图上的节点计算相对节点 q 的个性化PageRank分值，根据分值的排序随机从2000~5000的位置选取节点作为负样本。
 
-负样本的构建是召回模型的中关键的内容，在各家公司的工作都予以体现，具体的大家可以参考 Facebook 发表的[《Embedding-based Retrieval in Facebook Search》]([https://arxiv.org/pdf/2006.11632v1.pdf](https://links.jianshu.com/go?to=https%3A%2F%2Farxiv.org%2Fpdf%2F2006.11632v1.pdf))
+负样本的构建是召回模型的中关键的内容，在各家公司的工作都予以体现，具体的大家可以参考 Facebook 发表的[《Embedding-based Retrieval in Facebook Search》](https://arxiv.org/pdf/2006.11632v1.pdf)
 
 **渐进式训练(Curriculum training)**
 

@@ -6,7 +6,7 @@ DIN模型考虑了用户兴趣，并且强调用户兴趣是多样的，该模�
 
 ## DIEN模型原理
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210218155901144.png" alt="image-20210218155901144" style="zoom:50%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210218155901144.png" alt="image-20210218155901144" style="zoom:50%;" />
 </div>
 
 模型的输入可以分成两大部分，一部分是用户的行为序列(这部分会通过兴趣提取层及兴趣演化层转换成与用户当前兴趣相关的embedding)，另一部分就是除了用户行为以外的其他所有特征，如Target id, Coontext Feature, UserProfile Feature，这些特征都转化成embedding的类型然后concat在一起（形成一个大的embedding）作为非行为相关的特征(这里可能也会存在一些非id类特征，应该可以直接进行concat)。最后DNN输入的部分由行为序列embedding和非行为特征embedding（多个特征concat到一起之后形成的一个大的向量）组成，将两者concat之后输入到DNN中。
@@ -23,13 +23,13 @@ DIN模型考虑了用户兴趣，并且强调用户兴趣是多样的，该模�
 首先需要明确的就是辅助损失是计算哪两个量的损失。计算的是用户每个时刻的兴趣表示（GRU每个时刻输出的隐藏状态形成的序列）与用户当前时刻实际点击的物品表示（输入的embedding序列）之间的损失，相当于是行为序列中的第t+1个物品与用户第t时刻的兴趣表示之间的损失**（为什么这里用户第t时刻的兴趣与第t+1时刻的真实点击做损失呢？我的理解是，只有知道了用户第t+1真实点击的商品，才能更好的确定用户第t时刻的兴趣）。**
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210218163742638.png" alt="image-20210218163742638" style="zoom:50%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210218163742638.png" alt="image-20210218163742638" style="zoom:50%;" />
 </div>
 
 当然，如果只计算用户点击物品与其点击前一次的兴趣之间的损失，只能认为是正样本之间的损失，那么用户第t时刻的兴趣其实还有很多其他的未点击的商品，这些未点击的商品就是负样本，负样本一般通过从用户点击序列中采样得到，这样一来辅助损失中就包含了用户某个时刻下的兴趣及与该时刻兴趣相关的正负物品。所以最终的损失函数表示如下。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210218162447125.png" alt="image-20210218162447125" style="zoom: 25%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210218162447125.png" alt="image-20210218162447125" style="zoom: 25%;" />
 </div>
 其中$h_t^i$表示的是用户$i$第$t$时刻的隐藏状态，可以表示用户第$t$时刻的兴趣向量，$e_b^i，\hat{e_b^i}$分别表示的是正负样本，$e_b^i[t+1]$表示的是用户$i$第$t+1$时刻点击的物品向量。
 
@@ -56,7 +56,7 @@ $$
 由于用户的兴趣是多样的，但是用户的每一种兴趣都有自己的发展过程，即使兴趣发生漂移我们可以只考虑用户与target item(广告或者商品)相关的兴趣演化过程，这样就不用考虑用户多样化的兴趣的问题了，而如何只获取与target item相关的信息，作者使用了与DIN模型中提取与target item相同的方法，来计算用户历史兴趣与target item之间的相似度，即这里也使用了DIN中介绍的局部激活单元(就是下图中的Attention模块)。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210218180755462.png" alt="image-20210218180755462" style="zoom:70%;" />
+<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210218180755462.png" alt="image-20210218180755462" style="zoom:70%;" />
 </div>
 
 当得到了用户历史兴趣序列及兴趣序列与target item之间的相关性(注意力分数)之后，就需要再次对注意力序列进行建模得到用户注意力的演化过程，进一步表示用户最终的兴趣向量。此时的序列数据等同于有了一个序列及序列中每个向量的注意力权重，下面就是考虑如何使用这个注意力权重来一起优化序列建模的结果了。作者提出了三种注意力结合的GRU模型快：
