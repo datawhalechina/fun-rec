@@ -140,8 +140,8 @@
 [2.1 竞赛实践(天池入门赛-新闻推荐)](https://tianchi.aliyun.com/competition/entrance/531842/forum)
 
 <div align=center>
-    <img src="imgs/readme/天池竞赛介绍_1.png" alt="image-20211213165802957" width="800px" />
-    <img src="imgs/readme/天池竞赛介绍_2.png" alt="image-20211213165847593" width="800px" />
+    <img src="imgs/readme/天池竞赛介绍_1.png" alt="image-20211213165802957" width="600px" />
+    <img src="imgs/readme/天池竞赛介绍_2.png" alt="image-20211213165847593" width="600px" />
 </div>
 
 **2.2 新闻推荐系统实践前端展示和后端逻辑(项目没有任何商用价值仅供入门者学习)**
