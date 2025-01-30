@@ -23,7 +23,7 @@
 为了方便学习和交流，**我们建立了FunRec学习社区（微信群+知识星球）**，微信群方便大家平时日常交流和讨论，知识星球方便沉淀内容。由于我们的内容面向的人群主要是学生，所以**知识星球永久免费**，感兴趣的可以加入星球讨论（加入星球的同学先看置定的必读帖）！**FunRec学习社区内部会不定期分享(FunRec社区中爱分享的同学)技术总结、个人管理等内容，[跟技术相关的分享内容都放在了B站](https://space.bilibili.com/431850986/channel/collectiondetail?sid=339597)上面**。由于微信群的二维码只有7天内有效，所以直接加下面这个微信，备注：**Fun-Rec**，会被拉到Fun-Rec交流群，如果觉得微信群比较吵建议直接加知识星球！。
 
 <div align=center> 
-<img src="imgs/readme/加群.png" alt="image-20220408193745249" width="500px";" />
+<img src="docs/imgs/readme/加群.png" alt="image-20220408193745249" width="500px";" />
 </div>
 
 **注意：不建议直接在github上面阅读（公式图片容易解析错误），推荐点击上面的在线阅读或者离线下载下来之后使用markdown工具（如typora）查看！**                                                                                                                               
@@ -140,15 +140,15 @@
 [2.1 竞赛实践(天池入门赛-新闻推荐)](https://tianchi.aliyun.com/competition/entrance/531842/forum)
 
 <div align=center>
-    <img src="imgs/readme/天池竞赛介绍_1.png" alt="image-20211213165802957" width="600px" />
-    <img src="imgs/readme/天池竞赛介绍_2.png" alt="image-20211213165847593" width="600px" />
+    <img src="docs/imgs/readme/天池竞赛介绍_1.png" alt="image-20211213165802957" width="600px" />
+    <img src="docs/imgs/readme/天池竞赛介绍_2.png" alt="image-20211213165847593" width="600px" />
 </div>
 
 **2.2 新闻推荐系统实践前端展示和后端逻辑(项目没有任何商用价值仅供入门者学习)**
 
 <div align=center> 
-    <img src="imgs/readme/新闻推荐系统前后端逻辑.png" alt="image-20211205142026937" width="800px" />
-    <img src="imgs/readme/新闻推荐系统效果图.png" alt="Fun-Rec新闻推荐系统" width="500px"/>
+    <img src="docs/imgs/readme/新闻推荐系统前后端逻辑.png" alt="image-20211205142026937" width="800px" />
+    <img src="docs/imgs/readme/新闻推荐系统效果图.png" alt="Fun-Rec新闻推荐系统" width="500px"/>
 </div>
 
 
@@ -175,7 +175,7 @@
 ## 关注我们
 <div align=center>
 <p>扫描下方二维码关注公众号：Datawhale</p>
-<img src="https://raw.githubusercontent.com/datawhalechina/pumpkin-book/master/res/qrcode.jpeg" width = "180" height = "180">
+<img src="docs/imgs/readme/qrcode.jpg" width = "180" height = "180">
 </div>
 
 ## LICENSE
