@@ -41,7 +41,7 @@ FiBiNet的提出动机是因为在特征交互这一方面， 目前的ctr模型
 这里我们直接分析模型架构即可， 因为这个模型不是很复杂，也非常好理解前向传播的过程：
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210703160140322.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 80%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/FiBiNet/20210703160140322.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
 </div>
 
 从模型架构上来看，如果把我框出来的两部分去掉， 这个基本上就退化成了最简单的推荐深度模型DeepCrossing，甚至还比不上那个(那个还用了残差网络)。不过，加上了两个框，效果可就不一样了。所以下面重点是剖析下这两个框的结构，其他的简单一过即可。
@@ -63,7 +63,7 @@ FiBiNet的提出动机是因为在特征交互这一方面， 目前的ctr模型
 这是第一个重点，首先这个网络接收的输入是上面的$E=\left[e_{1}, e_{2}, \cdots, e_{i}, \cdots, e_{f}\right]$， 网络的输出也是个同样大小的张量`(None, f, k)`矩阵。 结构如下：
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210703162008862.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 80%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/FiBiNet/20210703162008862.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 SENet由自动驾驶公司Momenta在2017年提出，在当时，是一种应用于图像处理的新型网络结构。它基于CNN结构，**通过对特征通道间的相关性进行建模，对重要特征进行强化来提升模型准确率，本质上就是针对CNN中间层卷积核特征的Attention操作**。ENet仍然是效果最好的图像处理网络结构之一。
@@ -73,7 +73,7 @@ SENet由自动驾驶公司Momenta在2017年提出，在当时，是一种应用�
 所以拿来用了再说， 把SENet放在Embedding层之上，通过SENet网络，动态地学习这些特征的重要性。**对于每个特征学会一个特征权重，然后再把学习到的权重乘到对应特征的Embedding里，这样就可以动态学习特征权重，通过小权重抑制噪音或者无效低频特征，通过大权重放大重要特征影响的目的**。在推荐系统里面， 结构长这个样子：
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210703161807139.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 80%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/FiBiNet/20210703161807139.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
 </div>
 
 下面看下这个网络里面的具体计算过程， SENET主要分为三个步骤Squeeze, Excitation, Re-weight。
@@ -97,7 +97,7 @@ SENet由自动驾驶公司Momenta在2017年提出，在当时，是一种应用�
 	其中，第一个MLP的作用是做特征交叉，第二个MLP的作用是为了保持输出的大小维度。因为假设Embedding层有$f$个特征，那么我们需要保证输出$f$个权重值，而第二个MLP就是起到将大小映射到$f$个数值大小的作用。<br><br>这样，经过两层MLP映射，就会产生$f$个权重数值，第$i$个数值对应第$i$个特征Embedding的权重$a_i$ 。<br><br>这个东西有没有感觉和自动编码器很像，虽然不是一样的作用， 但网络结构是一样的。这就是知识串联的功效哈哈。
 
     <div align=center> 
-    <img src="https://img-blog.csdnimg.cn/2021070316343673.png#pic_center" alt="image-20210308142624189" style="zoom: 70%;" /> 
+    <img src="../../../imgs/ch02/ch2.2/ch2.2.2/FiBiNet/2021070316343673.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
     </div>
 
 	瞬间是不是就把SENet这里的网络结构记住了哈哈。下面再分析下维度， SENet的输入是$E$，这个是`(None, f, k)`的维度， 通过Squeeze阶段，得到了`(None, f)`的矩阵，这个也就相当于Layer L1的输入(当然这里没有下面的偏置哈)，接下来过MLP1， 这里的$W_{1} \in R^{f \times \frac{f}{r}}, W_{2} \in R^{\frac{f}{r} \times f}$, 这里的$r$叫做reduction
@@ -117,13 +117,13 @@ SENet由自动驾驶公司Momenta在2017年提出，在当时，是一种应用�
 特征重要性选择完事， 接下来就是研究特征交互， 这里作者直接就列出了目前的两种常用交互以及双线性交互:
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210703165031369.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 70%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/FiBiNet/20210703165031369.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
 </div>
 
 这个图其实非常了然了。以往模型用的交互， 内积的方式(FM,FFM)这种或者哈达玛积的方式(NFM,AFM)这种。
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210703165221794.png#pic_center" alt="image-20210308142624189" style="zoom: 70%;" > 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/FiBiNet/20210703165221794.png" alt="image-20210308142624189" style="zoom: 70%;" > 
 </div>
 
 所谓的双线性，其实就是组合了内积和哈达玛积的操作，看上面的右图。就是在$v_i$和$v_j$之间先加一个$W$矩阵， 这个$W$矩阵的维度是$(f,f)$, $v_i, v_j$是$(1,f)$的向量。 先让$v_i$与$W$内积，得到$(1,f)$的向量，这时候先仔细体会下这个**新向量的每个元素，相当于是原来向量$v_i$在每个维度上的线性组合了**。这时候再与$v_j$进行哈达玛积得到结果。
@@ -157,7 +157,7 @@ $$
 我们的原始embedding和SKNET-like embedding都需要过这个层，那么得到的就是一个双线性两两组合的矩阵， 维度是$(\frac{f(f-1)}{2}, k)$的矩阵。
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210703173830995.png#pic_center" alt="image-20210308142624189" style="zoom: 70%;" > 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/FiBiNet/20210703173830995.png" alt="image-20210308142624189" style="zoom: 70%;" > 
 </div>
 
 ### Combination Layer
@@ -186,7 +186,7 @@ $$
 实验部分，这里作者也是做了大量的实验来证明提出的模型比其他模型要好，这个就不说了。
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/2021070317512940.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 70%;" > 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/FiBiNet/2021070317512940.png" alt="image-20210308142624189" style="zoom: 80%;" > 
 </div>
 
 竟然比xDeepFM都要好。
@@ -196,7 +196,7 @@ $$
 其次了解到的一个事情：
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210703175052617.png#pic_center" alt="image-20210308142624189" style="zoom: 70%;" > 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/FiBiNet/20210703175052617.png" alt="image-20210308142624189" style="zoom: 70%;" > 
 </div>
 
 接下来，得整理下双线性与哈达玛积的组合类型，因为我们这个地方其实有两路embedding的， 一路是原始embedding， 一路是SKNet侧的embedding。而面临的组合方式，有双线性和哈达玛积两种。那么怎么组合会比较好呢？ 作者做了实验。结论是，作者建议:
@@ -408,7 +408,7 @@ class BilinearInteraction(Layer):
 还有一种读论文的厉害姿势，和张俊林老师学的，就是拉马努金式思维，就是读论文之前，看完题目之后， 不要看正文，先猜测作者在尝试解决什么样的问题，比如
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210703183445412.png#pic_center" alt="image-20210308142624189" style="zoom: 70%;" > 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/FiBiNet/20210703183445412.png" alt="image-20210308142624189" style="zoom: 70%;" > 
 </div>
 
 看到特征重要性和双线性特征交互， 就大体上能猜测到这篇推荐论文讲的应该是和特征选择和特征交互相关的知识。 那么如果是我解决这两方面的话应该怎么解决呢？

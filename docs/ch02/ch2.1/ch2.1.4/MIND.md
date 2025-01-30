@@ -15,7 +15,9 @@ MIND模型(Multi-Interest Network with Dynamic Routing)， 是阿里团队2019�
 
 作者这次的出发点是基于场景出发，在天猫的推荐场景中，作者发现**用户的兴趣存在多样性**。平均上，10亿用户访问天猫，每个用户每天与数百种产品互动。交互后的物品往往属于不同的类别，说明用户兴趣的多样性。 一张图片会更加简洁直观：
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/67ec071db0d44eb2ac0ee499980bf8a9.png#pic_center)
+<div align="center">
+<img src="../../../imgs/ch02/ch2.1/ch2.1.4/MIND/67ec071db0d44eb2ac0ee499980bf8a9.png#pic_center" style="zoom:100%;"/>
+</div>
 因此如果能在**召回阶段建立用户多兴趣模型来模拟用户的这种广泛兴趣**，那么作者认为是非常有必要的，因为召回阶段的任务就是根据用户兴趣检索候选商品嘛。
 
 那么，如何能基于用户的历史交互来学习用户的兴趣表示呢？  以往的解决方案如下：
@@ -33,8 +35,11 @@ Hinton大佬在2011年的时候，就首次提出了"胶囊"的概念， "胶囊
 
 胶囊网络其实可以和神经网络对比着看可能更好理解，我们知道神经网络的每一层的神经元输出的是单个的标量值，接收的输入，也是多个标量值，所以这是一种value to value的形式，而胶囊网络每一层的胶囊输出的是一个向量值，接收的输入也是多个向量，所以它是vector to vector形式的。来个图对比下就清楚了：
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/1f698efd1f7e4b76babb061e52133e45.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_2,color_FFFFFF,t_70,g_se,x_16#pic_center)
+<div align="center">
+<img src="../../../imgs/ch02/ch2.1/ch2.1.4/MIND/1f698efd1f7e4b76babb061e52133e45.png" style="zoom:80%;"/>
+</div>
 左边的图是普通神经元的计算示意，而右边是一个胶囊内部的计算示意图。 神经元这里不过多解释，这里主要是剖析右边的这个胶囊计算原理。从上图可以看出， 输入是两个向量$v_1,v_2$，首先经过了一个线性映射，得到了两个新向量$u_1,u_2$，然后呢，经过了一个向量的加权汇总，这里的$c_1$,$c_2$可以先理解成权重，具体计算后面会解释。 得到汇总后的向量$s$，接下来进行了Squash操作，整体的计算公式如下：
+
 $$
 \begin{aligned}
 &u^{1}=W^{1} v^{1} \quad u^{2}=W^{2} v^{2} \\
@@ -53,22 +58,30 @@ $$
 ### 动态路由机制原理
 我们先来一个胶囊结构: 
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/12fca14263d943318bf3d83180b55e01.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center)
+<div align="center">
+<img src="../../../imgs/ch02/ch2.1/ch2.1.4/MIND/12fca14263d943318bf3d83180b55e01.png" style="zoom:80%;"/>
+</div>
 这个$c_i$是通过动态路由机制计算得到，那么动态路由机制究竟是啥子意思？  其实就是通过迭代的方式去计算，没有啥神秘的，迭代计算的流程如下图:
- ![在这里插入图片描述](https://img-blog.csdnimg.cn/82746b6ff8ac47fab6a89788d8d50f9e.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center)
+<div align="center">
+<img src="../../../imgs/ch02/ch2.1/ch2.1.4/MIND/82746b6ff8ac47fab6a89788d8d50f9e.png" style="zoom:80%;"/>
+</div>
 首先我们先初始化$b_i$，与每一个输入胶囊$u_i$进行对应，这哥们有个名字叫做"routing logit"， 表示的是输出的这个胶囊与输入胶囊的相关性，和注意力机制里面的score值非常像。由于一开始不知道这个哪个胶囊与输出的胶囊有关系，所以默认相关性分数都一样，然后进入迭代。
 
 在每一次迭代中，首先把分数转成权重，然后加权求和得到$s$，这个很类似于注意力机制的步骤，得到$s$之后，通过归一化操作，得到$a$，接下来要通过$a$和输入胶囊的相关性以及上一轮的$b_i$来更新$b_i$。最后那个公式有必要说一下在干嘛：
 >如果当前的$a$与某一个输入胶囊$u_i$非常相关，即内积结果很大的话，那么相应的下一轮的该输入胶囊对应的$b_i$就会变大， 那么， 在计算下一轮的$a$的时候，与上一轮$a$相关的$u_i$就会占主导，相当于下一轮的$a$与上一轮中和他相关的那些$u_i$之间的路径权重会大一些，这样从空间点的角度观察，就相当于$a$点朝与它相关的那些$u$点更近了一点。
 
 通过若干次迭代之后，得到最后的输出胶囊向量$a$会慢慢的走到与它更相关的那些$u$附近，而远离那些与它不相干的$u$。所以上面的这个迭代过程有点像**排除异常输入胶囊的感觉**。 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2bc074c460fa403f8a98fa24aa4a31a3.png#pic_center)
+<div align="center">
+<img src="../../../imgs/ch02/ch2.1/ch2.1.4/MIND/2bc074c460fa403f8a98fa24aa4a31a3.png" style="zoom:100%;"/>
+</div>
 
 
 而从另一个角度来考虑，这个过程其实像是聚类的过程，因为胶囊的输出向量$v$经过若干次迭代之后，会最终停留到与其非常相关的那些输入胶囊里面，而这些输入胶囊，其实就可以看成是某个类别了，因为既然都共同的和输出胶囊$v$比较相关，那么彼此之间的相关性也比较大，于是乎，经过这样一个动态路由机制之后，就不自觉的，把输入胶囊实现了聚类。把和与其他输入胶囊不同的那些胶囊给排除了出去。
 
 所以，这个动态路由机制的计算设计的还是比较巧妙的， 下面是上述过程的展开计算过程， 这个和RNN的计算有点类似：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/c189e1258de64e42b576884844e718a4.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center)
+<div align="center">
+<img src="../../../imgs/ch02/ch2.1/ch2.1.4/MIND/c189e1258de64e42b576884844e718a4.png" style="zoom:100%;"/>
+</div>
 这样就完成了一个胶囊内部的计算过程了。
 
 Ok， 有了上面的这些铺垫，再来看MIND就会比较简单了。下面正式对MIND模型的网络架构剖析。
@@ -76,7 +89,9 @@ Ok， 有了上面的这些铺垫，再来看MIND就会比较简单了。下面�
 ## MIND模型的网络结构与细节剖析
 ### 网络整体结构
 MIND网络的架构如下：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/33b251f8dcb242ad82b2ed0313f6df73.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_2,color_FFFFFF,t_70,g_se,x_16#pic_center)
+<div align="center">
+<img src="../../../imgs/ch02/ch2.1/ch2.1.4/MIND/33b251f8dcb242ad82b2ed0313f6df73.png" style="zoom:80%;"/>
+</div>
 初步先分析这个网络结构的运作： 首先接收的输入有三类特征，用户base属性，历史行为属性以及商品的属性，用户的历史行为序列属性过了一个多兴趣提取层得到了多个兴趣胶囊，接下来和用户base属性拼接过DNN，得到了交互之后的用户兴趣。然后在训练阶段，用户兴趣和当前商品向量过一个label-aware attention，然后求softmax损失。 在服务阶段，得到用户的向量之后，就可以直接进行近邻检索，找候选商品了。 这就是宏观过程，但是，多兴趣提取层以及这个label-aware attention是在做什么事情呢？  如果单独看这个图，感觉得到多个兴趣胶囊之后，直接把这些兴趣胶囊以及用户的base属性拼接过全连接，那最终不就成了一个用户向量，此时label-aware attention的意义不就没了？ 所以这个图初步感觉画的有问题，和论文里面描述的不符。所以下面先以论文为主，正式开始描述具体细节。
 
 ### 任务目标
@@ -139,7 +154,9 @@ $$
 路由过程重复进行3次达到收敛。当路由结束，高阶胶囊值$\vec{c}_{j}^{h}$固定，作为下一层的输入。
 
 Ok，下面我们开始解释，其实上面说的这些就是胶囊网络的计算过程，只不过和之前所用的符号不一样了。这里拿个图：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/02fd2e79c97c4345bb228b3bb2eb517c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_2,color_FFFFFF,t_70,g_se,x_16#pic_center)
+<div align="center">
+<img src="../../../imgs/ch02/ch2.1/ch2.1.4/MIND/02fd2e79c97c4345bb228b3bb2eb517c.png" style="zoom:80%;"/>
+</div>
 首先，论文里面也是个两层的胶囊网络，低水平层->高水平层。 低水平层有$m$个胶囊，每个胶囊向量维度是$N_l$，用$\vec{c}_{i}^l$表示的，高水平层有$n$个胶囊，每个胶囊$N_h$维，用$\vec{c}_{j}^h$表示。
 
 单独拿出每个$\vec{c}_{j}^h$，其计算过程如上图所示。首先，先随机初始化路由对数$b_{ij}=0$，然后开始迭代，对于每次迭代：
@@ -173,7 +190,9 @@ $$
 这种调整兴趣胶囊数量的策略可以为兴趣较小的用户节省一些资源，包括计算和内存资源。这个公式不用多解释，与行为序列长度成正比。
 
 最终的B2I动态路由算法如下：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/37cc4943b91c494d987a8aa844077c42.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center)
+<div align="center">
+<img src="../../../imgs/ch02/ch2.1/ch2.1.4/MIND/37cc4943b91c494d987a8aa844077c42.png" style="zoom:80%;"/>
+</div>
 应该很好理解了吧。
 
 ### Label-aware Attention Layer

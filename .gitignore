@@ -3,3 +3,5 @@
 /codes/news_recsys/news_rec_web/vue2-fun-rec/node_modules/
 *.pyc
 *.log
+*.DS_Store
+_site/

@@ -33,7 +33,7 @@
 在介绍三个模型之前，我们首先需要构建好item-item图。由于基于CF的方法仅考虑物品之间的共现，忽略了行为的序列信息(即序列中相邻的物品之间的语义信息)，因此item-item图的构建方式如下图所示。
 
 <div align=center>
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220328133138263.png" style="zoom:80%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/EGES/image-20220328133138263.png" style="zoom:80%;"/>
 </div>
 
 首先根据用户的session行为序列构建网络结构，即序列中相邻两个item之间在存在边，并且是有向带权图。物品图边上的权重为所有用户行为序列中两个 item 共现的次数，最终构造出来简单的有向有权图。
@@ -53,31 +53,31 @@
 对于图嵌入模型，第一步先进行随机游走得到物品序列；第二部通过skip-gram为图上节点生成embedding。那么对于随机游走的思想：如何利用随机游走在图中生成的序列？不同于DeepWalk中的随机游走，本文的采样策略使用的是带权游走策略，不同权重的游走到的概率不同，（其本质上就是node2vec），传统的node2vec方法可以直接支持有向带权图。因此在给定图的邻接矩阵M后(表示节点之间的边权重)，随机游走中每次转移的概率为：
 
 <div align=center>
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220328144516898.png" style="zoom:80%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/EGES/image-20220328144516898.png" style="zoom:100%;"/>
 </div>
 
 其中$M_{ij}$为边$e_{ij}$上的权重，$N_{+}(v_i)$表示节点$v_i$所有邻居节点集合，并且随机游走的转移概率的对每个节点所有邻接边权重的归一化结果。在随即游走之后，每个item得到一个序列，如下图所示：
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/image-20220418142135912.png" style="zoom:47%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/EGES/image-20220418142135912.png" style="zoom:50%;"/>
 </div>
 
 然后类似于word2vec，为每个item学习embedding，于是优化目标如下：
 
 <div align=center>
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220328144931957.png" style="zoom:77%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/EGES/image-20220328144931957.png" style="zoom:100%;"/>
 </div>
 
 其中，w 为窗口大小。考虑独立性假设的话，上面的式子可以进一步化简：
 
 <div align=center>
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220328145101109.png" style="zoom:77%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/EGES/image-20220328145101109.png" style="zoom:100%;"/>
 </div>
 
 这样看起来就很直观了，在已知物品 i 时，最大化序列中(上下文)其他物品 j 的条件概率。为了近似计算，采样了Negative sampling，上面的优化目标可以化简得到如下式子：
 
 <div align=center>
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220328145318718.png" style="zoom:80%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/EGES/image-20220328145318718.png" style="zoom:100%;"/>
 </div>
 
 其中$N(v_i)'$表示负样本集合，负采样个数越多，结果越好。
@@ -101,7 +101,7 @@
 针对上述问题，作者提出了weight pooling方法来聚合不同类型的 side information。具体地，EGES 与 GES 的区别在聚合不同类型 side information计算不同的权重，根据权重聚合 side information 得到商品的embedding，如下图所示：
 
 <div align=center>
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220328154950289.png" style="zoom:80%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/EGES/image-20220328154950289.png" style="zoom:80%;"/>
 </div>
 
 其中 $a_i$ 表示每个side information 用于计算权重的参数向量，最终通过下面的公式得到商品的embedding：
@@ -117,13 +117,13 @@
 以上就是这三个模型主要的区别，下面是EGES的伪代码。
 
 <div align=center>
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220328155406291.png" style="zoom:80%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/EGES/image-20220328155406291.png" style="zoom:80%;"/>
 </div>
 
 其中**WeightedSkipGram**函数为带权重的SkipGram算法。
 
 <div align=center>
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220328155533704.png" style="zoom:80%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/EGES/image-20220328155533704.png" style="zoom:80%;"/>
 </div>
 
 

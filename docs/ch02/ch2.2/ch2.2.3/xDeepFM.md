@@ -12,7 +12,7 @@ xDeepFM(eXtreme DeepFM)，这是2018年中科大联合微软在KDD上提出的�
 首先是在推荐系统里面， 一般原始的特征很难让模型学习到隐藏在数据背后的规律，因为推荐系统中的原始特征往往非常稀疏，且维度非常高。所以如果想得到一个好的推荐系统，我们必须尽可能的制作更多的特征出来，而特征组合往往是比较好的方式，毕竟特征一般都不是独立存在的，那么特征究竟怎么组合呢？ 这是一个比较值得研究的难题，并且好多学者在这上面也下足了工夫。 如果你说，特征组合是啥来？ 不太清楚了呀，那么文章中这个例子正好能解决你的疑问
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210504201748649.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210504201748649.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 起初的时候，是人工特征组合，这个往往在作比赛的时候会遇到，就是特征工程里面自己进行某些特征的交叉与组合来生成新的特征。 这样的方式会有几个问题，作者在论文里面总结了：
@@ -28,7 +28,7 @@ xDeepFM(eXtreme DeepFM)，这是2018年中科大联合微软在KDD上提出的�
 	2. 其次，DNN是bit-wise层级的交叉，关于bit-wise，后面会说，这种方式论文里面说一个embedding向量里面的各个元素也会相互影响， 这样我觉得在这里带来的一个问题就是可能会发生过拟合。 因为我们知道embedding向量的表示方法就是想从不同的角度去看待某个商品(比如颜色，价格，质地等)，当然embedding各个维度是无可解释性的，但我们还是希望这各个维度更加独立一点好，也就是相关性不那么大为妙，这样的话往往能更加表示出各个商品的区别来。 但如果这各个维度上的元素也互相影响了(神经网络会把这个也学习进去),  那过拟合的风险会变大。当然，上面这个是我自己的感觉， 原作者只是给了这样一段：<br>
 
     <div align=center> 
-    <img src="https://img-blog.csdnimg.cn/2021050420491452.png#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+    <img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/2021050420491452.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
     </div>
 
 	也就是**DNN是否能够真正的有效学习特征之间的高阶交互是个谜！**
@@ -49,7 +49,7 @@ xDeepFM(eXtreme DeepFM)，这是2018年中科大联合微软在KDD上提出的�
 这个是为了回顾一下，简单一说，我们拿到的数据往往会有连续型数据和离散型或者叫类别型数据之分。 如果是连续型数据，那个不用多说，一般会归一化或者标准化处理，当然还可能进行一定的非线性化操作，就算处理完了。 而类别型数据，一般需要先LabelEncoder，转成类别型编码，然后再one-hot转成0或者1的编码格式。 比如论文里面的这个例子：
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210504212842660.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210504212842660.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 这样的数据往往是高维稀疏的，不利于模型的学习，所以往往在这样数据之后，加一个embedding层，把数据转成低维稠密的向量表示。 关于embedding的原理这里不说了，但这里要注意一个细节，就是如果某个特征每个样本只有一种取值，也就是one-hot里面只有一个地方是1，比如前面3个field。这时候，可以直接拿1所在位置的embedding当做此时类别特征的embedding向量。 但是如果某个特征域每个样本好多种取值，比如interests这个，有好几个1的这种，那么就拿到1所在位置的embedding向量之后**求和**来代表该类别特征的embedding。这样，经过embedding层之后，我们得到的数据成下面这样了：
@@ -59,7 +59,7 @@ $$
 这个应该比较好理解，$e_i$表示的一个向量，一般是$D$维的(隐向量的维度)， 那么假设$m$表示特征域的个数，那么此时的$\mathbf{e}$是$m\times D$的矩阵。
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210504213606429.png#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210504213606429.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
 </div>
 
 ### bit-wise VS vector-wise
@@ -75,13 +75,13 @@ $$
 这个一直没弄明白后者为什么会比前者好，我也在讨论群里问过这个问题，下面是得到的一个伙伴的想法：
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210504214822820.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 80%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210504214822820.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
 </div>
 
 对于这个问题有想法的伙伴，也欢迎在下面评论，我自己的想法是bit-wise看上面的定义，仿佛是在元素的级别交叉，然后学习权重， 而vector-wise是在向量的级别交叉，然后学习统一权重，bit-wise具体到了元素级别上，虽然可能学习的更加细致，但这样应该会增加过拟合的风险，失去一定的泛化能力，再联想作者在论文里面解释的bit-wise:
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210504215106707.png#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210504215106707.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 更觉得这个想法会有一定的合理性，就想我在DNN那里解释这个一样，把细节学的太细，就看不到整体了，佛曰：着相了哈哈。如果再联想下FM的设计初衷，FM是一个vector-wise的模型，它进行了显性的二阶特征交叉，却是embedding级别的交互，这样的好处是有一定的泛化能力到看不见的特征交互。  emmm, 我在后面整理Cross Network问题的时候，突然悟了一下， bit-wise最大的问题其实在于**违背了特征交互的初衷**， 我们本意上其实是让模型学习特征之间的交互，放到embedding的角度，也理应是embedding与embedding的相关作用交互， 但bit-wise已经没有了embedding的概念，以bit为最细粒度进行学习， 这里面既有不同embedding的bit交互，也有同一embedding的bit交互，已经**意识不到Field vector的概念**。 具体可以看Cross Network那里的解释，分析了Cross Network之后，可能会更好理解些。
@@ -106,7 +106,7 @@ $$
 谈到显性高阶交互，这里就必须先分析一下我们大名鼎鼎的DCN网络的Cross Network了， 关于这个模型，我在[AI上推荐 之 Wide&Deep与Deep&Cross模型](https://blog.csdn.net/wuzhongqiang/article/details/109254498)文章中进行了一些剖析，这里再复习的话我又参考了一个大佬的文章，因为再把我之前的拿过来感觉没有啥意思，重新再阅读别人的文章很可能会再get新的点，于是乎还真的学习到了新东西，具体链接放到了下面。 这里我们重温下Cross Network，看看到底啥子叫显性高阶交互。再根据论文看看这样子的交互有啥问题。
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210505200049781.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210505200049781.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
 </div>
 
 这里的输入$x_0$需要提醒下，首先对于离散的特征，需要进行embedding， 对于multi-hot的离散变量， 需要embedding之后再做一个简单的average pooling, 而dense特征，归一化， **然后和embedding的特征拼接到一块作为Cross层和Deep层的输入，也就是Dense特征会在这里进行拼接**。 下面回顾Cross Layer。
@@ -118,7 +118,7 @@ $$
 其中$\boldsymbol{x}_{l+1}, \boldsymbol{x}_{l}, \boldsymbol{x}_{0} \in \mathbb{R}^{d}$。有图有真相：
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20201026200320611.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20201026200320611.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
 </div>
 
 Cross Layer的巧妙之处全部体现在上面的公式，下面放张图是为了更好的理解，这里我们回顾一些细节。
@@ -169,13 +169,13 @@ $$
 好了， Cross的好处啥的都分析完了， 下面得分析点不好的地方了，否则就没法引出这次的主角了。作者直接说：
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210505195118178.png#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210505195118178.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 每一层学习到的是$\boldsymbol{x}_0$的标量倍，这是啥意思。 这里有一个理论：
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/202105051955220.png#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/202105051955220.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 这里作者用数学归纳法进行了证明。
@@ -206,7 +206,7 @@ $$
 
 下面主角登场了:
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210505201840211.png#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210505201840211.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 ## xDeepFM模型的理论以及论文细节
@@ -215,13 +215,13 @@ $$
 首先，我们先看下xDeepFM的架构
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/2021050520373226.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/2021050520373226.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 这个网络结构名副其实，依然是采用了W&D架构，DNN负责Deep端，学习特征之间的隐性高阶交互， 而CIN网络负责wide端，学习特征之间的显性高阶交互，这样显隐性高阶交互就在这个模型里面体现的淋漓尽致了。不过这里的线性层单拿出来了。
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210505204057446.png#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210505204057446.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 最终的计算公式如下：
@@ -245,7 +245,7 @@ $$
  这个公式第一眼看过来，肯定更是懵逼，这是写的个啥玩意？如果我再把CIN的三个核心图放上来:
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/2021050520530391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/2021050520530391.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
  上面其实就是CIN网络的精髓了，也是它具体的运算过程，只不过直接上图的话，会有些抽象，难以理解，也不符合我整理论文的习惯。下面，我们就一一进行剖析， 先从上面这个公式开始。但在这之前，需要先约定一些符号。要不然不知道代表啥意思。
@@ -266,7 +266,7 @@ $$
 这里的$\mathbf{W}^{1, h} \in \mathbb{R}^{H_{0} \times m}$。这个能看懂吗？ 首先这个$\mathbf{W}$矩阵是$H_0$行$m$列， 而前面那两个累加正好也是$H_0$行$m$列的参数。$m$代表的是输入特征的个数， $H_0$代表的是第0层($k-1$层)的神经元的个数， 这个也是$m$。这个应该好理解，输入层就是第0层。所以这其实就是一个$m\times m$的矩阵。那么后面这个运算到底是怎么算的呢？   首先对于第$i$个特征向量， 要依次和其他的$m$个特征向量做哈达玛积操作，当然也乘以对应位置的权重，求和。对于每个$i$特征向量，都重复这样的操作，最终求和得到一个$D$维的向量，这个就是$\mathbf{X}_{h, *}^{1}$。好吧，这么说。我觉得应该也没有啥感觉，画一下就了然了，现在可以先不用管论文里面是怎么说的，先跟着这个思路走，只要理解了这个公式是怎么计算的，论文里面的那三个图就会非常清晰了。灵魂画手:
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210505215026537.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210505215026537.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 这就是上面那个公式的具体过程了，图实在是太难看了， 但应该能说明这个详细的过程了。这样只要给定一个$\mathbf{W}^{1,h}$之后，就能算出一个相应的$\mathbf{X}^1_{h,*}$来，这样第一层的$H_1$个神经元按照这样的步骤就能够都计算出来了。 后面的计算过程其实是同理，无非就是输入是前一层的输出以及$\mathbf{X}_0$罢了，而这时候，第一个矩阵特征数就不一定是$m$了，而是一个$H_{k-1}$行$D$列的矩阵了。这里的$\mathbf{W}^{k,h}$就是上面写的$H_{k-1}$行$m$列了。
@@ -274,7 +274,7 @@ $$
 这个过程明白了之后，再看论文后面的内容就相对容易了，首先
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210505215629371.png#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210505215629371.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 CIN里面能看到RNN的身影，也就是当前层的隐藏单元的计算要依赖于上一层以及当前的输入层，只不过这里的当前输入每个时间步都是$\mathbf{X}_0$。 同时这里也能看到，CIN的计算是vector-wise级别的，也就是向量之间的哈达玛积的操作，并没有涉及到具体向量里面的位交叉。
@@ -282,13 +282,13 @@ CIN里面能看到RNN的身影，也就是当前层的隐藏单元的计算要�
 下面我们再从CNN的角度去看这个计算过程。其实还是和上面一样的计算过程，只不过是换了个角度看而已，所以上面那个只要能理解，下面CNN也容易理解了。首先，这里引入了一个tensor张量$\mathbf{Z}^{k+1}$表示的是$\mathbf{X}^k$和$\mathbf{X}^0$的外积，那么这个东西是啥呢？ 上面加权求和前的那个矩阵，是一个三维的张量。
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210505221222945.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210505221222945.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 这个可以看成是一个三维的图片，$H_{k-1}$高，$m$宽，$D$个通道。而$\mathbf{W}^{k,h}$的大小是$H_{k-1}\times m$的， 这个就相当于一个过滤器，用这个过滤器对输入的图片如果**逐通道进行卷积**，就会最终得到一个$D$维的向量，而这个其实就是$\mathbf{X}^{k}_{h,*}$，也就是一张特征图(每个通道过滤器是共享的)。 第$k$层其实有$H_k$个这样的过滤器，所以最后得到的是一个$H_k\times D$的矩阵。这样，在第$k$个隐藏层，就把了$H_{k-1}\times m\times D$的三维张量通过逐通道卷积的方式，压缩成了一个$H_k\times D$的矩阵($H_k$张特征图)， 这就是第$k$层的输出$\mathbf{X}^k$。 而这也就是“compressed"的由来。这时候再看这两个图就非常舒服了：
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210505222742858.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210505222742858.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 通过这样的一个CIN网络，就很容易的实现了特征的显性高阶交互，并且是vector-wise级别的，那么最终的输出层是啥呢？   通过上面的分析，首先我们了解了对于第$k$层输出的某个特征向量，其实是综合了输入里面各个embedding向量显性高阶交互的信息(第$k$层其实学习的输入embedding$k+1$阶交互信息)，这个看第一层那个输出就能看出来。第$k$层的每个特征向量其实都能学习到这样的信息，那么如果把这些向量在从$D$维度上进行加和，也就是$\mathbf{X}^k$，这是个$H_k\times D$的，我们沿着D这个维度加和，又会得到一个$H_k$的向量，公式如下:
@@ -300,7 +300,7 @@ $$
 这也就是第三个图表示的含义:
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210505223705748.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210505223705748.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
 </div>
 
 这样， 就得到了最终CIN的输出$\mathbf{p}^+$了: 
@@ -359,7 +359,7 @@ $$
 2. 推荐系统中，是否需要显性和隐性的高阶特征交互都存在?
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/2021050609553410.png#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/2021050609553410.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 3. 超参对于xDeepFM的影响
@@ -378,7 +378,7 @@ $$
 
 作者说:
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/2021050609492960.png#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/2021050609492960.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 #### 相关工作部分
@@ -537,7 +537,7 @@ class CIN(Layer):
 3. 具体卷积运算的时候，这里采用的是Conv1d，1维卷积对应的是一张张高度为1的图片(理解的时候可这么理解)，输入维度是`[None, in_width, in_channels]`的形式，而对应这里的数据是`[None, dim, field_nums[0]*field_nums[i]]`, 而这里的过滤器大小是`[1, field_nums[0]*field_nums[i], field_nums[i+1]`, 这样进行卷积的话，最后一个维度是卷积核的数量。是沿着dim这个维度卷积，得到的是`[None, dim, field_nums[i+1]]`的张量，这个就是第$i+1$层的输出了。和我画的
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20210505221222945.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/xDeepFM/20210505221222945.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 这个不同的是它把前面这个矩形Flatten了，得到了一个$[D,H_{k-1}\times m]$的二维矩阵，然后用$[1,H_{k-1}\times m]$的卷积核沿着D这个维度进行Conv1D， 这样就直接得到了一个D维向量， 而$H_k$个卷积核，就得到了$H_k\times D$的矩阵了。

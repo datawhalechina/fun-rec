@@ -28,7 +28,10 @@
 
 以王喆老师《深度学习推荐系统》中的一个原理图为例，看看是如何通过隐含特征来划分开用户兴趣和物品的。
 
-<img src="https://img-blog.csdnimg.cn/20200822212051499.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:80%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.1/mf/20200822212051499.png" alt="在这里插入图片描述" style="zoom:100%;" />
+</div>
+
 
 ## 音乐评分实例
 
@@ -40,20 +43,20 @@
     这个矩阵表示不同用户对于不同元素的偏好程度， 1代表很喜欢， 0代表不喜欢， 比如下面这样：
 
   <div align=center>
-  <img src="https://img-blog.csdnimg.cn/2020082222025968.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:70%;" />
+  <img src="../../../imgs/ch02/ch2.1/ch2.1.1/mf/2020082222025968.png" alt="在这里插入图片描述" style="zoom:70%;" />
   </div>
 2. 潜在因子——音乐矩阵P
     表示每种音乐含有各种元素的成分， 比如下表中， 音乐A是一个偏小清新的音乐， 含有小清新的Latent Factor的成分是0.9， 重口味的成分是0.1， 优雅成分0.2...
 
   <div align=center>
-  <img src="https://img-blog.csdnimg.cn/20200822220751394.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:70%;" />
+  <img src="../../../imgs/ch02/ch2.1/ch2.1.1/mf/20200822220751394.png" alt="在这里插入图片描述" style="zoom:70%;" />
   </div>
 **计算张三对音乐A的喜爱程度**
 
 利用上面的这两个矩阵，将对应向量进行内积计算，我们就能得出张三对音乐A的喜欢程度：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200822221627219.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:55%;" />
+<img src="../../../imgs/ch02/ch2.1/ch2.1.1/mf/20200822221627219.png" alt="在这里插入图片描述" style="zoom:55%;" />
 </div>
 
 + 张三对**小清新**的偏好 * 音乐A含有**小清新**的成分 + 张三对**重口味**的偏好 * 音乐A含有**重口味**的成分 + 张三对**优雅**的偏好 * 音乐A含有**优雅**的成分... 
@@ -65,7 +68,7 @@
 按照这个计算方式， 每个用户对每首歌其实都可以得到这样的分数， 最后就得到了我们的评分矩阵：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200822222141231.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:60%;" />
+<img src="../../../imgs/ch02/ch2.1/ch2.1.1/mf/20200822222141231.png" alt="在这里插入图片描述" style="zoom:60%;" />
 </div>
 + 红色部分表示用户没有打分，可以通过隐向量计算得到的。 
 
@@ -77,7 +80,7 @@
 + 现实中，类似于上述的矩阵 $P,Q$ 一般很难获得。有的只是用户的评分矩阵，如下：
 
   <div align=center>
-  <img src="https://img-blog.csdnimg.cn/20200822223313349.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:60%;" />
+  <img src="../../../imgs/ch02/ch2.1/ch2.1.1/mf/20200822223313349.png" alt="在这里插入图片描述" style="zoom:60%;" />
   </div>
 
   + 这种矩阵非常的稀疏，如果直接基于用户相似性或者物品相似性去填充这个矩阵是不太容易的。
@@ -98,8 +101,9 @@
 在矩阵分解的算法框架下， **可以通过分解协同过滤的共现矩阵（评分矩阵）来得到用户和物品的隐向量**，原理如下：。
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200823101513233.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:70%;" />
+<img src="../../../imgs/ch02/ch2.1/ch2.1.1/mf/20200823101513233.png" alt="在这里插入图片描述" style="zoom:70%;" />
 </div>
+
 + 矩阵分解算法将 $m\times n$ 维的共享矩阵 $R$ ，分解成 $m \times k$ 维的用户矩阵 $U$ 和 $k \times n$ 维的物品矩阵 $V$ 相乘的形式。
 + 其中，$m$ 是用户数量， $n$ 是物品数量， $k$ 是隐向量维度， 也就是隐含特征个数。
 + 这里的隐含特征没有太好的可解释性，需要模型自己去学习。
@@ -201,8 +205,7 @@ Funk-SVD的思想很简单： **把求解上面两个矩阵的参数问题转换
 + $l2$ 正则项等价于假设模型参数符合0均值的正态分布，从而使得模型的输出更加稳定。
 
 $$
-\min _{\boldsymbol{q}^{*}, \boldsymbol{p}^{*}} \frac{1}{2} \sum_{(u, i) \in K}\left(\boldsymbol{r}_{\mathrm{ui}}-p_{u}^{T} q_{i}\right)^{2}
-+ \lambda\left(\left\|p_{u}\right\|^{2}+\left\|q_{i}\right\|^{2}\right)
+\min _{\boldsymbol{q}^{*}, \boldsymbol{p}^{*}} \frac{1}{2} \sum_{(u, i) \in K}\left(\boldsymbol{r}_{\mathrm{ui}}-p_{u}^{T} q_{i}\right)^{2} + \lambda\left(\left\|p_{u}\right\|^{2}+\left\|q_{i}\right\|^{2}\right)
 $$
 
 ## BiasSVD
@@ -238,14 +241,14 @@ $$
 可得偏置项的梯度更新公式如下：
 
 + $\frac{\partial}{\partial b_{i}} S S E=-e_{u i}+\lambda b_{i}$
-+ $ \frac{\partial}{\partial b_{u}} S S E=-e_{u i}+\lambda b_{u} \  $
++ $\frac{\partial}{\partial b_{u}} S S E=-e_{u i}+\lambda b_{u}$
 
 # 编程实现
 
 本小节，使用如下图表来预测Alice对物品5的评分：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200827150237921.png#pic_center" alt="在这里插入图片描述" style="zoom:80%;" />
+<img src="../../../imgs/ch02/ch2.1/ch2.1.1/mf/20200827150237921.png" alt="在这里插入图片描述" style="zoom:80%;" />
 </div>
 基于矩阵分解算法的流程如下：
 

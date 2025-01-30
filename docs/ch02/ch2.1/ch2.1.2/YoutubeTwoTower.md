@@ -18,9 +18,9 @@
 + $x_{i} \in X,\quad y_{j} \in \mathcal{Y}$ 是由多种特征（例如：稀疏ID和 Dense 特征）组成的高维混合体。
 
 + 推荐的目标是对于给定一个 $query$，检索到一系列 $item$ 子集用于后续排序推荐任务。
-
-<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/%E5%9B%BE%E7%89%87image-20220506202824884.png" alt="image-20220506202824884" style="zoom:50%;" />
-
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeTwoTower/image-20220506202824884.jpeg" alt="image-20220506202824884" style="zoom:50%;" />
+</div>
 ## 模型目标
 
 模型结构如上图所示，论文旨在对用户和物品建立两个不同的模型，将它们投影到相同维度的空间：
@@ -128,7 +128,9 @@ $$
 
 （3）计算损失函数 $L_B$ ，再利用 SGD 方法更新参数。
 
-<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/%E5%9B%BE%E7%89%87image-20220506211935092.png" alt="image-20220506211935092" style="zoom: 50%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeTwoTower/image-20220506211935092.png" alt="image-20220506211935092" style="zoom: 70%;" />
+</div>
 
 ## 流频估计算法
 
@@ -161,8 +163,9 @@ $$
    \hat{p}=1 / B[h(y)]
    $$
    
-
-<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/%E5%9B%BE%E7%89%87image-20220506220529932.png" alt="image-20220506220529932" style="zoom:50%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeTwoTower/image-20220506220529932.png" alt="image-20220506220529932" style="zoom:70%;" />
+</div>
 
 **从数学理论上证明这种迭代更新的有效性：**
 
@@ -267,7 +270,9 @@ $$
 \hat{p}=1 / \max _{i}\left\{B_{i}[h(y)]\right\}
 $$
 
-<img src="https://ryluo.oss-cn-chengdu.aliyuncs.com/%E5%9B%BE%E7%89%87image-20220506223731749.png" alt="image-20220506223731749" style="zoom:50%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeTwoTower/image-20220506223731749.png" alt="image-20220506223731749" style="zoom:50%;" />
+</div>
 
 
 
@@ -275,7 +280,9 @@ $$
 
 本文构建的 YouTube 神经检索模型由查询和候选网络组成。下图展示了整体的模型架构。
 
-![image-20220506224501697](https://ryluo.oss-cn-chengdu.aliyuncs.com/%E5%9B%BE%E7%89%87image-20220506224501697.png)
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeTwoTower/image-20220506224501697.png" alt="image-20220506224501697" style="zoom:50%;" />
+</div>
 
 在任何时间点，用户正在观看的视频，即种子视频，都会提供有关用户当前兴趣的强烈信号。因此，本文利用了大量种子视频特征以及用户的观看历史记录。候选塔是为了从候选视频特征中学习而构建的。
 

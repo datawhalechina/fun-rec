@@ -9,7 +9,7 @@
 **树结构**
 
 <div align=center> 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220420213149324.png" alt="image-20210308142624189" style="zoom: 15%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.5/TDM/image-20220420213149324.png" alt="image-20210308142624189" style="zoom: 50%;" /> 
 </div>
 
 如上图，树中的每一个叶子节点对应一个商品item，非叶子结点表示的是item的集合**（这里的树不限于二叉树）**。这种层次化结构体现了粒度从粗到细的item架构。
@@ -17,7 +17,7 @@
 **整体结构**
 
 <div align=center> 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220420200433442.png" alt="image-20210308142624189" style="zoom: 70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.5/TDM/image-20220420200433442.png" alt="image-20210308142624189" style="zoom: 70%;" /> 
 </div>
 
 # 算法详解
@@ -27,14 +27,14 @@
     算法通常采用beam-search的方法，根据用户对每层节点挑选出topK，将挑选出来的这几个topK节点的子节点作为下一层的候选集，最终会落到叶子节点上。
     这么做的理论依据是当前层的最有优topK节点的父亲必然属于上次的父辈节点的最优topK：
     $$
-    p^{(j)}(n|u) = {{max \atop{n_{c}\in{\{n's children nodes in level j+1\}}}}p^{(j+1)}(n_{c}|u) \over {\alpha^{j}}}
+    p^{(j)}(n|u) = {{max \atop{n_{c}\in{\{\text{n's children nodes in level}\ j+1\}}}}p^{(j+1)}(n_{c}|u) \over {\alpha^{j}}}
     $$
     其中$p^{(j)}(n|u)$表示用户u对j层节点n感兴趣的概率，$\alpha^{j}$表示归一化因子。
 
 2. 对兴趣进行建模
 
     <div align=center> 
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220420214040264.png" alt="image-20210308142624189" style="zoom: 50%;" /> 
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.5/TDM/image-20220420214040264.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
     </div>
 
    ​如上图，用户对叶子层item6感兴趣，可以认为它的兴趣是1，同层别的候选节点的兴趣为0，顺着着绿色线路上去的节点都标记为1，路线上的同层别的候选节点都标记为0。这样的操作就可以根据1和0构建用于每一层的正负样本。
@@ -44,7 +44,7 @@
 3. 训练过程
 
     <div align=center> 
-    <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220420220831318.png" alt="image-20210308142624189" style="zoom: 15%;" /> 
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.5/TDM/image-20220420220831318.png" alt="image-20210308142624189" style="zoom: 50%;" /> 
     </div>
 
    整体联合训练的方式如下：

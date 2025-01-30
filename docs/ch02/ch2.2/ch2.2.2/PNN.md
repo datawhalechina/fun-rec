@@ -10,13 +10,13 @@ PNN模型其实是对IPNN和OPNN的总称，两者分别对应的是不同的Pro
 
 PNN模型的整体架构如下图所示：
 
-<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210308142624189.png" alt="image-20210308142624189" style="zoom: 50%;" /> </div>
+<div align=center> <img src="../../../imgs/ch02/ch2.2/ch2.2.2/PNN/image-20210308142624189.png" alt="image-20210308142624189" style="zoom: 50%;" /> </div>
 
 一共分为五层，其中除了Product Layer别的layer都是比较常规的处理方法，均可以从前面的章节进一步了解。模型中最重要的部分就是通过Product层对embedding特征进行交叉组合，也就是上图中红框所显示的部分。
 
 Product层主要有线性部分和非线性部分组成，分别用$l_z$和$l_p$来表示，
 
-<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210308143101261.png" alt="image-20210308143101261" style="zoom: 50%;" />
+<div align=center> <img src="../../../imgs/ch02/ch2.2/ch2.2.2/PNN/image-20210308143101261.png" alt="image-20210308143101261" style="zoom: 50%;" />
 </div>
 
 1. 线性模块，一阶特征(未经过显示特征交叉处理)，对应论文中的$l_z=(l_z^1,l_z^2, ..., l_z^{D_1})$
@@ -59,11 +59,9 @@ $$
 将内积的表达式带入$l_p^n$的计算表达式中有：
 $$
 \begin{aligned}
-
 l_p^n &= W_p^n \odot{p} \\
 	  &= \sum_{i=1}^N \sum_{j=1}^N (W_p^n)_{i,j}p_{i,j} \\
 	  &= \sum_{i=1}^N \sum_{j=1}^N (W_p^n)_{i,j}<f_i, f_j>
-
 \end{aligned}
 $$
 上面就提到了这里使用的内积是计算两两特征之间的内积，然而向量a和向量b的内积与向量b和向量a的内积是相同的，其实是没必要计算的，看一下下面FM的计算公式：
@@ -73,7 +71,6 @@ $$
 也就是说计算的内积矩阵$p$是对称的，那么与其对应元素做矩阵内积的矩阵$W_p^n$也是对称的，对于可学习的权重来说如果是对称的是不是可以只使用其中的一半就行了呢，所以基于这个思考，对Inner Product的权重定义及内积计算进行优化，首先将权重矩阵分解$W_p^n=\theta^n \theta^{nT}$,此时$\theta^n \in R^N$（参数从原来的$N^2$变成了$N$）,将分解后的$W_p^n$带入$l_p^n$的计算公式有：
 $$
 \begin{aligned}
-
 l_p^n &= W_p^n \odot{p} \\
 	  &= \sum_{i=1}^N \sum_{j=1}^N (W_p^n)_{i,j}p_{i,j} \\
 	  &= \sum_{i=1}^N \sum_{j=1}^N \theta^n \theta^n <f_i, f_j> \\
@@ -230,7 +227,7 @@ class ProductLayer(Layer):
 
 下面是一个通过keras画的模型结构图，为了更好的显示，类别特征都只是选择了一小部分，画图的代码也在github中。
 
-<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片PNN.png" alt="image-20210308143101261" style="zoom: 50%;" />
+<div align=center> <img src="../../../imgs/ch02/ch2.2/ch2.2.2/PNN/PNN.png" alt="image-20210308143101261" style="zoom: 50%;" />
 </div>
 
 ## 思考题

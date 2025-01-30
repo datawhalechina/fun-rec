@@ -11,7 +11,7 @@ MMOE是2018年谷歌提出的，全称是Multi-gate Mixture-of-Experts， 对于
 模型中，如果采用一个网络同时完成多个任务，就可以把这样的网络模型称为多任务模型， 这种模型能在不同任务之间学习共性以及差异性，能够提高建模的质量以及效率。  常见的多任务模型的设计范式大致可以分为三大类： 
 * hard parameter sharing 方法： 这是非常经典的一种方式，底层是共享的隐藏层，学习各个任务的共同模式，上层用一些特定的全连接层学习特定任务模式。  
     <div align=center>
-    <img src="https://img-blog.csdnimg.cn/ed10df1df313413daf2a6a6174ef4f8c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+    <img src="../../../imgs/ch02/ch2.2/ch2.2.5/MMOE/ed10df1df313413daf2a6a6174ef4f8c.png" alt="在这里插入图片描述" style="zoom:100%;" /> 
     </div>
 	这种方法目前用的也有，比如美团的猜你喜欢，知乎推荐的Ranking等， 这种方法最大的优势是Task越多， 单任务更加不可能过拟合，即可以减少任务之间过拟合的风险。 但是劣势也非常明显，就是底层强制的shared layers难以学习到适用于所有任务的有效表达。 **尤其是任务之间存在冲突的时候**。MMOE中给出了实验结论，当两个任务相关性没那么好(比如排序中的点击率与互动，点击与停留时长)，此时这种结果会遭受训练困境，毕竟所有任务底层用的是同一组参数。
 * soft parameter sharing: 硬的不行，那就来软的，这个范式对应的结果从`MOE->MMOE->PLE`等。 即底层不是使用共享的一个shared bottom，而是有多个tower， 称为多个专家，然后往往再有一个gating networks在多任务学习时，给不同的tower分配不同的权重，那么这样对于不同的任务，可以允许使用底层不同的专家组合去进行预测，相较于上面所有任务共享底层，这个方式显得更加灵活
@@ -29,7 +29,7 @@ MMOE是2018年谷歌提出的，全称是Multi-gate Mixture-of-Experts， 对于
 MMOE模型结构图如下。
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/29c5624f2c8a46c097f097af7dbf4b45.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_2,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/MMOE/29c5624f2c8a46c097f097af7dbf4b45.png" alt="在这里插入图片描述" style="zoom:100%;" /> 
 </div>
 
 这其实是一个演进的过程，首先hard parameter sharing这个就不用过多描述了， 下面主要是看MOE模型以及MMOE模型。

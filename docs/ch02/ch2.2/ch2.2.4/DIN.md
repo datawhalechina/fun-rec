@@ -19,14 +19,14 @@ Deep Interest Network(DIIN)是2018年阿里巴巴提出来的模型， 该模型
 工业上的CTR预测数据集一般都是`multi-group categorial form`的形式，就是类别型特征最为常见，这种数据集一般长这样：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210118190044920.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" style="zoom: 67%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DIN/20210118190044920.png" style="zoom: 67%;" />
 </div>
 
 这里的亮点就是框出来的那个特征，这个包含着丰富的用户兴趣信息。
 
 对于特征编码，作者这里举了个例子：`[weekday=Friday, gender=Female, visited_cate_ids={Bag,Book}, ad_cate_id=Book]`， 这种情况我们知道一般是通过one-hot的形式对其编码， 转成系数的二值特征的形式。但是这里我们会发现一个`visted_cate_ids`， 也就是用户的历史商品列表， 对于某个用户来讲，这个值是个多值型的特征， 而且还要知道这个特征的长度不一样长，也就是用户购买的历史商品个数不一样多，这个显然。这个特征的话，我们一般是用到multi-hot编码，也就是可能不止1个1了，有哪个商品，对应位置就是1， 所以经过编码后的数据长下面这个样子： 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210118185933510.png" style="zoom:67%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DIN/20210118185933510.png" style="zoom:67%;" />
 </div>
 这个就是喂入模型的数据格式了，这里还要注意一点 就是上面的特征里面没有任何的交互组合，也就是没有做特征交叉。这个交互信息交给后面的神经网络去学习。
 
@@ -37,7 +37,7 @@ Deep Interest Network(DIIN)是2018年阿里巴巴提出来的模型， 该模型
 基准模型的结构相对比较简单，我们前面也一直用这个基准， 分为三大模块：Embedding layer，Pooling & Concat layer和MLP， 结构如下:
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210118191224464.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" style="zoom:80%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DIN/20210118191224464.png" style="zoom:100%;" />
 </div>
 
 前面的大部分深度模型结构也是遵循着这个范式套路， 简介一下各个模块。
@@ -71,7 +71,7 @@ $$
 上面分析完了base模型的不足和改进思路之后，DIN模型的结构就呼之欲出了，首先，它依然是采用了基模型的结构，只不过是在这个的基础上加了一个注意力机制来学习用户兴趣与当前候选广告间的关联程度， 用论文里面的话是，引入了一个新的`local activation unit`， 这个东西用在了用户历史行为特征上面， **能够根据用户历史行为特征和当前广告的相关性给用户历史行为特征embedding进行加权**。我们先看一下它的结构，然后看一下这个加权公式。
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210118220015871.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" style="zoom: 80%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DIN/20210118220015871.png" style="zoom: 80%;" />
 </div>
 
 这里改进的地方已经框出来了，这里会发现相比于base model， 这里加了一个local activation unit， 这里面是一个前馈神经网络，输入是用户历史行为商品和当前的候选商品， 输出是它俩之间的相关性， 这个相关性相当于每个历史商品的权重，把这个权重与原来的历史行为embedding相乘求和就得到了用户的兴趣表示$\boldsymbol{v}_{U}(A)$, 这个东西的计算公式如下：
@@ -158,13 +158,13 @@ def DIN(feature_columns, behavior_feature_list, behavior_seq_feature_list):
 关于每一块的细节，这里就不解释了，在我们给出的GitHub代码中，我们已经加了非常详细的注释，大家看那个应该很容易看明白， 为了方便大家的阅读，我们这里还给大家画了一个整体的模型架构图，帮助大家更好的了解每一块以及前向传播。（画的图不是很规范，先将就看一下，后面我们会统一在优化一下这个手工图）。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片DIN_aaaa.png" alt="DIN_aaaa" style="zoom: 70%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DIN/DIN_aaaa.png" alt="DIN_aaaa" style="zoom: 70%;" />
 </div>
 
 下面是一个通过keras画的模型结构图，为了更好的显示，数值特征和类别特征都只是选择了一小部分，画图的代码也在github中。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片din.png" alt="DIN_aaaa" style="zoom: 50%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DIN/din.png" alt="DIN_aaaa" style="zoom: 30%;" />
 </div>
 
 ## 思考

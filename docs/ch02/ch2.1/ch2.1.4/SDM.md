@@ -54,7 +54,9 @@ $\mathcal{U}$表示用户集合，$\mathcal{I}$表示item集合，模型考虑�
 3. 同一个会话中的商品不能超过50个，多出来的放入下一个会话
 
 这样划分开会话之后， 对于用户$u$的短期行为定义是离目前最近的这次会话， 用$\mathcal{S}^{u}=\left[i_{1}^{u}, \ldots, i_{t}^{u}, \ldots, i_{m}^{u}\right]$表示，$m$是序列长度。 而长期的用户行为是过去一周内的会话，但不包括短期的这次会话， 这个用$\mathcal{L}^{u}$表示。网络推荐架构如下：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/841c97c541484f908282be881ec32fd8.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center)
+<div align="center">
+<img src="../../../imgs/ch02/ch2.1/ch2.1.4/SDM/841c97c541484f908282be881ec32fd8.png" style="zoom:80%;"/>
+</div>
 这个感觉并不用过多解释。看过召回的应该都能懂， 接收了用户的短期行为和长期行为，然后分别通过两个盲盒得到表示向量，再通过门控融合就得到了最终的用户表示。 
 
 下面要开那三个盲盒操作，即短期行为学习，长期行为学习以及门控融合机制。但在这之前，得先说一个东西，就是输入层这里， 要带物品的side infomation，比如物品的item ID, 物品的品牌ID，商铺ID， 类别ID等等， 那你说，为啥要单独说呢？ 之前的模型不也有， 但是这里在利用方式上有些不一样需要注意。
@@ -76,10 +78,13 @@ $e_u^p$是特征$p$的embedding。
 
 Ok，输入这里说完了之后，就直接开盲盒， 不按照论文里面的顺序来了。想看更多细节的就去看原论文吧，感觉那里面说的有些啰嗦。不如直接上图解释来的明显：
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/d297bf36d8c54b349dc666259b891927.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA57-75rua55qE5bCPQOW8ug==,size_2,color_FFFFFF,t_70,g_se,x_16#pic_center)
+<div align="center">
+<img src="../../../imgs/ch02/ch2.1/ch2.1.4/SDM/d297bf36d8c54b349dc666259b891927.png" style="zoom:80%;"/>
+</div>
 这里正好三个框把盒子框住了，下面剖析出每个来就行啦。
+
 ### 短期用户行为建模
-这里短期用户行为是下面的那个框， 接收的输入，首先是用户最近的那次会话，里面各个商品加入了side info信息之后，有了最终的embedding表示$\left[\boldsymbol{e}_{i_{1}^{u}}, \ldots, \boldsymbol{e}_{i_{t}^{u}}\right]$。 
+这里短期用户行为是下面的那个框， 接收的输入，首先是用户最近的那次会话，里面各个商品加入了side info信息之后，有了最终的embedding表示 $\left[\boldsymbol{e}_{i_{1}^{u}}, \ldots, \boldsymbol{e}_{i_{t}^{u}}\right]$
 
 这个东西，首先要过LSTM，学习序列信息，这个感觉不用多说，直接上公式：
 $$

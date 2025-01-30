@@ -13,7 +13,7 @@ GraphSAGE提出的前提是因为基于直推式(transductive)学习的图卷积
 对于想直接应用GCN或者GraphSAGE的我们而言，不用非要去理解其背后晦涩难懂的数学原理，可以仅从公式的角度来理解GraphSAGE的具体操作。
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/image-20220423094435223.png" style="zoom:90%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/PinSage/image-20220423094435223.png" style="zoom:90%;"/>
 </div>
 
 上面这个公式可以非常直观的让我们理解GraphSAGE的原理。
@@ -36,7 +36,7 @@ GraphSAGE提出的前提是因为基于直推式(transductive)学习的图卷积
 通过上面的公式可以知道，得到节点的表示主要依赖于两部分，其中一部分其邻居节点。因此对于GraphSAGE的关键主要分为两步：Sample采样和Aggregate聚合。其中Sample的作用是从庞大的邻居节点中选出用于聚合的邻居节点集合$N(v)$以达到降低迭代计算复杂度，而聚合操作就是如何利用邻居节点的表示来更新节点v的表示，已达到聚合作用。具体的过程如下伪代码所示：
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/image-20220406135753358.png" style="zoom:90%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/PinSage/image-20220406135753358.png" style="zoom:90%;"/>
 </div>
 
 GraphSAGE的minibatch算法的思路是针对Batch内的所有节点，通过采样和聚合节点，为每一个节点学习一个embedding。
@@ -82,7 +82,7 @@ PinSAGE使用重要性采样方法，即需要为每个邻居节点计算一个�
 PinSAGE中提到的Convolve算法（单层图卷积操作）相当于GraphSAGE算法的聚合过程，在实际执行过程中通过对每一层执行一次图卷积操作以得到不同阶邻居的信息，具体过程如下图所示：
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/image-20220406202027832.png" style="zoom:110%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/PinSage/image-20220406202027832.png" style="zoom:110%;"/>
 </div>
 
 上述的单层图卷积过程如下三步：
@@ -98,7 +98,7 @@ Convolve算法的聚合方法与GraphSAGE的Pooling聚合函数相同，主要�
 与GraphSAGE类似，采用的是基于mini-batch 的方式进行训练。之所以这么做的原因是因为什么呢？在实际的工业场景中，由于用户交互图非常庞大，无法对于所有的节点同时学习一个embedding，因此需要从原始图上寻找与 mini-batch 节点相关的子图。具体地是说，对于mini-batch内的所有节点，会通过采样的方式逐层的寻找相关邻居节点，再通过对每一层的节点做一次图卷积操作，以从k阶邻居节点聚合信息。
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/image-20220406204431024.png" style="zoom:60%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/PinSage/image-20220406204431024.png" style="zoom:60%;"/>
 </div>
 
 如上图所示：对于batch内的所有节点(图上最顶层的6个节点)，依次根据权重采样，得到batch内所有节点的一阶邻居(图上第二层的所有节点)；然后对于所有一阶邻居再次进行采样，得到所有二阶邻居(图上的最后一层)。节点采样阶段完成之后，与采样的顺序相反进行聚合操作。首先对二阶邻居进行单次图卷积，将二阶节点信息聚合已更新一阶节点的向量表示(其中小方块表示的是一层非线性转化)；其次对一阶节点再次进行图卷积操作，将一阶节点的信息聚合已更新batch内所有节点的向量表示。仅此对于一个batch内的所有的样本通过卷积操作学习到一个embedding，而每一个batch的学习过程中仅**利用与mini-batch内相关节点的子图结构。**
@@ -108,7 +108,7 @@ Convolve算法的聚合方法与GraphSAGE的Pooling聚合函数相同，主要�
 PinSage在训练时采用的是 Margin Hinge Loss 损失函数，主要的思想是最大化正例embedding之间的相关性，同时还要保证负例之间相关性相比正例之间的相关性小于某个阈值(Margin)。具体的公式如下：
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/image-20220406210833675.png" style="zoom:100%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/PinSage/image-20220406210833675.png" style="zoom:100%;"/>
 </div>
 
 其中$Z_p$是学习得到的目标节点embedding，$Z_i$是与目标节点相关item的embedding，$Z_{n_k}$是与目标节点不相关item的embedding，$\Delta$为margin值，具体大小需要调参。那么对于相关节点i，以及不相关节点nk，具体都是如何定义的，这对于召回模型的训练意义重大，让我们看看具体是如何定义的。
@@ -153,7 +153,7 @@ PinSage在训练时采用的是 Margin Hinge Loss 损失函数，主要的思想
 在模型训练结束之后，需要为所有节点计算一个embedding，如果按照训练过程中的前向传播过程来生成，会存在大量重复的计算。因为当计算一个节点的embedding的时候，其部分邻居节点已经计算过了，同时如果该节点作为其他节点邻居时，也会被再次计算。针对这个问题，本文采用MapReduce的方法进行推断。该过程主要分为两步，具体如下图所示：
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/image-20220407132111547.png" style="zoom:60%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.3/PinSage/image-20220407132111547.png" style="zoom:60%;"/>
 </div>
 
 1. 将item的embedding进行聚合，即利用item的图片、文字和度等信息的表示进行join(拼接)，在通过一层dense后得到item的低维向量。

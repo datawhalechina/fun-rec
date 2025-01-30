@@ -15,12 +15,14 @@
 - Airbnb 平台包含数百万种不同的房源，用户可以通过**浏览搜索结果页面**来寻找想要的房源。Airbnb 技术团队通过复杂的机器学习模型，并使用上百种信号对搜索结果中的房源进行排序。 
 - 当用户在查看某一个房源时，接下来的有两种方式继续搜索：
    - 返回搜索结果页，继续查看其他搜索结果。
-
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653049527431-0b09af70-bda0-4a30-8082-6aa69548213a.png" alt="img" style="zoom:50%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/Airbnb/1653049527431-0b09af70-bda0-4a30-8082-6aa69548213a.jpeg" alt="img" style="zoom:100%;" />
+</div>
 
    - 在当前房源的详情页下，「相似房源」板块（你可能还喜欢）所推荐的房源。
-
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653049385995-7a775df1-a36f-4795-9e79-8e577bcf2097.png" alt="img" style="zoom:50%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/Airbnb/1653049385995-7a775df1-a36f-4795-9e79-8e577bcf2097.jpeg" alt="img" style="zoom:100%;" />
+</div>
 
 -  Airbnb 平台 99% 的房源预订来自于搜索排序和相似房源推荐。
 # Embedding 方法
@@ -59,7 +61,9 @@ $$
    - Airbnb 将最终预定的房源，始终作为滑窗的上下文，即全局上下文。如下图：
      - 如图，对于当前滑动窗口的 central listing，实线箭头表示context listings，虚线（指向booked listing）表示 global context listing。
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653053823336-0564b2da-c993-46aa-9b22-f5cbb784dae2.png" alt="img" style="zoom:50%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/Airbnb/1653053823336-0564b2da-c993-46aa-9b22-f5cbb784dae2.png" alt="img" style="zoom:100%;" />
+</div>
 
    - booked listing 作为全局正样本，故优化的目标函数更新为：
 
@@ -103,12 +107,16 @@ $$
    - 理论上，同一区域的房源相似性应该更高，不同区域房源相似性更低。
    - Airbnb 利用 k-means 聚类，将加利福尼亚州的房源聚成100个集群，来验证类似位置的房源是否聚集在一起。
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653056809526-15401069-6fff-40d8-ac5e-35871d3f254a.png" alt="img" style="zoom:50%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/Airbnb/1653056809526-15401069-6fff-40d8-ac5e-35871d3f254a.png" alt="img" style="zoom:100%;" />
+</div>
 
 - 评估不同类型、价格区间的房源之间的相似性。
    - 简而言之，我们希望类型相同、价格区间一致的房源它们之间的相似度更高。
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653056981037-18edee91-493a-4d5b-b066-57f0b200032d.png" alt="img" style="zoom:50%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/Airbnb/1653056981037-18edee91-493a-4d5b-b066-57f0b200032d.png" alt="img" style="zoom:100%;" />
+</div>
 
 - 评估房源的隐式特征
    - Airbnb 在训练房源（listing）的 Embedding时，并没有用到房源的图像信息。
@@ -117,7 +125,9 @@ $$
       - 大致原理就是，利用训练好的 Embedding 进行 K 近邻相似度检索。
       - 如下，与查询房源在 Embedding 相似性高的其他房源，它们之间的外观风格也很相似。
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653057336798-fd8451cb-84b6-40fb-8733-1e3d08a39793.png" alt="img"  />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/Airbnb/1653057336798-fd8451cb-84b6-40fb-8733-1e3d08a39793.png" alt="img" style="zoom:80%;" />
+</div>
 
 ## User-type & Listing-type Embedding
 
@@ -169,7 +179,9 @@ Airbnb 除了挖掘 Listing 的短期兴趣特征表示外，还对 User 和 Lis
 - 所有的属性，都基于一定的规则进行了分桶（buckets）。例如21岁，被分桶到 20-30 岁的区间。
 - 对于首次预定的用户，他的属性为 buckets 的前5行，因为预定之前没有历史预定相关的信息。
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653125260611-7d33731b-9167-4fcc-b83b-0a2407ea89ca.png" alt="img" style="zoom: 67%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/Airbnb/1653125260611-7d33731b-9167-4fcc-b83b-0a2407ea89ca.png" alt="img" style="zoom:70%;" />
+</div>
 
 看到过前面那个简单的例子后，现在可以看一个原文的 Listing-type 的例子：
 
@@ -233,7 +245,10 @@ Type Embedding 的学习同样是基于 Skip-Gram 模型，但是有两点需要
         \end{aligned}
         $$
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653131985447-e033cb39-235b-4f46-9634-3b7faec284be.png" alt="img" style="zoom:50%;" />
+
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/Airbnb/1653131985447-e033cb39-235b-4f46-9634-3b7faec284be.png" alt="img" style="zoom:90%;" />
+</div>
 
 # 实验部分
 
@@ -276,13 +291,17 @@ Airbnb 的搜索排名的大致流程为：
 
 - 表中的 Embedding Features 包含了8种类型，前6种类型的特征计算方式相同。
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653139981920-a100085b-007b-4a9c-9edf-74297e9115ae.png" alt="img" style="zoom:50%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/Airbnb/1653139981920-a100085b-007b-4a9c-9edf-74297e9115ae.png" alt="img" style="zoom:65%;" />
+</div>
 
 **① 基于 Listing Embedding Features 的特征构建**
 
 - Airbnb 保留了用户过去两周6种不同类型的历史行为，如下图：
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653140202230-1f49e1dd-5c8c-4445-bd0b-9a17788a7b3f.png" alt="img" style="zoom:50%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/Airbnb/1653140202230-1f49e1dd-5c8c-4445-bd0b-9a17788a7b3f.png" alt="img" style="zoom:70%;" />
+</div>
 
 - 对于每个行为，还要将其按照 market （地域）进行划分。以 $ H_c $ 为例：
 
@@ -312,7 +331,9 @@ Airbnb 的搜索排名的大致流程为：
 
 为了验证上述特征的构建是否有效，Airbnb 还做了特征重要性排序，如下表：
 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片1653142188111-1975bcc4-22a2-45cf-bff0-2783ecb00a0c.png" alt="img" style="zoom:50%;" />
+<div align=center>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/Airbnb/1653142188111-1975bcc4-22a2-45cf-bff0-2783ecb00a0c.png" alt="img" style="zoom:50%;" />
+</div>
 
 **（3)模型**
 特征构建完成后，开始对模型进行训练。

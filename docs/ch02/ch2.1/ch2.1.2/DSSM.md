@@ -11,7 +11,7 @@
 DSSM(Deep Structured Semantic Model)是由微软研究院于CIKM在2013年提出的一篇工作，该模型主要用来解决NLP领域语义相似度任务 ，利用深度神经网络将文本表示为低维度的向量，用来提升搜索场景下文档和query匹配的问题。DSSM 模型的原理主要是：通过用户搜索行为中query 和 doc 的日志数据，通过深度学习网络将query和doc映射到到共同维度的语义空间中，通过最大化query和doc语义向量之 间的余弦相似度，从而训练得到隐含语义模型，即 query 侧特征的 embedding 和 doc 侧特征的 embedding，进而可以获取语句的低维 语义向量表达 sentence embedding，可以预测两句话的语义相似度。模型结构如下所示：
 
 <div align=center>
-    <img src="https://pic4.zhimg.com/v2-7f75cc71f5e959d6efa95289d2f5ac13_r.jpg" style="zoom:45%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/DSSM s/v2-7f75cc71f5e959d6efa95289d2f5ac13_r.jpg" style="zoom:45%;"/>
 </div>
 
 
@@ -22,7 +22,7 @@ DSSM(Deep Structured Semantic Model)是由微软研究院于CIKM在2013年提出
 而在推荐系统中，最为关键的问题是如何做好用户与item的匹配问题，因此对于推荐系统中DSSM模型的则是为 user 和 item 分别构建独立的子网络塔式结构，利用user和item的曝光或点击日期进行训练，最终得到user侧的embedding和item侧的embedding。因此在推荐系统中，常见的模型结构如下所示：
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/image-20220522103456450.png" style="zoom:60%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/DSSM/image-20220522103456450.png" style="zoom:60%;"/>
 </div>
 
 从模型结构上来看，主要包括两个部分：user侧塔和item侧塔，对于每个塔分别是一个DNN结构。通过两侧的特征输入，通过DNN模块到user和item的embedding，然后计算两者之间的相似度(常用內积或者余弦值，下面会说这两种方式的联系和区别)，因此对于user和item两侧最终得到的embedding维度需要保持一致，即最后一层全连接层隐藏单元个数相同。
@@ -32,7 +32,7 @@ DSSM(Deep Structured Semantic Model)是由微软研究院于CIKM在2013年提出
 在召回模型中，将这种检索行为视为多类分类问题，类似于YouTubeDNN模型。将物料库中所有的item视为一个类别，因此损失函数需要计算每个类的概率值：
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/image-20220522110742879.png" style="zoom:60%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/DSSM/image-20220522110742879.png" style="zoom:60%;"/>
 </div>
 
 其中$s(x,y)$表示两个向量的相似度，$P(y|x;\theta)$表示预测类别的概率，$M$表示物料库所有的item。但是在实际场景中，由于物料库中的item数量巨大，在计算上式时会十分的耗时，因此会采样一定的数量的负样本来近似计算，后面针对负样本的采样做一些简单介绍。
@@ -48,7 +48,7 @@ DSSM(Deep Structured Semantic Model)是由微软研究院于CIKM在2013年提出
 SENet由Momenta在2017年提出，当时是一种应用于图像处理的新型网络结构。后来张俊林大佬将SENet引入了精排模型[FiBiNET](https%3A//arxiv.org/abs/1905.09433)中，其作用是为了将大量长尾的低频特征抛弃，弱化不靠谱低频特征embedding的负面影响，强化高频特征的重要作用。那SENet结构到底是怎么样的呢，为什么可以起到特征筛选的作用？
 
 <div align=center>
-    <img src="https://camo.githubusercontent.com/ccf54fc4fcac46667d451f22368e31cf86855bc8bfbff40b7675d524bc899ecf/68747470733a2f2f696d672d626c6f672e6373646e696d672e636e2f32303231303730333136313830373133392e706e673f782d6f73732d70726f636573733d696d6167652f77617465726d61726b2c747970655f5a6d46755a33706f5a57356e6147567064476b2c736861646f775f31302c746578745f6148523063484d364c7939696247396e4c6d4e7a5a473475626d56304c336431656d6876626d6478615746755a773d3d2c73697a655f312c636f6c6f725f4646464646462c745f3730237069635f63656e746572" style="zoom:80%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/DSSM/v2-38172f239f97ee8dac9888eb3434cb62_1440w.png" style="zoom:60%;"/>
 </div>
 
 从上图可以看出SENET主要分为三个步骤Squeeze, Excitation, Re-weight：
@@ -76,7 +76,7 @@ SENet由Momenta在2017年提出，当时是一种应用于图像处理的新型�
 此外张俊林大佬还将SENet应用于双塔模型中[(SENet双塔模型：在推荐领域召回粗排的应用及其它)](https://zhuanlan.zhihu.com/p/358779957)，模型结构如下所示：
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/image-20220522152508824.png" style="zoom:70%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/DSSM/image-20220522152508824.png" style="zoom:70%;"/>
 </div>
 
 从上图可以发现，具体地是将双塔中的user塔和Item侧塔的特征输入部分加上一个SENet模块，通过SENet网络，动态地学习这些特征的重要性，通过小权重抑制噪音或者无效低频特征，通过大权重放大重要特征影响的目的。
@@ -90,7 +90,7 @@ SENet由Momenta在2017年提出，当时是一种应用于图像处理的新型�
 因此SENet双塔模型主要是从特征选择的角度，提高了两侧特征交叉的有效性，减少了噪音对有效信息的干扰，进而提高了双塔模型的效果。此外，除了这样的方式，还可以通过增加通道的方式来增强两侧的信息交互。即对于user和item两侧不仅仅使用一个DNN结构，而是可以通过不同结构(如FM，DCN等)来建模user和item的自身特征交叉，例如下图所示：
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/v2-9c2f7a30c6cadc47be23d6797f095b61_b.jpg" style="zoom:80%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/DSSM/v2-9c2f7a30c6cadc47be23d6797f095b61_b.jpg" style="zoom:80%;"/>
 </div>
 
 
@@ -103,8 +103,9 @@ SENet由Momenta在2017年提出，当时是一种应用于图像处理的新型�
 现如今多任务学习在实际的应用场景也十分的常见，主要是因为实际场景中业务复杂，往往有很多的衡量指标，例如点击，评论，收藏，关注，转发等。在多任务学习中，往往会针对不同的任务使用一个独有的tower，然后优化不同任务损失。那么针对双塔模型应该如何构建多任务学习框架呢？
 
 <div align=center>
-    <img src="https://cdn.jsdelivr.net/gh/swallown1/blogimages@main/images/image-20220523113206177.png" style="zoom:60%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/DSSM/image-20220523113206177.png" style="zoom:60%;"/>
 </div>
+
 如上图所示，在user侧和item侧分别通过多个通道(DNN结构)为每个任务得到一个user embedding和item embedding，然后针对不同的目标分别计算user 和 item 的相似度，并计算各个目标的损失，最后的优化目标可以是多个任务损失之和，或者使用多任务学习中的动态损失权重。
 
 

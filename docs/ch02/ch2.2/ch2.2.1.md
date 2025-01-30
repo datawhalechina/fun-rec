@@ -19,7 +19,7 @@
 推断过程可以用下图来表示：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200909215410263.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:55%;" />
+<img src="../../imgs/ch02/ch2.2/ch2.2.1/20200909215410263.png" alt="在这里插入图片描述" style="zoom:55%;" />
 </div>
 
 这里的关键就是每个特征的权重参数$w$， 我们一般是使用梯度下降的方式， 首先会先随机初始化参数$w$， 然后将特征向量（也就是我们上面数值化出来的特征）输入到模型， 就会通过计算得到模型的预测概率， 然后通过对目标函数求导得到每个$w$的梯度， 然后进行更新$w$
@@ -56,7 +56,7 @@ GBDT全称梯度提升决策树，在传统机器学习算法里面是对真实�
 GBDT是通过采用加法模型(即基函数的线性组合），以及不断减小训练过程产生的误差来达到将数据分类或者回归的算法， 其训练过程如下：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200908202508786.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" style="zoom:65%;" />    
+<img src="../../imgs/ch02/ch2.2/ch2.2.1/20200908202508786.png" style="zoom:80%;" />    
 </div>
 gbdt通过多轮迭代， 每轮迭代会产生一个弱分类器， 每个分类器在上一轮分类器的残差基础上进行训练。  gbdt对弱分类器的要求一般是足够简单， 并且低方差高偏差。 因为训练的过程是通过降低偏差来不断提高最终分类器的精度。 由于上述高偏差和简单的要求，每个分类回归树的深度不会很深。最终的总分类器是将每轮训练得到的弱分类器加权求和得到的（也就是加法模型）。  
 
@@ -104,7 +104,7 @@ $$
 ​		下面看例子(该例子来自下面的第二个链接)， 假设我们有下面3条样本：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200910095539432.png#pic_center" alt="在这里插入图片描述" style="zoom:80%;" /> 
+<img src="../../imgs/ch02/ch2.2/ch2.2.1/20200910095539432.png" alt="在这里插入图片描述" style="zoom:80%;" /> 
 </div>
 
 我们希望构建 GBDT 分类树，它能通过「喜欢爆米花」、「年龄」和「颜色偏好」这 3 个特征来预测某一个样本是否喜欢看电影。我们把数据代入上面的公式中求Loss:
@@ -127,13 +127,13 @@ $$
          此处使用$m-1$棵树的模型， 计算每个样本的残差$r_{im}$, 就是上面的$y_i-pi$, 于是例子中， 每个样本的残差：
     
          <div align=center>
-         <img src="https://img-blog.csdnimg.cn/20200910101154282.png#pic_center" alt="在这里插入图片描述" style="zoom:80%;" />
+         <img src="../../imgs/ch02/ch2.2/ch2.2.1/20200910101154282.png" alt="在这里插入图片描述" style="zoom:80%;" />
          </div>
     
       2. 使用回归树来拟合$r_{im}$， 这里的$i$表示样本哈，回归树的建立过程可以参考下面的链接文章，简单的说就是遍历每个特征， 每个特征下遍历每个取值， 计算分裂后两组数据的平方损失， 找到最小的那个划分节点。 假如我们产生的第2棵决策树如下：
     
          <div align=center>
-         <img src="https://img-blog.csdnimg.cn/20200910101558282.png#pic_center" alt="在这里插入图片描述" style="zoom:80%;" />
+         <img src="../../imgs/ch02/ch2.2/ch2.2.1/20200910101558282.png" alt="在这里插入图片描述" style="zoom:100%;" />
          </div>
     
       3. 对于每个叶子节点$j$, 计算最佳残差拟合值
@@ -221,7 +221,7 @@ $$
 有了上面的铺垫， 这个模型解释起来就比较容易了， 模型的总体结构长下面这样：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200910161923481.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:67%;" />    
+<img src="../../imgs/ch02/ch2.2/ch2.2.1/20200910161923481.png" alt="在这里插入图片描述" style="zoom:67%;" />    
 </div>
 **训练时**，GBDT 建树的过程相当于自动进行的特征组合和离散化，然后从根结点到叶子节点的这条路径就可以看成是不同特征进行的特征组合，用叶子节点可以唯一的表示这条路径，并作为一个离散特征传入 LR 进行**二次训练**。
 

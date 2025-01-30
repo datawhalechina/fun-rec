@@ -12,7 +12,7 @@ Wide&Deep模型就是围绕记忆性和泛化性进行讨论的，模型能够�
 
 ## 模型结构及原理
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/Javaimage-20200910214310877.png" alt="image-20200910214310877" style="zoom:65%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/WideNDeep/Javaimage-20200910214310877.png" alt="image-20200910214310877" style="zoom:100%;" />
 </div>
 
 其实wide&deep模型本身的结构是非常简单的，对于有点机器学习基础和深度学习基础的人来说都非常的容易看懂，但是如何根据自己的场景去选择那些特征放在Wide部分，哪些特征放在Deep部分就需要理解这篇论文提出者当时对于设计该模型不同结构时的意图了，所以这也是用好这个模型的一个前提。
@@ -88,13 +88,13 @@ def WideNDeep(linear_feature_columns, dnn_feature_columns):
 关于每一块的细节，这里就不解释了，在我们给出的GitHub代码中，我们已经加了非常详细的注释，大家看那个应该很容易看明白， 为了方便大家的阅读，我们这里还给大家画了一个整体的模型架构图，帮助大家更好的了解每一块以及前向传播。（画的图不是很规范，先将就看一下，后面我们会统一在优化一下这个手工图）。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210228160557072.png" alt="image-20210228160557072" style="zoom:67%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/WideNDeep/image-20210228160557072.png" alt="image-20210228160557072" style="zoom:70%;" />
 </div>
 
 下面是一个通过keras画的模型结构图，为了更好的显示，数值特征和类别特征都只是选择了一小部分，画图的代码也在github中。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片Wide&Deep.png" alt="image-20210228160557072" style="zoom:67%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/WideNDeep/Wide&Deep.png" alt="image-20210228160557072" style="zoom:30%;" />
 </div>
 
 ## 思考

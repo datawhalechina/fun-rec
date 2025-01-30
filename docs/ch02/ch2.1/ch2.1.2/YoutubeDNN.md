@@ -23,7 +23,7 @@ YouTubeDNN模型是2016年的一篇文章，虽然离着现在有些久远， �
 整个推荐架构图如下， 这个算是比较原始的漏斗结构了:
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/1c5dbd6d6c1646d09998b18d45f869e5.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/1c5dbd6d6c1646d09998b18d45f869e5.png" alt="在这里插入图片描述" style="zoom:100%;" /> 
 </div>
 
 这篇文章之所以写的好， 是给了我们一个看推荐系统的宏观视角， 这个系统主要是两大部分组成: 召回和排序。召回的目的是根据用户部分特征，从海量物品库，快速找到小部分用户潜在感兴趣的物品交给精排，重点强调快，精排主要是融入更多特征，使用复杂模型，来做个性化推荐，强调准。 
@@ -31,21 +31,21 @@ YouTubeDNN模型是2016年的一篇文章，虽然离着现在有些久远， �
 而对于这两块的具体描述， 论文里面也给出了解释， 我这里简单基于我目前的理解扩展下主流方法：
 1. 召回侧
     <div align=center>
-    <img src="https://img-blog.csdnimg.cn/5ebcd6f882934b7e9e2ffb9de2aee29d.png#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/5ebcd6f882934b7e9e2ffb9de2aee29d.jpeg" alt="在这里插入图片描述" style="zoom:90%;" /> 
     </div>
 	召回侧模型的输入一般是用户的点击历史， 因为我们认为这些历史能更好的代表用户的兴趣， 另外还有一些人口统计学特征，比如性别，年龄，地域等， 都可以作为召回侧模型的输入。 而最终模型的输出，就是与该用户相关的一个候选视频集合， 量级的话一般是几百。
 	<br>召回侧， 目前根据我的理解，大致上有两大类召回方式，一类是策略规则，一类是监督模型+embedding，其中策略规则，往往和真实场景有关，比如热度，历史重定向等等，不同的场景会有不同的召回方式，这种属于"特异性"知识。
     <br>后面的模型+embedding思路是一种"普适"方法，我上面图里面梳理出了目前给用户和物品打embedding的主流方法， 这些方法大致成几个系列，比如FM系列(FM,FFM等)， 用户行为序列，基于图和知识图谱系列，经典双塔系列等，这些方法看似很多很复杂，其实本质上还是给用户或者是物品打embedding而已，只不过考虑的角度方式不同。  这里的YouTubeDNN召回模型，也是这里的一种方式而已。
 2. 精排侧
     <div align=center>
-    <img src="https://img-blog.csdnimg.cn/08953c0e8a00476f90bd9e206d4a02c6.png#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/08953c0e8a00476f90bd9e206d4a02c6.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
     </div>
 	召回那边对于每个用户， 给出了几百个比较相关的候选视频， 把几百万的规模降到了几百， 当然，召回那边利用的特征信息有限，并不能很好的刻画用户和视频特点，所以， 在精排侧，主要是想利用更多的用户，视频特征，刻画特点更加准确些，从这几百个里面选出几个或者十几个推荐给用户。 而涉及到准， 主要的发力点一般有三个：特征工程， 模型设计以及训练方法。 这三个发力点文章几乎都有所涉及， 除了模式设计有点审时度势之外，特征工程以及训练方法的处理上非常漂亮，具体的后面再整理。<br>
 	精排侧，这一块的大致发展趋势，从ctr预估到多目标， 而模型演化上，从人工特征工程到特征工程自动化。主要是三大块， CTR预估主要分为了传统的LR，FM大家族，以及后面自动特征交叉的DNN家族，而多目标优化，目前是很多大公司的研究现状，更是未来的一大发展趋势，如何能让模型在各个目标上面的学习都能"游刃有余"是一件非常具有挑战的事情，毕竟不同的目标可能会互相冲突，互相影响，所以这里的研究热点又可以拆分成网络结构演化以及loss设计优化等， 而网络结构演化中，又可以再一次细分。 当然这每个模型或者技术几乎都有对应paper，我们依然可以通过读paper的方式，把这些关键技术学习到。
 
 这两阶段的方法， 就能保证我们从大规模视频库中实时推荐， 又能保证个性化，吸引用户。 当然，随着时间的发展， 可能数据量非常非常大了， 此时召回结果规模精排依然无法处理，所以现在一般还会在召回和精排之间，加一个粗排进一步筛选作为过渡， 而随着场景越来越复杂， 精排产生的结果也不是直接给到用户，而是会再后面加一个重排后处理下，这篇paper里面其实也简单的提了下这种思想，在排序那块会整理到。 所以如今的漏斗， 也变得长了些。
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/aeae52971a1345a98b310890ea81be53.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/aeae52971a1345a98b310890ea81be53.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 论文里面还提到了对模型的评估方面， 线下评估的时候，主要是采用一些常用的评估指标(精确率，召回率， 排序损失或者auc这种)， 但是最终看算法和模型的有效性， 是通过A/B实验， 在A/B实验中会观察用户真实行为，比如点击率， 观看时长， 留存率这种， 这些才是我们终极目标， 而有时候， A/B实验的结果和线下我们用的这些指标并不总是相关， 这也是推荐系统这个场景的复杂性。 我们往往也会用一些策略，比如修改模型的优化目标，损失函数这种， 让线下的这个目标尽量的和A/B衡量的这种指标相关性大一些。  当然，这块又是属于业务场景问题了，不在整理范畴之中。 但2016年，竟然就提出了这种方式， 所以我觉得，作为小白的我们， 想了解工业上的推荐系统， 这篇paper是不二之选。
 
@@ -67,7 +67,7 @@ $$
 ### 召回模型结构
 召回模型的结构如下:
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/724ff38c1d6448399edb658b1b27e18e.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/724ff38c1d6448399edb658b1b27e18e.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
 </div>
 
 这个模型结构呢，相比之前的模型， 比较简单，就是一个DNN。 
@@ -88,7 +88,7 @@ Ok，到这里平淡无奇， 前向传播也大致上快说完了， 还差最�
 这里只需要看一张图即可， 这个来自cs231N公开课PPT， 我之前整理w2v的时候用到的，详细内容可看我[这篇博客](https://zhongqiang.blog.csdn.net/article/details/106948860)， 这里的思想其实也是从w2v那边过来的。
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200624193409649.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/20200624193409649.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
 </div>
 
 skip-gram的原理咱这里就不整理了， 这里就只看这张图，这其实就是w2v训练的一种方式，当然是最原始的。 word2vec的核心思想呢？ 就是共现频率高的词相关性越大，所以skip-gram采用中心词预测上下文词的方式去训练词向量，模型的输入是中心词，做样本采用滑动窗口的形式，和这里序列其实差不多，窗口滑动一次就能得到一个序列[word1, word2, ...wordn]， 而这个序列里面呢？ 就会有中心词(比如中间那个)， 两边向量的是上下文词。 如果我们输入中心词之后，模型能预测上下文词的概率大，那说明这个模型就能解决词相关性问题了。 
@@ -101,7 +101,7 @@ skip-gram的原理咱这里就不整理了， 这里就只看这张图，这其�
 有了这个过程， 再理解YouTubeDNN顶部就非常容易了， 我单独截出来:
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/98811e09226f42a2be981b0aa3449ab3.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/98811e09226f42a2be981b0aa3449ab3.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 只看这里的这个过程， 其实就是上面skip-gram过程， 不一样的是右边这个中心词向量$v_c$是直接过了一个embedding层得到的，而左边这个用户向量$u$是用户的各种特征先拼接成一个大的向量，然后过了一个DNN降维。 训练方式上，这两个也是一模一样的，无非就是左边的召回模型，多了几层全连接而已。
@@ -117,7 +117,7 @@ skip-gram的原理咱这里就不整理了， 这里就只看这张图，这其�
 >* 随机负例与热门打压
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/6fe56d71de8a4d769a583f27a3ce9f40.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/6fe56d71de8a4d769a583f27a3ce9f40.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
 </div>
 
 这样整个召回模型训练部分的"基本操作"就基本整理完了。关于细节部分，后面代码里面会描述下， 但是在训练召回模型过程中，还有一些经验性的知识也非常重要。 下面重点整理一下。
@@ -127,7 +127,7 @@ skip-gram的原理咱这里就不整理了， 这里就只看这张图，这其�
 
 首先，训练样本来源于全部的YouTube观看记录，而不仅仅是被推荐的观看记录
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/faf8a8abf7b54b779287acadc015b6a0.png#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/faf8a8abf7b54b779287acadc015b6a0.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
 </div>
 
 否则对于新视频会难以被曝光，会使最终推荐结果有偏；同时系统也会采集用户从其他渠道观看的视频，从而可以快速应用到协同过滤中；
@@ -136,13 +136,13 @@ skip-gram的原理咱这里就不整理了， 这里就只看这张图，这其�
 
 ==这里的一个经验==是**训练数据中对于每个用户选取相同的样本数， 保证用户在损失函数等权重**， 因为这样可以减少高度活跃用户对于loss的影响。可以改进线上A/B测试的效果。
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/35386af8fd064de3a87cb418b008e444.png#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/35386af8fd064de3a87cb418b008e444.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
 </div>
 
 这里的==另一个经验==是**避免让模型知道不该知道的信息**
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/0765134e1ca445c693058aaaaf20ae74.png#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/0765134e1ca445c693058aaaaf20ae74.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
 </div>
 
 这里作者举了一个例子是如果模型知道用户最后的行为是搜索了"Taylor Swift"， 那么模型可能会倾向于推荐搜索页面搜"Taylor Swift"时搜索的视频， 这个不是推荐模型期望的行为。 解法方法是**扔掉时序信息**， 历史搜索tokens随机打乱， 使用无序的搜索tokens来表示搜索queryies(average pooling)。
@@ -155,13 +155,13 @@ skip-gram的原理咱这里就不整理了， 这里就只看这张图，这其�
 下图中的$w_{tN}$表示当前样本， 原来的做法是它前后的用户行为都可以用来产生特征行为输入(word2vec的CBOW做样本的方法)。 而作者担心这一点会导致信息泄露， 模型**不该知道的信息是未来的用户行为**， 所以作者的做法是只使用更早时间的用户行为来产生特征， 这个也是目前通用的做法。 两种方法的对比如下:
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/049cbeb814f843fd97638ef02d6c5703.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_2,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/049cbeb814f843fd97638ef02d6c5703.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
 </div>
 
 (a)是许多协同过滤会采取的方法，利用全局的观看信息作为输入（包括时间节点N前，N后的观看），这种方法忽略了观看序列的不对称性，而本文中采取(b)所示的方法，只把历史信息当作输入，用历史来预测未来
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/4ac0c81e5f4f4276a4ed0e4c6329f458.png#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/4ac0c81e5f4f4276a4ed0e4c6329f458.png" alt="在这里插入图片描述" style="zoom:70%;" /> 
 </div>
 
 模型的测试集， 往往也是用户最近一次观看行为， 后面的实验中，把用户最后一次点击放到了测试集里面去。这样可以防止信息穿越。
@@ -171,7 +171,7 @@ skip-gram的原理咱这里就不整理了， 这里就只看这张图，这其�
 ### "Example Age"特征
 这个特征我想单独拿出来说，是因为这个是和场景比较相关的特征，也是作者的经验传授。 我们知道，视频有明显的生命周期，例如刚上传的视频比之后更受欢迎，也就是用户往往喜欢看最新的东西，而不管它是不是和用户相关，所以视频的流行度随着时间的分布是高度非稳态变化的(下面图中的绿色曲线)
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/15dfce743bd2490a8adb21fd3b2b294e.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/15dfce743bd2490a8adb21fd3b2b294e.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 但是我们模型训练的时候，是基于历史数据训练的(历史观看记录的平均)，所以模型对播放某个视频预测值的期望会倾向于其在训练数据时间内的平均播放概率(平均热度)， 上图中蓝色线。但如上面绿色线，实际上该视频在训练数据时间窗口内热度很可能不均匀， 用户本身就喜欢新上传的内容。  所以，为了让模型学习到用户这种对新颖内容的bias， 作者引入了"example age"这个特征来捕捉视频的生命周期。
@@ -182,7 +182,7 @@ skip-gram的原理咱这里就不整理了， 这里就只看这张图，这其�
 `example age`这个特征到这里还没完， 原来加入这种时间bias的传统方法是使用`video age`， 即一个video上传到样本生成的这段时间跨度， 这么说可能有些懵， 看个图吧， 原来这是两个东西:
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/10475c194c0044a3a93b01a3193e294f.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/10475c194c0044a3a93b01a3193e294f.png" alt="在这里插入图片描述" style="zoom:80%;" /> 
 </div>
 
 王喆老师那篇文章里面也谈到了这两种理解， 对于某个视频的不同样本，其实这两种定义是等价的，因为他们的和是一个常数。
@@ -197,7 +197,7 @@ $$
 这里就简单过下就好， 作者这里主要验证了下DNN的结构对推荐效果的影响，对于DNN的层级，作者尝试了0~4层， 实验结果是**层数越多越好， 但4层之后提升很有限， 层数越多训练越困难**
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/fd1849a8881444fbb12490bad7598125.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/fd1849a8881444fbb12490bad7598125.png" alt="在这里插入图片描述" style="zoom:80%;" /> 
 </div>
 
 作者这里还启发了一个事情， 从"双塔"的角度再看YouTubeDNN召回模型， 这里的DNN个结构，其实就是一个用户塔， 输入用户的特征，最终通过DNN，编码出了用户的embedding向量。 
@@ -210,7 +210,7 @@ $$
 我们甚至不用把任何model inference的过程搬上服务器，只需要把user embedding和video embedding存到redis或者内存中就好了。like this:
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/86751a834d224ad69220b5040e0e03c9.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/86751a834d224ad69220b5040e0e03c9.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 在线上，可以根据用户兴趣Embedding，采用类似Faiss等高效Embedding检索工具，快速找出和用户兴趣匹配的物品， 高效embedding检索工具， 我目前接触到了两个，一个是Faiss， 一个是annoy， 关于这两个工具的使用， 我也整理了两篇文章:
@@ -520,19 +520,19 @@ def youtubednn_recall(data, topk=200, embedding_dim=8, his_seq_maxlen=50, negsam
 
 以上，就是使用YouTubeDNN做召回的整个流程。 效果如下:
 
-<div align=center>
-<img src="https://img-blog.csdnimg.cn/e904362d28fd4bdbacb5715ff2abaac2.png#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<div align=left>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/e904362d28fd4bdbacb5715ff2abaac2.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 这个字典长这样:
-<div align=center>
-<img src="https://img-blog.csdnimg.cn/840e3abaf30845499f0926c61ba88635.png#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<div align=left>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/840e3abaf30845499f0926c61ba88635.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 接下来就是评估模型的效果，这里我采用了简单的HR@N计算的， 具体代码看GitHub吧， 结果如下:
 
-<div align=center>
-<img src="https://img-blog.csdnimg.cn/eb6ccadaa98e46bd87e594ee11e957a7.png#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+<div align=left>
+<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/eb6ccadaa98e46bd87e594ee11e957a7.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 结果不怎么样啊，唉， 难道是数据量太少了？  总归是跑起来且能用了。
@@ -542,19 +542,18 @@ def youtubednn_recall(data, topk=200, embedding_dim=8, his_seq_maxlen=50, negsam
 ## YouTubeDNN新闻推荐数据集的实验记录
 这块就比较简单了，简单的整理下我用上面代码做个的实验，尝试了论文里面的几个点，记录下:
 1. 负采样方式上，尝试了随机负采样和打压高热item两种方式， 从我的实验结果上来看， 带打压的效果略好一点点
-
-<div align=center>
-<img src="https://img-blog.csdnimg.cn/7cf27f1b849049f0b4bd98d0ebb7925f.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
-</div>
+	<div align=left>
+	<img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/7cf27f1b849049f0b4bd98d0ebb7925f.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
+	</div>
 
 2. 特征上， 尝试原论文给出的example age的方式，做一个样本的年龄特征出来
 	这个年龄样本，我是用的训练集的最大时间减去曝光的时间，然后转成小时间隔算的，而测试集里面的统一用0表示， 但效果好差。 看好多文章说这个时间单位是个坑，不知道是小时，分钟，另外这个特征我只做了简单归一化，感觉应该需要做归一化
-    <div align=center>
-    <img src="https://img-blog.csdnimg.cn/1ea482f538c94b8bb07a69023b14ca9b.png#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+    <div align=left>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/1ea482f538c94b8bb07a69023b14ca9b.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
     </div>
 3. 尝试了控制用户数量，即每个用户的样本数量保持一样，效果比上面略差
-    <div align=center>
-    <img src="https://img-blog.csdnimg.cn/8653b76d0b434d1088da196ce94bb954.png#pic_center" alt="在这里插入图片描述" style="zoom:70%;" /> 
+    <div align=left>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/YoutubeDNN/8653b76d0b434d1088da196ce94bb954.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
     </div>
 4. 开始模型评估，我尝试用最后一天的，而不是最后一次点击的， 感觉效果不如最后一次点击作为测试集效果好
 

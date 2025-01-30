@@ -7,13 +7,13 @@ DSIN全称是Deep Session Interest Network(深度会话兴趣网络)， 重点�
 DSIN模型全称叫做Deep Session Interest Network， 这个是阿里在2019年继DIEN之后的一个新模型， 这个模型依然是研究如何更好的从用户的历史行为中捕捉到用户的动态兴趣演化规律。而这个模型的改进动机呢？ 就是作者认为之前的序列模型，比如DIEN等，忽视了序列的本质结构其实是由会话组成的：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310143019924.png#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310143019924.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 这是个啥意思呢？  其实举个例子就非常容易明白DIEN存在的问题了(DIN这里就不说了，这个存在的问题在DIEN那里说的挺详细了，这里看看DIEN有啥问题)，上一篇文章中我们说DIEN为了能够更好的利用用户的历史行为信息，把序列模型引进了推荐系统，用来学习用户历史行为之间的关系， 用兴趣提取层来学习各个历史行为之间的关系，而为了更有针对性的模拟与目标广告相关的兴趣进化路径，又在兴趣提取层后面加了注意力机制和兴趣进化层网络。这样理论上就感觉挺完美的了啊。这里依然是把DIEN拿过来，也方便和后面的DSIN对比：<br>
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210221165854948.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210221165854948.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 但这个模型存在个啥问题呢？  **就是只关注了如何去改进网络，而忽略了用户历史行为序列本身的特点**， 其实我们仔细想想的话，用户过去可能有很多历史点击行为，比如`[item3, item45, item69, item21, .....]`， 这个按照用户的点击时间排好序了，既然我们说用户的兴趣是非常广泛且多变的，那么这一大串序列的商品中，往往出现的一个规律就是**在比较短的时间间隔内的商品往往会很相似，时间间隔长了之后，商品之间就会出现很大的差别**，这个是很容易理解的，一个用户在半个小时之内的浏览点击的几个商品的相似度和一个用户上午点击和晚上点击的商品的相似度很可能是不一样的。这其实就是作者说的`homogeneous`和`heterogeneous`。而DIEN模型呢？ 它并没有考虑这个问题，而是会直接把这一大串行为序列放入GRU让它自己去学(当然我们其实可以人工考虑这个问题，然后如果发现序列很长的话我们也可以分成多个样本哈，当然这里不考虑这个问题)，如果一大串序列一块让GRU学习的话，往往用户的行为快速改变和突然终止的序列会有很多噪声点，不利于模型的学习。
@@ -21,7 +21,7 @@ DSIN模型全称叫做Deep Session Interest Network， 这个是阿里在2019年
 所以，作者这里就是从序列本身的特点出发， 把一个用户的行为序列分成了多个会话，所谓会话，其实就是按照时间间隔把序列分段，每一段的商品列表就是一个会话，那这时候，会话里面每个商品之间的相似度就比较大了，而会话与会话之间商品相似度就可能比较小。作者这里给了个例子：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310144926564.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310144926564.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 这是某个用户过去的历史点击行为，然后按照30分钟的时间间隔进行的分段，分成了3段。这里就一下子看出上面说的那些是啥意思了吧。就像这个女生，前30分钟在看裤子，再过30分钟又停留在了化妆品，又过30分钟，又看衣服。这种现象是非常普遍的啊，反映了一个用户通常在某个会话里面会有非常单一的兴趣但是当过一段时间之后，兴趣就会突然的改变。这个时候如果再统一的考虑所有行为就不合理了呀。**这其实也是DSIN改进的动机了**， DSIN，这次的关键就是在S上。
@@ -42,20 +42,20 @@ DSIN模型全称叫做Deep Session Interest Network， 这个是阿里在2019年
 这里在说DSIN之前，作者也是又复习了一下base model模型架构，这里我就不整理了，其实是和DIEN那里一模一样的，具体的可以参考我上一篇文章。直接看DSIN的架构：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310151619214.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310151619214.png" alt="在这里插入图片描述" style="zoom:80%;" /> 
 </div>
 
 这个模型第一印象又是挺吓人的。核心的就是上面剖析的那四块，这里也分别用不同颜色表示出来了。也及时右边的那几块，左边的那两块还是我们之前的套路，用户特征和商品特征的串联。这里主要研究右边那四块，作者在这里又强调了下DSIN的两个目的，而这两个目的就对应着本模型最核心的两个层(会话兴趣提取层和会话交互层)：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310151921213.png#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310151921213.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 #### Session Division Layer
 这一层是将用户的行为序列进行切分，首先将用户的点击行为按照时间排序，判断两个行为之间的时间间隔，如果前后间隔大于30min，就进行切分(划一刀)， 当然30min不是定死的，具体跟着自己的业务场景来。
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310152906432.png#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310152906432.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 划分完了之后，我们就把一个行为序列$\mathbf{S}$转成了Sessions $\mathbf{Q}$，比如上面这个分成了4个会话，会分别用$\mathbf{Q_1}, \mathbf{Q_2}, \mathbf{Q_3}, \mathbf{Q_4}$表示。 第$k$个会话$\mathbf{Q_k}$中，又包含了$T$个行为，即
@@ -69,13 +69,13 @@ $\mathbf{b}_{i}$表示的是第$k$个会话里面的第$i$个点击行为(具体
 
 第一个，就是Transformer的编码器的一小块：
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310154530852.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310154530852.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 拿过来是为了更好的对比，看DSIN的结构的第二层，其实就是这个东西。 而这个东西的整体的计算过程，我在之前的文章中剖析好了：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200220195348122.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20200220195348122.png" alt="在这里插入图片描述" style="zoom:60%;" /> 
 </div>
 
 有了上面这两张图，在解释这里就非常好说了。
@@ -86,7 +86,7 @@ $\mathbf{b}_{i}$表示的是第$k$个会话里面的第$i$个点击行为(具体
 在Transformer中，对输入的序列会进行Positional Encoding。Positional Encoding对序列中每个物品，以及每个物品对应的Embedding的每个位置，进行了处理，如下：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310155625208.png#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310155625208.png" alt="在这里插入图片描述" style="zoom:80%;" /> 
 </div>
 
 上式中$pos$指的是某个会话里面item位于第几个位置位置, 取值范围是$[0, max\_len]$, $i$指的是词向量的某个维度, 取值范围是$[0, embed \_ dim]$, 上面有$sin$和$cos$一组公式, 也就是对应着$embed \_ dim$维度的一组奇数和偶数的序号的维度, 例如$0, 1$一组, $2, 3$一组, 分别用上面的$sin$和$cos$函数做处理, 从而产生不同的周期性变化, 而位置嵌入在$embed \_ dim$维度上随着维度序号增大, 周期变化会越来越慢, 而产生一种包含位置信息的纹理, 位置嵌入函数的周期从$2 \pi$到$10000 * 2 \pi$变化, 而每一个位置在$embed \_ dim$维度上都会得到不同周期的$sin$和$cos$函数的取值组合, 从而产生独一的纹理位置信息, 模型从而学到位置之间的依赖关系和自然语言的时序特性。这个在这里说可能有些迷糊，具体可以去另一篇文章看细节，**总结起来，就是通过这个公式，可以让每个item在每个embedding维度上都有独特的位置信息。但注意，位置编码的矩阵和输入的维度是一样的，这样两者加起来之后就相当于原来的序列加上了位置信息**  。 
@@ -108,7 +108,7 @@ $$
 接下来，就是每个会话的序列都通过Transformer进行处理:
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310163256416.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310163256416.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 一定要注意，这里说的是每个会话，这里我特意把下面的$Q_1$框出来了，就是每个$Q_i$都会走这个自注意力机制，因为我们算的是某个会话当中各个物品之间的关系。这里的计算和Transformer的block的计算是一模一样的了， 我这里就拿一个会话来解释。
@@ -116,7 +116,7 @@ $$
 首先$Q_1$这是一个$T\times embed \_dim$的一个矩阵，这个就和上面transformer的那个是一模一样的了，细节的计算过程其实是一样的。
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200220194509277.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20200220194509277.png" alt="在这里插入图片描述" style="zoom:60%;" /> 
 </div>
 
 这里在拿过更细的个图来解释，首先这个$Q_1$会过一个多头的注意力机制，这个东西干啥用呢？ 原理这里不说，我们只要知道，这里的头其实是从某个角度去看各个物品之间的关系，而多头的意思就是从不同的角度去计算各个物品之间的关系， 比如各个物品在价格上啊，重量上啊，颜色上啊，时尚程度上啊等等这些不同方面的关系。然后就是看这个运算图，我们会发现self-attention的输出维度和输入维度也是一样的，但经过这个多头注意力的东西之后，**就能够得到当前的商品与其他商品在多个角度上的相关性**。怎么得到呢？ 
@@ -124,13 +124,13 @@ $$
 >我们看看这个$QK^T$在表示啥意思：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200220195022623.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20200220195022623.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 >假设当前会话有6个物品，embedding的维度是3的话，那么会看到这里一成，得到的结果中的每一行其实表示的是当前商品与其他商品之间的一个相似性大小(embedding内积的形式算的相似)。而沿着最后一个维度softmax归一化之后，得到的是个权重值。这是不是又想起我们的注意力机制来的啊，这个就叫做注意力矩阵，我们看看乘以V会是个啥
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200220195243968.png#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20200220195243968.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 >这时候，我们从注意力矩阵取出一行（和为1），然后依次点乘V的列，因为矩阵V的每一行代表着每一个字向量的数学表达，这样操作，**得到的正是注意力权重进行数学表达的加权线性组合，从而使每个物品向量都含有当前序列的所有物品向量的信息**。而多头，不过是含有多个角度的信息罢了，这就是Self-attention的魔力了。
@@ -154,7 +154,7 @@ $$
 即这个$\mathbf{I}_{k}$是一个embedding维度的向量， 表示当前用户在第$k$会话的兴趣。这就是一个会话里面兴趣提取的全过程了，如果用我之前的神图总结的话就是：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20200220204538414.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20200220204538414.png" alt="在这里插入图片描述" style="zoom:60%;" /> 
 </div>
 
 不同点就是这里用了两个transformer块，开始用的是bias编码。
@@ -167,13 +167,13 @@ $$
 感觉这篇文章最难的地方在上面这块，所以我用了些篇幅，而下面这些就好说了，因为和之前的东西对上了又。 首先这个会话兴趣交互层
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310172547359.png#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310172547359.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 作者这里就是想通过一个双向的LSTM来学习下会话兴趣之间的关系， 从而增加用户兴趣的丰富度，或许还能学习到演化规律。 
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/img_convert/8aa8363c1efa5101e578658515df7eba.png#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310172547359.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 双向的LSTM这个，这里就不介绍了，关于LSTM之前我也总结过了，无非双向的话，就是先从头到尾计算，在从尾到头回来。所以这里每个时刻隐藏状态的输出计算公式为：
@@ -185,7 +185,7 @@ $$
 用户的会话兴趣与目标物品越相近，那么应该赋予更大的权重，这里依然使用注意力机制来刻画这种相关性，根据结构图也能看出，这里是用了两波注意力计算：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310173413453.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310173413453.png" alt="在这里插入图片描述" style="zoom:100%;" /> 
 </div>
 
 由于这里的这种局部Attention机制，DIN和DIEN里都见识过了， 这里就不详细解释了， 简单看下公式就可以啦。
@@ -212,7 +212,7 @@ $$
 这个就很简单了，上面的用户行为特征， 物品行为特征以及求出的会话兴趣特征进行拼接，然后过一个DNN网络，就可以得到输出了。
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310174905503.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310174905503.png" alt="在这里插入图片描述" style="zoom:100%;" /> 
 </div>
 
 损失这里依然用的交叉熵损失：
@@ -227,7 +227,7 @@ $$
 这里的其他细节，后面就是实验部分了，用的数据集是一个广告数据集一个推荐数据集， 对比了几个比较经典的模型Youtubetnet, W&D, DIN, DIEN, 用了RNN的DIN等。并做了一波消融实验，验证了偏置编码的有效性， 会话兴趣抽取层和会话交互兴趣抽取层的有效性。 最后可视化的self-attention和Action Unit的图比较有意思：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210310175643572.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210310175643572.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 好了，下面就是DSIN的代码细节了。
@@ -238,7 +238,7 @@ $$
 首先， 这里使用的数据集还是movielens数据集，延续的DIEN那里的，没来得及尝试其他，这里说下数据处理部分和DIEN不一样的地方。最大的区别就是这里的用户历史行为上的处理， 之前的是一个历史行为序列列表，这里得需要把这个列表分解成几个会话的形式， 由于每个用户的会话还不一定一样长，所以这里还需要进行填充。具体的数据格式如下：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210312161159945.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210312161159945.png" alt="在这里插入图片描述" style="zoom:80%;" /> 
 </div>
 
 就是把之前的hist_id序列改成了5个session。其他的特征那里没有变化。 而特征封装那里，需要把这5个会话封装起来，同时还得记录**每个用户的有效会话个数以及每个会话里面商品的有效个数， 这个在后面计算里面是有用的，因为目前是padding成了一样长，后面要根据这个个数进行mask， 所以这里有两波mask要做**
@@ -266,7 +266,7 @@ feature_columns += ['sess_length']
 4. 对应关系， 既然我们这里封装的时候是这样封装的，这样就会根据上面的建立出不同的Input层，这时候我们具体用X训练的时候，**一定要注意数据对应，也就是特征必须够且能对应起来，这里是通过名字对应的**， 看下面的X:
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210312163227832.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210312163227832.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 真实数据要和Input层接收进行对应好。
@@ -639,7 +639,7 @@ class Transformer(Layer):
 第三个细节，就是对未来序列的屏蔽，这个在这里是用不到的，这个是Transformer的解码器用的一个操作，就是在解码的时候，我们不能让当前的序列看到自己之后的信息。这里也需要进行mask遮盖住后面的。而具体实现，竟然使用了一个下三角矩阵， 这个东西的感觉是这样：
 
 <div align=center>
-<img src="https://img-blog.csdnimg.cn/20210312171321963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom:90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.4/DSIN/20210312171321963.png" alt="在这里插入图片描述" style="zoom:90%;" /> 
 </div>
 
 解码的时候，只能看到自己及以前的相关性，然后加权，这个学到了哈哈。

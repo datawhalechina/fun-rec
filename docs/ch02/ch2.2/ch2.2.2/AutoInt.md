@@ -9,18 +9,18 @@ AutoInt(Automatic Feature Interaction)，这是2019年发表在CIKM上的文章�
 
 于是乎：
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/60f5f213f34d4e2b9bdb800e6f029b34.png#pic_center" alt="image-20210308142624189" style="zoom: 80%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/AutoInt/60f5f213f34d4e2b9bdb800e6f029b34.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
 </div>
 
 那么是如何做到的呢？ 引入了transformer， 做成了一个特征交互层， 原理如下：
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/d05a80906b484ab7a026e52ed2d8f9d4.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="image-20210308142624189" style="zoom: 80%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/AutoInt/d05a80906b484ab7a026e52ed2d8f9d4.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
 </div>
 
 ### AutoInt模型的前向过程梳理
 下面看下AutoInt模型的结构了，并不是很复杂
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/1aeabdd3cee74cbf814d7eed3147be4e.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_1#pic_center" alt="image-20210308142624189" style="zoom: 85%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/AutoInt/1aeabdd3cee74cbf814d7eed3147be4e.png" alt="image-20210308142624189" style="zoom: 85%;" /> 
 </div>
 
 #### Input Layer
@@ -48,7 +48,7 @@ $$
 这样，不管是连续特征，离散特征还是变长的离散特征，经过embedding之后，都能得到等长的embedding向量。 我们把这个向量拼接到一块，就得到了交互层的输入。
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/089b846a7f5c4125bc99a5a60e03d1ff.png#pic_center" alt="image-20210308142624189" style="zoom: 60%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/AutoInt/089b846a7f5c4125bc99a5a60e03d1ff.png" alt="image-20210308142624189" style="zoom: 60%;" /> 
 </div>
 
 #### Interacting Layer
@@ -61,7 +61,7 @@ $$Score(Q^h,K^h)=Q^h \times {K^h}^T$$
 这个结果得到的是一个$d'\times d'$的矩阵， 那么这个操作到底是做了一个什么事情呢？
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/20200220195022623.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1emhvbmdxaWFuZw==,size_1,color_FFFFFF,t_70#pic_center" alt="image-20210308142624189" style="zoom: 90%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/AutoInt/20200220195022623.png" alt="image-20210308142624189" style="zoom: 90%;" /> 
 </div>
 
 假设这里的$c_1..c_6$是我们的6个特征， 而每一行代表每个特征的embedding向量，这样两个矩阵相乘，相当于得到了当前特征与其它特征两两之间的內积值， 而內积可以表示两个向量之间的相似程度。所以得到的结果每一行，就代表当前这个特征与其它特征的相似性程度。
@@ -85,7 +85,7 @@ $$
 这里会更好懂一些， 就是相当于上面矩阵的每一行操作拆开了， 首先，整个拼接起来的embedding矩阵还是过三个参数矩阵得到$Q,K,V$， 然后是每一行单独操作的方式，对于某个特征向量$e_k$，与其它的特征两两內积得到权重，然后在softmax，回乘到对应向量，然后进行求和就得到了融合其它特征信息的新向量。 具体过程如图：
 
 <div align=center> 
-<img src="https://img-blog.csdnimg.cn/700bf353ce2f4c229839761e7815515d.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBATWlyYWNsZTgwNzA=,size_1,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="image-20210308142624189" style="zoom: 80%;" /> 
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/AutoInt/700bf353ce2f4c229839761e7815515d.png" alt="image-20210308142624189" style="zoom: 80%;" /> 
 </div>
 
 上面的过程是用了一个头，理解的话就类似于从一个角度去看特征之间的相关关系，用论文里面的话讲，这是从一个子空间去看， 如果是想从多个角度看，这里可以用多个头，即换不同的矩阵$W_q,W_k,W_v$得到不同的$Q,K,V$然后得到不同的$e_m$， 每个$e_m$是$d'\times 1$的。

@@ -35,7 +35,7 @@ PLE将共享的部分和每个任务特定的部分**显式的分开**，强化�
 
 
 <div align=center>
-<img src="https://pic3.zhimg.com/80/v2-c92975f7c21cc568a13cd9447adc757a_1440w.jpg" style="zoom:40%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-c92975f7c21cc568a13cd9447adc757a_1440w.png" style="zoom:40%;" />
 </div>
 
 任务A有 ![[公式]](https://www.zhihu.com/equation?tex=m_A) 个expert，任务B有 ![[公式]](https://www.zhihu.com/equation?tex=m_B) 个expert，另外还有 ![[公式]](https://www.zhihu.com/equation?tex=m_S) 个任务A、B共享的Expert。这样对Expert做一个显式的分割，可以让task-specific expert只受自己任务梯度的影响，不会受到其他任务的干扰（每个任务保底有一个独立的网络模型)，而只有task-shared expert才受多个任务的混合梯度影响。
@@ -47,7 +47,7 @@ MMOE则是将所有Expert一视同仁，都加权输入到每一个任务的Towe
 PLE就是上述CGC网络的多层纵向叠加，以获得更加丰富的表征能力。在分层的机制下，Gate设计成两种类型，使得不同类型Expert信息融合交互。task-share gate融合所有Expert信息，task-specific gate只融合specific expert和share expert。模型结构如图：
 
 <div align=center>
-<img src="https://pic2.zhimg.com/80/v2-ff3b4aff3511e6e56a3b509f244c5ab1_1440w.jpg" style="zoom:40%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-ff3b4aff3511e6e56a3b509f244c5ab1_1440w.png" style="zoom:40%;" />
 </div>
 
 将任务A、任务B和shared expert的输出输入到下一层，下一层的gate是以这三个上一层输出的结果作为门控的输入，而不是用原始input特征作为输入。这使得gate同时融合task-shares expert和task-specific expert的信息，论文实验中证明这种不同类型expert信息的交叉，可以带来更好的效果。
@@ -57,7 +57,7 @@ PLE就是上述CGC网络的多层纵向叠加，以获得更加丰富的表征�
 该论文专门讨论了loss设计的问题。在传统的多任务学习模型中，多任务的loss一般为
 
 <div align=center>
-<img src="https://pic4.zhimg.com/80/v2-ec1a0ae2a4001fea296662a9a5a1942b_1440w.jpg" style="zoom:33%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-ec1a0ae2a4001fea296662a9a5a1942b_1440w.png" style="zoom:33%;" />
 </div>
 
 其中K是指任务数， ![[公式]](https://www.zhihu.com/equation?tex=w_k) 是每个任务各自对应的权重。这种loss存在两个关键问题：
@@ -65,7 +65,7 @@ PLE就是上述CGC网络的多层纵向叠加，以获得更加丰富的表征�
 - 不同任务之间的样本空间不一致：在视频推荐场景中，目标之间的依赖关系如图，曝光→播放→点击→(分享、评论），不同任务有不同的样本空间。
 
   <div align=center>
-  <img src="https://pic3.zhimg.com/80/v2-bdf39ef6fcaf000924294cb010642fce_1440w.jpg" style="zoom:63%;" />
+  <img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-bdf39ef6fcaf000924294cb010642fce_1440w.png" style="zoom:63%;" />
   </div>
 
 
@@ -73,7 +73,7 @@ PLE就是上述CGC网络的多层纵向叠加，以获得更加丰富的表征�
 ​		PLE将训练样本空间作为全部任务样本空间的并集，在分别针对每个任务算loss时，只考虑该任务的样本的空		间，一般需对这种数据集会附带一个样本空间标签。loss公式如下：
 
 <div align=center>
-<img src="https://pic2.zhimg.com/80/v2-8defd1e5d1ba896bb2d18bdb1db4e3cd_1440w.jpg" style="zoom:40%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-8defd1e5d1ba896bb2d18bdb1db4e3cd_1440w.png" style="zoom:40%;" />
 </div>
 
 
@@ -82,7 +82,7 @@ PLE就是上述CGC网络的多层纵向叠加，以获得更加丰富的表征�
 - 不同任务各自独立的权重设定：PLE提出了一种加权的规则，它的思想是随着迭代次数的增加，任务的权重应当不断衰减。它为每个任务设定一个初始权重 ![[公式]](https://www.zhihu.com/equation?tex=w_%7Bk%2C0%7D) ，再按该公式进行更新：
 
   <div align=center>
-  <img src="https://pic1.zhimg.com/80/v2-2fbd23599bd2cd62222607e76cb975ec_1440w.jpg" style="zoom:40%;" />
+  <img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-2fbd23599bd2cd62222607e76cb975ec_1440w.png" style="zoom:40%;" />
   </div>
 
 ## 实验
@@ -92,7 +92,7 @@ PLE就是上述CGC网络的多层纵向叠加，以获得更加丰富的表征�
 第一组实验是两个关系复杂的任务VTR（回归）与VCR（分类），如表1，实验结果证明PLE可以实现多任务共赢，而其他的硬共享或者软共享机制，则会导致部分任务受损。
 
 <div align=center>
-<img src="https://pic1.zhimg.com/80/v2-4a190a8a3bcd810fbe1e810171ddc25c_1440w.jpg" alt="img" style="zoom: 33%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-4a190a8a3bcd810fbe1e810171ddc25c_1440w.png" alt="img" style="zoom: 33%;" />
 </div>
 
 
@@ -100,7 +100,7 @@ PLE就是上述CGC网络的多层纵向叠加，以获得更加丰富的表征�
 第二组实验是两个关系简单清晰的任务，CTR与VCR，都是分类任务，且CTR→VCR存在任务依赖关系，如表2，这种多任务下，基本上所有参数共享的模型都能得到性能的提升，而PLE的提升效果最为明显。
 
 <div align=center>
-<img src="https://pic4.zhimg.com/80/v2-29baaf461d29a4eff32e7ea324ef7f77_1440w.jpg" alt="img" style="zoom: 50%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-29baaf461d29a4eff32e7ea324ef7f77_1440w.png" alt="img" style="zoom: 50%;" />
 </div>
 
 
@@ -108,19 +108,19 @@ PLE就是上述CGC网络的多层纵向叠加，以获得更加丰富的表征�
 第三组实验则是线上的A/B Test，上面两组离线实验中，其实PLE相比于其他baseline模型，无论是回归任务的mse，还是分类任务的auc，提升都不是特别显著。在推荐场景中，评估模型性能的最佳利器还是线上的A/B Test。作者在pcg视频推荐的场景中，将部分用户随机划分到不同的实验组中，用PLE模型预估VTR和VCR，进行四周的实验。如表3所示，线上评估指标（总播放完成视频数量和总播放时间）均得到了较为显著的提升，而硬参数共享模型则带对两个指标都带来显著的下降。
 
 <div align=center>
-<img src="https://pic3.zhimg.com/80/v2-d6daf1d58fa5edd9fa96aefd254f71ee_1440w.jpg" alt="img" style="zoom: 50%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-d6daf1d58fa5edd9fa96aefd254f71ee_1440w.png" alt="img" style="zoom: 50%;" />
 </div>
 
 第四组实验中，作者引入了更多的任务，验证PLE分层结构的必要性。如表4，随着任务数量的增加，PLE对比CGC的优势更加显著。
 
 <div align=center>
-<img src="https://pic4.zhimg.com/80/v2-0b13558bc7e95f601c60a26deaff9acf_1440w.jpg" alt="img" style="zoom:50%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-0b13558bc7e95f601c60a26deaff9acf_1440w.png" alt="img" style="zoom:50%;" />
 </div>
 
 文中也设计实验，单独对MMOE和CGC的专家利用率进行对比分析，为了实现方便和公平，每个expert都是一个一层网络，每个expert module都只有一个expert，每一层只有3个expert。如图所示，柱子的高度和竖直短线分别表示expert权重的均值和方差。
 
 <div align=center>
-<img src="https://pic4.zhimg.com/80/v2-557473be41f7f6fa5efc1ff17e21bab7_1440w.jpg" alt="img" style="zoom:50%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-557473be41f7f6fa5efc1ff17e21bab7_1440w.png" alt="img" style="zoom:50%;" />
 </div>
 
 
@@ -136,7 +136,7 @@ CGC在结构上设计的分化，实现了专家功能的分化，而PLE则是�
 论文中也对大多数的MTL模型进行了抽象，总结如下图：
 
 <div align=center>
-<img src="https://pic2.zhimg.com/80/v2-d607cd8e14d4a0fadb4dbef06dc2ffa9_1440w.jpg" alt="img" style="zoom:50%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-d607cd8e14d4a0fadb4dbef06dc2ffa9_1440w.png" alt="img" style="zoom:50%;" />
 </div>
 
 
@@ -149,13 +149,13 @@ CGC在结构上设计的分化，实现了专家功能的分化，而PLE则是�
    在论文中，作者分享了腾讯视频的一种线上打分机制
    
    <div align=center>
-   <img src="https://pic2.zhimg.com/80/v2-9a412b82d45877287df2429fc89afac5_1440w.jpg" alt="img" style="zoom:33%;" />
+   <img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-9a412b82d45877287df2429fc89afac5_1440w.png" alt="img" style="zoom:33%;" />
    </div>
    
    ​	每个目标的预估值有一个固定的权重，通过乘法进行融合，并在最后未来排除视频自身时长的影响，使用	$		f(videolen)$对视频时长进行了非线性变化。其实在业界的案例中，也基本是依赖乘法或者加法进行融合，爱奇艺曾经公开分享过他们使用过的打分方法：
    
    <div align=center>
-   <img src="https://pic1.zhimg.com/80/v2-661030ad194ae2059eace0804ef0f774_1440w.jpg" alt="img" style="zoom: 67%;" />
+   <img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-661030ad194ae2059eace0804ef0f774_1440w.png" alt="img" style="zoom: 67%;" />
    </div>
 
 
@@ -174,7 +174,7 @@ CGC在结构上设计的分化，实现了专家功能的分化，而PLE则是�
    - 而在业界的实践案例中，更多的是两种范式的模型进行融合。例如美团在其搜索多业务排序场景上提出的模型：
 
      <div align=center>
-     <img src="https://pic2.zhimg.com/80/v2-af16e969a0149aef9c2a1291de5c65d5_1440w.jpg" alt="img" style="zoom:50%;" />
+     <img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-af16e969a0149aef9c2a1291de5c65d5_1440w.png" alt="img" style="zoom:50%;" />
      </div>
 
      
@@ -188,7 +188,7 @@ CGC在结构上设计的分化，实现了专家功能的分化，而PLE则是�
      对于底层输入给expert的特征，美团提出通过增加一个自适应的特征选择门，使得选出的特征对不同的业务权重不同。例如“配送时间”这个特征对闪购业务比较重要，但对于团好货影响不是很大。模型结构如图：
 
      <div align=center>
-     <img src="https://pic2.zhimg.com/80/v2-2e2370794bbd69ded636a248d8c36255_1440w.jpg" alt="img" style="zoom:50%;" />
+     <img src="../../../imgs/ch02/ch2.2/ch2.2.5/PLE/v2-2e2370794bbd69ded636a248d8c36255_1440w.png" alt="img" style="zoom:50%;" />
      </div>
 
      

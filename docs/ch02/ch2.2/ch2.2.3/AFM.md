@@ -9,7 +9,7 @@ $$
 
 ## AFM模型原理
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210131092744905.png" alt="image-20210131092744905" style="zoom: 50%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/AFM/image-20210131092744905.png" alt="image-20210131092744905" style="zoom: 40%;" />
 </div>
 上图表示的就是AFM交叉特征部分的模型结构(非交叉部分与FM是一样的，图中并没有给出)。AFM最核心的两个点分别是Pair-wise Interaction Layer和Attention-based Pooling。前者将输入的非零特征的隐向量两两计算element-wise product(哈达玛积，两个向量对应元素相乘，得到的还是一个向量)，假如输入的特征中的非零向量的数量为m，那么经过Pair-wise Interaction Layer之后输出的就是$\frac{m(m-1)}{2}$个向量，再将前面得到的交叉特征向量组输入到Attention-based Pooling，该pooling层会先计算出每个特征组合的自适应权重(通过Attention Net进行计算)，通过加权求和的方式将向量组压缩成一个向量，由于最终需要输出的是一个数值，所以还需要将前一步得到的向量通过另外一个向量将其映射成一个值，得到最终的基于注意力加权的二阶交叉特征的输出。(对于这部分如果不是很清楚，可以先看下面对两个核心层的介绍)
 
@@ -109,13 +109,13 @@ def AFM(linear_feature_columns, dnn_feature_columns):
 关于每一块的细节，这里就不解释了，在我们给出的GitHub代码中，我们已经加了非常详细的注释，大家看那个应该很容易看明白， 为了方便大家的阅读，我们这里还给大家画了一个整体的模型架构图，帮助大家更好的了解每一块以及前向传播（画的图不是很规范，先将就看一下，后面我们会统一在优化一下这个手工图）。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20210307200304199.png" alt="image-20210307200304199" style="zoom:67%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/AFM/image-20210307200304199.jpeg" alt="image-20210307200304199" style="zoom:100%;" />
 </div>
 
 下面是一个通过keras画的模型结构图，为了更好的显示，数值特征和类别特征都只是选择了一小部分，画图的代码也在github中。
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片AFM.png" alt="image-20210307200304199" style="zoom:67%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.3/AFM/AFM.png" alt="image-20210307200304199" style="zoom:30%;" />
 </div>
 
 ## 思考

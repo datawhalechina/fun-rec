@@ -6,7 +6,7 @@
 
 传统的CVR预估问题存在着两个主要的问题：**样本选择偏差**和**稀疏数据**。下图的白色背景是曝光数据，灰色背景是点击行为数据，黑色背景是购买行为数据。传统CVR预估使用的训练样本仅为灰色和黑色的数据。
 <div align=center>
-<img src="https://pic4.zhimg.com/80/v2-2f0df0f6933dd8405c478fcce91f7b6f_1440w.jpg" alt="img" style="zoom:33%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/ESMM/v2-2f0df0f6933dd8405c478fcce91f7b6f_1440w.png" alt="img" style="zoom:50%;" />
 </div>  
 
 这会导致两个问题：
@@ -29,20 +29,20 @@
 三个任务之间的关系为：
 
 <div align=center>
-  <img src="https://pic1.zhimg.com/80/v2-7bbeb8767db5d6a157852c8cd4221548_1440w.jpg" alt="img" style="zoom: 50%;" />
+  <img src="../../../imgs/ch02/ch2.2/ch2.2.5/ESMM/v2-7bbeb8767db5d6a157852c8cd4221548_1440w.png" alt="img" style="zoom: 50%;" />
 </div>
 
 其中x表示曝光，y表示点击，z表示转化。针对这三个任务，设计了如图所示的模型结构：
 
 <div align=center>
-  <img src="https://pic1.zhimg.com/80/v2-6d8189bfe378dc4bf6f0db2ba0255eac_1440w.jpg" alt="img" style="zoom:50%;" />
+  <img src="../../../imgs/ch02/ch2.2/ch2.2.5/ESMM/v2-6d8189bfe378dc4bf6f0db2ba0255eac_1440w.png" alt="img" style="zoom:50%;" />
 </div>
 
 
 如图，主任务和辅助任务共享特征，不同任务输出层使用不同的网络，将cvr的预测值*ctr的预测值作为ctcvr任务的预测值，利用ctcvr和ctr的label构造损失函数：
 
 <div align=center>
-<img src="https://pic3.zhimg.com/80/v2-0098ab4556a8c67a1c12322ea3f89606_1440w.jpg" alt="img" style="zoom: 33%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/ESMM/v2-0098ab4556a8c67a1c12322ea3f89606_1440w.png" alt="img" style="zoom: 33%;" />
 </div>
 
 
@@ -52,7 +52,7 @@
 - 帮助CVR模型在完整样本空间建模（即曝光空间X）。
 
   <div align=center>
-  <img src="https://pic1.zhimg.com/80/v2-0b0c6dc7d4c38fa422a2876b7c4cc638_1440w.jpg" alt="img" style="zoom:33%;" />
+  <img src="../../../imgs/ch02/ch2.2/ch2.2.5/ESMM/v2-0b0c6dc7d4c38fa422a2876b7c4cc638_1440w.png" alt="img" style="zoom:33%;" />
   </div>
 
 
@@ -71,7 +71,7 @@
    即分别训练CTR和CTCVR模型，两者相除得到pCVR。论文提供了消融实验的结果，表中的DIVISION模型，比起BASE模型直接建模CTCVRR和CVR，有显著提高，但低于ESMM。原因是pCTR 通常很小，除以一个很小的浮点数容易引起数值不稳定问题。
    
    <div align=center>
-   <img src="https://pic3.zhimg.com/80/v2-c0b2c860bd63a680d27c911c2e1ba8a2_1440w.jpg" alt="img" style="zoom:53%;" />
+   <img src="../../../imgs/ch02/ch2.2/ch2.2.5/ESMM/v2-c0b2c860bd63a680d27c911c2e1ba8a2_1440w.png" alt="img" style="zoom:53%;" />
    </div>
 
 2. 网络结构优化，Tower模型更换？两个塔不一致？
@@ -86,7 +86,7 @@
    阿里的ESMM2: 在点击到购买之前，用户还有可能产生加入购物车（Cart）、加入心愿单（Wish）等行为。
 
 <div align=center>
-<img src="https://pic2.zhimg.com/80/v2-4f9f5508412086315f85d1b7fda733e9_1440w.jpg" alt="img" style="zoom:53%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.5/ESMM/v2-4f9f5508412086315f85d1b7fda733e9_1440w.png" alt="img" style="zoom:53%;" />
 </div>
 
 ​			相较于直接学习 click->buy (稀疏度约2.6%)，可以通过Action路径将目标分解，以Cart为例：click->cart (稀疏	度为10%)，cart->buy(稀疏度为12%)，通过分解路径，建立多任务学习模型来分步求解CVR模型，缓解稀疏问题，该模型同样也引入了特征共享机制。
@@ -94,7 +94,7 @@
 ​	美团的[AITM](https://zhuanlan.zhihu.com/p/508876139/[https://cloud.tencent.com/developer/article/1868117](https://cloud.tencent.com/developer/article/1868117))：信用卡业务中，用户转化通常是一个**曝光->点击->申请->核卡->激活**的过程，具有5层的链路。
 
  <div align=center>
- <img src="https://pic4.zhimg.com/80/v2-0ecf42e999795511f40ac6cd7b85eccf_1440w.jpg" alt="img" style="zoom:50%;" />
+ <img src="../../../imgs/ch02/ch2.2/ch2.2.5/ESMM/v2-0ecf42e999795511f40ac6cd7b85eccf_1440w.png" alt="img" style="zoom:50%;" />
  </div>
 
   

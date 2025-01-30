@@ -407,7 +407,9 @@ tst_user_item_feats_df_din_model = tst_user_item_feats_df_din_model.merge(his_be
 
 我们下面尝试使用DIN模型， DIN的全称是Deep Interest Network， 这是阿里2018年基于前面的深度学习模型无法表达用户多样化的兴趣而提出的一个模型， 它可以通过考虑【给定的候选广告】和【用户的历史行为】的相关性，来计算用户兴趣的表示向量。具体来说就是通过引入局部激活单元，通过软搜索历史行为的相关部分来关注相关的用户兴趣，并采用加权和来获得有关候选广告的用户兴趣的表示。与候选广告相关性较高的行为会获得较高的激活权重，并支配着用户兴趣。该表示向量在不同广告上有所不同，大大提高了模型的表达能力。所以该模型对于此次新闻推荐的任务也比较适合， 我们在这里通过当前的候选文章与用户历史点击文章的相关性来计算用户对于文章的兴趣。 该模型的结构如下：
 
-![image-20201116201646983](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201116201646983.png)
+<div align=center>
+<img src="../../../imgs/ch03/ch3.1/ch3.1.5/image-20201116201646983.png" alt="image-20201116201646983" style="zoom:80%;" />
+</div>
 
 
 我们这里直接调包来使用这个模型， 关于这个模型的详细细节部分我们会在下一期的推荐系统组队学习中给出。下面说一下该模型如何具体使用：deepctr的函数原型如下：
@@ -949,4 +951,6 @@ submit(rank_results, topk=5, model_name='ensumble_staking')
 
 关于Datawhale： Datawhale是一个专注于数据科学与AI领域的开源组织，汇集了众多领域院校和知名企业的优秀学习者，聚合了一群有开源精神和探索精神的团队成员。Datawhale 以“for the learner，和学习者一起成长”为愿景，鼓励真实地展现自我、开放包容、互信互助、敢于试错和勇于担当。同时 Datawhale 用开源的理念去探索开源内容、开源学习和开源方案，赋能人才培养，助力人才成长，建立起人与人，人与知识，人与企业和人与未来的联结。 本次数据挖掘路径学习，专题知识将在天池分享，详情可关注Datawhale：
 
-![image-20201119112159065](http://ryluo.oss-cn-chengdu.aliyuncs.com/abc/image-20201119112159065.png)
+<div align=center>
+<img src="../../../imgs/ch03/ch3.1/ch3.1.5/image-20201119112159065.jpeg" alt="image-20201119112159065" style="zoom:60%;" />
+</div>

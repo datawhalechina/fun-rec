@@ -10,7 +10,7 @@
 对平台方而言，流量的高效利用是推荐系统存在的重要原因。以典型的电商网站一般具有如图所示的树状拓扑结构，树状结构在连通性方面有着天然的劣势，阻碍这流量的高效流通。推荐系统的出现使得原本的树状结构变成网络拓扑结构，大大增强了整个网络的连通性。推荐模块不仅使用户在当前页面有了更好的选择路径，同时也给了每个商品增加入口和展示机会，进而提高了成交概率。而推荐质量的好坏，直接决定了用户选择这条路径的可能性，进而影响着流量的利用效率。
 
 <div align=center>
-<img src="https://typoraimg-1252051831.cos.ap-guangzhou.myqcloud.com/image-20220514232543182.png" alt="image-20220514232543182" style="zoom: 80%;" />
+<img src="../imgs/ch01/ch1.1/image-20220514232543182.png" alt="image-20220514232543182" style="zoom: 80%;" />
 </div>
 
 推荐系统解决产品能够最大限度地吸引用户、留存用户、增加用户粘性、提高用户转化率的问题，从而达到平台商业目标增长的目的。不同平台的目标取决于其商业的盈利目的，例如对于YouTube，其商业目标是最大化视频被点击（点击率）以及用户观看的时长（完播率），同时也会最大化内置广告的点击率；对于淘宝等电商平台，除了最大化商品的点击率外，最关键的目标则是最大化用户的转化率，即由点击到完成商品购买的指标。推荐系统能够平台带来丰厚的商业价值 。
@@ -46,45 +46,45 @@
 - **电商首页推荐(淘宝、京东、拼多多)**
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421190313917.png" alt="image-20220421190313917" style="zoom: 15%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421191138469.png" alt="image-20220421191138469" style="zoom:53%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421191441104.png" alt="image-20220421191441104" style="zoom:53%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421190313917.png" alt="image-20220421190313917" style="zoom: 45%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421191138469.jpeg" alt="image-20220421191138469" style="zoom:54%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421191441104.jpeg" alt="image-20220421191441104" style="zoom:53%;" />
 </div>
 
 - **视频推荐（抖音、快手、B站、爱奇艺）**
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421190629410.png" alt="image-20220421190629410" style="zoom:55%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421191849577.png" alt="image-20220421191849577" style="zoom: 53%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192047973.png" alt="image-20220421192047973" style="zoom:53%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192209412.png" alt="image-20220421192209412" style="zoom:55%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421190629410.jpeg" alt="image-20220421190629410" style="zoom:55%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421191849577.jpeg" alt="image-20220421191849577" style="zoom: 53%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421192047973.jpeg" alt="image-20220421192047973" style="zoom:53%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421192209412.jpeg" alt="image-20220421192209412" style="zoom:55%;" />
 </div>
 
 
 - **饮食推荐（美团、饿了么、叮咚买菜）**
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192623380.png" alt="image-20220421192623380" style="zoom:53%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192717773.png" alt="image-20220421192717773" style="zoom:55%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421192749794.png" alt="image-20220421192749794" style="zoom:55%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421192623380.jpeg" alt="image-20220421192623380" style="zoom:53%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421192717773.jpeg" alt="image-20220421192717773" style="zoom:55%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421192749794.jpeg" alt="image-20220421192749794" style="zoom:55%;" />
 </div>
 
 
 - **音乐电台（网易云音乐、QQ音乐、喜马拉雅）**
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193139183.png" alt="image-20220421193139183" style="zoom: 57%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193447933.png" alt="image-20220421193447933" style="zoom:68%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193325921.png" alt="image-20220421193325921" style="zoom: 54%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421193139183.jpeg" alt="image-20220421193139183" style="zoom: 57%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421193447933.jpeg" alt="image-20220421193447933" style="zoom:68%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421193325921.jpeg" alt="image-20220421193325921" style="zoom: 53%;" />
 </div>
 
 
 - **资讯、阅读（头条、知乎、豆瓣）**
 
 <div align=center>
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193856262.png" alt="image-20220421193856262" style="zoom:53%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421193923283.png" alt="image-20220421193923283" style="zoom:55%;" />
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片image-20220421194244083.png" alt="image-20220421194244083" style="zoom:55%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421193856262.jpeg" alt="image-20220421193856262" style="zoom:53%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421193923283.jpeg" alt="image-20220421193923283" style="zoom:55%;" />
+<img src="../imgs/ch01/ch1.1/image-20220421194244083.jpeg" alt="image-20220421194244083" style="zoom:54%;" />
 </div>
 
 

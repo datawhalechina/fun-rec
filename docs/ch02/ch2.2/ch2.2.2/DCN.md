@@ -6,7 +6,7 @@ Wide&Deep模型的提出不仅综合了“记忆能力”和“泛化能力”�
 
 这个模型的结构是这个样子的：
 <div align=center> 
-<img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片dcn.png" style="zoom:67%;" />
+<img src="../../../imgs/ch02/ch2.2/ch2.2.2/DCN/dcn.png" style="zoom:80%;" />
 </div>
 
 这个模型的结构也是比较简洁的， 从下到上依次为：Embedding和Stacking层， Cross网络层与Deep网络层并列， 以及最后的输出层。下面也是一一为大家剖析。
@@ -34,7 +34,7 @@ $$
 $$
 可以看到， 交叉层的二阶部分非常类似PNN提到的外积操作， 在此基础上增加了外积操作的权重向量$w_l$， 以及原输入向量$x_l$和偏置向量$b_l$。 交叉层的可视化如下：
 
-<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片cross.png" style="zoom:67%;" />
+<div align=center> <img src="../../../imgs/ch02/ch2.2/ch2.2.2/DCN/cross.png" style="zoom:67%;" />
 </div>
 
 可以看到， 每一层增加了一个$n$维的权重向量$w_l$（n表示输入向量维度）， 并且在每一层均保留了输入向量， 因此输入和输出之间的变化不会特别明显。关于这一层， 原论文里面有个具体的证明推导Cross Network为啥有效， 不过比较复杂，这里我拿一个式子简单的解释下上面这个公式的伟大之处：
@@ -139,7 +139,7 @@ def DCN(linear_feature_columns, dnn_feature_columns):
 
 下面是一个通过keras画的模型结构图，为了更好的显示，类别特征都只是选择了一小部分，画图的代码也在github中。
 
-<div align=center> <img src="http://ryluo.oss-cn-chengdu.aliyuncs.com/图片DCN.png" alt="image-20210308143101261" style="zoom: 50%;" />
+<div align=center> <img src="../../../imgs/ch02/ch2.2/ch2.2.2/DCN/architecture_dcn.png" alt="image-20210308143101261" style="zoom: 40%;" />
 </div>
 
 ## 思考
