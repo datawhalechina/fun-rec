@@ -139,7 +139,7 @@ def DCN(linear_feature_columns, dnn_feature_columns):
 
 下面是一个通过keras画的模型结构图，为了更好的显示，类别特征都只是选择了一小部分，画图的代码也在github中。
 
-<div align=center> <img src="../../../imgs/ch02/ch2.2/ch2.2.2/DCN/architecture_dcn.png" alt="image-20210308143101261" style="zoom: 40%;" />
+<div align=center> <img src="../../../imgs/ch02/ch2.2/ch2.2.2/DCN/architecture_DCN.png" alt="image-20210308143101261" style="zoom: 40%;" />
 </div>
 
 ## 思考
