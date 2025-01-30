@@ -28,6 +28,18 @@
     noData: '找不到结果！',
     },
     relativePath: true,
+    plugins: [
+      function(hook) {
+        hook.beforeEach(function(content) {
+          // Check if on GitHub Pages
+          if (window.location.hostname === 'datawhalechina.github.io') {
+            // Rewrite image paths to include the base URL '/fun-rec'
+            return content.replace(/src="(\.\.\/)*imgs\//g, 'src="/fun-rec/imgs/');
+          }
+          return content;
+        });
+      }
+    ]
   }
 </script>
 
