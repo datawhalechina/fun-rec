@@ -16,13 +16,16 @@
     name: 'FunRec',
     repo: 'https://github.com/datawhalechina/fun-rec/',
     loadSidebar: true,
+    alias: {
+      '/.*/_sidebar.md': '/_sidebar.md' // Redirect all sidebar requests to root
+    },
     auto2top: true,
     subMaxLevel: 3,
     sidebarDisplayLevel: 2,
     pagination:{
       previousText: '上一篇',
       nextText: '下一篇',
-    },
+    },    
     search: {
     placeholder: '搜索',
     noData: '找不到结果！',
@@ -52,14 +55,15 @@
 <!-- Put them above docsify.min.js --> 
 <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/docsify.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/docsify-pagination@latest/dist/docsify-pagination.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+<script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
 
 <!-- sidebar collapse -->
 <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse@latest/dist/docsify-sidebar-collapse.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/prismjs@latest/components/prism-bash.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/prismjs@latest/components/prism-python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-scala.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/prismjs@latest/components/prism-java.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/prismjs@latest/components/prism-scala.min.js"></script>
 
 <!-- search -->
 <script src="//cdn.jsdelivr.net/npm/docsify@latest/lib/plugins/search.js"></script>
