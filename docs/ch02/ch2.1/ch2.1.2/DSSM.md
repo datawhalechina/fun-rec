@@ -11,7 +11,7 @@
 DSSM(Deep Structured Semantic Model)是由微软研究院于CIKM在2013年提出的一篇工作，该模型主要用来解决NLP领域语义相似度任务 ，利用深度神经网络将文本表示为低维度的向量，用来提升搜索场景下文档和query匹配的问题。DSSM 模型的原理主要是：通过用户搜索行为中query 和 doc 的日志数据，通过深度学习网络将query和doc映射到到共同维度的语义空间中，通过最大化query和doc语义向量之 间的余弦相似度，从而训练得到隐含语义模型，即 query 侧特征的 embedding 和 doc 侧特征的 embedding，进而可以获取语句的低维 语义向量表达 sentence embedding，可以预测两句话的语义相似度。模型结构如下所示：
 
 <div align=center>
-    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/DSSM s/v2-7f75cc71f5e959d6efa95289d2f5ac13_r.jpg" style="zoom:45%;"/>
+    <img src="../../../imgs/ch02/ch2.1/ch2.1.2/DSSM/v2-7f75cc71f5e959d6efa95289d2f5ac13_r.jpg" style="zoom:45%;"/>
 </div>
 
 
