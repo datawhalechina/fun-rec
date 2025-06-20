@@ -251,9 +251,9 @@ Swing 通过利用 User-Item-User 路径中所包含的信息，考虑 User-Item
 
   $\theta_{i,j}=p(c_{i,j}|c_j)=\frac{N(c_{i,j})}{N(c_j)}$
 
-  即，$N(c_{i,j})$为在购买过i之后购买j类的数量，$N(c_{j})$为购买j类的数量。
+  即，$N(c_{i,j})$为在购买过$i$类之后购买$j$类的数量，$N(c_{j})$为购买$j$类的数量。
 
-  由于类别直接的种类差异，每个类别的相关类数量存在差异，因此采用最大相对落点来作为划分阈值。
+  由于类别之间的种类差异，每个类别的相关类数量存在差异，因此采用最大相对落点来作为划分阈值。
 
   <div align=center>
   <img src="../../../imgs/ch02/ch2.1/ch2.1.1/Swing/max_drop.jpeg" alt="在这里插入图片描述" style="zoom:100%;" /> 
@@ -268,7 +268,7 @@ Swing 通过利用 User-Item-User 路径中所包含的信息，考虑 User-Item
 
   最终商品层面的互补相关性被定义为：
 
-  $s_{1}(i, j)=\frac{\sum_{u \in U_{i} \cap U_{j}} 1 /\left(1+\left|t_{u i}-t_{u j}\right|\right)}{\left\|U_{i}\right\| \times\left\|U_{j}\right\|}$,其中$j$属于$i$的相关类，且$j$ 的购买时间晚于$i$。
+  $s_{1}(i, j)=\frac{\sum_{u \in U_{i} \cap U_{j}} 1 /\left(1+\left|t_{u i}-t_{u j}\right|\right)}{\left\|U_{i}\right\| \times\left\|U_{j}\right\|}$,其中物品$j$属于物品$i$所属类别的的相关类别，且$j$ 的购买时间晚于$i$。
 
 - 聚类层面
   - 如何聚类？
@@ -277,6 +277,8 @@ Swing 通过利用 User-Item-User 路径中所包含的信息，考虑 User-Item
     Item-item 图，其中又 Swing 计算的排名靠前 item 为邻居，边的权重就是 Swing 分数。
   - 表现如何？
     快速而有效，15分钟即可对数十亿个项目进行聚类。
+  - 设 $L(i)$ 表示商品 $i$ 的聚类标签，则聚类层面的相似度可以表示为：$$ s_2(i,j) = s_1(L(i), L(j)) $$
+
   最终聚类层面的相关度计算同上面商品层面的计算公式
 
 - 线性组合：
