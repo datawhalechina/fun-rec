@@ -1,0 +1,11 @@
+
+重排模型
+========
+
+.. toctree::
+   :maxdepth: 1
+
+   1.intro.md
+   2.greedy.md
+   3.personalized.md
+   4.summary.md

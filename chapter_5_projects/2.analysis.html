@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>6.3. 数据分析 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.4. 多路召回" href="3.recall.html" />
+    <link rel="prev" title="6.2. Baseline" href="1.baseline.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">6. </span>项目实践</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">6.3. </span>数据分析</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_5_projects/2.analysis.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/notebooks.zip">
+                  <i class="fas fa-download"></i>
+                  Jupyter 记事本
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/fun-rec.pdf">
+                  <i class="fas fa-file-pdf"></i>
+                  PDF
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
+                  <i class="fab fa-github"></i>
+                  GitHub
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. 项目实践</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="0.intro.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. 项目实践</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="0.intro.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="id1">
+<h1><span class="section-number">6.3. </span>数据分析<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
+<p>数据分析的价值主要在于熟悉了解整个数据集的基本情况包括每个文件里有哪些数据，具体的文件中的每个字段表示什么实际含义，以及数据集中特征之间的相关性，在推荐场景下主要就是分析用户本身的基本属性，文章基本属性，以及用户和文章交互的一些分布，这些都有利于后面的召回策略的选择，以及特征工程。</p>
+<p><strong>建议：当特征工程和模型调参已经很难继续上分了，可以回来在重新从新的角度去分析这些数据，或许可以找到上分的灵感</strong></p>
+<section id="id2">
+<h2><span class="section-number">6.3.1. </span>导包<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入相关包</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+
+<span class="n">load_dotenv</span><span class="p">()</span>
+<span class="n">RAW_DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;RAW_DATA_PATH&#39;</span><span class="p">))</span>
+<span class="n">PROCESSED_DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;PROCESSED_DATA_PATH&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2><span class="section-number">6.3.2. </span>读取数据<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 数据路径</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">RAW_DATA_PATH</span> <span class="o">/</span> <span class="s1">&#39;news_recommendation/&#39;</span>
+
+<span class="c1"># 训练集</span>
+<span class="n">trn_click</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;train_click_log.csv&#39;</span><span class="p">)</span>
+<span class="n">item_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;articles.csv&#39;</span><span class="p">)</span>
+<span class="n">item_df</span> <span class="o">=</span> <span class="n">item_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;article_id&#39;</span><span class="p">:</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">})</span>  <span class="c1">#重命名，方便后续match</span>
+<span class="n">item_emb_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;articles_emb.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 测试集</span>
+<span class="n">tst_click</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;testA_click_log.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">6.3.3. </span>数据预处理<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
+<p>计算用户点击rank和点击次数</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 对每个用户的点击时间戳进行排序</span>
+<span class="n">trn_click</span><span class="p">[</span><span class="s1">&#39;rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trn_click</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">tst_click</span><span class="p">[</span><span class="s1">&#39;rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_click</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#计算用户点击文章的次数，并添加新的一列count</span>
+<span class="n">trn_click</span><span class="p">[</span><span class="s1">&#39;click_cnts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trn_click</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+<span class="n">tst_click</span><span class="p">[</span><span class="s1">&#39;click_cnts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_click</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h2><span class="section-number">6.3.4. </span>数据浏览<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
+<p><strong>训练集用户点击日志</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_click</span> <span class="o">=</span> <span class="n">trn_click</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">item_df</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">])</span>
+<span class="n">trn_click</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user_id</th>
+      <th>click_article_id</th>
+      <th>click_timestamp</th>
+      <th>click_environment</th>
+      <th>click_deviceGroup</th>
+      <th>click_os</th>
+      <th>click_country</th>
+      <th>click_region</th>
+      <th>click_referrer_type</th>
+      <th>rank</th>
+      <th>click_cnts</th>
+      <th>category_id</th>
+      <th>created_at_ts</th>
+      <th>words_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>199999</td>
+      <td>160417</td>
+      <td>1507029570190</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>13</td>
+      <td>1</td>
+      <td>11</td>
+      <td>11</td>
+      <td>281</td>
+      <td>1506942089000</td>
+      <td>173</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>199999</td>
+      <td>5408</td>
+      <td>1507029571478</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>13</td>
+      <td>1</td>
+      <td>10</td>
+      <td>11</td>
+      <td>4</td>
+      <td>1506994257000</td>
+      <td>118</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>199999</td>
+      <td>50823</td>
+      <td>1507029601478</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>13</td>
+      <td>1</td>
+      <td>9</td>
+      <td>11</td>
+      <td>99</td>
+      <td>1507013614000</td>
+      <td>213</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>199998</td>
+      <td>157770</td>
+      <td>1507029532200</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>25</td>
+      <td>5</td>
+      <td>40</td>
+      <td>40</td>
+      <td>281</td>
+      <td>1506983935000</td>
+      <td>201</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>199998</td>
+      <td>96613</td>
+      <td>1507029671831</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>25</td>
+      <td>5</td>
+      <td>39</td>
+      <td>40</td>
+      <td>209</td>
+      <td>1506938444000</td>
+      <td>185</td>
+    </tr>
+  </tbody>
+</table>
+</div><p><code class="docutils literal notranslate"><span class="pre">train_click_log.csv</span></code>文件数据中每个字段的含义:</p>
+<ol class="arabic simple">
+<li><p>user_id: 用户的唯一标识</p></li>
+<li><p>click_article_id: 用户点击的文章唯一标识</p></li>
+<li><p>click_timestamp: 用户点击文章时的时间戳</p></li>
+<li><p>click_environment: 用户点击文章的环境</p></li>
+<li><p>click_deviceGroup: 用户点击文章的设备组</p></li>
+<li><p>click_os: 用户点击文章时的操作系统</p></li>
+<li><p>click_country: 用户点击文章时的所在的国家</p></li>
+<li><p>click_region: 用户点击文章时所在的区域</p></li>
+<li><p>click_referrer_type: 用户点击文章时，文章的来源</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#用户点击日志信息</span>
+<span class="n">trn_click</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1112623 entries, 0 to 1112622
+Data columns (total 14 columns):
+ #   Column               Non-Null Count    Dtype
+---  ------               --------------    -----
+ 0   user_id              1112623 non-null  int64
+ 1   click_article_id     1112623 non-null  int64
+ 2   click_timestamp      1112623 non-null  int64
+ 3   click_environment    1112623 non-null  int64
+ 4   click_deviceGroup    1112623 non-null  int64
+ 5   click_os             1112623 non-null  int64
+ 6   click_country        1112623 non-null  int64
+ 7   click_region         1112623 non-null  int64
+ 8   click_referrer_type  1112623 non-null  int64
+ 9   rank                 1112623 non-null  int64
+ 10  click_cnts           1112623 non-null  int64
+ 11  category_id          1112623 non-null  int64
+ 12  created_at_ts        1112623 non-null  int64
+ 13  words_count          1112623 non-null  int64
+dtypes: int64(14)
+memory usage: 118.8 MB
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_click</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user_id</th>
+      <th>click_article_id</th>
+      <th>click_timestamp</th>
+      <th>click_environment</th>
+      <th>click_deviceGroup</th>
+      <th>click_os</th>
+      <th>click_country</th>
+      <th>click_region</th>
+      <th>click_referrer_type</th>
+      <th>rank</th>
+      <th>click_cnts</th>
+      <th>category_id</th>
+      <th>created_at_ts</th>
+      <th>words_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+      <td>1.112623e+06</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>1.221198e+05</td>
+      <td>1.951541e+05</td>
+      <td>1.507588e+12</td>
+      <td>3.947786e+00</td>
+      <td>1.815981e+00</td>
+      <td>1.301976e+01</td>
+      <td>1.310776e+00</td>
+      <td>1.813587e+01</td>
+      <td>1.910063e+00</td>
+      <td>7.118518e+00</td>
+      <td>1.323704e+01</td>
+      <td>3.056176e+02</td>
+      <td>1.506598e+12</td>
+      <td>2.011981e+02</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>5.540349e+04</td>
+      <td>9.292286e+04</td>
+      <td>3.363466e+08</td>
+      <td>3.276715e-01</td>
+      <td>1.035170e+00</td>
+      <td>6.967844e+00</td>
+      <td>1.618264e+00</td>
+      <td>7.105832e+00</td>
+      <td>1.220012e+00</td>
+      <td>1.016095e+01</td>
+      <td>1.631503e+01</td>
+      <td>1.155791e+02</td>
+      <td>8.343066e+09</td>
+      <td>5.223881e+01</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.000000e+00</td>
+      <td>3.000000e+00</td>
+      <td>1.507030e+12</td>
+      <td>1.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>2.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>2.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>1.166573e+12</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>7.934700e+04</td>
+      <td>1.239090e+05</td>
+      <td>1.507297e+12</td>
+      <td>4.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>2.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>1.300000e+01</td>
+      <td>1.000000e+00</td>
+      <td>2.000000e+00</td>
+      <td>4.000000e+00</td>
+      <td>2.500000e+02</td>
+      <td>1.507220e+12</td>
+      <td>1.700000e+02</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>1.309670e+05</td>
+      <td>2.038900e+05</td>
+      <td>1.507596e+12</td>
+      <td>4.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>1.700000e+01</td>
+      <td>1.000000e+00</td>
+      <td>2.100000e+01</td>
+      <td>2.000000e+00</td>
+      <td>4.000000e+00</td>
+      <td>8.000000e+00</td>
+      <td>3.280000e+02</td>
+      <td>1.507553e+12</td>
+      <td>1.970000e+02</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>1.704010e+05</td>
+      <td>2.777120e+05</td>
+      <td>1.507841e+12</td>
+      <td>4.000000e+00</td>
+      <td>3.000000e+00</td>
+      <td>1.700000e+01</td>
+      <td>1.000000e+00</td>
+      <td>2.500000e+01</td>
+      <td>2.000000e+00</td>
+      <td>8.000000e+00</td>
+      <td>1.600000e+01</td>
+      <td>4.100000e+02</td>
+      <td>1.507756e+12</td>
+      <td>2.280000e+02</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.999990e+05</td>
+      <td>3.640460e+05</td>
+      <td>1.510603e+12</td>
+      <td>4.000000e+00</td>
+      <td>5.000000e+00</td>
+      <td>2.000000e+01</td>
+      <td>1.100000e+01</td>
+      <td>2.800000e+01</td>
+      <td>7.000000e+00</td>
+      <td>2.410000e+02</td>
+      <td>2.410000e+02</td>
+      <td>4.600000e+02</td>
+      <td>1.510666e+12</td>
+      <td>6.690000e+03</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#训练集中的用户数量为20w</span>
+<span class="n">trn_click</span><span class="o">.</span><span class="n">user_id</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">200000</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_click</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>  <span class="c1"># 训练集里面每个用户至少点击了两篇文章</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>画直方图大体看一下基本的属性分布</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;click_environment&#39;</span><span class="p">,</span> <span class="s1">&#39;click_deviceGroup&#39;</span><span class="p">,</span> <span class="s1">&#39;click_os&#39;</span><span class="p">,</span> <span class="s1">&#39;click_country&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;click_region&#39;</span><span class="p">,</span> <span class="s1">&#39;click_referrer_type&#39;</span><span class="p">,</span> <span class="s1">&#39;rank&#39;</span><span class="p">,</span> <span class="s1">&#39;click_cnts&#39;</span><span class="p">]:</span>
+    <span class="n">plot_envs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">trn_click</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="c1"># Use iloc to access columns by position to avoid column name issues</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">v</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">v</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">fig</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">():</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">set_rotation</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_15_1.png" src="../_images/output_2.analysis_37698d_15_1.png" />
+</figure>
+<p>从点击时间clik_timestamp来看，分布较为平均，可不做特殊处理。由于时间戳是13位的，后续将时间格式转换成10位方便计算。</p>
+<p>从点击环境click_environment来看，仅有1922次（占0.1%）点击环境为1；仅有24617次（占2.3%）点击环境为2；剩余（占97.6%）点击环境为4。</p>
+<p>从点击设备组click_deviceGroup来看，设备1占大部分（60.4%），设备3占36%。</p>
+<p><strong>测试集用户点击日志</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tst_click</span> <span class="o">=</span> <span class="n">tst_click</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">item_df</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">])</span>
+<span class="n">tst_click</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user_id</th>
+      <th>click_article_id</th>
+      <th>click_timestamp</th>
+      <th>click_environment</th>
+      <th>click_deviceGroup</th>
+      <th>click_os</th>
+      <th>click_country</th>
+      <th>click_region</th>
+      <th>click_referrer_type</th>
+      <th>rank</th>
+      <th>click_cnts</th>
+      <th>category_id</th>
+      <th>created_at_ts</th>
+      <th>words_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>249999</td>
+      <td>160974</td>
+      <td>1506959142820</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>13</td>
+      <td>2</td>
+      <td>19</td>
+      <td>19</td>
+      <td>281</td>
+      <td>1506912747000</td>
+      <td>259</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>249999</td>
+      <td>160417</td>
+      <td>1506959172820</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>13</td>
+      <td>2</td>
+      <td>18</td>
+      <td>19</td>
+      <td>281</td>
+      <td>1506942089000</td>
+      <td>173</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>249998</td>
+      <td>160974</td>
+      <td>1506959056066</td>
+      <td>4</td>
+      <td>1</td>
+      <td>12</td>
+      <td>1</td>
+      <td>13</td>
+      <td>2</td>
+      <td>5</td>
+      <td>5</td>
+      <td>281</td>
+      <td>1506912747000</td>
+      <td>259</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>249998</td>
+      <td>202557</td>
+      <td>1506959086066</td>
+      <td>4</td>
+      <td>1</td>
+      <td>12</td>
+      <td>1</td>
+      <td>13</td>
+      <td>2</td>
+      <td>4</td>
+      <td>5</td>
+      <td>327</td>
+      <td>1506938401000</td>
+      <td>219</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>249997</td>
+      <td>183665</td>
+      <td>1506959088613</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>15</td>
+      <td>5</td>
+      <td>7</td>
+      <td>7</td>
+      <td>301</td>
+      <td>1500895686000</td>
+      <td>256</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tst_click</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user_id</th>
+      <th>click_article_id</th>
+      <th>click_timestamp</th>
+      <th>click_environment</th>
+      <th>click_deviceGroup</th>
+      <th>click_os</th>
+      <th>click_country</th>
+      <th>click_region</th>
+      <th>click_referrer_type</th>
+      <th>rank</th>
+      <th>click_cnts</th>
+      <th>category_id</th>
+      <th>created_at_ts</th>
+      <th>words_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>518010.000000</td>
+      <td>518010.000000</td>
+      <td>5.180100e+05</td>
+      <td>518010.000000</td>
+      <td>518010.000000</td>
+      <td>518010.000000</td>
+      <td>518010.000000</td>
+      <td>518010.000000</td>
+      <td>518010.000000</td>
+      <td>518010.000000</td>
+      <td>518010.000000</td>
+      <td>518010.000000</td>
+      <td>5.180100e+05</td>
+      <td>518010.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>227342.428169</td>
+      <td>193803.792550</td>
+      <td>1.507387e+12</td>
+      <td>3.947300</td>
+      <td>1.738285</td>
+      <td>13.628467</td>
+      <td>1.348209</td>
+      <td>18.250250</td>
+      <td>1.819614</td>
+      <td>15.521785</td>
+      <td>30.043586</td>
+      <td>305.324961</td>
+      <td>1.506883e+12</td>
+      <td>210.966331</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>14613.907188</td>
+      <td>88279.388177</td>
+      <td>3.706127e+08</td>
+      <td>0.323916</td>
+      <td>1.020858</td>
+      <td>6.625564</td>
+      <td>1.703524</td>
+      <td>7.060798</td>
+      <td>1.082657</td>
+      <td>33.957702</td>
+      <td>56.868021</td>
+      <td>110.411513</td>
+      <td>5.816668e+09</td>
+      <td>83.040065</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>200000.000000</td>
+      <td>137.000000</td>
+      <td>1.506959e+12</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>2.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.265812e+12</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>214926.000000</td>
+      <td>128551.000000</td>
+      <td>1.507026e+12</td>
+      <td>4.000000</td>
+      <td>1.000000</td>
+      <td>12.000000</td>
+      <td>1.000000</td>
+      <td>13.000000</td>
+      <td>1.000000</td>
+      <td>4.000000</td>
+      <td>10.000000</td>
+      <td>252.000000</td>
+      <td>1.506970e+12</td>
+      <td>176.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>229109.000000</td>
+      <td>199197.000000</td>
+      <td>1.507308e+12</td>
+      <td>4.000000</td>
+      <td>1.000000</td>
+      <td>17.000000</td>
+      <td>1.000000</td>
+      <td>21.000000</td>
+      <td>2.000000</td>
+      <td>8.000000</td>
+      <td>19.000000</td>
+      <td>323.000000</td>
+      <td>1.507249e+12</td>
+      <td>199.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>240182.000000</td>
+      <td>272143.000000</td>
+      <td>1.507666e+12</td>
+      <td>4.000000</td>
+      <td>3.000000</td>
+      <td>17.000000</td>
+      <td>1.000000</td>
+      <td>25.000000</td>
+      <td>2.000000</td>
+      <td>18.000000</td>
+      <td>35.000000</td>
+      <td>399.000000</td>
+      <td>1.507630e+12</td>
+      <td>232.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>249999.000000</td>
+      <td>364043.000000</td>
+      <td>1.508832e+12</td>
+      <td>4.000000</td>
+      <td>5.000000</td>
+      <td>20.000000</td>
+      <td>11.000000</td>
+      <td>28.000000</td>
+      <td>7.000000</td>
+      <td>938.000000</td>
+      <td>938.000000</td>
+      <td>460.000000</td>
+      <td>1.509949e+12</td>
+      <td>3082.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>我们可以看出训练集和测试集的用户是完全不一样的,
+训练集的用户ID由0<sub>199999，而测试集A的用户ID由200000</sub>249999。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#测试集中的用户数量为5w</span>
+<span class="n">tst_click</span><span class="o">.</span><span class="n">user_id</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">50000</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tst_click</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="c1"># 注意测试集里面有只点击过一次文章的用户</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span>
+</pre></div>
+</div>
+<p><strong>新闻文章信息数据表</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#新闻文章数据集浏览</span>
+<span class="n">item_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>click_article_id</th>
+      <th>category_id</th>
+      <th>created_at_ts</th>
+      <th>words_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1513144419000</td>
+      <td>168</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1405341936000</td>
+      <td>189</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>1</td>
+      <td>1408667706000</td>
+      <td>250</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>1</td>
+      <td>1408468313000</td>
+      <td>230</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>1</td>
+      <td>1407071171000</td>
+      <td>162</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">item_df</span><span class="p">[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">words_count</span>
+<span class="mi">176</span>     <span class="mi">3485</span>
+<span class="mi">182</span>     <span class="mi">3480</span>
+<span class="mi">179</span>     <span class="mi">3463</span>
+<span class="mi">178</span>     <span class="mi">3458</span>
+<span class="mi">174</span>     <span class="mi">3456</span>
+        <span class="o">...</span>
+<span class="mi">556</span>        <span class="mi">1</span>
+<span class="mi">625</span>        <span class="mi">1</span>
+<span class="mi">2798</span>       <span class="mi">1</span>
+<span class="mi">767</span>        <span class="mi">1</span>
+<span class="mi">841</span>        <span class="mi">1</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span> <span class="n">Length</span><span class="p">:</span> <span class="mi">866</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">item_df</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">())</span>     <span class="c1"># 461个文章主题</span>
+<span class="n">item_df</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">461</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Axes</span><span class="p">:</span> <span class="o">&gt;</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_25_2.png" src="../_images/output_2.analysis_37698d_25_2.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">item_df</span><span class="o">.</span><span class="n">shape</span>       <span class="c1"># 364047篇文章</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">364047</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">item_emb_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>article_id</th>
+      <th>emb_0</th>
+      <th>emb_1</th>
+      <th>emb_2</th>
+      <th>emb_3</th>
+      <th>emb_4</th>
+      <th>emb_5</th>
+      <th>emb_6</th>
+      <th>emb_7</th>
+      <th>emb_8</th>
+      <th>...</th>
+      <th>emb_240</th>
+      <th>emb_241</th>
+      <th>emb_242</th>
+      <th>emb_243</th>
+      <th>emb_244</th>
+      <th>emb_245</th>
+      <th>emb_246</th>
+      <th>emb_247</th>
+      <th>emb_248</th>
+      <th>emb_249</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-0.161183</td>
+      <td>-0.957233</td>
+      <td>-0.137944</td>
+      <td>0.050855</td>
+      <td>0.830055</td>
+      <td>0.901365</td>
+      <td>-0.335148</td>
+      <td>-0.559561</td>
+      <td>-0.500603</td>
+      <td>...</td>
+      <td>0.321248</td>
+      <td>0.313999</td>
+      <td>0.636412</td>
+      <td>0.169179</td>
+      <td>0.540524</td>
+      <td>-0.813182</td>
+      <td>0.286870</td>
+      <td>-0.231686</td>
+      <td>0.597416</td>
+      <td>0.409623</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-0.523216</td>
+      <td>-0.974058</td>
+      <td>0.738608</td>
+      <td>0.155234</td>
+      <td>0.626294</td>
+      <td>0.485297</td>
+      <td>-0.715657</td>
+      <td>-0.897996</td>
+      <td>-0.359747</td>
+      <td>...</td>
+      <td>-0.487843</td>
+      <td>0.823124</td>
+      <td>0.412688</td>
+      <td>-0.338654</td>
+      <td>0.320786</td>
+      <td>0.588643</td>
+      <td>-0.594137</td>
+      <td>0.182828</td>
+      <td>0.397090</td>
+      <td>-0.834364</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-0.619619</td>
+      <td>-0.972960</td>
+      <td>-0.207360</td>
+      <td>-0.128861</td>
+      <td>0.044748</td>
+      <td>-0.387535</td>
+      <td>-0.730477</td>
+      <td>-0.066126</td>
+      <td>-0.754899</td>
+      <td>...</td>
+      <td>0.454756</td>
+      <td>0.473184</td>
+      <td>0.377866</td>
+      <td>-0.863887</td>
+      <td>-0.383365</td>
+      <td>0.137721</td>
+      <td>-0.810877</td>
+      <td>-0.447580</td>
+      <td>0.805932</td>
+      <td>-0.285284</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-0.740843</td>
+      <td>-0.975749</td>
+      <td>0.391698</td>
+      <td>0.641738</td>
+      <td>-0.268645</td>
+      <td>0.191745</td>
+      <td>-0.825593</td>
+      <td>-0.710591</td>
+      <td>-0.040099</td>
+      <td>...</td>
+      <td>0.271535</td>
+      <td>0.036040</td>
+      <td>0.480029</td>
+      <td>-0.763173</td>
+      <td>0.022627</td>
+      <td>0.565165</td>
+      <td>-0.910286</td>
+      <td>-0.537838</td>
+      <td>0.243541</td>
+      <td>-0.885329</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-0.279052</td>
+      <td>-0.972315</td>
+      <td>0.685374</td>
+      <td>0.113056</td>
+      <td>0.238315</td>
+      <td>0.271913</td>
+      <td>-0.568816</td>
+      <td>0.341194</td>
+      <td>-0.600554</td>
+      <td>...</td>
+      <td>0.238286</td>
+      <td>0.809268</td>
+      <td>0.427521</td>
+      <td>-0.615932</td>
+      <td>-0.503697</td>
+      <td>0.614450</td>
+      <td>-0.917760</td>
+      <td>-0.424061</td>
+      <td>0.185484</td>
+      <td>-0.580292</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 251 columns</p>
+</div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">item_emb_df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">364047</span><span class="p">,</span> <span class="mi">251</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h2><span class="section-number">6.3.5. </span>分析<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
+<p><strong>用户重复点击</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_click_merge</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">trn_click</span><span class="p">,</span> <span class="n">tst_click</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#用户重复点击</span>
+<span class="n">user_click_count</span> <span class="o">=</span> <span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">])[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;count&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">user_click_count</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user_id</th>
+      <th>click_article_id</th>
+      <th>count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>30760</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>157507</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>63746</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>289197</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>36162</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_click_count</span><span class="p">[</span><span class="n">user_click_count</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">7</span><span class="p">]</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user_id</th>
+      <th>click_article_id</th>
+      <th>count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>311242</th>
+      <td>86295</td>
+      <td>74254</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>311243</th>
+      <td>86295</td>
+      <td>76268</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>393761</th>
+      <td>103237</td>
+      <td>205948</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>393763</th>
+      <td>103237</td>
+      <td>235689</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>576902</th>
+      <td>134850</td>
+      <td>69463</td>
+      <td>13</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_click_count</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span> <span class="mi">13</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#用户点击新闻次数</span>
+<span class="n">user_click_count</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">count</span>
+<span class="mi">1</span>     <span class="mi">1605541</span>
+<span class="mi">2</span>       <span class="mi">11621</span>
+<span class="mi">3</span>         <span class="mi">422</span>
+<span class="mi">4</span>          <span class="mi">77</span>
+<span class="mi">5</span>          <span class="mi">26</span>
+<span class="mi">6</span>          <span class="mi">12</span>
+<span class="mi">10</span>          <span class="mi">4</span>
+<span class="mi">7</span>           <span class="mi">3</span>
+<span class="mi">13</span>          <span class="mi">1</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+</div>
+<p>可以看出：有1605541（约占99.2%）的用户未重复阅读过文章，仅有极少数用户重复点击过某篇文章。
+这个也可以单独制作成特征</p>
+<p><strong>用户点击环境变化分析</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_envs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">v</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">v</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">fig</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">():</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">set_rotation</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 分析用户点击环境变化是否明显，这里随机采样10个用户分析这些用户的点击环境分布</span>
+<span class="n">sample_user_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">tst_click</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sample_users</span> <span class="o">=</span> <span class="n">user_click_merge</span><span class="p">[</span><span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sample_user_ids</span><span class="p">)]</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;click_environment&#39;</span><span class="p">,</span><span class="s1">&#39;click_deviceGroup&#39;</span><span class="p">,</span> <span class="s1">&#39;click_os&#39;</span><span class="p">,</span> <span class="s1">&#39;click_country&#39;</span><span class="p">,</span> <span class="s1">&#39;click_region&#39;</span><span class="p">,</span><span class="s1">&#39;click_referrer_type&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">user_df</span> <span class="ow">in</span> <span class="n">sample_users</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">):</span>
+    <span class="n">plot_envs</span><span class="p">(</span><span class="n">user_df</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_37_1.png" src="../_images/output_2.analysis_37698d_37_1.png" />
+</figure>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_37_3.png" src="../_images/output_2.analysis_37698d_37_3.png" />
+</figure>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_37_5.png" src="../_images/output_2.analysis_37698d_37_5.png" />
+</figure>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_37_7.png" src="../_images/output_2.analysis_37698d_37_7.png" />
+</figure>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_37_9.png" src="../_images/output_2.analysis_37698d_37_9.png" />
+</figure>
+<p>可以看出绝大多数数的用户的点击环境是比较固定的。思路：可以基于这些环境的统计特征来代表该用户本身的属性</p>
+<p><strong>用户点击新闻数量的分布</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_click_item_count</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_item_count</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33a145f10</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_39_1.png" src="../_images/output_2.analysis_37698d_39_1.png" />
+</figure>
+<p>可以根据用户的点击文章次数看出用户的活跃度</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#点击次数在前50的用户</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_item_count</span><span class="p">[:</span><span class="mi">50</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33a1bbcd0</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_41_1.png" src="../_images/output_2.analysis_37698d_41_1.png" />
+</figure>
+<p>点击次数排前50的用户的点击次数都在100次以上。思路：我们可以定义点击次数大于等于100次的用户为活跃用户，这是一种简单的处理思路，
+判断用户活跃度，更加全面的是再结合上点击时间，后面我们会基于点击次数和点击时间两个方面来判断用户活跃度。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#点击次数排名在[25000:50000]之间</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_item_count</span><span class="p">[</span><span class="mi">25000</span><span class="p">:</span><span class="mi">50000</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33a23ef70</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_43_1.png" src="../_images/output_2.analysis_37698d_43_1.png" />
+</figure>
+<p>可以看出点击次数小于等于两次的用户非常的多，这些用户可以认为是非活跃用户</p>
+<p><strong>新闻点击次数分析</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">item_click_count</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">)[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">item_click_count</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33a2c5580</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_46_1.png" src="../_images/output_2.analysis_37698d_46_1.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">item_click_count</span><span class="p">[:</span><span class="mi">100</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33a34d7c0</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_47_1.png" src="../_images/output_2.analysis_37698d_47_1.png" />
+</figure>
+<p>可以看出点击次数最多的前100篇新闻，点击次数大于1000次</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">item_click_count</span><span class="p">[:</span><span class="mi">20</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33a3cd3d0</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_49_1.png" src="../_images/output_2.analysis_37698d_49_1.png" />
+</figure>
+<p>可以看出点击次数最多的前20篇新闻，点击次数大于2500。思路：可以定义这些新闻为热门新闻，
+这个也是简单的处理方式，后面我们也是根据点击次数和时间进行文章热度的一个划分。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">item_click_count</span><span class="p">[</span><span class="mi">3500</span><span class="p">:])</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33a454370</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_51_1.png" src="../_images/output_2.analysis_37698d_51_1.png" />
+</figure>
+<p>可以发现很多新闻只被点击过一两次。思路：可以定义这些新闻是冷门新闻。</p>
+<p><strong>新闻共现频次：两篇新闻连续出现的次数</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tmp</span> <span class="o">=</span> <span class="n">user_click_merge</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">)</span>
+<span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;next_item&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">union_item</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span><span class="s1">&#39;next_item&#39;</span><span class="p">])[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;count&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">union_item</span><span class="p">[[</span><span class="s1">&#39;count&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>433597.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>3.184139</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>18.851753</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>2.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>2202.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>由统计数据可以看出，平均共现次数2.88，最高为1687。</p>
+<p>说明用户看的新闻，相关性是比较强的。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#画个图直观地看一看</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">union_item</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">union_item</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">collections</span><span class="o">.</span><span class="n">PathCollection</span> <span class="n">at</span> <span class="mh">0x3414cb1c0</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_55_1.png" src="../_images/output_2.analysis_37698d_55_1.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">union_item</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">40000</span><span class="p">:])</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33a2d0a30</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_56_1.png" src="../_images/output_2.analysis_37698d_56_1.png" />
+</figure>
+<p>大概有70000个pair至少共现一次</p>
+<p><strong>新闻文章信息</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#不同类型的新闻出现的次数</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x327cb2dc0</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_58_1.png" src="../_images/output_2.analysis_37698d_58_1.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#出现次数比较少的新闻类型, 有些新闻类型，基本上就出现过几次</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">150</span><span class="p">:])</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x327c82cd0</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_59_1.png" src="../_images/output_2.analysis_37698d_59_1.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#新闻字数的描述性统计</span>
+<span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">count</span>    <span class="mf">1.630633e+06</span>
+<span class="n">mean</span>     <span class="mf">2.043012e+02</span>
+<span class="n">std</span>      <span class="mf">6.382198e+01</span>
+<span class="nb">min</span>      <span class="mf">0.000000e+00</span>
+<span class="mi">25</span><span class="o">%</span>      <span class="mf">1.720000e+02</span>
+<span class="mi">50</span><span class="o">%</span>      <span class="mf">1.970000e+02</span>
+<span class="mi">75</span><span class="o">%</span>      <span class="mf">2.290000e+02</span>
+<span class="nb">max</span>      <span class="mf">6.690000e+03</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">words_count</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x32c1795b0</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_61_1.png" src="../_images/output_2.analysis_37698d_61_1.png" />
+</figure>
+<p><strong>用户点击的新闻类型的偏好</strong></p>
+<p>此特征可以用于度量用户的兴趣是否广泛。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x32c4db040</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_63_1.png" src="../_images/output_2.analysis_37698d_63_1.png" />
+</figure>
+<p>从上图中可以看出有一小部分用户阅读类型是极其广泛的，大部分人都处在20个新闻类型以下。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user_id</th>
+      <th>category_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>250000.000000</td>
+      <td>250000.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>124999.500000</td>
+      <td>4.573188</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>72168.927986</td>
+      <td>4.419800</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>62499.750000</td>
+      <td>2.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>124999.500000</td>
+      <td>3.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>187499.250000</td>
+      <td>6.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>249999.000000</td>
+      <td>95.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div><p><strong>用户查看文章的长度的分布</strong></p>
+<p>通过统计不同用户点击新闻的平均字数，这个可以反映用户是对长文更感兴趣还是对短文更感兴趣。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x32c45b3d0</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_67_1.png" src="../_images/output_2.analysis_37698d_67_1.png" />
+</figure>
+<p>从上图中可以发现有一小部分人看的文章平均词数非常高，也有一小部分人看的平均文章次数非常低。
+大多数人偏好于阅读字数在200-400字之间的新闻。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#挑出大多数人的区间仔细看看</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1000</span><span class="p">:</span><span class="mi">45000</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x32c662d30</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_69_1.png" src="../_images/output_2.analysis_37698d_69_1.png" />
+</figure>
+<p>可以发现大多数人都是看250字以下的文章</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#更加详细的参数</span>
+<span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user_id</th>
+      <th>words_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>250000.000000</td>
+      <td>250000.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>124999.500000</td>
+      <td>205.830189</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>72168.927986</td>
+      <td>47.174030</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.000000</td>
+      <td>8.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>62499.750000</td>
+      <td>187.500000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>124999.500000</td>
+      <td>202.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>187499.250000</td>
+      <td>217.750000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>249999.000000</td>
+      <td>3434.500000</td>
+    </tr>
+  </tbody>
+</table>
+</div><p><strong>用户点击新闻的时间分析</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#为了更好的可视化，这里把时间进行归一化操作</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">MinMaxScaler</span>
+
+<span class="n">mm</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+<span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mm</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">user_click_merge</span><span class="p">[[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]])</span>
+<span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;created_at_ts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mm</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">user_click_merge</span><span class="p">[[</span><span class="s1">&#39;created_at_ts&#39;</span><span class="p">]])</span>
+
+<span class="n">user_click_merge</span> <span class="o">=</span> <span class="n">user_click_merge</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user_id</th>
+      <th>click_article_id</th>
+      <th>click_timestamp</th>
+      <th>click_environment</th>
+      <th>click_deviceGroup</th>
+      <th>click_os</th>
+      <th>click_country</th>
+      <th>click_region</th>
+      <th>click_referrer_type</th>
+      <th>rank</th>
+      <th>click_cnts</th>
+      <th>category_id</th>
+      <th>created_at_ts</th>
+      <th>words_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>18</th>
+      <td>249990</td>
+      <td>162300</td>
+      <td>0.000000</td>
+      <td>4</td>
+      <td>3</td>
+      <td>20</td>
+      <td>1</td>
+      <td>25</td>
+      <td>2</td>
+      <td>5</td>
+      <td>5</td>
+      <td>281</td>
+      <td>0.989186</td>
+      <td>193</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>249998</td>
+      <td>160974</td>
+      <td>0.000002</td>
+      <td>4</td>
+      <td>1</td>
+      <td>12</td>
+      <td>1</td>
+      <td>13</td>
+      <td>2</td>
+      <td>5</td>
+      <td>5</td>
+      <td>281</td>
+      <td>0.989092</td>
+      <td>259</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>249985</td>
+      <td>160974</td>
+      <td>0.000003</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>8</td>
+      <td>2</td>
+      <td>8</td>
+      <td>8</td>
+      <td>281</td>
+      <td>0.989092</td>
+      <td>259</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>249979</td>
+      <td>162300</td>
+      <td>0.000004</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>25</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>281</td>
+      <td>0.989186</td>
+      <td>193</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>249988</td>
+      <td>160974</td>
+      <td>0.000004</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>21</td>
+      <td>2</td>
+      <td>17</td>
+      <td>17</td>
+      <td>281</td>
+      <td>0.989092</td>
+      <td>259</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">mean_diff_time_func</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;time_shift1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;diff_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;time_shift1&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;diff_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 点击时间差的平均值</span>
+<span class="n">mean_diff_click_time</span> <span class="o">=</span> <span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;created_at_ts&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">mean_diff_time_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">mean_diff_click_time</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x3278aa820</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_77_1.png" src="../_images/output_2.analysis_37698d_77_1.png" />
+</figure>
+<p>从上图可以发现不同用户点击文章的时间差是有差异的。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 前后点击文章的创建时间差的平均值</span>
+<span class="n">mean_diff_created_time</span> <span class="o">=</span> <span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;created_at_ts&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">mean_diff_time_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;created_at_ts&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">mean_diff_created_time</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x32bc49400</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_80_1.png" src="../_images/output_2.analysis_37698d_80_1.png" />
+</figure>
+<p>从图中可以发现用户先后点击文章，文章的创建时间也是有差异的</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 用户前后点击文章的相似性分布</span>
+<span class="n">item_idx_2_rawid_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">item_emb_df</span><span class="p">[</span><span class="s1">&#39;article_id&#39;</span><span class="p">],</span> <span class="n">item_emb_df</span><span class="o">.</span><span class="n">index</span><span class="p">))</span>
+<span class="k">del</span> <span class="n">item_emb_df</span><span class="p">[</span><span class="s1">&#39;article_id&#39;</span><span class="p">]</span>
+<span class="n">item_emb_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">item_emb_df</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 随机选择5个用户，查看这些用户前后查看文章的相似性</span>
+<span class="n">sub_user_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">user_id</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sub_user_info</span> <span class="o">=</span> <span class="n">user_click_merge</span><span class="p">[</span><span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sub_user_ids</span><span class="p">)]</span>
+
+<span class="n">sub_user_info</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user_id</th>
+      <th>click_article_id</th>
+      <th>click_timestamp</th>
+      <th>click_environment</th>
+      <th>click_deviceGroup</th>
+      <th>click_os</th>
+      <th>click_country</th>
+      <th>click_region</th>
+      <th>click_referrer_type</th>
+      <th>rank</th>
+      <th>click_cnts</th>
+      <th>category_id</th>
+      <th>created_at_ts</th>
+      <th>words_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>249998</td>
+      <td>160974</td>
+      <td>0.000002</td>
+      <td>4</td>
+      <td>1</td>
+      <td>12</td>
+      <td>1</td>
+      <td>13</td>
+      <td>2</td>
+      <td>5</td>
+      <td>5</td>
+      <td>281</td>
+      <td>0.989092</td>
+      <td>259</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>249998</td>
+      <td>202557</td>
+      <td>0.000010</td>
+      <td>4</td>
+      <td>1</td>
+      <td>12</td>
+      <td>1</td>
+      <td>13</td>
+      <td>2</td>
+      <td>4</td>
+      <td>5</td>
+      <td>327</td>
+      <td>0.989167</td>
+      <td>219</td>
+    </tr>
+    <tr>
+      <th>20325</th>
+      <td>241824</td>
+      <td>160974</td>
+      <td>0.001655</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>25</td>
+      <td>1</td>
+      <td>12</td>
+      <td>12</td>
+      <td>281</td>
+      <td>0.989092</td>
+      <td>259</td>
+    </tr>
+    <tr>
+      <th>20326</th>
+      <td>241824</td>
+      <td>272660</td>
+      <td>0.001786</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>25</td>
+      <td>1</td>
+      <td>11</td>
+      <td>12</td>
+      <td>399</td>
+      <td>0.989007</td>
+      <td>246</td>
+    </tr>
+    <tr>
+      <th>20327</th>
+      <td>241824</td>
+      <td>300470</td>
+      <td>0.001794</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>25</td>
+      <td>1</td>
+      <td>10</td>
+      <td>12</td>
+      <td>428</td>
+      <td>0.989182</td>
+      <td>203</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_item_sim_list</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">sim_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">item_list</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">item_list</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">emb1</span> <span class="o">=</span> <span class="n">item_emb_np</span><span class="p">[</span><span class="n">item_idx_2_rawid_dict</span><span class="p">[</span><span class="n">item_list</span><span class="p">[</span><span class="n">i</span><span class="p">]]]</span>
+        <span class="n">emb2</span> <span class="o">=</span> <span class="n">item_emb_np</span><span class="p">[</span><span class="n">item_idx_2_rawid_dict</span><span class="p">[</span><span class="n">item_list</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]]</span>
+        <span class="n">sim_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">emb1</span><span class="p">,</span><span class="n">emb2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">emb1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">emb2</span><span class="p">))))</span>
+    <span class="n">sim_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sim_list</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">user_df</span> <span class="ow">in</span> <span class="n">sub_user_info</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">):</span>
+    <span class="n">item_sim_list</span> <span class="o">=</span> <span class="n">get_item_sim_list</span><span class="p">(</span><span class="n">user_df</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">item_sim_list</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/output_2.analysis_37698d_85_0.png" src="../_images/output_2.analysis_37698d_85_0.png" />
+</figure>
+<p>从图中可以看出有些用户前后看的商品的相似度波动比较大，有些波动比较小，也是有一定的区分度的。</p>
+</section>
+<section id="id7">
+<h2><span class="section-number">6.3.6. </span>总结<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
+<p>通过数据分析的过程， 我们目前可以得到以下几点重要的信息，
+这个对于我们进行后面的特征制作和分析非常有帮助：</p>
+<ol class="arabic simple">
+<li><p>训练集和测试集的用户id没有重复，也就是测试集里面的用户没有模型是没有见过的</p></li>
+<li><p>训练集中用户最少的点击文章数是2， 而测试集里面用户最少的点击文章数是1</p></li>
+<li><p>用户对于文章存在重复点击的情况， 但这个都存在于训练集里面</p></li>
+<li><p>同一用户的点击环境存在不唯一的情况，后面做这部分特征的时候可以采用统计特征</p></li>
+<li><p>用户点击文章的次数有很大的区分度，后面可以根据这个制作衡量用户活跃度的特征</p></li>
+<li><p>文章被用户点击的次数也有很大的区分度，后面可以根据这个制作衡量文章热度的特征</p></li>
+<li><p>用户看的新闻，相关性是比较强的，所以往往我们判断用户是否对某篇文章感兴趣的时候，
+在很大程度上会和他历史点击过的文章有关</p></li>
+<li><p>用户点击的文章字数有比较大的区别， 这个可以反映用户对于文章字数的区别</p></li>
+<li><p>用户点击过的文章主题也有很大的区别， 这个可以反映用户的主题偏好
+10.不同用户点击文章的时间差也会有所区别，
+这个可以反映用户对于文章时效性的偏好</p></li>
+</ol>
+<p>所以根据上面的一些分析，可以更好的帮助我们后面做好特征工程，
+充分挖掘数据的隐含信息。</p>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">6.3. 数据分析</a><ul>
+<li><a class="reference internal" href="#id2">6.3.1. 导包</a></li>
+<li><a class="reference internal" href="#id3">6.3.2. 读取数据</a></li>
+<li><a class="reference internal" href="#id4">6.3.3. 数据预处理</a></li>
+<li><a class="reference internal" href="#id5">6.3.4. 数据浏览</a></li>
+<li><a class="reference internal" href="#id6">6.3.5. 分析</a></li>
+<li><a class="reference internal" href="#id7">6.3.6. 总结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="1.baseline.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>6.2. Baseline</div>
+         </div>
+     </a>
+     <a id="button-next" href="3.recall.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>6.4. 多路召回</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

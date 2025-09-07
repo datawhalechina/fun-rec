@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>2.3.3. 生成式召回方法 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/d2l.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.3.4. 总结" href="3.summary.html" />
+    <link rel="prev" title="2.3.2. 深化用户兴趣表示" href="1.user_interests.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="../index.html"><span class="section-number">2. </span>召回模型</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">2.3. </span>序列召回</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">2.3.3. </span>生成式召回方法</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../../_sources/chapter_1_retrieval/3.sequence/2.generateive_recall.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/notebooks.zip">
+                  <i class="fas fa-download"></i>
+                  Jupyter 记事本
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/fun-rec.pdf">
+                  <i class="fas fa-file-pdf"></i>
+                  PDF
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
+                  <i class="fab fa-github"></i>
+                  GitHub
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 召回模型</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/0.intro.html">2.1.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/5.summary.html">2.1.6. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/0.intro.html">2.2.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/3.summary.html">2.2.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">2.3. 序列召回</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="0.intro.html">2.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.3.3. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.summary.html">2.3.4. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_5_projects/index.html">6. 项目实践</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/0.intro.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 召回模型</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/0.intro.html">2.1.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/5.summary.html">2.1.6. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/0.intro.html">2.2.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/3.summary.html">2.2.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">2.3. 序列召回</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="0.intro.html">2.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.3.3. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.summary.html">2.3.4. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_5_projects/index.html">6. 项目实践</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/0.intro.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="generateive-recall">
+<span id="id1"></span><h1><span class="section-number">2.3.3. </span>生成式召回方法<a class="headerlink" href="#generateive-recall" title="Permalink to this heading">¶</a></h1>
+<p>上一小节，我们探讨了如MIND和SDM等序列召回方法，它们的核心目标是分析用户的历史行为，并将其“总结”成一个或多个能够代表用户兴趣的向量。这种方法好比是为用户拍摄一张静态的“兴趣快照”，用以在海量物品中进行检索。</p>
+<p>本章将介绍一种截然不同的思路：<strong>生成式召回</strong>。它不再试图去“总结”用户，而是直接“预测”用户的下一个行为。其核心是直接对序列中物品与物品之间的动态依赖关系进行建模，关注“用户接下来会做什么”而非“用户是怎样的人”。</p>
+<p>依循这条思路，我们将探讨三种代表性的生成式召回模型，它们清晰地展示了该领域的一条核心演进脉络。首先是<strong>SASRec</strong>，它开创性地将自然语言处理领域的Transformer模型直接应用于推荐序列预测，奠定了“预测下一个物品ID”这一基础范式。</p>
+<p>在SASRec验证了该范式的巨大潜力之后，后续的探索主要沿着两个方向继续深化：</p>
+<ol class="arabic simple">
+<li><p><strong>深化对“输入”的理解</strong>：既然模型可以处理序列，我们能否给它提供一个信息更丰富的序列？<strong>HSTU</strong>模型便是这一方向的杰出代表。它不再满足于简单的物品ID，而是将用户的属性、行为类型、时间等所有异构信息都融合成一个复杂的“<strong>事件流</strong>”作为输入，增强了模型对行为上下文的理解能力。</p></li>
+<li><p><strong>重塑对“输出”的定义</strong>：我们预测的目标——那个孤立的物品ID——本身能否更具信息量？<strong>TIGER</strong>
+模型开创性地回答了这个问题。它认为预测一个无意义的原子ID效率低下，转而通过生成一个由多个“码字”构成的、结构化的“<strong>语义ID</strong>”来代表物品。这彻底改变了推荐的终极目标，从“匹配ID”转向了“生成描述”。</p></li>
+</ol>
+<p>本节中，我们将沿着 <strong>SASRec (奠基) -&gt; HSTU (深化输入) -&gt; TIGER
+(重塑输出)</strong> 这条清晰的脉络，深入理解生成式召回技术的演进与核心思想。</p>
+<section id="sasrec">
+<h2><span class="section-number">2.3.3.1. </span>SASRec：基于自注意力的序列推荐<a class="headerlink" href="#sasrec" title="Permalink to this heading">¶</a></h2>
+<p>在SASRec出现之前，主流的序列模型，如基于马尔可夫链或RNN的方法，存在各自的局限。马尔可夫链
+<span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id69" title="Rendle, S., Freudenthaler, C., &amp; Schmidt-Thieme, L. (2010). Factorizing personalized markov chains for next-basket recommendation. Proceedings of the 19th international conference on World wide web (pp. 811–820).">Rendle <em>et al.</em>, 2010</a>)</span>
+通常只考虑最近的少数几个行为，视野有限；而RNN
+<span id="id3">(<a class="reference internal" href="../../chapter_references/references.html#id70" title="Dobrovolny, M., Selamat, A., &amp; Krejcar, O. (2021). Session based recommendations using recurrent neural networks-long short-term memory. Asian Conference on Intelligent Information and Database Systems (pp. 53–65).">Dobrovolny <em>et al.</em>, 2021</a>)</span>
+虽然理论上能捕捉长期依赖，但其串行计算的特性导致训练效率低下。SASRec
+<span id="id4">(<a class="reference internal" href="../../chapter_references/references.html#id39" title="Kang, W.-C., &amp; McAuley, J. (2018). Self-attentive sequential recommendation. 2018 IEEE international conference on data mining (ICDM) (pp. 197–206).">Kang and McAuley, 2018</a>)</span>
+的出发点便是：能否找到一种方法，既能像RNN一样看到完整的历史序列，又能高效地捕捉其中最重要的依赖关系？答案是借用在自然语言处理（NLP）领域大获成功的Transformer模型
+<span id="id5">(<a class="reference internal" href="../../chapter_references/references.html#id40" title="Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.">Vaswani <em>et al.</em>, 2017</a>)</span> 。</p>
+<p>SASRec的核心思想是将用户的行为序列视为一个句子来处理。对于序列中的每个商品，模型会自动学习它与序列中其他所有商品的相关性，然后基于这些相关性来预测下一个用户可能交互的商品。这样既保留了对长期行为的建模能力，又能根据数据特性灵活地调整对不同历史行为的关注度。</p>
+<figure class="align-default" id="id12">
+<span id="id6"></span><img alt="../../_images/generateive_recall.png" src="../../_images/generateive_recall.png" />
+<figcaption>
+<p><span class="caption-number">图2.3.3 </span><span class="caption-text">生成式召回模型的基本架构</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>类似于Transformer，SASRec的基本模块如 <a class="reference internal" href="#id6"><span class="std std-numref">图2.3.3</span></a> 左
+所示，主要包含自注意力层和前馈网络层两个组件。</p>
+<p><strong>自注意力层</strong></p>
+<p>对于序列中的每个商品，我们通过嵌入矩阵
+<span class="math notranslate nohighlight">\(\bf{M}\in\mathbb{R}^{|\mathcal{I}|\times d}\)</span>
+将其映射为d维向量，其中 <span class="math notranslate nohighlight">\(|\mathcal{I}|\)</span>
+是商品总数。输入序列的嵌入矩阵记为
+<span class="math notranslate nohighlight">\(\bf{E}\in\mathbb{R}^{n\times d}\)</span>，其中
+<span class="math notranslate nohighlight">\(\bf{E}_i=\bf{M}_{s_i}\)</span>。</p>
+<p>由于自注意力机制本身无法感知位置信息，我们引入可学习的位置嵌入
+<span class="math notranslate nohighlight">\(\bf{P}\in\mathbb{R}^{n\times d}\)</span>。最终的输入表示为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-sequence-2-generateive-recall-0">
+<span class="eqno">(2.3.17)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-0" title="Permalink to this equation">¶</a></span>\[\begin{split}\widehat{\bf{E}}=\left[
+  \begin{array}{c}
+    \bf{M}_{s_1}+\bf{P}_{1} \\
+    \bf{M}_{s_2}+\bf{P}_{2} \\
+    \dots \\
+    \bf{M}_{s_n}+\bf{P}_{n}
+  \end{array}
+\right]\end{split}\]</div>
+<p>在得到商品的embedding后，基于缩放点积注意力机制：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-sequence-2-generateive-recall-1">
+<span class="eqno">(2.3.18)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-1" title="Permalink to this equation">¶</a></span>\[\text{Attention}(\bf{Q},\bf{K},\bf{V})=\text{softmax}\left(\frac{\bf{Q}\bf{K}^T}{\sqrt{d}}\right)\bf{V}\]</div>
+<p>这里 <span class="math notranslate nohighlight">\(\bf{Q}\)</span>、<span class="math notranslate nohighlight">\(\bf{K}\)</span>、<span class="math notranslate nohighlight">\(\bf{V}\)</span>
+分别表示查询、键、值矩阵。在自注意力中，这三个矩阵都由输入嵌入通过线性变换得到：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-sequence-2-generateive-recall-2">
+<span class="eqno">(2.3.19)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-2" title="Permalink to this equation">¶</a></span>\[\bf{S}=\text{SA}(\widehat{\bf{E}})=\text{Attention}(\widehat{\bf{E}}\bf{W}^Q,\widehat{\bf{E}}\bf{W}^K,\widehat{\bf{E}}\bf{W}^V)\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(\bf{W}^Q\)</span>、<span class="math notranslate nohighlight">\(\bf{W}^K\)</span>、<span class="math notranslate nohighlight">\(\bf{W}^V\)</span> 都是
+<span class="math notranslate nohighlight">\(d\times d\)</span> 的可学习权重矩阵，<span class="math notranslate nohighlight">\(\sqrt{d}\)</span>
+是缩放因子用于稳定训练。</p>
+<p>值得注意的是，这里的自注意力机制需要采用因果掩码，确保在预测第 <span class="math notranslate nohighlight">\(t\)</span>
+个位置的下一个物品时，模型只能利用 <span class="math notranslate nohighlight">\(1\)</span> 到 <span class="math notranslate nohighlight">\(t-1\)</span>
+的历史信息，而不能‘偷看’未来的行为。</p>
+<p><strong>前馈网络层</strong></p>
+<p>得到自注意力层的输出后，前馈网络为模型引入了非线性变换能力：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-sequence-2-generateive-recall-3">
+<span class="eqno">(2.3.20)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-3" title="Permalink to this equation">¶</a></span>\[\bf{F}_i = \text{FFN}(\bf{S}_i)=\text{ReLU}(\bf{S}_i\bf{W}^{(1)}+\bf{b}^{(1)})\bf{W}^{(2)}+\bf{b}^{(2)}\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(\bf{W}^{(1)}\)</span>、<span class="math notranslate nohighlight">\(\bf{W}^{(2)}\)</span>
+是权重矩阵，<span class="math notranslate nohighlight">\(\bf{b}^{(1)}\)</span>、<span class="math notranslate nohighlight">\(\bf{b}^{(2)}\)</span>
+是偏置向量，<span class="math notranslate nohighlight">\(\bf{F}_i\)</span> 是第<span class="math notranslate nohighlight">\(i\)</span>层前馈网络的输出。</p>
+<p><strong>预测与训练</strong></p>
+<p>经过多层Transformer模块的加工后，模型会基于最后一个物品（第<span class="math notranslate nohighlight">\(t\)</span>个）的输出表示<span class="math notranslate nohighlight">\(\bf{F}_t\)</span>，来预测用户最可能交互的下一个物品<span class="math notranslate nohighlight">\(i\)</span>。这个预测过程，本质上就是在整个物品库中，寻找与该输出表示向量最相似的物品向量。</p>
+<p>商品<span class="math notranslate nohighlight">\(i\)</span>的相关性分数为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-sequence-2-generateive-recall-4">
+<span class="eqno">(2.3.21)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-4" title="Permalink to this equation">¶</a></span>\[r_{i,t}=\bf{F}_t\bf{M}_i^T\]</div>
+<p>这里复用了商品嵌入矩阵 <span class="math notranslate nohighlight">\(\bf{M}\)</span>，既减少了参数量又提高了性能。</p>
+<p>类似于Decoder
+Only的Transformer模型，SASRec的训练目标也是预测用户下一个交互的物品。对于时间步t，期望输出
+<span class="math notranslate nohighlight">\(o_t\)</span> 定义为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-sequence-2-generateive-recall-5">
+<span class="eqno">(2.3.22)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-5" title="Permalink to this equation">¶</a></span>\[\begin{split}o_t=\begin{cases}
+\texttt{&lt;pad&gt;} &amp; \text{如果 } s_t \text{ 是填充项}\\
+s_{t+1} &amp; 1\leq t&lt;n\\
+\mathcal{S}^{u}_{|\mathcal{S}^u|} &amp; t=n
+\end{cases}\end{split}\]</div>
+<p>其中<span class="math notranslate nohighlight">\(\texttt{&lt;pad&gt;}\)</span>表示填充项，<span class="math notranslate nohighlight">\(\mathcal{S}^{u}\)</span>表示用户<span class="math notranslate nohighlight">\(u\)</span>的交互序列。模型训练时，输入为<span class="math notranslate nohighlight">\(s\)</span>，期望输出为<span class="math notranslate nohighlight">\(o\)</span>，采用二元交叉熵作为损失函数：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-sequence-2-generateive-recall-6">
+<span class="eqno">(2.3.23)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-6" title="Permalink to this equation">¶</a></span>\[-\sum_{\mathcal{S}^{u}\in\mathcal{S}}\sum_{t\in[1,2,\dots,n]}\left[\log(\sigma(r_{o_t,t}))+\sum_{j\not\in \mathcal{S}^{u}}\log(1-\sigma(r_{j,t}))\right]\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(\sigma\)</span> 是sigmoid函数，<span class="math notranslate nohighlight">\(r_{o_t,t}\)</span>
+是正样本分数，<span class="math notranslate nohighlight">\(r_{j,t}\)</span> 是负样本分数。</p>
+<section id="id7">
+<h3><span class="section-number">2.3.3.1.1. </span>代码实践<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_metrics_table</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;sasrec&#39;</span><span class="p">)</span>
+
+<span class="c1"># 加载数据</span>
+<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># 准备特征</span>
+<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+
+<span class="c1"># 训练模型</span>
+<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
+
+<span class="c1"># 评估模型</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+----------------+---------------+--------------+---------------+-----------+------------+-----------+----------+-----------+</span>
+<span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">100</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">20</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">50</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">100</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">20</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">50</span> <span class="o">|</span>
+<span class="o">+===============+================+===============+==============+===============+===========+============+===========+==========+===========+</span>
+<span class="o">|</span>          <span class="mf">0.02</span> <span class="o">|</span>         <span class="mf">0.1737</span> <span class="o">|</span>        <span class="mf">0.0404</span> <span class="o">|</span>       <span class="mf">0.0086</span> <span class="o">|</span>         <span class="mf">0.096</span> <span class="o">|</span>    <span class="mf">0.0088</span> <span class="o">|</span>     <span class="mf">0.0373</span> <span class="o">|</span>     <span class="mf">0.014</span> <span class="o">|</span>   <span class="mf">0.0052</span> <span class="o">|</span>    <span class="mf">0.0249</span> <span class="o">|</span>
+<span class="o">+---------------+----------------+---------------+--------------+---------------+-----------+------------+-----------+----------+-----------+</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="hstu">
+<h2><span class="section-number">2.3.3.2. </span>HSTU：为复杂的“事件流”输入定制生成式架构<a class="headerlink" href="#hstu" title="Permalink to this heading">¶</a></h2>
+<p>SASRec成功地验证了将推荐问题视为序列预测的可行性，但它将视线聚焦于一个相对简化的世界：一个仅由物品ID构成的序列。一个自然而然的问题是：用户的行为序列远比这丰富，能否将用户的属性、行为类型（点击、加购、购买）、上下文时间等所有信息都融入这个序列，让模型拥有一个更全面的“上帝视角”？</p>
+<p>HSTU <span id="id8">(<a class="reference internal" href="../../chapter_references/references.html#id60" title="Zhai, J., Liao, L., Liu, X., Wang, Y., Li, R., Cao, X., … others. (2024). Actions speak louder than words: trillion-parameter sequential transducers for generative recommendations. arXiv preprint arXiv:2402.17152.">Zhai <em>et al.</em>, 2024</a>)</span>
+模型正是对这个问题的一次深入探索。它代表了生成式范式的一个重要演进方向：<strong>不再满足于简单的物品ID序列，而是将所有异构特征统一编码为单一的、更复杂的“事件流”（Event
+Stream）作为模型输入。</strong>
+HSTU的目标，就是学习这个复杂的“句子”，并预测下一个可能的事件。</p>
+<p>这种统一化的架构设计虽然优雅，但在实现过程中面临着诸多技术挑战。HSTU的设计巧妙地解决了特征处理、模型架构和信号传递等关键问题，旨在用单一的模块替换传统推荐模型中特征提取、交互和预测等多个异构组件。</p>
+<p><strong>特征处理</strong></p>
+<p>HSTU的特征处理分为两个策略。对于<strong>类别特征</strong>，它将所有信息按时间戳“拉平”成一个统一的序列。想象一个用户的行为流：<code class="docutils literal notranslate"><span class="pre">[用户年龄=30,</span> <span class="pre">登录,</span> <span class="pre">浏览商品A(类别:手机),</span> <span class="pre">浏览商品B(类别:手机壳),</span> <span class="pre">将B加入购物车,</span> <span class="pre">退出]</span></code>。SASRec可能只看到
+<code class="docutils literal notranslate"><span class="pre">[A,</span> <span class="pre">B]</span></code>。而HSTU则试图理解整个事件流：<code class="docutils literal notranslate"><span class="pre">[(特征:年龄,值:30),</span> <span class="pre">(行为:登录),</span> <span class="pre">(行为:浏览,物品:A),</span> <span class="pre">(行为:浏览,物品:B),</span> <span class="pre">(行为:加购,物品:B),</span> <span class="pre">(行为:退出)]</span></code>。</p>
+<p>对于变化频繁的<strong>数值特征</strong>（如加权计数器、比率等），HSTU则采用隐式建模策略，让模型通过观察用户在序列中的实际行为模式来自动推断这些数值信息。</p>
+<p>因此，HSTU的输入输出可以表示为：</p>
+<ul class="simple">
+<li><p><strong>输入</strong>(<span class="math notranslate nohighlight">\(x_i\)</span>)：<span class="math notranslate nohighlight">\((\Phi_0,a_0), (\Phi_1,a_1), \ldots, (\Phi_{n_c-1},a_{n_c-1})\)</span></p></li>
+<li><p><strong>输出</strong>(<span class="math notranslate nohighlight">\(y_i\)</span>)：<span class="math notranslate nohighlight">\(\Phi_1',\Phi_2',\ldots,\Phi_{n_c-1}',\varnothing\)</span>，</p></li>
+</ul>
+<p>其中 <span class="math notranslate nohighlight">\(\Phi_i\)</span> 表示用户在时刻 <span class="math notranslate nohighlight">\(i\)</span> 交互的内容，<span class="math notranslate nohighlight">\(a_i\)</span>
+表示用户在时刻 <span class="math notranslate nohighlight">\(i\)</span> 的行为，<span class="math notranslate nohighlight">\(\Phi_i'\)</span> 表示用户在时刻
+<span class="math notranslate nohighlight">\(i\)</span> 交互的内容，<span class="math notranslate nohighlight">\(\Phi_i' = \Phi_i\)</span> (如果 <span class="math notranslate nohighlight">\(a_i\)</span>
+为正向行为)，否则为 <span class="math notranslate nohighlight">\(\varnothing\)</span>。</p>
+<p>在推荐系统的召回阶段，模型学习一个条件分布<span class="math notranslate nohighlight">\(p(\Phi_{i+1}|u_i)\)</span>，其中
+<span class="math notranslate nohighlight">\(u_i\)</span> 是用户在当前时刻的表示向量，<span class="math notranslate nohighlight">\(\Phi_{i+1}\)</span>
+是候选物品。召回的目标是从物品库 <span class="math notranslate nohighlight">\(\mathbb{X}_c\)</span>
+中选择能够最大化用户满意度的物品，即
+<span class="math notranslate nohighlight">\(\text{argmax}_{\Phi \in \mathbb{X}_c} p(\Phi|u_i)\)</span>。HSTU召回与标准的序列生成任务有两个不同的地方：首先用户可能对推荐的物品产生负面反应，因此监督信号不总是下一个物品；其次当序列中包含非交互相关的特征（如人口统计学信息）时，对应的输出标签是未定义的。通过这种方式，HSTU将复杂的推荐问题转化为序列到序列的学习问题，使得模型能够基于用户的历史行为序列预测其未来可能感兴趣的内容。</p>
+<p><strong>架构统一：HSTU单元</strong></p>
+<p>为了用一个模块就能替换DLRM中的异构组件，HSTU引入了层次序列转换单元（Hierarchical
+Sequential Transduction Unit，HSTU） 如 <a class="reference internal" href="#id6"><span class="std std-numref">图2.3.3</span></a>
+右所示。HSTU由堆叠的相同层组成，每层包含三个关键子模块：</p>
+<ul class="simple">
+<li><p><strong>点向投影(Pointwise
+Projection)</strong>：使用单一线性变换后分割的方式同时产生注意力计算所需的查询、键、值以及门控权重：
+<span class="math notranslate nohighlight">\(U(X), V(X), Q(X), K(X) = \text{Split}(\phi_1(f_1(X)))\)</span></p></li>
+<li><p><strong>点向聚合(Pointwise
+Aggregation)</strong>：采用点向聚合而非传统softmax来保持推荐系统中用户偏好强度信息：
+<span class="math notranslate nohighlight">\(A(X)V(X) = \phi_2\left(Q(X)K(X)^T + \text{rab}^{p,t}\right)V(X)\)</span></p></li>
+<li><p><strong>点向转换(Pointwise
+Transformation)</strong>：使用门控机制实现类似MoE的特征选择能力：
+<span class="math notranslate nohighlight">\(Y(X) = f_2\left(\text{Norm}\left(A(X)V(X)\right) \odot U(X)\right)\)</span></p></li>
+</ul>
+<p>其中：<span class="math notranslate nohighlight">\(f_i(X) = W_i X + b_i\)</span>表示线性变换，<span class="math notranslate nohighlight">\(\phi_1\)</span>和<span class="math notranslate nohighlight">\(\phi_2\)</span>使用SiLU激活函数，<span class="math notranslate nohighlight">\(\text{Norm}\)</span>表示Layer
+Normalization（层归一化），<span class="math notranslate nohighlight">\(\text{rab}^{p,t}\)</span>表示包含位置和时间信息的相对注意力偏置，<span class="math notranslate nohighlight">\(\odot\)</span>表示元素级乘法。</p>
+<p>这三个子模块巧妙地统一处理了传统DLRM的三个主要阶段：特征提取通过注意力机制实现目标感知的特征池化；特征交互通过门控机制实现从原始特征到交叉特征的动态结合，注意力部分(<span class="math notranslate nohighlight">\(A(X)V(X)\)</span>)捕捉高阶关系，门控部分(<span class="math notranslate nohighlight">\(U(X)\)</span>)保留低阶信息；表示转换中门控信号<span class="math notranslate nohighlight">\(U(X)\)</span>充当为每个特征维度定制的“路由器”，实现类似MoE的条件计算效果。</p>
+<p><strong>替换softmax归一化机制</strong></p>
+<p>HSTU Pointwise Aggregation
+步骤放弃了传统的softmax归一化，而使用了不一样的聚合方式。传统Transformer使用softmax注意力虽然在语言任务中表现优异，但在推荐场景下存在信息丢失的问题。在推荐场景中，用户兴趣的“强度”是一个至关重要的信号。传统的softmax注意力机制会将所有历史行为的注意力权重归一化，使其总和为1。这本质上是在计算一种<strong>相对重要性</strong>，而非<strong>绝对相关性</strong>，从而扭曲了真实的偏好强度。例如，假设目标是推荐一部科幻电影。用户A的历史记录中有10部科幻片和1部喜剧片，而用户B只有1部科幻片和1部喜剧片。对于用户A，其对科幻的强烈偏好是一个非常强的信号。然而，softmax归一化可能会迫使这10部科幻片瓜分注意力权重，从而削弱“大量观看科幻”这一整体信号的强度，使其与用户B的信号差异不再显著。相比之下，HSTU的点向聚合（通过SiLU激活）独立计算每个历史项目的相关性得分，不进行跨项归一化。这使得模型能够保留偏好的原始强度——用户A历史中的科幻片可以共同产生一个非常高的激活总分，这对于准确预估点击率、观看时长等具体数值至关重要，而不仅仅是进行排序。</p>
+<p><strong>训练与召回</strong></p>
+<p>HSTU的完整工作流程包含训练和召回两个阶段。在训练阶段，模型基于前面描述的输入输出格式进行标准的Transformer训练——通过预测用户行为序列中的下一个正向交互物品来学习用户偏好模式和物品间的依赖关系。在召回阶段，经过多层HSTU编码器处理后，模型将用户的完整行为事件序列转换为能够概括用户历史、捕捉当前兴趣的实时动态表示<span class="math notranslate nohighlight">\(u_i\)</span>。拥有了用户表示向量<span class="math notranslate nohighlight">\(u_i\)</span>后，召回过程就转变为一个标准的向量检索问题——将<span class="math notranslate nohighlight">\(u_i\)</span>与物品语料库中所有物品的嵌入向量进行高效的相似度计算，通过近似最近邻（ANN）搜索从海量物品池中快速检索出与用户当前兴趣最匹配的Top-K个物品，形成召回列表。</p>
+<p>总而言之，如果说SASRec是将推荐序列视为一句由‘单词’（物品ID）组成的句子，那么HSTU则是将推荐场景中的所有信息（用户属性、行为、物品、上下文）都看作一种更复杂的‘语言’，并为此设计了一套全新的‘语法规则’（HSTU单元）来理解和生成这种语言。它的核心创新在于<strong>丰富了模型的输入</strong>，从而实现了对用户行为更深层次的理解。</p>
+<section id="id9">
+<h3><span class="section-number">2.3.3.2.1. </span>代码实践<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;hstu&#39;</span><span class="p">)</span>
+
+<span class="c1"># 加载数据</span>
+<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># 准备特征</span>
+<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+
+<span class="c1"># 训练模型</span>
+<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
+
+<span class="c1"># 评估模型</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+----------------+---------------+--------------+---------------+-----------+------------+-----------+----------+-----------+</span>
+<span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">100</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">20</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">50</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">100</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">20</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">50</span> <span class="o">|</span>
+<span class="o">+===============+================+===============+==============+===============+===========+============+===========+==========+===========+</span>
+<span class="o">|</span>         <span class="mf">0.018</span> <span class="o">|</span>         <span class="mf">0.1384</span> <span class="o">|</span>        <span class="mf">0.0311</span> <span class="o">|</span>       <span class="mf">0.0111</span> <span class="o">|</span>        <span class="mf">0.0753</span> <span class="o">|</span>    <span class="mf">0.0084</span> <span class="o">|</span>     <span class="mf">0.0304</span> <span class="o">|</span>    <span class="mf">0.0117</span> <span class="o">|</span>   <span class="mf">0.0061</span> <span class="o">|</span>    <span class="mf">0.0203</span> <span class="o">|</span>
+<span class="o">+---------------+----------------+---------------+--------------+---------------+-----------+------------+-----------+----------+-----------+</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tiger-id">
+<h2><span class="section-number">2.3.3.3. </span>TIGER：通过生成语义ID重塑推荐“输出”<a class="headerlink" href="#tiger-id" title="Permalink to this heading">¶</a></h2>
+<p>HSTU通过极大地丰富输入信息，提升了模型对用户行为上下文的理解能力。然而，生成式召回的演进还有另一条同样重要的路径。这条路径将目光从输入侧转向了输出侧，它反思了一个根本问题：即使我们拥有了完美的输入，但我们预测的目标——一个孤立的、无语义的原子ID
+—— 本身是否就是最佳选择？</p>
+<p>直接预测原子ID存在两个固有局限： 1.
+<strong>语义鸿沟</strong>：模型难以理解物品间的内在联系。它不知道“耐克篮球鞋A”和“耐克篮球鞋B”在本质上高度相似，这种相似性只能通过海量共现数据间接学习，效率低下。
+2.
+<strong>泛化难题</strong>：对于从未在训练集中出现过的新物品（冷启动问题），模型完全无法进行推荐，因为它的词汇表中根本没有这个ID。</p>
+<p>TIGER (Transformer Index for GEnerative Recommenders)
+<span id="id10">(<a class="reference internal" href="../../chapter_references/references.html#id58" title="Rajput, S., Mehta, N., Singh, A., Hulikal Keshavan, R., Vu, T., Heldt, L., … others. (2023). Recommender systems with generative retrieval. Advances in Neural Information Processing Systems, 36, 10299–10315.">Rajput <em>et al.</em>, 2023</a>)</span>
+模型便是在这一思考下诞生的革命性工作。它提出，<strong>推荐任务的核心不应是预测一个无意义的ID，而是生成一个能够描述物品内在核心语义的、结构化的‘语义ID’</strong>。</p>
+<p>这种范式转换带来了多项优势：允许在语义相似的物品间共享知识以解决冷启动问题；通过代码字元组高效表示大型物料库；并最终简化了推荐系统架构。</p>
+<p>TIGER框架由两个主要阶段组成：首先利用物品内容特征生成语义ID，然后在这些语义ID序列上训练一个生成式推荐模型。</p>
+<p><strong>语义ID的生成 (RQ-VAE)</strong></p>
+<p>语义ID的核心是为每个物品创建一个语义上有意义的代码字元组。内容特征相似的物品，其语义ID也应当相似（部分重叠），从而让模型能学习物品间的深层语义关系。</p>
+<p>TIGER采用残差量化变分自编码器 (RQ-VAE)
+<span id="id11">(<a class="reference internal" href="../../chapter_references/references.html#id59" title="Zeghidour, N., Luebs, A., Omran, A., Skoglund, J., &amp; Tagliasacchi, M. (2021). Soundstream: an end-to-end neural audio codec. IEEE/ACM Transactions on Audio, Speech, and Language Processing, 30, 495–507.">Zeghidour <em>et al.</em>, 2021</a>)</span>
+来实现这一目标。RQ-VAE是一种多层向量量化器，它通过对残差进行迭代量化来生成代码字元组。</p>
+<figure class="align-default" id="id13">
+<img alt="../../_images/tiger_rqvae.png" src="../../_images/tiger_rqvae.png" />
+<figcaption>
+<p><span class="caption-number">图2.3.4 </span><span class="caption-text">RQ-VAE量化方法</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>具体过程如下：</p>
+<ol class="arabic">
+<li><p>一个预训练的内容编码器（如Sentence-T5）先将物品内容特征（如标题、描述）处理成语义嵌入向量
+<span class="math notranslate nohighlight">\(\mathbf{x}\)</span>。</p></li>
+<li><p>RQ-VAE的编码器 <span class="math notranslate nohighlight">\(\mathcal{E}\)</span> 将输入向量 <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>
+进一步编码为潜在表示
+<span class="math notranslate nohighlight">\(\mathbf{z} := \mathcal{E}(\mathbf{x})\)</span>，并将初始残差定义为
+<span class="math notranslate nohighlight">\(\mathbf{r}_0 := \mathbf{z}\)</span>。</p></li>
+<li><p>模型包含 <span class="math notranslate nohighlight">\(m\)</span> 个层级，每个层级 <span class="math notranslate nohighlight">\(d \in \{0, 1, ..., m-1\}\)</span>
+都有一个独立的码本 <span class="math notranslate nohighlight">\(\mathcal{C}_d\)</span>。在第 <span class="math notranslate nohighlight">\(d\)</span>
+层，通过在码本中寻找与当前残差 <span class="math notranslate nohighlight">\(\mathbf{r}_d\)</span>
+最接近的码字来完成量化：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-sequence-2-generateive-recall-7">
+<span class="eqno">(2.3.24)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-7" title="Permalink to this equation">¶</a></span>\[c_d = \arg\min_{k} \|\mathbf{r}_d - \mathbf{e}_k\|^2 \quad \text{其中 } \mathbf{e}_k \in \mathcal{C}_d\]</div>
+</li>
+<li><p>计算新的残差并送入下一层：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-sequence-2-generateive-recall-8">
+<span class="eqno">(2.3.25)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-8" title="Permalink to this equation">¶</a></span>\[\mathbf{r}_{d+1} := \mathbf{r}_d - \mathbf{e}_{c_d}\]</div>
+</li>
+<li><p>重复此过程 <span class="math notranslate nohighlight">\(m\)</span> 次，最终得到一个由 <span class="math notranslate nohighlight">\(m\)</span>
+个码字组成的语义ID元组 <span class="math notranslate nohighlight">\((c_0, c_1, ..., c_{m-1})\)</span>。</p></li>
+</ol>
+<p>RQ-VAE通过一个联合损失函数进行端到端训练，该函数包含重建损失（确保解码器能从量化表示中恢复原始信息）和量化损失（用于更新码本），从而联合优化编码器、解码器和所有码本。</p>
+<p>为确保唯一性，如果多个物品在量化后产生了完全相同的语义ID，TIGER会在ID末尾追加一个额外的索引位来区分它们，例如
+<code class="docutils literal notranslate"><span class="pre">(12,</span> <span class="pre">24,</span> <span class="pre">52,</span> <span class="pre">0)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">(12,</span> <span class="pre">24,</span> <span class="pre">52,</span> <span class="pre">1)</span></code>。</p>
+<p><strong>基于语义ID的生成式检索</strong></p>
+<p>拥有了每个物品的语义ID后，推荐任务就转变为一个标准的序列到序列生成问题。</p>
+<figure class="align-default" id="id14">
+<img alt="../../_images/tiger_transformer.png" src="../../_images/tiger_transformer.png" />
+<figcaption>
+<p><span class="caption-number">图2.3.5 </span><span class="caption-text">基于语义ID的生成式检索</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<ol class="arabic">
+<li><p>将用户的历史交互序列
+<span class="math notranslate nohighlight">\((\text{item}_1, \text{item}_2, ..., \text{item}_n)\)</span>
+转换为其对应的语义ID序列:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-sequence-2-generateive-recall-9">
+<span class="eqno">(2.3.26)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-9" title="Permalink to this equation">¶</a></span>\[((c_{1,0}, ..., c_{1,m-1}), (c_{2,0}, ..., c_{2,m-1}), ..., (c_{n,0}, ..., c_{n,m-1}))\]</div>
+<p>其中 <span class="math notranslate nohighlight">\((c_{i,0}, ..., c_{i,m-1})\)</span> 是 <span class="math notranslate nohighlight">\(\text{item}_i\)</span>
+的语义ID</p>
+</li>
+<li><p>将每个物品的语义ID元组展平，形成一个长序列作为Transformer模型的输入：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-sequence-2-generateive-recall-10">
+<span class="eqno">(2.3.27)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-10" title="Permalink to this equation">¶</a></span>\[(c_{1,0}, ..., c_{1,m-1}, c_{2,0}, ..., c_{2,m-1}, ..., c_{n,0}, ..., c_{n,m-1})\]</div>
+</li>
+<li><p>训练一个标准的Encoder-Decoder
+Transformer模型。Encoder负责理解用户历史序列的上下文，Decoder则自回归地、逐个码字地生成下一个最可能被交互物品的语义ID
+<span class="math notranslate nohighlight">\((c_{n+1,0}, ..., c_{n+1,m-1})\)</span>。</p></li>
+<li><p>在推理阶段，一旦生成了完整的预测语义ID，就可以通过查找表将其映射回具体的物品，完成推荐。</p></li>
+</ol>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">2.3.3. 生成式召回方法</a><ul>
+<li><a class="reference internal" href="#sasrec">2.3.3.1. SASRec：基于自注意力的序列推荐</a><ul>
+<li><a class="reference internal" href="#id7">2.3.3.1.1. 代码实践</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hstu">2.3.3.2. HSTU：为复杂的“事件流”输入定制生成式架构</a><ul>
+<li><a class="reference internal" href="#id9">2.3.3.2.1. 代码实践</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tiger-id">2.3.3.3. TIGER：通过生成语义ID重塑推荐“输出”</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="1.user_interests.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>2.3.2. 深化用户兴趣表示</div>
+         </div>
+     </a>
+     <a id="button-next" href="3.summary.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>2.3.4. 总结</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

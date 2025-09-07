@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>4.2. 基于贪心的重排 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.3. 基于个性化的重排" href="3.personalized.html" />
+    <link rel="prev" title="4.1. 简介" href="1.intro.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">4. </span>重排模型</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">4.2. </span>基于贪心的重排</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_3_rerank/2.greedy.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/notebooks.zip">
+                  <i class="fas fa-download"></i>
+                  Jupyter 记事本
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/fun-rec.pdf">
+                  <i class="fas fa-file-pdf"></i>
+                  PDF
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
+                  <i class="fab fa-github"></i>
+                  GitHub
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 重排模型</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1.intro.html">4.1. 简介</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.personalized.html">4.3. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.summary.html">4.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_5_projects/index.html">6. 项目实践</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/0.intro.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/1.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/2.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/3.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/4.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/5.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 重排模型</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1.intro.html">4.1. 简介</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.personalized.html">4.3. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.summary.html">4.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_5_projects/index.html">6. 项目实践</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/0.intro.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/1.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/2.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/3.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/4.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/5.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="greedy-rerank">
+<span id="id1"></span><h1><span class="section-number">4.2. </span>基于贪心的重排<a class="headerlink" href="#greedy-rerank" title="Permalink to this heading">¶</a></h1>
+<p>贪心算法以其思路直观、计算高效、易于实现的特点，成为重排阶段解决多样性、新颖性等问题的首选策略之一。它们通常不依赖复杂的模型训练，而是基于预先定义的规则或目标函数，通过逐步选择当前最优解（贪心选择）的方式来构建或调整最终推荐列表。本节将深入剖析两种经典的、基于贪心的重排算法：最大边际相关（Maximal
+Marginal Relevance, MMR） 和 行列式点过程（Determinantal Point Process,
+DPP）。</p>
+<section id="mmr">
+<h2><span class="section-number">4.2.1. </span>MMR：最大边际相关<a class="headerlink" href="#mmr" title="Permalink to this heading">¶</a></h2>
+<p>在精排输出的按CTR降序排列的列表中，头部物品往往具有高度相似性（如连续推荐同品类商品或同风格视频）。这种同质化现象直接导致两大问题：</p>
+<ol class="arabic simple">
+<li><p>用户体验恶化：用户浏览时产生审美疲劳，兴趣衰减速度加快；</p></li>
+<li><p>系统效率损失：长尾优质内容曝光不足，平台生态多样性下降。</p></li>
+</ol>
+<p>MMR算法 <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id56" title="Carbonell, J., &amp; Goldstein, J. (1998). The use of mmr, diversity-based reranking for reordering documents and producing summaries. Proceedings of the 21st annual international ACM SIGIR conference on Research and development in information retrieval (pp. 335–336).">Carbonell and Goldstein, 1998</a>)</span>
+的核心目标是在保留高相关性物品的前提下，通过主动引入多样性打破同质化，实现“相关性与多样性的帕累托最优”。</p>
+<p>MMR通过定义边际收益函数量化物品对列表的增量价值：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-0">
+<span class="eqno">(4.2.1)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-0" title="Permalink to this equation">¶</a></span>\[MR(i) = \lambda \cdot \underbrace{\text{Rel}(i)}_{\text{相关性}} - (1-\lambda) \cdot \underbrace{\max_{j \in S} \text{Sim}(i,j)}_{\text{多样性惩罚项}}\]</div>
+<p>其中：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(S\)</span>：已选物品集合</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{Rel}(i)\)</span>：物品<span class="math notranslate nohighlight">\(i\)</span>的相关性分数，直接继承精排模型输出（如CTR预估分）</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{Sim}(i,j)\)</span>：物品<span class="math notranslate nohighlight">\(i\)</span>与<span class="math notranslate nohighlight">\(j\)</span>的相似度，计算方式包括：</p></li>
+<li><p><span class="math notranslate nohighlight">\(\lambda\)</span>：权衡参数 (<span class="math notranslate nohighlight">\(0 \leq \lambda \leq 1\)</span>)</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\lambda \to 1\)</span>：退化为精排序（纯相关性优先）</p></li>
+<li><p><span class="math notranslate nohighlight">\(\lambda \to 0\)</span>：强制多样性优先（可能牺牲相关性）</p></li>
+</ul>
+</li>
+</ul>
+<p>当精排候选内容数量太多的时候，可以通过滑动窗口来对齐进行优化，也就是计算相似度的时候不是直接计算所有的相似度，而是计算窗口内的相似度，</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-1">
+<span class="eqno">(4.2.2)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-1" title="Permalink to this equation">¶</a></span>\[MR_{\text{win}}(i) = \lambda \cdot \text{Rel}(i) - (1-\lambda) \cdot \underbrace{\max_{j \in W} \text{Sim}(i,j)}_{\text{窗口多样性惩罚}}\]</div>
+<p>其中<span class="math notranslate nohighlight">\(W \subseteq S\)</span>是最近选择的<span class="math notranslate nohighlight">\(w\)</span>个物品（<span class="math notranslate nohighlight">\(w = |W| \ll |S|\)</span>）。</p>
+<p>MMR核心代码实现：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics.pairwise</span><span class="w"> </span><span class="kn">import</span> <span class="n">cosine_similarity</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Item</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">rel</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">dense_vector</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sparse_features</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rel</span> <span class="o">=</span> <span class="n">rel</span>  <span class="c1"># 相关性分数（精排分）</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dense_vector</span> <span class="o">=</span> <span class="n">dense_vector</span>  <span class="c1"># 稠密向量表示（如嵌入向量）</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sparse_features</span> <span class="o">=</span> <span class="n">sparse_features</span>  <span class="c1"># 稀疏特征（标签、类别、作者等）</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">MMR_Reranking</span><span class="p">(</span>
+    <span class="n">item_pool</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Item</span><span class="p">],</span>
+    <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">lambda_param</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>  <span class="c1"># 权衡参数</span>
+    <span class="n">sim_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Item</span><span class="p">,</span> <span class="n">Item</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>  <span class="c1"># 相似度计算函数</span>
+    <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># 滑动窗口大小</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Item</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    基于最大边际相关(MMR)算法的重排实现，支持滑动窗口优化</span>
+
+<span class="sd">    参数:</span>
+<span class="sd">    item_pool -- 候选物品列表</span>
+<span class="sd">    k -- 最终返回的物品数量</span>
+<span class="sd">    lambda_param -- 相关性与多样性权衡参数 (0-1)</span>
+<span class="sd">    sim_func -- 物品相似度计算函数</span>
+<span class="sd">    window_size -- 滑动窗口大小，默认为None（使用所有已选物品）</span>
+
+<span class="sd">    返回:</span>
+<span class="sd">    重排后的物品列表</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 创建副本避免修改原始输入</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">item_pool</span><span class="p">)</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 初始化重排结果列表</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">S</span>
+
+    <span class="c1"># 第一步：选取精排最高分物品</span>
+    <span class="n">first_item</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">rel</span><span class="p">)</span>
+    <span class="n">S</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first_item</span><span class="p">)</span>
+    <span class="n">candidates</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">first_item</span><span class="p">)</span>
+
+    <span class="c1"># 第二步：贪心迭代选择</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">k</span> <span class="ow">and</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="n">best_score</span> <span class="o">=</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="n">best_item</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># 确定要考虑的已选物品窗口</span>
+        <span class="k">if</span> <span class="n">window_size</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">window_size</span><span class="p">:</span>
+            <span class="c1"># 只使用最近选择的window_size个物品</span>
+            <span class="n">window</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="o">-</span><span class="n">window_size</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 使用所有已选物品</span>
+            <span class="n">window</span> <span class="o">=</span> <span class="n">S</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+            <span class="c1"># 计算与窗口中物品的最大相似度</span>
+            <span class="n">max_sim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">sim_func</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">window</span><span class="p">)</span> <span class="k">if</span> <span class="n">window</span> <span class="k">else</span> <span class="mi">0</span>
+
+            <span class="c1"># 使用MMR公式: MR(i) = $\lambda$ * Rel(i) - (1 - $\lambda$) * max_sim(i, window)</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">lambda_param</span> <span class="o">*</span> <span class="n">item</span><span class="o">.</span><span class="n">rel</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">lambda_param</span><span class="p">)</span> <span class="o">*</span> <span class="n">max_sim</span>
+
+            <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">best_score</span><span class="p">:</span>
+                <span class="n">best_score</span> <span class="o">=</span> <span class="n">score</span>
+                <span class="n">best_item</span> <span class="o">=</span> <span class="n">item</span>
+
+        <span class="k">if</span> <span class="n">best_item</span><span class="p">:</span>
+            <span class="n">S</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">best_item</span><span class="p">)</span>
+            <span class="n">candidates</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">best_item</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>  <span class="c1"># 无有效候选时退出</span>
+
+    <span class="k">return</span> <span class="n">S</span>
+</pre></div>
+</div>
+<p>假如有5个待重排的物品，已知精排打分和item之间的两两相似度，重排需要从5个物品中筛选出top3条内容的详细计算流程如下：
+1. 假设候选集包含5个商品及其精排分（Rel），相似度矩阵如下：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>商品</p></th>
+<th class="head"><p>Rel</p></th>
+<th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>C</p></th>
+<th class="head"><p>D</p></th>
+<th class="head"><p>E</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>0.95</p></td>
+<td><p>1.0</p></td>
+<td><p>0.2</p></td>
+<td><p>0.8</p></td>
+<td><p>0.1</p></td>
+<td><p>0.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>0.90</p></td>
+<td><p>0.2</p></td>
+<td><p>1.0</p></td>
+<td><p>0.1</p></td>
+<td><p>0.7</p></td>
+<td><p>0.4</p></td>
+</tr>
+<tr class="row-even"><td><p>C</p></td>
+<td><p>0.85</p></td>
+<td><p>0.8</p></td>
+<td><p>0.1</p></td>
+<td><p>1.0</p></td>
+<td><p>0.3</p></td>
+<td><p>0.6</p></td>
+</tr>
+<tr class="row-odd"><td><p>D</p></td>
+<td><p>0.80</p></td>
+<td><p>0.1</p></td>
+<td><p>0.7</p></td>
+<td><p>0.3</p></td>
+<td><p>1.0</p></td>
+<td><p>0.5</p></td>
+</tr>
+<tr class="row-even"><td><p>E</p></td>
+<td><p>0.75</p></td>
+<td><p>0.3</p></td>
+<td><p>0.4</p></td>
+<td><p>0.6</p></td>
+<td><p>0.5</p></td>
+<td><p>1.0</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic" start="2">
+<li><p><span class="math notranslate nohighlight">\(\lambda=0.7\)</span>时的MMR过程：</p>
+<ol class="arabic simple">
+<li><p>初始选择：A (Rel=0.95)</p></li>
+<li><p>第二轮计算：</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="p">:</span> <span class="mf">0.90</span> <span class="o">-</span> <span class="mf">0.7</span><span class="o">*</span><span class="nb">max</span><span class="p">(</span><span class="n">Sim</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">)</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.90</span> <span class="o">-</span> <span class="mf">0.14</span> <span class="o">=</span> <span class="mf">0.76</span>
+<span class="n">C</span><span class="p">:</span> <span class="mf">0.85</span> <span class="o">-</span> <span class="mf">0.7</span><span class="o">*</span><span class="mf">0.8</span> <span class="o">=</span> <span class="mf">0.85</span> <span class="o">-</span> <span class="mf">0.56</span> <span class="o">=</span> <span class="mf">0.29</span>
+<span class="n">D</span><span class="p">:</span> <span class="mf">0.80</span> <span class="o">-</span> <span class="mf">0.7</span><span class="o">*</span><span class="mf">0.1</span> <span class="o">=</span> <span class="mf">0.80</span> <span class="o">-</span> <span class="mf">0.07</span> <span class="o">=</span> <span class="mf">0.73</span>
+<span class="n">E</span><span class="p">:</span> <span class="mf">0.75</span> <span class="o">-</span> <span class="mf">0.7</span><span class="o">*</span><span class="mf">0.3</span> <span class="o">=</span> <span class="mf">0.75</span> <span class="o">-</span> <span class="mf">0.21</span> <span class="o">=</span> <span class="mf">0.54</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">选择</span> <span class="n">B</span> <span class="p">(</span><span class="n">score</span><span class="o">=</span><span class="mf">0.76</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>第三轮计算（对比当前列表S=[A,B]）：</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span> <span class="mf">0.85</span> <span class="o">-</span> <span class="mf">0.7</span><span class="o">*</span><span class="nb">max</span><span class="p">(</span><span class="n">Sim</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">C</span><span class="p">)</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">Sim</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">)</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.85</span><span class="o">-</span><span class="mf">0.56</span><span class="o">=</span><span class="mf">0.29</span>
+<span class="n">D</span><span class="p">:</span> <span class="mf">0.80</span> <span class="o">-</span> <span class="mf">0.7</span><span class="o">*</span><span class="nb">max</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.80</span><span class="o">-</span><span class="mf">0.49</span><span class="o">=</span><span class="mf">0.31</span>
+<span class="n">E</span><span class="p">:</span> <span class="mf">0.75</span> <span class="o">-</span> <span class="mf">0.7</span><span class="o">*</span><span class="nb">max</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.75</span><span class="o">-</span><span class="mf">0.28</span><span class="o">=</span><span class="mf">0.47</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">选择</span> <span class="n">E</span> <span class="p">(</span><span class="n">score</span><span class="o">=</span><span class="mf">0.47</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>最终序列: [A, B, E] (对比精排序[A, B, C] 多样性提升37%)</p></li>
+</ol>
+</li>
+</ol>
+</section>
+<section id="dpp">
+<h2><span class="section-number">4.2.2. </span>DPP：行列式点过程<a class="headerlink" href="#dpp" title="Permalink to this heading">¶</a></h2>
+<section id="id3">
+<h3><span class="section-number">4.2.2.1. </span>行列式如何度量多样性<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
+<p>上述MMR原理中可以看出，MMR通过候选内容和已选内容计算两两相似度，贪心的选择一个和已选所有内容相似度总和最低的内容。这种方式无法捕捉多个物品间的复杂排斥关系（如三个相似物品的冗余效应），而行列式可以实现这一点。为了解释清楚行列式如何度量多样性，下面会花一定的篇幅做详细的介绍。</p>
+<p>假设我们通过余弦相似度的方式来计算物品之间的相似度，对于每一个物品都有一个向量表示<span class="math notranslate nohighlight">\(x_i\)</span>，那么对于待排序的所有物品<span class="math notranslate nohighlight">\(X\)</span>，很容易得到所有物品两两之间的相似度矩阵<span class="math notranslate nohighlight">\(S=X^TX\)</span>。</p>
+<p>我们知道矩阵行列式的几何意义表示的是，矩阵列向量张成的超面体的“有向体积”。在矩阵<span class="math notranslate nohighlight">\(S\)</span>中，如果列向量都线性相关，意味着列向量“塌缩”在更低维的空间中（在2D中，两个向量共线；在3D中，三个向量共面），此时矩阵<span class="math notranslate nohighlight">\(S\)</span>的行列式<span class="math notranslate nohighlight">\(det(S)=0\)</span>。反之，如果线性不相关，向量张成的高纬空间没有冗余，线性不相关。</p>
+<p>假如我们有4个物品，对应的标签分别为：<span class="math notranslate nohighlight">\(a=\text{科幻动作片},b=\text{科幻喜剧片},c=\text{古装爱情片},d=\text{古装悬疑片}\)</span>，计算物品之间的两两相似度，得到相似度矩阵<span class="math notranslate nohighlight">\(S_t\)</span>，物品{a,b,c,d}的相似度矩阵：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-2">
+<span class="eqno">(4.2.3)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-2" title="Permalink to this equation">¶</a></span>\[\begin{split}S = \begin{pmatrix}
+1 &amp; 0.9 &amp; 0.1 &amp; 0.2 \\
+0.9 &amp; 1 &amp; 0.1 &amp; 0.1 \\
+0.1 &amp; 0.1 &amp; 1 &amp; 0.8 \\
+0.2 &amp; 0.1 &amp; 0.8 &amp; 1
+\end{pmatrix}\end{split}\]</div>
+<p>分别计算物品{a,b}和物品{b,d}的相似度矩阵<span class="math notranslate nohighlight">\(S_{a,b}\)</span> 和
+<span class="math notranslate nohighlight">\(S_{b,d}\)</span>：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-3">
+<span class="eqno">(4.2.4)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-3" title="Permalink to this equation">¶</a></span>\[\begin{split}S_{a,b} = \begin{pmatrix}
+1 &amp; 0.9 \\
+0.9 &amp; 1
+\end{pmatrix},\end{split}\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-4">
+<span class="eqno">(4.2.5)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-4" title="Permalink to this equation">¶</a></span>\[\begin{split}S_{b,d} = \begin{pmatrix}
+1 &amp; 0.1 \\
+0.1 &amp; 1
+\end{pmatrix}\end{split}\]</div>
+<p>它们的行列式分别为：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(|S_{a,b}|=1*1-0.9*0.9=0.19\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(|S_{b,d}|=1*1-0.1*0.1=0.81\)</span></p></li>
+</ul>
+<p>从行列式的结果可以看出，当相似度矩阵的行列式值较大时，对应物品的多样性越高，反之行列式的值越低，多样性越低。</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">4.2.2.2. </span>相关性与多样性融合<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
+<p>在推荐中，相关性和多样性是两个重要的指标。相关性指的是物品之间的相似性，即物品的相关性越高，推荐的结果越相关。在DPP中，通过引入一个半正定的核矩阵<span class="math notranslate nohighlight">\(L\)</span>来同时优化物品的相关性和多样性。该半正定核矩阵可以分解为<span class="math notranslate nohighlight">\(L=B^TB\)</span>，其中<span class="math notranslate nohighlight">\(B\)</span>的每一列表示重排候选集中物品的表示向量。具体来说，<span class="math notranslate nohighlight">\(B\)</span>的向量是通过相关性得分<span class="math notranslate nohighlight">\(r_i\)</span>和归一化后的物品向量的乘积计算得来。因此核矩阵中的元素<span class="math notranslate nohighlight">\(L_{i,j}\)</span>可以表示为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-5">
+<span class="eqno">(4.2.6)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-5" title="Permalink to this equation">¶</a></span>\[\mathbf{L}_{ij} = \langle \mathbf{B}_i, \mathbf{B}_j \rangle = \langle r_i \mathbf{f}_i, r_j \mathbf{f}_j \rangle = r_i r_j \langle \mathbf{f}_i, \mathbf{f}_j \rangle.\]</div>
+<p>其中，<span class="math notranslate nohighlight">\(\langle \mathbf{f}_i, \mathbf{f}_j \rangle\)</span>表示物品<span class="math notranslate nohighlight">\(i\)</span>和物品<span class="math notranslate nohighlight">\(j\)</span>的内积，即相似度得分<span class="math notranslate nohighlight">\(S_{ij}\)</span>。因此，核矩阵<span class="math notranslate nohighlight">\(L\)</span>可以进一步表示为：<span class="math notranslate nohighlight">\(\mathbf{L} = \text{Diag}(\mathbf{r}) \cdot \mathbf{S} \cdot \text{Diag}(\mathbf{r})\)</span>，即分别对相似性矩阵的每一行和每一列分别乘以<span class="math notranslate nohighlight">\(r_i\)</span>。</p>
+<blockquote>
+<div><p>在公式推导之前，我们看一个核矩阵的详细构造过程，假设我们有 3
+个物品，它们之间的相似度矩阵 <span class="math notranslate nohighlight">\(S\)</span> 如下：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-6">
+<span class="eqno">(4.2.7)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-6" title="Permalink to this equation">¶</a></span>\[\begin{split}S = \begin{bmatrix}
+1 &amp; 0.8 &amp; 0.2 \\
+0.8 &amp; 1 &amp; 0.6 \\
+0.2 &amp; 0.6 &amp; 1
+\end{bmatrix}\end{split}\]</div>
+<p>相关性向量 <span class="math notranslate nohighlight">\(r\)</span> ：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-7">
+<span class="eqno">(4.2.8)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-7" title="Permalink to this equation">¶</a></span>\[\begin{split}r = \begin{bmatrix}
+0.9 \\
+0.7 \\
+0.5
+\end{bmatrix}\end{split}\]</div>
+<p>构建对角阵：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-8">
+<span class="eqno">(4.2.9)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-8" title="Permalink to this equation">¶</a></span>\[\begin{split}\text{Diag}(r) = \begin{bmatrix}
+0.9 &amp; 0 &amp; 0 \\
+0 &amp; 0.7 &amp; 0 \\
+0 &amp; 0 &amp; 0.5
+\end{bmatrix}\end{split}\]</div>
+<p>计算核矩阵：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-9">
+<span class="eqno">(4.2.10)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-9" title="Permalink to this equation">¶</a></span>\[L = \text{Diag}(r) \cdot S \cdot \text{Diag}(r)\]</div>
+<p>首先计算<span class="math notranslate nohighlight">\(\text{Diag}(r) \cdot S\)</span></p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-10">
+<span class="eqno">(4.2.11)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-10" title="Permalink to this equation">¶</a></span>\[\begin{split}\text{Diag}(r) \cdot S = \begin{bmatrix}
+0.9 &amp; 0 &amp; 0 \\
+0 &amp; 0.7 &amp; 0 \\
+0 &amp; 0 &amp; 0.5
+\end{bmatrix}
+\begin{bmatrix}
+1 &amp; 0.8 &amp; 0.2 \\
+0.8 &amp; 1 &amp; 0.6 \\
+0.2 &amp; 0.6 &amp; 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+0.9 &amp; 0.72 &amp; 0.18 \\
+0 &amp; 0.7 &amp; 0.42 \\
+0 &amp; 0 &amp; 0.5
+\end{bmatrix}\end{split}\]</div>
+<p>然后计算 <span class="math notranslate nohighlight">\((\text{Diag}(r) \cdot S) \cdot \text{Diag}(r)\)</span>：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-11">
+<span class="eqno">(4.2.12)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-11" title="Permalink to this equation">¶</a></span>\[\begin{split}(\text{Diag}(r) \cdot S) \cdot \text{Diag}(r) = \begin{bmatrix}
+0.9 &amp; 0.72 &amp; 0.18 \\
+0 &amp; 0.7 &amp; 0.42 \\
+0 &amp; 0 &amp; 0.5
+\end{bmatrix}
+\begin{bmatrix}
+0.9 &amp; 0 &amp; 0 \\
+0 &amp; 0.7 &amp; 0 \\
+0 &amp; 0 &amp; 0.5
+\end{bmatrix}
+=
+\begin{bmatrix}
+0.81 &amp; 0.504 &amp; 0.09 \\
+0 &amp; 0.49 &amp; 0.21 \\
+0 &amp; 0 &amp; 0.25
+\end{bmatrix}\end{split}\]</div>
+</div></blockquote>
+<p><strong>构建完核矩阵后，继续上述的公式推导，根据行列式的乘法性质可得到：</strong></p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-12">
+<span class="eqno">(4.2.13)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-12" title="Permalink to this equation">¶</a></span>\[|L| = |\text{Diag}(r)| \cdot |S| \cdot |\text{Diag}(r)| = \prod_{i \in R} r_{i}^2 \cdot |S|\]</div>
+<p>对于用户<span class="math notranslate nohighlight">\(u\)</span>来说，被选中的候选物品集合为<span class="math notranslate nohighlight">\(R_u\)</span>，核矩阵的行列式表示为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-13">
+<span class="eqno">(4.2.14)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-13" title="Permalink to this equation">¶</a></span>\[|L_{R_u}| = \prod_{i \in R_u} r_{u,i}^2 \cdot |S|\]</div>
+<p>两边取对数，得到：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-14">
+<span class="eqno">(4.2.15)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-14" title="Permalink to this equation">¶</a></span>\[\begin{aligned}
+\log |L_{R_u}| = \sum_{i \in R_u} \log r_{u,i}^2 + \log |S|
+\end{aligned}\]</div>
+<p>其中：</p>
+<ul class="simple">
+<li><p>第一项只跟“相关性”有关，越相关 <span class="math notranslate nohighlight">\(r_{u,i}^2\)</span> 越大；</p></li>
+<li><p>第二项 <span class="math notranslate nohighlight">\(\log |S|\)</span> 只跟“多样性”有关，S 越接近正交（余弦越接近
+0），行列式越大。</p></li>
+</ul>
+<p>经过上述的简单推到，我们会发现DPP最终优化的目标也变成了类似MMR的相关性和多样性的线形组合。所以在实际应用时会通过一个超参<span class="math notranslate nohighlight">\(\theta\)</span>来平衡相关性和多样性的权重。</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-15">
+<span class="eqno">(4.2.16)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-15" title="Permalink to this equation">¶</a></span>\[\log |L_{R_u}| = \theta \sum_{i \in R_u} \log r_{u,i}^2 + (1-\theta) \log |S|\]</div>
+</section>
+<section id="id5">
+<h3><span class="section-number">4.2.2.3. </span>贪心求解过程<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
+<p>上述介绍了相似矩阵的行列式可以度量多样性，通过核矩阵可以融合相关性和多样性，下面主要来看一下贪心求解过程。重排从物品候选列表中选择一个子集，使得<span class="math notranslate nohighlight">\(\log |L_{R_u}|\)</span>的值最大需要通过DPP（行列式点过程）来实现。</p>
+<p>DPP是一种性能较高的概率模型，能将复杂的概率计算转换成简单的行列式计算，通过核矩阵的行列式计算每一个子集的概率，这一筛选过程就是行列式点过程的最大后验概率推断MAP（maximum
+a posteriori
+inference），行列式点过程的MAP求解是一个复杂的过程，Hulu的论文中提出了一种改进的贪心算法能够快速求解
+<span id="id6">(<a class="reference internal" href="../chapter_references/references.html#id55" title="Chen, L., Zhang, G., &amp; Zhou, E. (2018). Fast greedy map inference for determinantal point process to improve recommendation diversity. Advances in Neural Information Processing Systems, 31.">Chen <em>et al.</em>, 2018</a>)</span>。</p>
+<p>这一求解过程简单来说就是每次从候选集中贪心地选择一个能使边际收益（
+marginal
+gain）最大的商品加入到最终的结果子集中，直到满足停止条件为止，即每次选择物品<span class="math notranslate nohighlight">\(j\)</span>添加到结果集<span class="math notranslate nohighlight">\(Y_g\)</span>中，
+<span class="math notranslate nohighlight">\(Y_g\)</span>初始化为空集，物品<span class="math notranslate nohighlight">\(j\)</span>需要满足下面的等式：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-16">
+<span class="eqno">(4.2.17)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-16" title="Permalink to this equation">¶</a></span>\[j = \arg\max_{i \in Z \setminus Y_g} \log\det(\mathbf{L}_{Y_g \cup \{i\}}) - \log\det(\mathbf{L}_{Y_g})\]</div>
+<p>由于<span class="math notranslate nohighlight">\(L\)</span>是一个半正定矩阵，所有主子矩阵也都是半正定矩阵，假设<span class="math notranslate nohighlight">\(det(L_{Y_g}) &gt; 0\)</span>，<span class="math notranslate nohighlight">\(det(L_{Y_g})\)</span>的Cholesky分解可以表示为<span class="math notranslate nohighlight">\(L_{Y_g}=VV^T\)</span>，其中<span class="math notranslate nohighlight">\(V\)</span>是一个可逆的下三角矩阵。</p>
+<p>对于新加入的物品<span class="math notranslate nohighlight">\(i\)</span>，我们构造构造一个新的矩阵<span class="math notranslate nohighlight">\(\mathbf{L}_{Y_g \cup \{i\}}\)</span>，它包含了<span class="math notranslate nohighlight">\(L_{Y_g}\)</span>和新物品<span class="math notranslate nohighlight">\(i\)</span>相关的元素，新增物品<span class="math notranslate nohighlight">\(i\)</span>后的核矩阵<span class="math notranslate nohighlight">\(\mathbf{L}_{Y_g \cup \{i\}}\)</span>的Cholesky分解为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-17">
+<span class="eqno">(4.2.18)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-17" title="Permalink to this equation">¶</a></span>\[\begin{split}\mathbf{L}_{Y_g \cup \{i\}} = \begin{bmatrix}
+\mathbf{L}_{Y_g} &amp; \mathbf{L}_{Y_g,i} \\
+\mathbf{L}_{i,Y_g} &amp; \mathbf{L}_{ii}
+\end{bmatrix} = \begin{bmatrix}
+\mathbf{V} &amp; \mathbf{0} \\
+\mathbf{c}_i &amp; d_i
+\end{bmatrix} \begin{bmatrix}
+\mathbf{V} &amp; \mathbf{0} \\
+\mathbf{c}_i &amp; d_i
+\end{bmatrix}^\top
+=
+\begin{bmatrix}
+V V^\top &amp; V c_i^\top \\[4pt]
+c_i V^\top &amp; c_i c_i^\top + d_i^2
+\end{bmatrix}\end{split}\]</div>
+<p>其中<span class="math notranslate nohighlight">\(\mathbf{L}_{Y_g,i}\)</span>表示的是<span class="math notranslate nohighlight">\(Y_g\)</span>所有行索引及对应新增的第i列索引对应的列向量，<span class="math notranslate nohighlight">\(\mathbf{L}_{i,Y_g}\)</span>表示的是<span class="math notranslate nohighlight">\(Y_g\)</span>所有列索引及对应新增第i行索引对应的行矩阵，<span class="math notranslate nohighlight">\(L_{ii}\)</span>表示的是新的核矩阵右下角元素。其中行向量<span class="math notranslate nohighlight">\(c_i\)</span>和标量<span class="math notranslate nohighlight">\(d_i\)</span>满足如下条件：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-18">
+<span class="eqno">(4.2.19)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-18" title="Permalink to this equation">¶</a></span>\[\mathbf{V} \mathbf{c}_i^\top = \mathbf{L}_{Y_g,i},\mathbf{c}_i \mathbf{V^\top} = \mathbf{L}_{i,Y_g} =&gt; \mathbf{L}_{Y_g,i}=\mathbf{L}_{i,Y_g}^T\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-19">
+<span class="eqno">(4.2.20)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-19" title="Permalink to this equation">¶</a></span>\[d_i^2 = \mathbf{L}_{ii} - \|\mathbf{c}_i\|_2^2.\]</div>
+<p>根据上述公式，我们有Cholesky分解的分块形式：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-20">
+<span class="eqno">(4.2.21)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-20" title="Permalink to this equation">¶</a></span>\[\begin{split}\mathbf{L}_{Y_g \cup \{i\}} = \begin{bmatrix} \mathbf{L}_{Y_g} &amp; \mathbf{L}_{Y_g,i} \\ \mathbf{L}_{i,Y_g} &amp; \mathbf{L}_{ii} \end{bmatrix} = \begin{bmatrix} \mathbf{V} &amp; \mathbf{0} \\ \mathbf{c}_i &amp; d_i \end{bmatrix} \begin{bmatrix} \mathbf{V} &amp; \mathbf{0} \\ \mathbf{c}_i &amp; d_i \end{bmatrix}^T\end{split}\]</div>
+<p>设
+<span class="math notranslate nohighlight">\(\mathbf{M} = \begin{bmatrix} \mathbf{V} &amp; \mathbf{0} \\ \mathbf{c}_i &amp; d_i \end{bmatrix}\)</span>，则：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-21">
+<span class="eqno">(4.2.22)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-21" title="Permalink to this equation">¶</a></span>\[\mathbf{L}_{Y_g \cup \{i\}} = \mathbf{M}\mathbf{M}^T\]</div>
+<p>根据矩阵行列式的性质：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-22">
+<span class="eqno">(4.2.23)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-22" title="Permalink to this equation">¶</a></span>\[\det(\mathbf{L}_{Y_g \cup \{i\}}) = \det(\mathbf{M}\mathbf{M}^T) = \det(\mathbf{M}) \cdot \det(\mathbf{M}^T) = \det(\mathbf{M})^2\]</div>
+<p>由于 <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>
+是分块下三角矩阵，其行列式等于对角块行列式的乘积：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-23">
+<span class="eqno">(4.2.24)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-23" title="Permalink to this equation">¶</a></span>\[\det(\mathbf{M}) = \det(\mathbf{V}) \cdot \det(d_i) = \det(\mathbf{V}) \cdot d_i\]</div>
+<p>因此：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-24">
+<span class="eqno">(4.2.25)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-24" title="Permalink to this equation">¶</a></span>\[\det(\mathbf{L}_{Y_g \cup \{i\}}) = \det(\mathbf{M})^2 = (\det(\mathbf{V}) \cdot d_i)^2 = \det(\mathbf{V})^2 \cdot d_i^2\]</div>
+<p>而由于 <span class="math notranslate nohighlight">\(\mathbf{L}_{Y_g} = \mathbf{V}\mathbf{V}^T\)</span>，所以：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-25">
+<span class="eqno">(4.2.26)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-25" title="Permalink to this equation">¶</a></span>\[\det(\mathbf{L}_{Y_g}) = \det(\mathbf{V}\mathbf{V}^T) = \det(\mathbf{V})^2\]</div>
+<p>最终得到：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-26">
+<span class="eqno">(4.2.27)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-26" title="Permalink to this equation">¶</a></span>\[\det(\mathbf{L}_{Y_g \cup \{i\}}) = \det(\mathbf{L}_{Y_g}) \cdot d_i^2\]</div>
+<p>因此，<span class="math notranslate nohighlight">\(\det(\mathbf{L}_{\mathbf{Y}_g \cup \{i\}})\)</span>的计算可以表示为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-27">
+<span class="eqno">(4.2.28)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-27" title="Permalink to this equation">¶</a></span>\[\det(\mathbf{L}_{\mathbf{Y}_g \cup \{i\}}) = \det(\mathbf{L}_{\mathbf{Y}_g}) \cdot \det(d_i^2) = \det(\mathbf{L}_{\mathbf{Y}_g}) \cdot d_i^2\]</div>
+<p>在将<span class="math notranslate nohighlight">\(\det(\mathbf{L}_{\mathbf{Y}_g \cup \{i\}})\)</span>的结果代入优化目标可得：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-28">
+<span class="eqno">(4.2.29)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-28" title="Permalink to this equation">¶</a></span>\[j = \arg\max_{i \in Z \setminus Y_g} \log(d_i^2).\]</div>
+<p><strong>详细的求解算法流程如下：</strong></p>
+<ol class="arabic simple">
+<li><p>初始化：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{c}_i = [], d_i^2 = \mathbf{L}_{ii}, j = \arg\max_{i \in Z} \log(d_i^2), Y_g = \{j\}\)</span></p></li>
+</ul>
+</li>
+<li><p>迭代：</p>
+<ul class="simple">
+<li><p>当停止条件不满足时，执行以下步骤：</p>
+<ul>
+<li><p>对于每个 <span class="math notranslate nohighlight">\(i \in Z \setminus Y_g\)</span>：</p>
+<ul>
+<li><p>计算
+<span class="math notranslate nohighlight">\(\mathbf{e}_i = (\mathbf{L}_{ji} - \langle \mathbf{c}_j, \mathbf{c}_i \rangle) / d_j\)</span></p></li>
+<li><p>更新
+<span class="math notranslate nohighlight">\(\mathbf{c}_i = [\mathbf{c}_i \quad \mathbf{e}_i], d_i^2 = d_i^2 - \mathbf{e}_i^2\)</span></p></li>
+<li><p>选择
+<span class="math notranslate nohighlight">\(j = \arg\max_{i \in Z \setminus Y_g} \log(d_i^2)\)</span>，更新
+<span class="math notranslate nohighlight">\(Y_g = Y_g \cup \{j\}\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>返回：返回 <span class="math notranslate nohighlight">\(Y_g\)</span></p></li>
+</ol>
+<p>代码实现</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dpp</span><span class="p">(</span><span class="n">kernel_matrix</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1E-10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    贪心算法的实现</span>
+<span class="sd">    :param kernel_matrix: 2-d 数组</span>
+<span class="sd">    :param max_length: 正整数</span>
+<span class="sd">    :param epsilon: 较小正数</span>
+<span class="sd">    :return: 列表</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">item_size</span> <span class="o">=</span> <span class="n">kernel_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">cis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">max_length</span><span class="p">,</span> <span class="n">item_size</span><span class="p">))</span>
+    <span class="n">di2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">kernel_matrix</span><span class="p">))</span>
+    <span class="n">selected_items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">selected_item</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">di2s</span><span class="p">)</span>
+    <span class="n">selected_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">selected_item</span><span class="p">)</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_items</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_length</span><span class="p">:</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_items</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">ci_optimal</span> <span class="o">=</span> <span class="n">cis</span><span class="p">[:</span><span class="n">k</span><span class="p">,</span> <span class="n">selected_item</span><span class="p">]</span>
+        <span class="n">di_optimal</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">di2s</span><span class="p">[</span><span class="n">selected_item</span><span class="p">])</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="n">kernel_matrix</span><span class="p">[</span><span class="n">selected_item</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">eis</span> <span class="o">=</span> <span class="p">(</span><span class="n">elements</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ci_optimal</span><span class="p">,</span> <span class="n">cis</span><span class="p">[:</span><span class="n">k</span><span class="p">,</span> <span class="p">:]))</span> <span class="o">/</span> <span class="n">di_optimal</span>
+        <span class="n">cis</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">eis</span>
+        <span class="n">di2s</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">eis</span><span class="p">)</span>
+        <span class="n">selected_item</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">di2s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">di2s</span><span class="p">[</span><span class="n">selected_item</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">selected_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">selected_item</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">selected_items</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="n">item_size</span> <span class="o">=</span> <span class="mi">5000</span>
+<span class="n">feature_dimension</span> <span class="o">=</span> <span class="mi">5000</span>
+<span class="n">max_length</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.01</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">item_size</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="n">feature_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">item_size</span><span class="p">,</span> <span class="n">feature_dimension</span><span class="p">)</span>
+
+<span class="n">feature_vectors</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">feature_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">similarities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">feature_vectors</span><span class="p">,</span> <span class="n">feature_vectors</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">kernel_matrix</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">item_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">similarities</span> <span class="o">*</span> <span class="n">scores</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">item_size</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;核矩阵生成完成！&#39;</span><span class="p">)</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">dpp</span><span class="p">(</span><span class="n">kernel_matrix</span><span class="p">,</span> <span class="n">max_length</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;算法运行时间: &#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{0:.4e}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>核矩阵生成完成！
+算法运行时间:     7.3710e+00
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">4.2. 基于贪心的重排</a><ul>
+<li><a class="reference internal" href="#mmr">4.2.1. MMR：最大边际相关</a></li>
+<li><a class="reference internal" href="#dpp">4.2.2. DPP：行列式点过程</a><ul>
+<li><a class="reference internal" href="#id3">4.2.2.1. 行列式如何度量多样性</a></li>
+<li><a class="reference internal" href="#id4">4.2.2.2. 相关性与多样性融合</a></li>
+<li><a class="reference internal" href="#id5">4.2.2.3. 贪心求解过程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="1.intro.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>4.1. 简介</div>
+         </div>
+     </a>
+     <a id="button-next" href="3.personalized.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>4.3. 基于个性化的重排</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

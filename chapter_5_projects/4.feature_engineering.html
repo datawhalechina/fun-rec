@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>6.5. 特征工程 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.6. 排序模型" href="5.ranking.html" />
+    <link rel="prev" title="6.4. 多路召回" href="3.recall.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">6. </span>项目实践</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">6.5. </span>特征工程</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_5_projects/4.feature_engineering.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/notebooks.zip">
+                  <i class="fas fa-download"></i>
+                  Jupyter 记事本
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/fun-rec.pdf">
+                  <i class="fas fa-file-pdf"></i>
+                  PDF
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
+                  <i class="fab fa-github"></i>
+                  GitHub
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. 项目实践</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="0.intro.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. 项目实践</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="0.intro.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="id1">
+<h1><span class="section-number">6.5. </span>特征工程<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
+<p>我们先捋一下基于原始的给定数据， 有哪些特征可以直接利用：</p>
+<ol class="arabic simple">
+<li><p>文章的自身特征， category_id表示这文章的类型，
+created_at_ts表示文章建立的时间， 这个关系着文章的时效性，
+words_count是文章的字数， 一般字数太长我们不太喜欢点击,
+也不排除有人就喜欢读长文。</p></li>
+<li><p>文章的内容embedding特征， 这个召回的时候用过， 这里可以选择使用，
+也可以选择不用， 也可以尝试其他类型的embedding特征， 比如W2V等</p></li>
+<li><p>用户的设备特征信息</p></li>
+</ol>
+<p>上面这些直接可以用的特征， 待做完特征工程之后，
+直接就可以根据article_id或者是user_id把这些特征加入进去。
+但是我们需要先基于召回的结果，
+构造一些特征，然后制作标签，形成一个监督学习的数据集。
+构造监督数据集的思路， 根据召回结果， 我们会得到一个{user_id:
+[可能点击的文章列表]}形式的字典。 那么我们就可以对于每个用户，
+每篇可能点击的文章构造一个监督测试集， 比如对于用户user1，
+假设得到的他的召回列表{user1: [item1, item2, item3]}，
+我们就可以得到三行数据(user1, item1), (user1, item2), (user1,
+item3)的形式， 这就是监督测试集时候的前两列特征。</p>
+<p>构造特征的思路是这样，
+我们知道每个用户的点击文章是与其历史点击的文章信息是有很大关联的，
+比如同一个主题， 相似等等。
+所以特征构造这块很重要的一系列特征<strong>是要结合用户的历史点击文章信息</strong>。我们已经得到了每个用户及点击候选文章的两列的一个数据集，
+而我们的目的是要预测最后一次点击的文章，
+比较自然的一个思路就是和其最后几次点击的文章产生关系，
+这样既考虑了其历史点击文章信息，
+又得离最后一次点击较近，因为新闻很大的一个特点就是注重时效性。
+往往用户的最后一次点击会和其最后几次点击有很大的关联。
+所以我们就可以对于每个候选文章， 做出与最后几次点击相关的特征如下：</p>
+<ol class="arabic simple">
+<li><p>候选item与最后几次点击的相似性特征(embedding内积） —
+这个直接关联用户历史行为</p></li>
+<li><p>候选item与最后几次点击的相似性特征的统计特征 —
+统计特征可以减少一些波动和异常</p></li>
+<li><p>候选item与最后几次点击文章的字数差的特征 — 可以通过字数看用户偏好</p></li>
+<li><p>候选item与最后几次点击的文章建立的时间差特征 —
+时间差特征可以看出该用户对于文章的实时性的偏好</p></li>
+</ol>
+<p>还需要考虑一下 <strong>5. 如果使用了youtube召回的话，
+我们还可以制作用户与候选item的相似特征</strong></p>
+<p>当然， 上面只是提供了一种基于用户历史行为做特征工程的思路，
+大家也可以思维风暴一下，尝试一些其他的特征。
+下面我们就实现上面的这些特征的制作， 下面的逻辑是这样：</p>
+<ol class="arabic simple">
+<li><p>我们首先获得用户的最后一次点击操作和用户的历史点击，
+这个基于我们的日志数据集做</p></li>
+<li><p>基于用户的历史行为制作特征， 这个会用到用户的历史点击表，
+最后的召回列表， 文章的信息表和embedding向量</p></li>
+<li><p>制作标签， 形成最后的监督学习数据集</p></li>
+</ol>
+<section id="id2">
+<h2><span class="section-number">6.5.1. </span>导包<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gc</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lgb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gensim.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Word2Vec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">MinMaxScaler</span>
+</pre></div>
+</div>
+</section>
+<section id="df">
+<h2><span class="section-number">6.5.2. </span>df节省内存函数<a class="headerlink" href="#df" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 节省内存的一个函数</span>
+<span class="c1"># 减少内存</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">reduce_mem</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">starttime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">numerics</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;int16&#39;</span><span class="p">,</span> <span class="s1">&#39;int32&#39;</span><span class="p">,</span> <span class="s1">&#39;int64&#39;</span><span class="p">,</span> <span class="s1">&#39;float16&#39;</span><span class="p">,</span> <span class="s1">&#39;float32&#39;</span><span class="p">,</span> <span class="s1">&#39;float64&#39;</span><span class="p">]</span>
+    <span class="n">start_mem</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">col_type</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtypes</span>
+        <span class="k">if</span> <span class="n">col_type</span> <span class="ow">in</span> <span class="n">numerics</span><span class="p">:</span>
+            <span class="n">c_min</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+            <span class="n">c_max</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">c_min</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">c_max</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">col_type</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">c_min</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span><span class="o">.</span><span class="n">min</span> <span class="ow">and</span> <span class="n">c_max</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">:</span>
+                    <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">c_min</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span><span class="o">.</span><span class="n">min</span> <span class="ow">and</span> <span class="n">c_max</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">:</span>
+                    <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">c_min</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">min</span> <span class="ow">and</span> <span class="n">c_max</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">:</span>
+                    <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">c_min</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">min</span> <span class="ow">and</span> <span class="n">c_max</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">:</span>
+                    <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">c_min</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span><span class="o">.</span><span class="n">min</span> <span class="ow">and</span> <span class="n">c_max</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">:</span>
+                    <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">c_min</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">min</span> <span class="ow">and</span> <span class="n">c_max</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">:</span>
+                    <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">end_mem</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">2</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- Mem. usage decreased to </span><span class="si">{:5.2f}</span><span class="s1"> Mb (</span><span class="si">{:.1f}% r</span><span class="s1">eduction),time spend:</span><span class="si">{:2.2f}</span><span class="s1"> min&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">end_mem</span><span class="p">,</span>
+                                                                                                           <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">start_mem</span><span class="o">-</span><span class="n">end_mem</span><span class="p">)</span><span class="o">/</span><span class="n">start_mem</span><span class="p">,</span>
+                                                                                                           <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">starttime</span><span class="p">)</span><span class="o">/</span><span class="mi">60</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2><span class="section-number">6.5.3. </span>定义数据路径<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;../tmp/projects/news_recommendation&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">/</span> <span class="s1">&#39;data_raw&#39;</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">/</span> <span class="s1">&#39;temp_results&#39;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">save_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">save_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">6.5.4. </span>数据读取<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
+<section id="id5">
+<h3><span class="section-number">6.5.4.1. </span>训练和验证集的划分<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
+<p>划分训练和验证集的原因是为了在线下验证模型参数的好坏，为了完全模拟测试集，我们这里就在训练集中抽取部分用户的所有信息来作为验证集。提前做训练验证集划分的好处就是可以分解制作排序特征时的压力，一次性做整个数据集的排序特征可能时间会比较长。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># all_click_df指的是训练集</span>
+<span class="c1"># sample_user_nums 采样作为验证集的用户数量</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trn_val_split</span><span class="p">(</span><span class="n">all_click_df</span><span class="p">,</span> <span class="n">sample_user_nums</span><span class="p">):</span>
+    <span class="n">all_click</span> <span class="o">=</span> <span class="n">all_click_df</span>
+    <span class="n">all_user_ids</span> <span class="o">=</span> <span class="n">all_click</span><span class="o">.</span><span class="n">user_id</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+    <span class="c1"># replace=True表示可以重复抽样，反之不可以</span>
+    <span class="n">sample_user_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">all_user_ids</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">sample_user_nums</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">click_val</span> <span class="o">=</span> <span class="n">all_click</span><span class="p">[</span><span class="n">all_click</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sample_user_ids</span><span class="p">)]</span>
+    <span class="n">click_trn</span> <span class="o">=</span> <span class="n">all_click</span><span class="p">[</span><span class="o">~</span><span class="n">all_click</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sample_user_ids</span><span class="p">)]</span>
+
+    <span class="c1"># 将验证集中的最后一次点击给抽取出来作为答案</span>
+    <span class="n">click_val</span> <span class="o">=</span> <span class="n">click_val</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">])</span>
+    <span class="n">val_ans</span> <span class="o">=</span> <span class="n">click_val</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">click_val</span> <span class="o">=</span> <span class="n">click_val</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># 去除val_ans中某些用户只有一个点击数据的情况，如果该用户只有一个点击数据，又被分到ans中，</span>
+    <span class="c1"># 那么训练集中就没有这个用户的点击数据，出现用户冷启动问题，给自己模型验证带来麻烦</span>
+    <span class="n">val_ans</span> <span class="o">=</span> <span class="n">val_ans</span><span class="p">[</span><span class="n">val_ans</span><span class="o">.</span><span class="n">user_id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">click_val</span><span class="o">.</span><span class="n">user_id</span><span class="o">.</span><span class="n">unique</span><span class="p">())]</span> <span class="c1"># 保证答案中出现的用户再验证集中还有</span>
+    <span class="n">click_val</span> <span class="o">=</span> <span class="n">click_val</span><span class="p">[</span><span class="n">click_val</span><span class="o">.</span><span class="n">user_id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">val_ans</span><span class="o">.</span><span class="n">user_id</span><span class="o">.</span><span class="n">unique</span><span class="p">())]</span>
+
+    <span class="k">return</span> <span class="n">click_trn</span><span class="p">,</span> <span class="n">click_val</span><span class="p">,</span> <span class="n">val_ans</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3><span class="section-number">6.5.4.2. </span>获取历史点击和最后一次点击<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 获取当前数据的历史点击和最后一次点击</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_hist_and_last_click</span><span class="p">(</span><span class="n">all_click</span><span class="p">):</span>
+    <span class="n">all_click</span> <span class="o">=</span> <span class="n">all_click</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">])</span>
+    <span class="n">click_last_df</span> <span class="o">=</span> <span class="n">all_click</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># 如果用户只有一个点击，hist为空了，会导致训练的时候这个用户不可见，此时默认泄露一下</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hist_func</span><span class="p">(</span><span class="n">user_df</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_df</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">user_df</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">user_df</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">click_hist_df</span> <span class="o">=</span> <span class="n">all_click</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">hist_func</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">click_hist_df</span><span class="p">,</span> <span class="n">click_last_df</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3><span class="section-number">6.5.4.3. </span>读取训练、验证及测试集<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_trn_val_tst_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">offline</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+        <span class="n">click_trn_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;train_click_log.csv&#39;</span><span class="p">)</span>  <span class="c1"># 训练集用户点击日志</span>
+        <span class="n">click_trn_data</span> <span class="o">=</span> <span class="n">reduce_mem</span><span class="p">(</span><span class="n">click_trn_data</span><span class="p">)</span>
+        <span class="n">click_trn</span><span class="p">,</span> <span class="n">click_val</span><span class="p">,</span> <span class="n">val_ans</span> <span class="o">=</span> <span class="n">trn_val_split</span><span class="p">(</span><span class="n">all_click_df</span><span class="p">,</span> <span class="n">sample_user_nums</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">click_trn</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;train_click_log.csv&#39;</span><span class="p">)</span>
+        <span class="n">click_trn</span> <span class="o">=</span> <span class="n">reduce_mem</span><span class="p">(</span><span class="n">click_trn</span><span class="p">)</span>
+        <span class="n">click_val</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">val_ans</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">click_tst</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;testA_click_log.csv&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">click_trn</span><span class="p">,</span> <span class="n">click_val</span><span class="p">,</span> <span class="n">click_tst</span><span class="p">,</span> <span class="n">val_ans</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3><span class="section-number">6.5.4.4. </span>读取召回列表<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 返回多路召回列表或者单路召回</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_recall_list</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">single_recall_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">multi_recall</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">multi_recall</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;final_recall_items_dict.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">single_recall_model</span> <span class="o">==</span> <span class="s1">&#39;i2i_itemcf&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;itemcf_recall_dict.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">single_recall_model</span> <span class="o">==</span> <span class="s1">&#39;i2i_emb_itemcf&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;itemcf_emb_dict.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">single_recall_model</span> <span class="o">==</span> <span class="s1">&#39;user_cf&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;youtubednn_usercf_dict.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">single_recall_model</span> <span class="o">==</span> <span class="s1">&#39;youtubednn&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;youtube_u2i_dict.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="embedding">
+<h3><span class="section-number">6.5.4.5. </span>读取各种Embedding<a class="headerlink" href="#embedding" title="Permalink to this heading">¶</a></h3>
+<section id="word2vecgensim">
+<h4><span class="section-number">6.5.4.5.1. </span>Word2Vec训练及gensim的使用<a class="headerlink" href="#word2vecgensim" title="Permalink to this heading">¶</a></h4>
+<p>Word2Vec主要思想是：一个词的上下文可以很好的表达出词的语义。通过无监督学习产生词向量的方式。word2vec中有两个非常经典的模型：skip-gram和cbow。</p>
+<ul class="simple">
+<li><p>skip-gram：已知中心词预测周围词。</p></li>
+<li><p>cbow：已知周围词预测中心词。</p></li>
+</ul>
+<p>在使用gensim训练word2vec的时候，有几个比较重要的参数 - size:
+表示词向量的维度。 - window：决定了目标词会与多远距离的上下文产生关系。
+- sg: 如果是0，则是CBOW模型，是1则是Skip-Gram模型。 - workers:
+表示训练时候的线程数量 - min_count: 设置最小的 - iter:
+训练时遍历整个数据集的次数</p>
+<p><strong>注意</strong> 1.
+训练的时候输入的语料库一定要是字符组成的二维数组，如：[[‘北’, ‘京’,
+‘你’, ‘好’], [‘上’, ‘海’, ‘你’, ‘好’]] 2.
+使用模型的时候有一些默认值，可以通过在Jupyter里面通过<code class="docutils literal notranslate"><span class="pre">Word2Vec??</span></code>查看</p>
+<p>下面是个简单的测试样例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gensim.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Word2Vec</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;30760&#39;</span><span class="p">,</span> <span class="s1">&#39;157507&#39;</span><span class="p">],</span>
+       <span class="p">[</span><span class="s1">&#39;289197&#39;</span><span class="p">,</span> <span class="s1">&#39;63746&#39;</span><span class="p">],</span>
+       <span class="p">[</span><span class="s1">&#39;36162&#39;</span><span class="p">,</span> <span class="s1">&#39;168401&#39;</span><span class="p">],</span>
+       <span class="p">[</span><span class="s1">&#39;50644&#39;</span><span class="p">,</span> <span class="s1">&#39;36162&#39;</span><span class="p">]]</span>
+<span class="n">w2v</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">vector_size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">sg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2020</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 查看&#39;30760&#39;表示的词向量</span>
+<span class="n">w2v</span><span class="p">[</span><span class="s1">&#39;30760&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">skip-gram和cbow的详细原理可以参考下面的博客： - <a class="reference external" href="https://www.cnblogs.com/pinard/p/7160330.html">word2vec原理(一)
+CBOW与Skip-Gram模型基础</a></div>
+<div class="line">- <a class="reference external" href="https://www.cnblogs.com/pinard/p/7160330.html">word2vec原理(二) 基于Hierarchical
+Softmax的模型</a></div>
+<div class="line">- <a class="reference external" href="https://www.cnblogs.com/pinard/p/7249903.html">word2vec原理(三) 基于Negative
+Sampling的模型</a></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">trian_item_word2vec</span><span class="p">(</span><span class="n">click_df</span><span class="p">,</span> <span class="n">embed_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">save_name</span><span class="o">=</span><span class="s1">&#39;item_w2v_emb.pkl&#39;</span><span class="p">,</span> <span class="n">split_char</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">):</span>
+    <span class="n">click_df</span> <span class="o">=</span> <span class="n">click_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">)</span>
+    <span class="c1"># 只有转换成字符串才可以进行训练</span>
+    <span class="n">click_df</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">click_df</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="c1"># 转换成句子的形式</span>
+    <span class="n">docs</span> <span class="o">=</span> <span class="n">click_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="n">docs</span> <span class="o">=</span> <span class="n">docs</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="c1"># 为了方便查看训练的进度，这里设定一个log信息</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1">:</span><span class="si">%(levelname)s</span><span class="s1">:</span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="c1"># 这里的参数对训练得到的向量影响也很大,默认负采样为5</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">vector_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">sg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2020</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">min_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># 保存成字典的形式</span>
+    <span class="n">item_w2v_emb_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">wv</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">click_df</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]}</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">item_w2v_emb_dict</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;item_w2v_emb.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">item_w2v_emb_dict</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 可以通过字典查询对应的item的Embedding</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_embedding</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">all_click_df</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;item_content_emb.pkl&#39;</span><span class="p">):</span>
+        <span class="n">item_content_emb_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;item_content_emb.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;item_content_emb.pkl 文件不存在...&#39;</span><span class="p">)</span>
+
+    <span class="c1"># w2v Embedding是需要提前训练好的</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;item_w2v_emb.pkl&#39;</span><span class="p">):</span>
+        <span class="n">item_w2v_emb_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;item_w2v_emb.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">item_w2v_emb_dict</span> <span class="o">=</span> <span class="n">trian_item_word2vec</span><span class="p">(</span><span class="n">all_click_df</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;item_youtube_emb.pkl&#39;</span><span class="p">):</span>
+        <span class="n">item_youtube_emb_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;item_youtube_emb.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;item_youtube_emb.pkl 文件不存在...&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;user_youtube_emb.pkl&#39;</span><span class="p">):</span>
+        <span class="n">user_youtube_emb_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;user_youtube_emb.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;user_youtube_emb.pkl 文件不存在...&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">item_content_emb_dict</span><span class="p">,</span> <span class="n">item_w2v_emb_dict</span><span class="p">,</span> <span class="n">item_youtube_emb_dict</span><span class="p">,</span> <span class="n">user_youtube_emb_dict</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id9">
+<h3><span class="section-number">6.5.4.6. </span>读取文章信息<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_article_info_df</span><span class="p">():</span>
+    <span class="n">article_info_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;articles.csv&#39;</span><span class="p">)</span>
+    <span class="n">article_info_df</span> <span class="o">=</span> <span class="n">reduce_mem</span><span class="p">(</span><span class="n">article_info_df</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">article_info_df</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3><span class="section-number">6.5.4.7. </span>读取数据<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 这里offline的online的区别就是验证集是否为空</span>
+<span class="n">click_trn</span><span class="p">,</span> <span class="n">click_val</span><span class="p">,</span> <span class="n">click_tst</span><span class="p">,</span> <span class="n">val_ans</span> <span class="o">=</span> <span class="n">get_trn_val_tst_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">offline</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">click_trn_hist</span><span class="p">,</span> <span class="n">click_trn_last</span> <span class="o">=</span> <span class="n">get_hist_and_last_click</span><span class="p">(</span><span class="n">click_trn</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">click_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">click_val_hist</span><span class="p">,</span> <span class="n">click_val_last</span> <span class="o">=</span> <span class="n">click_val</span><span class="p">,</span> <span class="n">val_ans</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">click_val_hist</span><span class="p">,</span> <span class="n">click_val_last</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+<span class="n">click_tst_hist</span> <span class="o">=</span> <span class="n">click_tst</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id11">
+<h2><span class="section-number">6.5.5. </span>对训练数据做负采样<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h2>
+<p>通过召回我们将数据转换成三元组的形式（user1, item1,
+label）的形式，观察发现正负样本差距极度不平衡，我们可以先对负样本进行下采样，下采样的目的一方面缓解了正负样本比例的问题，另一方面也减小了我们做排序特征的压力，我们在做负采样的时候又有哪些东西是需要注意的呢？</p>
+<ol class="arabic simple">
+<li><p>只对负样本进行下采样(如果有比较好的正样本扩充的方法其实也是可以考虑的)</p></li>
+<li><p>负采样之后，保证所有的用户和文章仍然出现在采样之后的数据中</p></li>
+<li><p>下采样的比例可以根据实际情况人为的控制</p></li>
+<li><p>做完负采样之后，更新此时新的用户召回文章列表，因为后续做特征的时候可能用到相对位置的信息。</p></li>
+</ol>
+<p>其实负采样也可以留在后面做完特征在进行，这里由于做排序特征太慢了，所以把负采样的环节提到前面了。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 将召回列表转换成df的形式</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">recall_dict_2_df</span><span class="p">(</span><span class="n">recall_list_dict</span><span class="p">):</span>
+    <span class="n">df_row_list</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># [user, item, score]</span>
+    <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">recall_list</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">recall_list_dict</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">disable</span><span class="o">=</span><span class="ow">not</span> <span class="n">logger</span><span class="o">.</span><span class="n">isEnabledFor</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">recall_list</span><span class="p">:</span>
+            <span class="n">df_row_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">score</span><span class="p">])</span>
+
+    <span class="n">col_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_item&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">]</span>
+    <span class="n">recall_list_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_row_list</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">col_names</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">recall_list_df</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 负采样函数，这里可以控制负采样时的比例, 这里给了一个默认的值</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">neg_sample_recall_data</span><span class="p">(</span><span class="n">recall_items_df</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
+    <span class="n">pos_data</span> <span class="o">=</span> <span class="n">recall_items_df</span><span class="p">[</span><span class="n">recall_items_df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">neg_data</span> <span class="o">=</span> <span class="n">recall_items_df</span><span class="p">[</span><span class="n">recall_items_df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pos_data_num:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos_data</span><span class="p">),</span> <span class="s1">&#39;neg_data_num:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">neg_data</span><span class="p">),</span> <span class="s1">&#39;pos/neg:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos_data</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">neg_data</span><span class="p">))</span>
+
+    <span class="c1"># 分组采样函数</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">neg_sample_func</span><span class="p">(</span><span class="n">group_df</span><span class="p">):</span>
+        <span class="n">neg_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group_df</span><span class="p">)</span>
+        <span class="n">sample_num</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">neg_num</span> <span class="o">*</span> <span class="n">sample_rate</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># 保证最少有一个</span>
+        <span class="n">sample_num</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">sample_num</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># 保证最多不超过5个，这里可以根据实际情况进行选择</span>
+        <span class="k">return</span> <span class="n">group_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">sample_num</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># 对用户进行负采样，保证所有用户都在采样后的数据中</span>
+    <span class="n">neg_data_user_sample</span> <span class="o">=</span> <span class="n">neg_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="n">group_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">neg_sample_func</span><span class="p">)</span>
+    <span class="c1"># 对文章进行负采样，保证所有文章都在采样后的数据中</span>
+    <span class="n">neg_data_item_sample</span> <span class="o">=</span> <span class="n">neg_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;sim_item&#39;</span><span class="p">,</span> <span class="n">group_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">neg_sample_func</span><span class="p">)</span>
+
+    <span class="c1"># 将上述两种情况下的采样数据合并</span>
+    <span class="n">neg_data_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">neg_data_user_sample</span><span class="p">,</span> <span class="n">neg_data_item_sample</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># 由于上述两个操作是分开的，可能将两个相同的数据给重复选择了，所以需要对合并后的数据进行去重</span>
+    <span class="n">neg_data_new</span> <span class="o">=</span> <span class="n">neg_data_new</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_item&#39;</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s1">&#39;last&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 将正样本数据合并</span>
+    <span class="n">data_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pos_data</span><span class="p">,</span> <span class="n">neg_data_new</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data_new</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 召回数据打标签</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_rank_label_df</span><span class="p">(</span><span class="n">recall_list_df</span><span class="p">,</span> <span class="n">label_df</span><span class="p">,</span> <span class="n">is_test</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># 测试集是没有标签了，为了后面代码同一一些，这里直接给一个负数替代</span>
+    <span class="k">if</span> <span class="n">is_test</span><span class="p">:</span>
+        <span class="n">recall_list_df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="n">recall_list_df</span>
+
+    <span class="n">label_df</span> <span class="o">=</span> <span class="n">label_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">:</span> <span class="s1">&#39;sim_item&#39;</span><span class="p">})</span>
+    <span class="n">recall_list_df_</span> <span class="o">=</span> <span class="n">recall_list_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">label_df</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_item&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">]],</span> \
+                                               <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_item&#39;</span><span class="p">])</span>
+    <span class="n">recall_list_df_</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recall_list_df_</span><span class="p">[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">recall_list_df_</span><span class="p">[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">recall_list_df_</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_user_recall_item_label_df</span><span class="p">(</span><span class="n">click_trn_hist</span><span class="p">,</span> <span class="n">click_val_hist</span><span class="p">,</span> <span class="n">click_tst_hist</span><span class="p">,</span><span class="n">click_trn_last</span><span class="p">,</span> <span class="n">click_val_last</span><span class="p">,</span> <span class="n">recall_list_df</span><span class="p">):</span>
+    <span class="c1"># 获取训练数据的召回列表</span>
+    <span class="n">trn_user_items_df</span> <span class="o">=</span> <span class="n">recall_list_df</span><span class="p">[</span><span class="n">recall_list_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">click_trn_hist</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())]</span>
+    <span class="c1"># 训练数据打标签</span>
+    <span class="n">trn_user_item_label_df</span> <span class="o">=</span> <span class="n">get_rank_label_df</span><span class="p">(</span><span class="n">trn_user_items_df</span><span class="p">,</span> <span class="n">click_trn_last</span><span class="p">,</span> <span class="n">is_test</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># 训练数据负采样</span>
+    <span class="n">trn_user_item_label_df</span> <span class="o">=</span> <span class="n">neg_sample_recall_data</span><span class="p">(</span><span class="n">trn_user_item_label_df</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">click_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">val_user_items_df</span> <span class="o">=</span> <span class="n">recall_list_df</span><span class="p">[</span><span class="n">recall_list_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">click_val_hist</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())]</span>
+        <span class="n">val_user_item_label_df</span> <span class="o">=</span> <span class="n">get_rank_label_df</span><span class="p">(</span><span class="n">val_user_items_df</span><span class="p">,</span> <span class="n">click_val_last</span><span class="p">,</span> <span class="n">is_test</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">val_user_item_label_df</span> <span class="o">=</span> <span class="n">neg_sample_recall_data</span><span class="p">(</span><span class="n">val_user_item_label_df</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">val_user_item_label_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># 测试数据不需要进行负采样，直接对所有的召回商品进行打-1标签</span>
+    <span class="n">tst_user_items_df</span> <span class="o">=</span> <span class="n">recall_list_df</span><span class="p">[</span><span class="n">recall_list_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">click_tst_hist</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())]</span>
+    <span class="n">tst_user_item_label_df</span> <span class="o">=</span> <span class="n">get_rank_label_df</span><span class="p">(</span><span class="n">tst_user_items_df</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">is_test</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">trn_user_item_label_df</span><span class="p">,</span> <span class="n">val_user_item_label_df</span><span class="p">,</span> <span class="n">tst_user_item_label_df</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 读取召回列表</span>
+<span class="n">recall_list_dict</span> <span class="o">=</span> <span class="n">get_recall_list</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">single_recall_model</span><span class="o">=</span><span class="s1">&#39;i2i_itemcf&#39;</span><span class="p">)</span> <span class="c1"># 这里只选择了单路召回的结果，也可以选择多路召回结果</span>
+<span class="c1"># 将召回数据转换成df</span>
+<span class="n">recall_list_df</span> <span class="o">=</span> <span class="n">recall_dict_2_df</span><span class="p">(</span><span class="n">recall_list_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 给训练验证数据打标签，并负采样（这一部分时间比较久）</span>
+<span class="n">trn_user_item_label_df</span><span class="p">,</span> <span class="n">val_user_item_label_df</span><span class="p">,</span> <span class="n">tst_user_item_label_df</span> <span class="o">=</span> <span class="n">get_user_recall_item_label_df</span><span class="p">(</span><span class="n">click_trn_hist</span><span class="p">,</span>
+                                                                                                       <span class="n">click_val_hist</span><span class="p">,</span>
+                                                                                                       <span class="n">click_tst_hist</span><span class="p">,</span>
+                                                                                                       <span class="n">click_trn_last</span><span class="p">,</span>
+                                                                                                       <span class="n">click_val_last</span><span class="p">,</span>
+                                                                                                       <span class="n">recall_list_df</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_user_item_label_df</span><span class="o">.</span><span class="n">label</span>
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h2><span class="section-number">6.5.6. </span>将召回数据转换成字典<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 将最终的召回的df数据转换成字典的形式做排序特征</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_tuple_func</span><span class="p">(</span><span class="n">group_df</span><span class="p">):</span>
+    <span class="n">row_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">row_df</span> <span class="ow">in</span> <span class="n">group_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">row_data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">row_df</span><span class="p">[</span><span class="s1">&#39;sim_item&#39;</span><span class="p">],</span> <span class="n">row_df</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">],</span> <span class="n">row_df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">row_data</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_user_item_label_tuples_dict</span> <span class="o">=</span> <span class="n">trn_user_item_label_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">make_tuple_func</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">val_user_item_label_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">val_user_item_label_tuples_dict</span> <span class="o">=</span> <span class="n">val_user_item_label_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">make_tuple_func</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">val_user_item_label_tuples_dict</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">tst_user_item_label_tuples_dict</span> <span class="o">=</span> <span class="n">tst_user_item_label_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">make_tuple_func</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h2><span class="section-number">6.5.7. </span>用户历史行为相关特征<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h2>
+<p>对于每个用户召回的每个商品， 做特征。 具体步骤如下： * 对于每个用户，
+获取最后点击的N个商品的item_id， * 对于该用户的每个召回商品，
+计算与上面最后N次点击商品的相似度的和(最大， 最小，均值)，
+时间差特征，相似性特征，字数差特征，与该用户的相似性特征</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 下面基于data做历史相关的特征</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_feature</span><span class="p">(</span><span class="n">users_id</span><span class="p">,</span> <span class="n">recall_list</span><span class="p">,</span> <span class="n">click_hist_df</span><span class="p">,</span>  <span class="n">articles_info</span><span class="p">,</span> <span class="n">articles_emb</span><span class="p">,</span> <span class="n">user_emb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    基于用户的历史行为做相关特征</span>
+<span class="sd">    :param users_id: 用户id</span>
+<span class="sd">    :param recall_list: 对于每个用户召回的候选文章列表</span>
+<span class="sd">    :param click_hist_df: 用户的历史点击信息</span>
+<span class="sd">    :param articles_info: 文章信息</span>
+<span class="sd">    :param articles_emb: 文章的embedding向量, 这个可以用item_content_emb, item_w2v_emb, item_youtube_emb</span>
+<span class="sd">    :param user_emb: 用户的embedding向量， 这个是user_youtube_emb, 如果没有也可以不用， 但要注意如果要用的话， articles_emb就要用item_youtube_emb的形式， 这样维度才一样</span>
+<span class="sd">    :param N: 最近的N次点击  由于testA日志里面很多用户只存在一次历史点击， 所以为了不产生空值，默认是1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># 建立一个二维列表保存结果， 后面要转成DataFrame</span>
+    <span class="n">all_user_feas</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">user_id</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">users_id</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="ow">not</span> <span class="n">logger</span><span class="o">.</span><span class="n">isEnabledFor</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)):</span>
+        <span class="c1"># 该用户的最后N次点击</span>
+        <span class="n">hist_user_items</span> <span class="o">=</span> <span class="n">click_hist_df</span><span class="p">[</span><span class="n">click_hist_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">user_id</span><span class="p">][</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">][</span><span class="o">-</span><span class="n">N</span><span class="p">:]</span>
+
+        <span class="c1"># 遍历该用户的召回列表</span>
+        <span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="p">(</span><span class="n">article_id</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">recall_list</span><span class="p">[</span><span class="n">user_id</span><span class="p">]):</span>
+            <span class="c1"># 该文章建立时间, 字数</span>
+            <span class="n">a_create_time</span> <span class="o">=</span> <span class="n">articles_info</span><span class="p">[</span><span class="n">articles_info</span><span class="p">[</span><span class="s1">&#39;article_id&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">article_id</span><span class="p">][</span><span class="s1">&#39;created_at_ts&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">a_words_count</span> <span class="o">=</span> <span class="n">articles_info</span><span class="p">[</span><span class="n">articles_info</span><span class="p">[</span><span class="s1">&#39;article_id&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">article_id</span><span class="p">][</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">single_user_fea</span> <span class="o">=</span> <span class="p">[</span><span class="n">user_id</span><span class="p">,</span> <span class="n">article_id</span><span class="p">]</span>
+            <span class="c1"># 计算与最后点击的商品的相似度的和， 最大值和最小值， 均值</span>
+            <span class="n">sim_fea</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">time_fea</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">word_fea</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># 遍历用户的最后N次点击文章</span>
+            <span class="k">for</span> <span class="n">hist_item</span> <span class="ow">in</span> <span class="n">hist_user_items</span><span class="p">:</span>
+                <span class="n">b_create_time</span> <span class="o">=</span> <span class="n">articles_info</span><span class="p">[</span><span class="n">articles_info</span><span class="p">[</span><span class="s1">&#39;article_id&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">hist_item</span><span class="p">][</span><span class="s1">&#39;created_at_ts&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">b_words_count</span> <span class="o">=</span> <span class="n">articles_info</span><span class="p">[</span><span class="n">articles_info</span><span class="p">[</span><span class="s1">&#39;article_id&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">hist_item</span><span class="p">][</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="n">sim_fea</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">articles_emb</span><span class="p">[</span><span class="n">hist_item</span><span class="p">],</span> <span class="n">articles_emb</span><span class="p">[</span><span class="n">article_id</span><span class="p">]))</span>
+                <span class="n">time_fea</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">a_create_time</span><span class="o">-</span><span class="n">b_create_time</span><span class="p">))</span>
+                <span class="n">word_fea</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">a_words_count</span><span class="o">-</span><span class="n">b_words_count</span><span class="p">))</span>
+
+            <span class="n">single_user_fea</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sim_fea</span><span class="p">)</span>      <span class="c1"># 相似性特征</span>
+            <span class="n">single_user_fea</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">time_fea</span><span class="p">)</span>    <span class="c1"># 时间差特征</span>
+            <span class="n">single_user_fea</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">word_fea</span><span class="p">)</span>    <span class="c1"># 字数差特征</span>
+            <span class="n">single_user_fea</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="n">sim_fea</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">sim_fea</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">sim_fea</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">sim_fea</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sim_fea</span><span class="p">)])</span>  <span class="c1"># 相似性的统计特征</span>
+
+            <span class="k">if</span> <span class="n">user_emb</span><span class="p">:</span>  <span class="c1"># 如果用户向量有的话， 这里计算该召回文章与用户的相似性特征</span>
+                <span class="n">single_user_fea</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">user_emb</span><span class="p">[</span><span class="n">user_id</span><span class="p">],</span> <span class="n">articles_emb</span><span class="p">[</span><span class="n">article_id</span><span class="p">]))</span>
+
+            <span class="n">single_user_fea</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">score</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">label</span><span class="p">])</span>
+            <span class="c1"># 加入到总的表中</span>
+            <span class="n">all_user_feas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">single_user_fea</span><span class="p">)</span>
+
+    <span class="c1"># 定义列名</span>
+    <span class="n">id_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span>
+    <span class="n">sim_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sim&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+    <span class="n">time_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;time_diff&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+    <span class="n">word_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;word_diff&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+    <span class="n">sat_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sim_max&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_min&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_sum&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_mean&#39;</span><span class="p">]</span>
+    <span class="n">user_item_sim_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;user_item_sim&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">user_emb</span> <span class="k">else</span> <span class="p">[]</span>
+    <span class="n">user_score_rank_label</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="s1">&#39;rank&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">]</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="n">id_cols</span> <span class="o">+</span> <span class="n">sim_cols</span> <span class="o">+</span> <span class="n">time_cols</span> <span class="o">+</span> <span class="n">word_cols</span> <span class="o">+</span> <span class="n">sat_cols</span> <span class="o">+</span> <span class="n">user_item_sim_cols</span> <span class="o">+</span> <span class="n">user_score_rank_label</span>
+
+    <span class="c1"># 转成DataFrame</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span> <span class="n">all_user_feas</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">article_info_df</span> <span class="o">=</span> <span class="n">get_article_info_df</span><span class="p">()</span>
+<span class="c1"># all_click = click_trn.append(click_tst)</span>
+<span class="n">all_click</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">click_trn</span><span class="p">,</span> <span class="n">click_tst</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">item_content_emb_dict</span><span class="p">,</span> <span class="n">item_w2v_emb_dict</span><span class="p">,</span> <span class="n">item_youtube_emb_dict</span><span class="p">,</span> <span class="n">user_youtube_emb_dict</span> <span class="o">=</span> <span class="n">get_embedding</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">all_click</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 获取训练验证及测试数据中召回列文章相关特征</span>
+<span class="n">trn_user_item_feats_df</span> <span class="o">=</span> <span class="n">create_feature</span><span class="p">(</span><span class="n">trn_user_item_label_tuples_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">trn_user_item_label_tuples_dict</span><span class="p">,</span> \
+                                            <span class="n">click_trn_hist</span><span class="p">,</span> <span class="n">article_info_df</span><span class="p">,</span> <span class="n">item_content_emb_dict</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">val_user_item_label_tuples_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="n">create_feature</span><span class="p">(</span><span class="n">val_user_item_label_tuples_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">val_user_item_label_tuples_dict</span><span class="p">,</span> \
+                                                <span class="n">click_val_hist</span><span class="p">,</span> <span class="n">article_info_df</span><span class="p">,</span> <span class="n">item_content_emb_dict</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">tst_user_item_feats_df</span> <span class="o">=</span> <span class="n">create_feature</span><span class="p">(</span><span class="n">tst_user_item_label_tuples_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">tst_user_item_label_tuples_dict</span><span class="p">,</span> \
+                                            <span class="n">click_tst_hist</span><span class="p">,</span> <span class="n">article_info_df</span><span class="p">,</span> <span class="n">item_content_emb_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 保存一份省的每次都要重新跑，每次跑的时间都比较长</span>
+<span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_user_item_feats_df.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">val_user_item_feats_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;val_user_item_feats_df.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">tst_user_item_feats_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_user_item_feats_df.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id14">
+<h2><span class="section-number">6.5.8. </span>用户和文章特征<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h2>
+<section id="id15">
+<h3><span class="section-number">6.5.8.1. </span>用户相关特征<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h3>
+<p>这一块，正式进行特征工程，既要拼接上已有的特征，
+也会做更多的特征出来，我们来梳理一下已有的特征和可构造特征： 1.
+文章自身的特征， 文章字数，文章创建时间， 文章的embedding
+（articles表中) 2. 用户点击环境特征， 那些设备的特征(这个在df中) 3.
+对于用户和商品还可以构造的特征： *
+基于用户的点击文章次数和点击时间构造可以表现用户活跃度的特征 *
+基于文章被点击次数和时间构造可以反映文章热度的特征 *
+用户的时间统计特征：
+根据其点击的历史文章列表的点击时间和文章的创建时间做统计特征，比如求均值，
+这个可以反映用户对于文章时效的偏好 * 用户的主题爱好特征，
+对于用户点击的历史文章主题进行一个统计，
+然后对于当前文章看看是否属于用户已经点击过的主题 * 用户的字数爱好特征，
+对于用户点击的历史文章的字数统计， 求一个均值</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">click_tst</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 读取文章特征</span>
+<span class="n">articles</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;articles.csv&#39;</span><span class="p">)</span>
+<span class="n">articles</span> <span class="o">=</span> <span class="n">reduce_mem</span><span class="p">(</span><span class="n">articles</span><span class="p">)</span>
+
+<span class="c1"># 日志数据，就是前面的所有数据</span>
+<span class="k">if</span> <span class="n">click_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># all_data = click_trn.append(click_val)</span>
+    <span class="n">all_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">click_trn</span><span class="p">,</span> <span class="n">click_val</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">all_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">click_trn</span><span class="p">,</span> <span class="n">click_tst</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">all_data</span> <span class="o">=</span> <span class="n">reduce_mem</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span>
+
+<span class="c1"># 拼上文章信息</span>
+<span class="n">all_data</span> <span class="o">=</span> <span class="n">all_data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">articles</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;article_id&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">all_data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+<section id="id16">
+<h4><span class="section-number">6.5.8.1.1. </span>分析一下点击时间和点击文章的次数，区分用户活跃度<a class="headerlink" href="#id16" title="Permalink to this heading">¶</a></h4>
+<p>如果某个用户点击文章之间的时间间隔比较小， 同时点击的文章次数很多的话，
+那么我们认为这种用户一般就是活跃用户,
+当然衡量用户活跃度的方式可能多种多样，
+这里我们只提供其中一种，我们写一个函数，
+得到可以衡量用户活跃度的特征，逻辑如下： 1. 首先根据用户user_id分组，
+对于每个用户，计算点击文章的次数， 两两点击文章时间间隔的均值 2.
+把点击次数取倒数和时间间隔的均值统一归一化，然后两者相加合并，该值越小，
+说明用户越活跃 3. 注意， 上面两两点击文章的时间间隔均值，
+会出现如果用户只点击了一次的情况，这时候时间间隔均值那里会出现空值，
+对于这种情况最后特征那里给个大数进行区分</p>
+<p>这个的衡量标准就是先把点击的次数取到数然后归一化，
+然后点击的时间差归一化， 然后两者相加进行合并， 该值越小，
+说明被点击的次数越多， 且间隔时间短。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">active_level</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    制作区分用户活跃度的特征</span>
+<span class="sd">    :param all_data: 数据集</span>
+<span class="sd">    :param cols: 用到的特征列</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">user_act</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">]]</span><span class="o">.</span>\
+                            <span class="n">agg</span><span class="p">({</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">:</span> <span class="p">{</span><span class="nb">list</span><span class="p">}})</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_size&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">])</span>
+
+    <span class="c1"># 计算时间间隔的均值</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">time_diff_mean</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">j</span><span class="o">-</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">l</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))])</span>
+
+    <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">time_diff_mean</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="c1"># 点击次数取倒数</span>
+    <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;click_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;click_size&#39;</span><span class="p">]</span>
+
+    <span class="c1"># 两者归一化</span>
+    <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;click_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;click_size&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;click_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;click_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;click_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;active_level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;click_size&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span>
+
+    <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">user_act</span><span class="p">[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">user_act</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_act_fea</span> <span class="o">=</span> <span class="n">active_level</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_act_fea</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h4><span class="section-number">6.5.8.1.2. </span>分析一下点击时间和被点击文章的次数， 衡量文章热度特征<a class="headerlink" href="#id17" title="Permalink to this heading">¶</a></h4>
+<p>和上面同样的思路， 如果一篇文章在很短的时间间隔之内被点击了很多次，
+说明文章比较热门，实现的逻辑和上面的基本一致，
+只不过这里是按照点击的文章进行分组： 1. 根据文章进行分组，
+对于每篇文章的用户， 计算点击的时间间隔 2. 将用户的数量取倒数，
+然后用户的数量和时间间隔归一化， 然后相加得到热度特征， 该值越小，
+说明被点击的次数越大且时间间隔越短， 文章比较热</p>
+<p>当然， 这只是给出一种判断文章热度的一种方法， 这里大家也可以头脑风暴一下</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">hot_level</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    制作衡量文章热度的特征</span>
+<span class="sd">    :param all_data: 数据集</span>
+<span class="sd">    :param cols: 用到的特征列</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">article_hot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">]]</span><span class="o">.</span>\
+                               <span class="n">agg</span><span class="p">({</span><span class="s1">&#39;user_id&#39;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">:</span> <span class="p">{</span><span class="nb">list</span><span class="p">}})</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;user_num&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">])</span>
+
+    <span class="c1"># 计算被点击时间间隔的均值</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">time_diff_mean</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">j</span><span class="o">-</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">l</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))])</span>
+
+    <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">time_diff_mean</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="c1"># 点击次数取倒数</span>
+    <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;user_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;user_num&#39;</span><span class="p">]</span>
+
+    <span class="c1"># 两者归一化</span>
+    <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;user_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;user_num&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;user_num&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;user_num&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;user_num&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;hot_level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;user_num&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">]</span>
+
+    <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+
+    <span class="k">del</span> <span class="n">article_hot</span><span class="p">[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">article_hot</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">article_hot_fea</span> <span class="o">=</span> <span class="n">hot_level</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">article_hot_fea</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="id18">
+<h4><span class="section-number">6.5.8.1.3. </span>用户的系列习惯<a class="headerlink" href="#id18" title="Permalink to this heading">¶</a></h4>
+<p>这个基于原来的日志表做一个类似于article的那种DataFrame，
+存放用户特有的信息, 主要包括点击习惯， 爱好特征之类的 *
+用户的设备习惯， 这里取最常用的设备（众数） * 用户的时间习惯：
+根据其点击过得历史文章的时间来做一个统计（这个感觉最好是把时间戳里的时间特征的h特征提出来，看看用户习惯一天的啥时候点击文章），
+但这里先用转换的时间吧， 求个均值 * 用户的爱好特征，
+对于用户点击的历史文章主题进行用户的爱好判别， 更偏向于哪几个主题，
+这个最好是multi-hot进行编码， 先试试行不 * 用户文章的字数差特征，
+用户的爱好文章的字数习惯</p>
+<p>这些就是对用户进行分组， 然后统计即可</p>
+</section>
+<section id="id19">
+<h4><span class="section-number">6.5.8.1.4. </span>用户的设备习惯<a class="headerlink" href="#id19" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">device_fea</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    制作用户的设备特征</span>
+<span class="sd">    :param all_data: 数据集</span>
+<span class="sd">    :param cols: 用到的特征列</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user_device_info</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+
+    <span class="c1"># 用众数来表示每个用户的设备信息</span>
+    <span class="n">user_device_info</span> <span class="o">=</span> <span class="n">user_device_info</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">user_device_info</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 设备特征(这里时间会比较长)</span>
+<span class="n">device_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_environment&#39;</span><span class="p">,</span> <span class="s1">&#39;click_deviceGroup&#39;</span><span class="p">,</span> <span class="s1">&#39;click_os&#39;</span><span class="p">,</span> <span class="s1">&#39;click_country&#39;</span><span class="p">,</span> <span class="s1">&#39;click_region&#39;</span><span class="p">,</span> <span class="s1">&#39;click_referrer_type&#39;</span><span class="p">]</span>
+<span class="n">user_device_info</span> <span class="o">=</span> <span class="n">device_fea</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">device_cols</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_device_info</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="id20">
+<h4><span class="section-number">6.5.8.1.5. </span>用户的时间习惯<a class="headerlink" href="#id20" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">user_time_hob_fea</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    制作用户的时间习惯特征</span>
+<span class="sd">    :param all_data: 数据集</span>
+<span class="sd">    :param cols: 用到的特征列</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user_time_hob_info</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+
+    <span class="c1"># 先把时间戳进行归一化</span>
+    <span class="n">mm</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+    <span class="n">user_time_hob_info</span><span class="p">[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mm</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">user_time_hob_info</span><span class="p">[[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]])</span>
+    <span class="n">user_time_hob_info</span><span class="p">[</span><span class="s1">&#39;created_at_ts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mm</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">user_time_hob_info</span><span class="p">[[</span><span class="s1">&#39;created_at_ts&#39;</span><span class="p">]])</span>
+
+    <span class="n">user_time_hob_info</span> <span class="o">=</span> <span class="n">user_time_hob_info</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+    <span class="n">user_time_hob_info</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">:</span> <span class="s1">&#39;user_time_hob1&#39;</span><span class="p">,</span> <span class="s1">&#39;created_at_ts&#39;</span><span class="p">:</span> <span class="s1">&#39;user_time_hob2&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">user_time_hob_info</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_time_hob_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_timestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;created_at_ts&#39;</span><span class="p">]</span>
+<span class="n">user_time_hob_info</span> <span class="o">=</span> <span class="n">user_time_hob_fea</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">user_time_hob_cols</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id21">
+<h4><span class="section-number">6.5.8.1.6. </span>用户的主题爱好<a class="headerlink" href="#id21" title="Permalink to this heading">¶</a></h4>
+<p>这里先把用户点击的文章属于的主题转成一个列表，
+后面再总的汇总的时候单独制作一个特征， 就是文章的主题如果属于这里面，
+就是1， 否则就是0。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">user_cat_hob_fea</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    用户的主题爱好</span>
+<span class="sd">    :param all_data: 数据集</span>
+<span class="sd">    :param cols: 用到的特征列</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user_category_hob_info</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+    <span class="n">user_category_hob_info</span> <span class="o">=</span> <span class="n">user_category_hob_info</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="nb">list</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+    <span class="n">user_cat_hob_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">user_cat_hob_info</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_category_hob_info</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
+    <span class="n">user_cat_hob_info</span><span class="p">[</span><span class="s1">&#39;cate_list&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_category_hob_info</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">user_cat_hob_info</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_category_hob_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;category_id&#39;</span><span class="p">]</span>
+<span class="n">user_cat_hob_info</span> <span class="o">=</span> <span class="n">user_cat_hob_fea</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">user_category_hob_cols</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id22">
+<h4><span class="section-number">6.5.8.1.7. </span>用户的字数偏好特征<a class="headerlink" href="#id22" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_wcou_info</span> <span class="o">=</span> <span class="n">all_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">user_wcou_info</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;words_count&#39;</span><span class="p">:</span> <span class="s1">&#39;words_hbo&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id23">
+<h4><span class="section-number">6.5.8.1.8. </span>用户的信息特征合并保存<a class="headerlink" href="#id23" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 所有表进行合并</span>
+<span class="n">user_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_act_fea</span><span class="p">,</span> <span class="n">user_device_info</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+<span class="n">user_info</span> <span class="o">=</span> <span class="n">user_info</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_time_hob_info</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+<span class="n">user_info</span> <span class="o">=</span> <span class="n">user_info</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_cat_hob_info</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+<span class="n">user_info</span> <span class="o">=</span> <span class="n">user_info</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_wcou_info</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 这样用户特征以后就可以直接读取了</span>
+<span class="n">user_info</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;user_info.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id24">
+<h3><span class="section-number">6.5.8.2. </span>用户特征直接读入<a class="headerlink" href="#id24" title="Permalink to this heading">¶</a></h3>
+<p>如果前面关于用户的特征工程已经给做完了，后面可以直接读取</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 把用户信息直接读入进来</span>
+<span class="n">user_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;user_info.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_user_item_feats_df.csv&#39;</span><span class="p">):</span>
+    <span class="n">trn_user_item_feats_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_user_item_feats_df.csv&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_user_item_feats_df.csv&#39;</span><span class="p">):</span>
+    <span class="n">tst_user_item_feats_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_user_item_feats_df.csv&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;val_user_item_feats_df.csv&#39;</span><span class="p">):</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;val_user_item_feats_df.csv&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 拼上用户特征</span>
+<span class="c1"># 下面是线下验证的</span>
+<span class="n">trn_user_item_feats_df</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_info</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">val_user_item_feats_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="n">val_user_item_feats_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_info</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">tst_user_item_feats_df</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_info</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</section>
+<section id="id25">
+<h3><span class="section-number">6.5.8.3. </span>文章的特征直接读入<a class="headerlink" href="#id25" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">articles</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;articles.csv&#39;</span><span class="p">)</span>
+<span class="n">articles</span> <span class="o">=</span> <span class="n">reduce_mem</span><span class="p">(</span><span class="n">articles</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 拼上文章特征</span>
+<span class="n">trn_user_item_feats_df</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">articles</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;article_id&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">val_user_item_feats_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="n">val_user_item_feats_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">articles</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;article_id&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">tst_user_item_feats_df</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">articles</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;article_id&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id26">
+<h3><span class="section-number">6.5.8.4. </span>召回文章的主题是否在用户的爱好里面<a class="headerlink" href="#id26" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;is_cat_hab&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">category_id</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">cate_list</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">val_user_item_feats_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;is_cat_hab&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_user_item_feats_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">category_id</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">cate_list</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># TODO: 这里因为是sample数据原因，tst_user_item_feats_df 大小为0，当使用全量数据时，需要删除这行</span>
+<span class="k">if</span> <span class="n">tst_user_item_feats_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;is_cat_hab&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">category_id</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">cate_list</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 线下验证</span>
+<span class="k">del</span> <span class="n">trn_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;cate_list&#39;</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">val_user_item_feats_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">del</span> <span class="n">val_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;cate_list&#39;</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">del</span> <span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;cate_list&#39;</span><span class="p">]</span>
+
+<span class="k">del</span> <span class="n">trn_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;article_id&#39;</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">val_user_item_feats_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">del</span> <span class="n">val_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;article_id&#39;</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">del</span> <span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;article_id&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id27">
+<h2><span class="section-number">6.5.9. </span>保存特征<a class="headerlink" href="#id27" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 训练验证特征</span>
+<span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_user_item_feats_df.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">val_user_item_feats_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;val_user_item_feats_df.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">tst_user_item_feats_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_user_item_feats_df.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id28">
+<h2><span class="section-number">6.5.10. </span>总结<a class="headerlink" href="#id28" title="Permalink to this heading">¶</a></h2>
+<p>特征工程和数据清洗转换是比赛中至关重要的一块，
+因为<strong>数据和特征决定了机器学习的上限，而算法和模型只是逼近这个上限而已</strong>，所以特征工程的好坏往往决定着最后的结果，<strong>特征工程</strong>可以一步增强数据的表达能力，通过构造新特征，我们可以挖掘出数据的更多信息，使得数据的表达能力进一步放大。
+在本节内容中，我们主要是先通过制作特征和标签把预测问题转成了监督学习问题，然后围绕着用户画像和文章画像进行一系列特征的制作，
+此外，为了保证正负样本的数据均衡，我们还学习了负采样就技术等。当然本节内容只是对构造特征提供了一些思路，也请学习者们在学习过程中开启头脑风暴，尝试更多的构造特征的方法，也欢迎我们一块探讨和交流。</p>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">6.5. 特征工程</a><ul>
+<li><a class="reference internal" href="#id2">6.5.1. 导包</a></li>
+<li><a class="reference internal" href="#df">6.5.2. df节省内存函数</a></li>
+<li><a class="reference internal" href="#id3">6.5.3. 定义数据路径</a></li>
+<li><a class="reference internal" href="#id4">6.5.4. 数据读取</a><ul>
+<li><a class="reference internal" href="#id5">6.5.4.1. 训练和验证集的划分</a></li>
+<li><a class="reference internal" href="#id6">6.5.4.2. 获取历史点击和最后一次点击</a></li>
+<li><a class="reference internal" href="#id7">6.5.4.3. 读取训练、验证及测试集</a></li>
+<li><a class="reference internal" href="#id8">6.5.4.4. 读取召回列表</a></li>
+<li><a class="reference internal" href="#embedding">6.5.4.5. 读取各种Embedding</a><ul>
+<li><a class="reference internal" href="#word2vecgensim">6.5.4.5.1. Word2Vec训练及gensim的使用</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id9">6.5.4.6. 读取文章信息</a></li>
+<li><a class="reference internal" href="#id10">6.5.4.7. 读取数据</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id11">6.5.5. 对训练数据做负采样</a></li>
+<li><a class="reference internal" href="#id12">6.5.6. 将召回数据转换成字典</a></li>
+<li><a class="reference internal" href="#id13">6.5.7. 用户历史行为相关特征</a></li>
+<li><a class="reference internal" href="#id14">6.5.8. 用户和文章特征</a><ul>
+<li><a class="reference internal" href="#id15">6.5.8.1. 用户相关特征</a><ul>
+<li><a class="reference internal" href="#id16">6.5.8.1.1. 分析一下点击时间和点击文章的次数，区分用户活跃度</a></li>
+<li><a class="reference internal" href="#id17">6.5.8.1.2. 分析一下点击时间和被点击文章的次数， 衡量文章热度特征</a></li>
+<li><a class="reference internal" href="#id18">6.5.8.1.3. 用户的系列习惯</a></li>
+<li><a class="reference internal" href="#id19">6.5.8.1.4. 用户的设备习惯</a></li>
+<li><a class="reference internal" href="#id20">6.5.8.1.5. 用户的时间习惯</a></li>
+<li><a class="reference internal" href="#id21">6.5.8.1.6. 用户的主题爱好</a></li>
+<li><a class="reference internal" href="#id22">6.5.8.1.7. 用户的字数偏好特征</a></li>
+<li><a class="reference internal" href="#id23">6.5.8.1.8. 用户的信息特征合并保存</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id24">6.5.8.2. 用户特征直接读入</a></li>
+<li><a class="reference internal" href="#id25">6.5.8.3. 文章的特征直接读入</a></li>
+<li><a class="reference internal" href="#id26">6.5.8.4. 召回文章的主题是否在用户的爱好里面</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id27">6.5.9. 保存特征</a></li>
+<li><a class="reference internal" href="#id28">6.5.10. 总结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="3.recall.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>6.4. 多路召回</div>
+         </div>
+     </a>
+     <a id="button-next" href="5.ranking.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>6.6. 排序模型</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>
