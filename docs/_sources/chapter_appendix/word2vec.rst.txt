@@ -1,0 +1,185 @@
+
+.. _word2vec:
+
+Word2vec
+========
+
+
+基本原理
+--------
+
+在自然语言处理（NLP）任务中，如何将单词转换为能够被机器直接处理的数值形式一直是一个根本问题。早期的方法（例如
+one-hot
+编码）虽然直观，但存在向量维度高、稀疏且无法体现单词间细微语义差异的问题。我们迫切需要一种既低维又能捕捉单词语义和语法信息的表示方式。Word2vec
+:cite:`mikolov2013distributed`
+的目标在于通过大量无标签文本数据学习每个单词的\ **dense vector
+表示**\ ，使得：
+
+-  在低维空间中，语义相近的单词其向量距离也较为接近；
+-  单词之间的关系可以通过向量运算反映出其内在联系。
+
+这样得到的词向量可以直接应用于文本分类、机器翻译、信息检索等下游任务中。
+
+--------------
+
+方法描述
+--------
+
+Word2vec概述
+~~~~~~~~~~~~
+
+Word2vec
+通过上下文（context）来学习单词的向量表示。文本的上下文为现代语言学中的一个基本概念，由
+:cite:p:`philological1957studies` 提出：“You shall know a word by the
+company it keeps.”
+这一假设指导我们通过观察单词在大量文本中与哪些词共同出现，来推断该单词的语义。具体来说，当单词出现在文本中时，其上下文是该单词周围的一些单词。例如下图：
+
+.. figure:: ../img/w2v_example.svg
+
+   上下文示例
+
+这些上下文单词决定了单词\ ``loves``\ 的语义。Word2vec
+使用了大量的文本语料库来学习单词的向量表示。它遍历语料库中的每个单词，并通过调整单词的向量表示，使得模型预测的上下文单词与语料库中的真实上下文单词尽可能一致。
+
+Word2vec 主要包含两种模型：\ **Skip-gram** 和 **Continuous Bag of Words
+model (CBOW)**\ 。
+
+Skip-gram 模型
+~~~~~~~~~~~~~~
+
+.. figure:: ../img/w2v_skip_gram.svg
+
+   skip-gram
+
+Skip-gram
+模型通过中心词预测上下文词。具体来说，给定一个中心词，模型预测其上下文词
+出现的概率。如果我们考虑在语料库中的滑行窗口，在位置 :math:`t`
+的中心词为 :math:`w_t`\ ，其上下文词为
+:math:`w_{t-m}, w_{t-m+1}, \cdots, w_{t-1}, w_{t+1}, \cdots, w_{t+m}`\ ，其中
+:math:`m` 是窗口大小。Skip-gram 中上下文词的条件概率
+:math:`P(w_{t+j} | w_t)` 可以表示为：
+
+.. math:: P(w_{t+j} | w_t) = \frac{e^{v_{w_{t+j}}^T v_{w_t}}}{\sum_{k=1}^{V} e^{v_{w_k}^T v_{w_t}}}
+   :label: skip-gram_likelihood
+
+其中 :math:`v_{w_i}` 是单词 :math:`w_i`
+的向量表示。那么，将滑行窗口遍历整个语料库，我们可以得到似然函数：
+
+.. math:: \prod_{t=1}^{T} \prod_{m<=j<=m} P(w_{t+j} | w_t)
+
+CBOW 模型
+~~~~~~~~~
+
+|cbow| CBOW 模型通过上下文词预测中心词。具体来说，给定上下文词
+:math:`o`\ ，模型预测中心词 :math:`c` 出现的概率。CBOW
+模型中心词的条件概率 :math:`P(w_t | w_{t+j})` 可以表示为：
+
+.. math:: P(w_t | w_{t+j}) = \frac{e^{v_{w_t}^T v_{w_{t+j}}}}{\sum_{k=1}^{V} e^{v_{w_k}^T v_{w_{t+j}}}}
+   :label: cbow_likelihood
+
+将滑行窗口遍历整个语料库，我们可以得到似然函数：
+
+.. math:: \prod_{t=1}^{T} \prod_{m<=j<=m} P(w_t | w_{t+j})
+
+Word2vec 的模型结构
+~~~~~~~~~~~~~~~~~~~
+
+在以上条件概率公式中，容易引起误会的是 中心词的向量 :math:`v_{w_t}` 和
+上下文词的向量 :math:`v_{w_{t+j}}` 实际并不在一个向量空间中
+:cite:`rong2014word2vec`\ 。以 Skip-gram
+模型为例，假设向量空间的维度为\ :math:`D`\ ，中心词向量表\ :math:`\mathbf{W} \in \mathbb{R}^{V \times D}`\ ，上下文词向量表\ :math:`\mathbf{W}^c \in \mathbb{R}^{V \times D}`\ ，其中\ :math:`V`\ 是词汇表的大小。Word2vec
+的模型结构如下：
+
+.. figure:: ../img/w2v_model.svg
+   :width: 500px
+
+   word2vec 模型
+
+
+从左到右，输入给定一个中心词的one-hot表示
+:math:`\mathbf{x}_t \in \{0, 1\}^V`\ ，中心词的向量
+:math:`\mathbf{w}_{t}` 可以表示为：
+
+.. math:: \mathbf{v}_{w_t} = \mathbf{x}_t^T \mathbf{W}
+
+再将中心词的向量 :math:`\mathbf{v}_{w_t}` 与 上下文向量词表
+:math:`\mathbf{W}^o`
+第\ :math:`t+j`\ 行相乘，得到softmax的分母的输入。而分子输入为上下文向量词表
+:math:`\mathbf{W}^o` 整个与中心词向量 :math:`\mathbf{v}_{w_t}`
+的乘积。最后，通过softmax, 可以对上下文词的概率进行预测。
+
+负采样
+~~~~~~
+
+在计算softmax :eq:`skip-gram_likelihood` 和
+:eq:`cbow_likelihood`
+时，需要对词汇表中的所有单词进行计算，这会导致计算复杂度非常高。为了降低计算复杂度，Word2vec
+采用了负采样技术。以 Skip-gram
+模型为例，负采样技术通过随机采样一些负样本（即，不是中心词的上下文词），来替代
+:math:`\log P(w_{t+j} | w_t)`\ 。
+
+.. math::
+
+
+   \log \sigma(v_{w_{t+j}}^T v_{w_t}) + \sum_{i=1}^{k} \mathbb{E}_{w_i \sim P_n(w)} \log \sigma(-v_{w_i}^T v_{w_t})
+
+其中，\ :math:`\sigma(x) = \frac{1}{1 + e^{-x}}` 是 sigmoid
+函数，\ :math:`k` 是负样本的数量，\ :math:`P_n(w)`
+是负样本的分布。在原文中，\ :math:`P_n(w) = \frac{\text{count}(w)^{3/4}}{\sum_{\text{all words } w'} \text{count}(w')^{3/4}}`,
+:math:`\text{count}(w)` 是单词 :math:`w` 在语料库中出现的次数。
+
+由函数单调性可知，\ :math:`\log \sigma(v_{w_{t+j}}^T v_{w_t})`
+越大，\ :math:`\log \sigma(-v_{w_i}^T v_{w_t})` 越小，即
+:math:`P(w_{t+j} | w_t)`
+越大。直观上，极大似然会将经常出现的上下文词拉向中心词，而负采样则将负样本推离中心词。这与原始的似然函数
+:eq:`skip-gram_likelihood`
+的优化目标一致，并且在最大化原始似然函数的同时
+:math:`\max P(w_{t+j} | w_t)`, 并且避免了对整个词汇表的计算。
+
+实验验证
+--------
+
+数据集
+~~~~~~
+
+TBA
+
+手动分析
+~~~~~~~~
+
+TBA
+
+.. raw:: html
+
+   <!-- 在模型训练完成后，我们可以通过以下几种方式进行手动分析：
+   - **近邻查询**：输入一个单词，观察其在词向量空间中的最近邻（例如，查询“banking”时，是否返回“finance”、“loan”等相关词）。
+   - **向量运算**：检验向量之间是否存在某些语义关系，如 “king - man + woman ≈ queen”。
+
+   这种直观的分析可以帮助我们判断词向量是否捕捉到单词间的语义和语法关系。[cite] -->
+
+编程验证
+~~~~~~~~
+
+TBA
+
+分析讨论
+--------
+
+优点
+~~~~
+
+-  **计算效率高**\ ：利用负采样或层次 Softmax
+   有效降低了训练过程中对整个词汇表的计算量，适合大规模语料的训练。
+-  **捕捉语义关系**\ ：训练得到的词向量能较好地反映单词之间的语义和语法关系，支持向量运算解决类比问题。
+-  **易于迁移**\ ：得到的词向量可以直接用于各种下游 NLP
+   任务，如文本分类、情感分析等，从而提升整体模型的效果。
+
+缺点
+~~~~
+
+-  **语义多义性**\ ：Word2vec
+   模型仅为每个单词学习一个固定向量，对于多义词可能无法准确区分不同语境下的语义。
+-  **负采样依赖采样策略**\ ：负采样的效果与采样策略密切相关，不恰当的采样可能会影响模型性能。
+-  **缺乏句法信息**\ ：尽管能捕捉词语之间的关系，但在句法结构建模上还存在一定的局限性。
+
+.. |cbow| image:: ../img/w2v_cbow.svg

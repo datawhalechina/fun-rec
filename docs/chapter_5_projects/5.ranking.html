@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>6.6. 排序模型 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7. 面试经验" href="../chapter_6_interview/index.html" />
+    <link rel="prev" title="6.5. 特征工程" href="4.feature_engineering.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">6. </span>项目实践</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">6.6. </span>排序模型</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_5_projects/5.ranking.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/notebooks.zip">
+                  <i class="fas fa-download"></i>
+                  Jupyter 记事本
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/fun-rec.pdf">
+                  <i class="fas fa-file-pdf"></i>
+                  PDF
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
+                  <i class="fab fa-github"></i>
+                  GitHub
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. 项目实践</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="0.intro.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. 项目实践</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="0.intro.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="id1">
+<h1><span class="section-number">6.6. </span>排序模型<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
+<p>通过召回的操作， 我们已经进行了问题规模的缩减， 对于每个用户，
+选择出了N篇文章作为了候选集，并基于召回的候选集构建了与用户历史相关的特征，以及用户本身的属性特征，文章本省的属性特征，以及用户与文章之间的特征，下面就是使用机器学习模型来对构造好的特征进行学习，然后对测试集进行预测，得到测试集中的每个候选集用户点击的概率，返回点击概率最大的topk个文章，作为最终的结果。</p>
+<p>排序阶段选择了三个比较有代表性的排序模型，它们分别是：</p>
+<ol class="arabic simple">
+<li><p>LGB的排序模型</p></li>
+<li><p>LGB的分类模型</p></li>
+<li><p>深度学习的分类模型DIN</p></li>
+</ol>
+<p>得到了最终的排序模型输出的结果之后，还选择了两种比较经典的模型集成的方法：</p>
+<ol class="arabic simple">
+<li><p>输出结果加权融合</p></li>
+<li><p>Staking（将模型的输出结果再使用一个简单模型进行预测）</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gc</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lgb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">MinMaxScaler</span>
+</pre></div>
+</div>
+<section id="id2">
+<h2><span class="section-number">6.6.1. </span>读取排序特征<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;../tmp/projects/news_recommendation&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">/</span> <span class="s1">&#39;data_raw&#39;</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">/</span> <span class="s1">&#39;temp_results&#39;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">save_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">save_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">offline</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 重新读取数据的时候，发现click_article_id是一个浮点数，所以将其转换成int类型</span>
+<span class="n">trn_user_item_feats_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_user_item_feats_df.csv&#39;</span><span class="p">)</span>
+<span class="n">trn_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;val_user_item_feats_df.csv&#39;</span><span class="p">)</span>
+    <span class="n">val_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">tst_user_item_feats_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_user_item_feats_df.csv&#39;</span><span class="p">)</span>
+<span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="c1"># 做特征的时候为了方便，给测试集也打上了一个无效的标签，这里直接删掉就行</span>
+<span class="k">del</span> <span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2><span class="section-number">6.6.2. </span>返回排序后的结果<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">submit</span><span class="p">(</span><span class="n">recall_df</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">recall_df</span> <span class="o">=</span> <span class="n">recall_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">])</span>
+    <span class="n">recall_df</span><span class="p">[</span><span class="s1">&#39;rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recall_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 判断是不是每个用户都有5篇文章及以上</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">recall_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;rank&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="k">assert</span> <span class="n">tmp</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">topk</span>
+
+    <span class="k">del</span> <span class="n">recall_df</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span>
+    <span class="n">submit</span> <span class="o">=</span> <span class="n">recall_df</span><span class="p">[</span><span class="n">recall_df</span><span class="p">[</span><span class="s1">&#39;rank&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">topk</span><span class="p">]</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;rank&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+    <span class="n">submit</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">submit</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span>
+    <span class="c1"># 按照提交格式定义列名</span>
+    <span class="n">submit</span> <span class="o">=</span> <span class="n">submit</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;&#39;</span><span class="p">:</span> <span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;article_1&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;article_2&#39;</span><span class="p">,</span>
+                                                  <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;article_3&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;article_4&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">&#39;article_5&#39;</span><span class="p">})</span>
+
+    <span class="n">save_name</span> <span class="o">=</span> <span class="n">save_path</span> <span class="o">/</span> <span class="p">(</span><span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+    <span class="n">submit</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_name</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 排序结果归一化</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">norm_sim</span><span class="p">(</span><span class="n">sim_df</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="c1"># print(sim_df.head())</span>
+    <span class="n">min_sim</span> <span class="o">=</span> <span class="n">sim_df</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">max_sim</span> <span class="o">=</span> <span class="n">sim_df</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">max_sim</span> <span class="o">==</span> <span class="n">min_sim</span><span class="p">:</span>
+        <span class="n">sim_df</span> <span class="o">=</span> <span class="n">sim_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">sim</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sim_df</span> <span class="o">=</span> <span class="n">sim_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">sim</span><span class="p">:</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">sim</span> <span class="o">-</span> <span class="n">min_sim</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_sim</span> <span class="o">-</span> <span class="n">min_sim</span><span class="p">))</span>
+
+    <span class="n">sim_df</span> <span class="o">=</span> <span class="n">sim_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">sim</span><span class="p">:</span> <span class="n">sim</span> <span class="o">+</span> <span class="n">weight</span><span class="p">)</span>  <span class="c1"># plus one</span>
+    <span class="k">return</span> <span class="n">sim_df</span>
+</pre></div>
+</div>
+</section>
+<section id="lgb">
+<h2><span class="section-number">6.6.3. </span>LGB排序模型<a class="headerlink" href="#lgb" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 防止中间出错之后重新读取数据</span>
+<span class="n">trn_user_item_feats_df_rank_model</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df_rank_model</span> <span class="o">=</span> <span class="n">val_user_item_feats_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">tst_user_item_feats_df_rank_model</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义特征列</span>
+<span class="n">lgb_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sim0&#39;</span><span class="p">,</span> <span class="s1">&#39;time_diff0&#39;</span><span class="p">,</span> <span class="s1">&#39;word_diff0&#39;</span><span class="p">,</span><span class="s1">&#39;sim_max&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_min&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_sum&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;sim_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span><span class="s1">&#39;click_size&#39;</span><span class="p">,</span> <span class="s1">&#39;time_diff_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;active_level&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;click_environment&#39;</span><span class="p">,</span><span class="s1">&#39;click_deviceGroup&#39;</span><span class="p">,</span> <span class="s1">&#39;click_os&#39;</span><span class="p">,</span> <span class="s1">&#39;click_country&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;click_region&#39;</span><span class="p">,</span><span class="s1">&#39;click_referrer_type&#39;</span><span class="p">,</span> <span class="s1">&#39;user_time_hob1&#39;</span><span class="p">,</span> <span class="s1">&#39;user_time_hob2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;words_hbo&#39;</span><span class="p">,</span> <span class="s1">&#39;category_id&#39;</span><span class="p">,</span> <span class="s1">&#39;created_at_ts&#39;</span><span class="p">,</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 排序模型分组</span>
+<span class="n">trn_user_item_feats_df_rank_model</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">g_train</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df_rank_model</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df_rank_model</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">g_val</span> <span class="o">=</span> <span class="n">val_user_item_feats_df_rank_model</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 排序模型定义</span>
+<span class="n">lgb_ranker</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">LGBMRanker</span><span class="p">(</span><span class="n">boosting_type</span><span class="o">=</span><span class="s1">&#39;gbdt&#39;</span><span class="p">,</span> <span class="n">num_leaves</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span> <span class="n">reg_alpha</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">reg_lambda</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">max_depth</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">subsample</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">colsample_bytree</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">subsample_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">min_child_weight</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2018</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 排序模型训练</span>
+<span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">lgb_ranker</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trn_user_item_feats_df_rank_model</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">trn_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">group</span><span class="o">=</span><span class="n">g_train</span><span class="p">,</span>
+                <span class="n">eval_set</span><span class="o">=</span><span class="p">[(</span><span class="n">val_user_item_feats_df_rank_model</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">val_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])],</span>
+                <span class="n">eval_group</span><span class="o">=</span> <span class="p">[</span><span class="n">g_val</span><span class="p">],</span> <span class="n">eval_at</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">eval_metric</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ndcg&#39;</span><span class="p">,</span> <span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">lgb_ranker</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trn_user_item_feats_df</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">trn_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">group</span><span class="o">=</span><span class="n">g_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 模型预测</span>
+<span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lgb_ranker</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">num_iteration</span><span class="o">=</span><span class="n">lgb_ranker</span><span class="o">.</span><span class="n">best_iteration_</span><span class="p">)</span>
+
+<span class="c1"># 将这里的排序结果保存一份，用户后面的模型融合</span>
+<span class="n">tst_user_item_feats_df</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;lgb_ranker_score.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 预测结果重新排序, 及生成提交结果</span>
+<span class="n">rank_results</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">]]</span>
+<span class="n">rank_results</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rank_results</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">submit</span><span class="p">(</span><span class="n">rank_results</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;lgb_ranker&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 五折交叉验证，这里的五折交叉是以用户为目标进行五折划分</span>
+<span class="c1">#  这一部分与前面的单独训练和验证是分开的</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_kfold_users</span><span class="p">(</span><span class="n">trn_df</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">user_ids</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="n">user_set</span> <span class="o">=</span> <span class="p">[</span><span class="n">user_ids</span><span class="p">[</span><span class="n">i</span><span class="p">::</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">user_set</span>
+
+<span class="n">k_fold</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">trn_df</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df_rank_model</span>
+<span class="n">user_set</span> <span class="o">=</span> <span class="n">get_kfold_users</span><span class="p">(</span><span class="n">trn_df</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">k_fold</span><span class="p">)</span>
+
+<span class="n">score_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">score_df</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span><span class="s1">&#39;label&#39;</span><span class="p">]]</span>
+<span class="n">sub_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tst_user_item_feats_df_rank_model</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 五折交叉验证，并将中间结果保存用于staking</span>
+<span class="k">for</span> <span class="n">n_fold</span><span class="p">,</span> <span class="n">valid_user</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">user_set</span><span class="p">):</span>
+    <span class="n">train_idx</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[</span><span class="o">~</span><span class="n">trn_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">valid_user</span><span class="p">)]</span> <span class="c1"># add slide user</span>
+    <span class="n">valid_idx</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[</span><span class="n">trn_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">valid_user</span><span class="p">)]</span>
+
+    <span class="c1"># 训练集与验证集的用户分组</span>
+    <span class="n">train_idx</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">g_train</span> <span class="o">=</span> <span class="n">train_idx</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">valid_idx</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">g_val</span> <span class="o">=</span> <span class="n">valid_idx</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># 定义模型</span>
+    <span class="n">lgb_ranker</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">LGBMRanker</span><span class="p">(</span><span class="n">boosting_type</span><span class="o">=</span><span class="s1">&#39;gbdt&#39;</span><span class="p">,</span> <span class="n">num_leaves</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span> <span class="n">reg_alpha</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">reg_lambda</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">max_depth</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">subsample</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">colsample_bytree</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">subsample_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">min_child_weight</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2018</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="c1"># 训练模型</span>
+    <span class="n">lgb_ranker</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_idx</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">train_idx</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">group</span><span class="o">=</span><span class="n">g_train</span><span class="p">,</span>
+                   <span class="n">eval_set</span><span class="o">=</span><span class="p">[(</span><span class="n">valid_idx</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">valid_idx</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])],</span> <span class="n">eval_group</span><span class="o">=</span> <span class="p">[</span><span class="n">g_val</span><span class="p">],</span>
+                   <span class="n">eval_at</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">eval_metric</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ndcg&#39;</span><span class="p">,</span> <span class="p">])</span>
+
+    <span class="c1"># 预测验证集结果</span>
+    <span class="n">valid_idx</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lgb_ranker</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">valid_idx</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">num_iteration</span><span class="o">=</span><span class="n">lgb_ranker</span><span class="o">.</span><span class="n">best_iteration_</span><span class="p">)</span>
+
+    <span class="c1"># 对输出结果进行归一化</span>
+    <span class="n">valid_idx</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_idx</span><span class="p">[[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">norm_sim</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="n">valid_idx</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">])</span>
+    <span class="n">valid_idx</span><span class="p">[</span><span class="s1">&#39;pred_rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_idx</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 将验证集的预测结果放到一个列表中，后面进行拼接</span>
+    <span class="n">score_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">valid_idx</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">]])</span>
+
+    <span class="c1"># 如果是线上测试，需要计算每次交叉验证的结果相加，最后求平均</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">offline</span><span class="p">:</span>
+        <span class="n">sub_preds</span> <span class="o">+=</span> <span class="n">lgb_ranker</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">lgb_ranker</span><span class="o">.</span><span class="n">best_iteration_</span><span class="p">)</span>
+
+<span class="n">score_df_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">score_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">score_df</span> <span class="o">=</span> <span class="n">score_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">score_df_</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">])</span>
+<span class="c1"># 保存训练集交叉验证产生的新特征</span>
+<span class="n">score_df</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_lgb_ranker_feats.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># 测试集的预测结果，多次交叉验证求平均,将预测的score和对应的rank特征保存，可以用于后面的staking，这里还可以构造其他更多的特征</span>
+<span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_preds</span> <span class="o">/</span> <span class="n">k_fold</span>
+<span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">norm_sim</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">tst_user_item_feats_df_rank_model</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">])</span>
+<span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;pred_rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_rank_model</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
+
+<span class="c1"># 保存测试集交叉验证的新特征</span>
+<span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_lgb_ranker_feats.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 预测结果重新排序, 及生成提交结果</span>
+<span class="c1"># 单模型生成提交结果</span>
+<span class="n">rank_results</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">]]</span>
+<span class="n">rank_results</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rank_results</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">submit</span><span class="p">(</span><span class="n">rank_results</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;lgb_ranker&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">6.6.4. </span>LGB分类模型<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 模型及参数的定义</span>
+<span class="n">lgb_Classfication</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">LGBMClassifier</span><span class="p">(</span><span class="n">boosting_type</span><span class="o">=</span><span class="s1">&#39;gbdt&#39;</span><span class="p">,</span> <span class="n">num_leaves</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span> <span class="n">reg_alpha</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">reg_lambda</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">max_depth</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">subsample</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">colsample_bytree</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">subsample_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">min_child_weight</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2018</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 模型训练</span>
+<span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">lgb_Classfication</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trn_user_item_feats_df_rank_model</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">trn_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                    <span class="n">eval_set</span><span class="o">=</span><span class="p">[(</span><span class="n">val_user_item_feats_df_rank_model</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">val_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])],</span>
+                    <span class="n">eval_metric</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;auc&#39;</span><span class="p">,</span> <span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">lgb_Classfication</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trn_user_item_feats_df_rank_model</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">trn_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 模型预测</span>
+<span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lgb_Classfication</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">])[:,</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># 将这里的排序结果保存一份，用户后面的模型融合</span>
+<span class="n">tst_user_item_feats_df</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;lgb_cls_score.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 预测结果重新排序, 及生成提交结果</span>
+<span class="n">rank_results</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">]]</span>
+<span class="n">rank_results</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rank_results</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">submit</span><span class="p">(</span><span class="n">rank_results</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;lgb_cls&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 五折交叉验证，这里的五折交叉是以用户为目标进行五折划分</span>
+<span class="c1">#  这一部分与前面的单独训练和验证是分开的</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_kfold_users</span><span class="p">(</span><span class="n">trn_df</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">user_ids</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="n">user_set</span> <span class="o">=</span> <span class="p">[</span><span class="n">user_ids</span><span class="p">[</span><span class="n">i</span><span class="p">::</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">user_set</span>
+
+<span class="n">k_fold</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">trn_df</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df_rank_model</span>
+<span class="n">user_set</span> <span class="o">=</span> <span class="n">get_kfold_users</span><span class="p">(</span><span class="n">trn_df</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">k_fold</span><span class="p">)</span>
+
+<span class="n">score_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">score_df</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">]]</span>
+<span class="n">sub_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tst_user_item_feats_df_rank_model</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 五折交叉验证，并将中间结果保存用于staking</span>
+<span class="k">for</span> <span class="n">n_fold</span><span class="p">,</span> <span class="n">valid_user</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">user_set</span><span class="p">):</span>
+    <span class="n">train_idx</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[</span><span class="o">~</span><span class="n">trn_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">valid_user</span><span class="p">)]</span> <span class="c1"># add slide user</span>
+    <span class="n">valid_idx</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[</span><span class="n">trn_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">valid_user</span><span class="p">)]</span>
+
+    <span class="c1"># 模型及参数的定义</span>
+    <span class="n">lgb_Classfication</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">LGBMClassifier</span><span class="p">(</span><span class="n">boosting_type</span><span class="o">=</span><span class="s1">&#39;gbdt&#39;</span><span class="p">,</span> <span class="n">num_leaves</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span> <span class="n">reg_alpha</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">reg_lambda</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">max_depth</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">subsample</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">colsample_bytree</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">subsample_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">min_child_weight</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2018</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="c1"># 训练模型</span>
+    <span class="n">lgb_Classfication</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_idx</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">train_idx</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span><span class="n">eval_set</span><span class="o">=</span><span class="p">[(</span><span class="n">valid_idx</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span> <span class="n">valid_idx</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])],</span>
+                          <span class="n">eval_metric</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;auc&#39;</span><span class="p">,</span> <span class="p">])</span>
+
+    <span class="c1"># 预测验证集结果</span>
+    <span class="n">valid_idx</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lgb_Classfication</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">valid_idx</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span>
+                                                              <span class="n">num_iteration</span><span class="o">=</span><span class="n">lgb_Classfication</span><span class="o">.</span><span class="n">best_iteration_</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># 对输出结果进行归一化 分类模型输出的值本身就是一个概率值不需要进行归一化</span>
+    <span class="c1"># valid_idx[&#39;pred_score&#39;] = valid_idx[[&#39;pred_score&#39;]].transform(lambda x: norm_sim(x))</span>
+
+    <span class="n">valid_idx</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">])</span>
+    <span class="n">valid_idx</span><span class="p">[</span><span class="s1">&#39;pred_rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_idx</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 将验证集的预测结果放到一个列表中，后面进行拼接</span>
+    <span class="n">score_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">valid_idx</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">]])</span>
+
+    <span class="c1"># 如果是线上测试，需要计算每次交叉验证的结果相加，最后求平均</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">offline</span><span class="p">:</span>
+        <span class="n">sub_preds</span> <span class="o">+=</span> <span class="n">lgb_Classfication</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[</span><span class="n">lgb_cols</span><span class="p">],</span>
+                                                     <span class="n">num_iteration</span><span class="o">=</span><span class="n">lgb_Classfication</span><span class="o">.</span><span class="n">best_iteration_</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">score_df_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">score_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">score_df</span> <span class="o">=</span> <span class="n">score_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">score_df_</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">])</span>
+<span class="c1"># 保存训练集交叉验证产生的新特征</span>
+<span class="n">score_df</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_lgb_cls_feats.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># 测试集的预测结果，多次交叉验证求平均,将预测的score和对应的rank特征保存，可以用于后面的staking，这里还可以构造其他更多的特征</span>
+<span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_preds</span> <span class="o">/</span> <span class="n">k_fold</span>
+<span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">norm_sim</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">tst_user_item_feats_df_rank_model</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">])</span>
+<span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[</span><span class="s1">&#39;pred_rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_rank_model</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
+
+<span class="c1"># 保存测试集交叉验证的新特征</span>
+<span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_lgb_cls_feats.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 预测结果重新排序, 及生成提交结果</span>
+<span class="n">rank_results</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_rank_model</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">]]</span>
+<span class="n">rank_results</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rank_results</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">submit</span><span class="p">(</span><span class="n">rank_results</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;lgb_cls&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="din">
+<h2><span class="section-number">6.6.5. </span>DIN模型<a class="headerlink" href="#din" title="Permalink to this heading">¶</a></h2>
+<section id="id5">
+<h3><span class="section-number">6.6.5.1. </span>用户的历史点击行为列表<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
+<p>这个是为后面的DIN模型服务的</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">all_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;train_click_log.csv&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">trn_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;train_click_log.csv&#39;</span><span class="p">)</span>
+    <span class="n">tst_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;testA_click_log.csv&#39;</span><span class="p">)</span>
+    <span class="n">all_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">trn_data</span><span class="p">,</span> <span class="n">tst_data</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hist_click</span> <span class="o">=</span><span class="n">all_data</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="nb">list</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">his_behavior_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">his_behavior_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hist_click</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
+<span class="n">his_behavior_df</span><span class="p">[</span><span class="s1">&#39;hist_click_article_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hist_click</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_user_item_feats_df_din_model</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df_din_model</span> <span class="o">=</span> <span class="n">val_user_item_feats_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df_din_model</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">tst_user_item_feats_df_din_model</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_user_item_feats_df_din_model</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df_din_model</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">his_behavior_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df_din_model</span> <span class="o">=</span> <span class="n">val_user_item_feats_df_din_model</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">his_behavior_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">val_user_item_feats_df_din_model</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">tst_user_item_feats_df_din_model</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_din_model</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">his_behavior_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3><span class="section-number">6.6.5.2. </span>DIN模型简介<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
+<p>我们下面尝试使用DIN模型， DIN的全称是Deep Interest Network，
+这是阿里2018年基于前面的深度学习模型无法表达用户多样化的兴趣而提出的一个模型，
+它可以通过考虑【给定的候选广告】和【用户的历史行为】的相关性，来计算用户兴趣的表示向量。具体来说就是通过引入局部激活单元，通过软搜索历史行为的相关部分来关注相关的用户兴趣，并采用加权和来获得有关候选广告的用户兴趣的表示。与候选广告相关性较高的行为会获得较高的激活权重，并支配着用户兴趣。该表示向量在不同广告上有所不同，大大提高了模型的表达能力。所以该模型对于此次新闻推荐的任务也比较适合，
+我们在这里通过当前的候选文章与用户历史点击文章的相关性来计算用户对于文章的兴趣。
+该模型的结构如下：</p>
+<figure class="align-default" id="id10">
+<img alt="../_images/din_architecture.png" src="../_images/din_architecture.png" />
+<figcaption>
+<p><span class="caption-number">图6.6.1 </span><span class="caption-text">DIN模型结构</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>我们这里直接调包来使用这个模型，
+关于这个模型的详细细节部分我们会在下一期的推荐系统组队学习中给出。下面说一下该模型如何具体使用：deepctr的函数原型如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">DIN</span><span class="p">(</span><span class="n">dnn_feature_columns</span><span class="p">,</span> <span class="n">history_feature_list</span><span class="p">,</span> <span class="n">dnn_use_bn</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+       <span class="n">dnn_hidden_units</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="n">dnn_activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">att_hidden_size</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="n">att_activation</span><span class="o">=</span><span class="s2">&quot;dice&quot;</span><span class="p">,</span>
+      <span class="n">att_weight_normalization</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">l2_reg_dnn</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">l2_reg_embedding</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">dnn_dropout</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+       <span class="n">task</span><span class="o">=</span><span class="s1">&#39;binary&#39;</span><span class="p">):</span>
+    <span class="k">pass</span>
+    <span class="c1"># * dnn_feature_columns: 特征列， 包含数据所有特征的列表</span>
+    <span class="c1"># * history_feature_list: 用户历史行为列， 反应用户历史行为的特征的列表</span>
+    <span class="c1"># * dnn_use_bn: 是否使用BatchNormalization</span>
+    <span class="c1"># * dnn_hidden_units: 全连接层网络的层数和每一层神经元的个数， 一个列表或者元组</span>
+    <span class="c1"># * dnn_activation_relu: 全连接网络的激活单元类型</span>
+    <span class="c1"># * att_hidden_size: 注意力层的全连接网络的层数和每一层神经元的个数</span>
+    <span class="c1"># * att_activation: 注意力层的激活单元类型</span>
+    <span class="c1"># * att_weight_normalization: 是否归一化注意力得分</span>
+    <span class="c1"># * l2_reg_dnn: 全连接网络的正则化系数</span>
+    <span class="c1"># * l2_reg_embedding: embedding向量的正则化稀疏</span>
+    <span class="c1"># * dnn_dropout: 全连接网络的神经元的失活概率</span>
+    <span class="c1"># * task: 任务， 可以是分类， 也可是是回归</span>
+</pre></div>
+</div>
+<p>在具体使用的时候， 我们必须要传入特征列和历史行为列， 但是再传入之前，
+我们需要进行一下特征列的预处理。具体如下：</p>
+<ol class="arabic simple">
+<li><p>首先，我们要处理数据集， 得到数据，
+由于我们是基于用户过去的行为去预测用户是否点击当前文章，
+所以我们需要把数据的特征列划分成数值型特征，
+离散型特征和历史行为特征列三部分， 对于每一部分，
+DIN模型的处理会有不同</p>
+<ol class="arabic simple">
+<li><p>对于离散型特征， 在我们的数据集中就是那些类别型的特征，
+比如user_id这种， 这种类别型特征，
+我们首先要经过embedding处理得到每个特征的低维稠密型表示，
+既然要经过embedding，
+那么我们就需要为每一列的类别特征的取值建立一个字典，并指明embedding维度，
+所以在使用deepctr的DIN模型准备数据的时候，
+我们需要通过SparseFeat函数指明这些类别型特征,
+这个函数的传入参数就是列名，
+列的唯一取值(建立字典用)和embedding维度。</p></li>
+<li><p>对于用户历史行为特征列， 比如文章id， 文章的类别等这种，
+同样的我们需要先经过embedding处理，
+只不过和上面不一样的地方是，对于这种特征，
+我们在得到每个特征的embedding表示之后，
+还需要通过一个Attention_layer计算用户的历史行为和当前候选文章的相关性以此得到当前用户的embedding向量，
+这个向量就可以基于当前的候选文章与用户过去点击过得历史文章的相似性的程度来反应用户的兴趣，
+并且随着用户的不同的历史点击来变化，去动态的模拟用户兴趣的变化过程。这类特征对于每个用户都是一个历史行为序列，
+对于每个用户， 历史行为序列长度会不一样，
+可能有的用户点击的历史文章多，有的点击的历史文章少，
+所以我们还需要把这个长度统一起来， 在为DIN模型准备数据的时候，
+我们首先要通过SparseFeat函数指明这些类别型特征，
+然后还需要通过VarLenSparseFeat函数再进行序列填充，
+使得每个用户的历史序列一样长，
+所以这个函数参数中会有个maxlen，来指明序列的最大长度是多少。</p></li>
+<li><p>对于连续型特征列， 我们只需要用DenseFeat函数来指明列名和维度即可。</p></li>
+</ol>
+</li>
+<li><p>处理完特征列之后， 我们把相应的数据与列进行对应，就得到了最后的数据。</p></li>
+</ol>
+<p>下面根据具体的代码感受一下， 逻辑是这样，
+首先我们需要写一个数据准备函数，
+在这里面就是根据上面的具体步骤准备数据， 得到数据和特征列，
+然后就是建立DIN模型并训练， 最后基于模型进行测试。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras</span><span class="w"> </span><span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">K</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.models</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 数据准备函数</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_din_feats_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">dense_fea</span><span class="p">,</span> <span class="n">sparse_fea</span><span class="p">,</span> <span class="n">behavior_fea</span><span class="p">,</span> <span class="n">his_behavior_fea</span><span class="p">,</span> <span class="n">emb_dim</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    数据准备函数:</span>
+<span class="sd">    df: 数据集</span>
+<span class="sd">    dense_fea: 数值型特征列</span>
+<span class="sd">    sparse_fea: 离散型特征列</span>
+<span class="sd">    behavior_fea: 用户的候选行为特征列</span>
+<span class="sd">    his_behavior_fea: 用户的历史行为特征列</span>
+<span class="sd">    embedding_dim: embedding的维度， 这里为了简单， 统一把离散型特征列采用一样的隐向量维度</span>
+<span class="sd">    max_len: 用户序列的最大长度</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sparse_feature_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">SparseFeat</span><span class="p">(</span><span class="n">feat</span><span class="p">,</span> <span class="n">vocabulary_size</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="o">=</span><span class="n">emb_dim</span><span class="p">)</span> <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">sparse_fea</span><span class="p">]</span>
+
+    <span class="n">dense_feature_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">DenseFeat</span><span class="p">(</span><span class="n">feat</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">)</span> <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">dense_fea</span><span class="p">]</span>
+
+    <span class="n">var_feature_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">VarLenSparseFeat</span><span class="p">(</span><span class="n">SparseFeat</span><span class="p">(</span><span class="n">feat</span><span class="p">,</span> <span class="n">vocabulary_size</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                                    <span class="n">embedding_dim</span><span class="o">=</span><span class="n">emb_dim</span><span class="p">,</span> <span class="n">embedding_name</span><span class="o">=</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">),</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_len</span><span class="p">)</span> <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">hist_behavior_fea</span><span class="p">]</span>
+
+    <span class="n">dnn_feature_columns</span> <span class="o">=</span> <span class="n">sparse_feature_columns</span> <span class="o">+</span> <span class="n">dense_feature_columns</span> <span class="o">+</span> <span class="n">var_feature_columns</span>
+
+    <span class="c1"># 建立x, x是一个字典的形式</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">get_feature_names</span><span class="p">(</span><span class="n">dnn_feature_columns</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">his_behavior_fea</span><span class="p">:</span>
+            <span class="c1"># 这是历史行为序列</span>
+            <span class="n">his_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">his_list</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">)</span>      <span class="c1"># 二维数组</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">dnn_feature_columns</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_din_input_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">dense_fea</span><span class="p">,</span> <span class="n">sparse_fea</span><span class="p">,</span> <span class="n">behavior_fea</span><span class="p">,</span> <span class="n">his_behavior_fea</span><span class="p">,</span> <span class="n">emb_dim</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">dnn_feature_columns</span> <span class="o">=</span> <span class="n">sparse_fea</span> <span class="o">+</span> <span class="n">dense_fea</span> <span class="o">+</span> <span class="n">his_behavior_fea</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Sparse features (map if sparse_maps available)</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sparse_fea</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;sparse_maps&#39;</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sparse_maps</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sparse_maps</span><span class="p">[</span><span class="n">name</span><span class="p">])</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="c1"># Dense features</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">dense_fea</span><span class="p">:</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="c1"># History sequence (map with click_article_id map if available)</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">his_behavior_fea</span><span class="p">:</span>
+        <span class="n">seq_list</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;sparse_maps&#39;</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="ow">and</span> <span class="s1">&#39;click_article_id&#39;</span> <span class="ow">in</span> <span class="n">sparse_maps</span><span class="p">:</span>
+            <span class="n">cmap</span> <span class="o">=</span> <span class="n">sparse_maps</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span>
+            <span class="n">mapped_seq</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">seq_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                    <span class="n">mapped_seq</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span> <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">mapped_seq</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">mapped_seq</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">seq_list</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">dnn_feature_columns</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 把特征分开</span>
+<span class="n">sparse_fea</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;category_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_environment&#39;</span><span class="p">,</span> <span class="s1">&#39;click_deviceGroup&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;click_os&#39;</span><span class="p">,</span> <span class="s1">&#39;click_country&#39;</span><span class="p">,</span> <span class="s1">&#39;click_region&#39;</span><span class="p">,</span> <span class="s1">&#39;click_referrer_type&#39;</span><span class="p">,</span> <span class="s1">&#39;is_cat_hab&#39;</span><span class="p">]</span>
+
+<span class="n">behavior_fea</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span>
+
+<span class="n">hist_behavior_fea</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;hist_click_article_id&#39;</span><span class="p">]</span>
+
+<span class="n">dense_fea</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sim0&#39;</span><span class="p">,</span> <span class="s1">&#39;time_diff0&#39;</span><span class="p">,</span> <span class="s1">&#39;word_diff0&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_max&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_min&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_sum&#39;</span><span class="p">,</span> <span class="s1">&#39;sim_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;rank&#39;</span><span class="p">,</span><span class="s1">&#39;click_size&#39;</span><span class="p">,</span><span class="s1">&#39;time_diff_mean&#39;</span><span class="p">,</span><span class="s1">&#39;active_level&#39;</span><span class="p">,</span><span class="s1">&#39;user_time_hob1&#39;</span><span class="p">,</span><span class="s1">&#39;user_time_hob2&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;words_hbo&#39;</span><span class="p">,</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># dense特征进行归一化, 神经网络训练都需要将数值进行归一化处理</span>
+<span class="n">mm</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+
+<span class="c1"># 下面是做一些特殊处理，当在其他的地方出现无效值的时候，不处理无法进行归一化，刚开始可以先把他注释掉，在运行了下面的代码</span>
+<span class="c1"># 之后如果发现报错，应该先去想办法处理如何不出现inf之类的值</span>
+<span class="c1"># trn_user_item_feats_df_din_model.replace([np.inf, -np.inf], 0, inplace=True)</span>
+<span class="c1"># tst_user_item_feats_df_din_model.replace([np.inf, -np.inf], 0, inplace=True)</span>
+
+<span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">dense_fea</span><span class="p">:</span>
+    <span class="n">trn_user_item_feats_df_din_model</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span> <span class="o">=</span> <span class="n">mm</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">trn_user_item_feats_df_din_model</span><span class="p">[[</span><span class="n">feat</span><span class="p">]])</span>
+
+    <span class="k">if</span> <span class="n">val_user_item_feats_df_din_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">val_user_item_feats_df_din_model</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span> <span class="o">=</span> <span class="n">mm</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">val_user_item_feats_df_din_model</span><span class="p">[[</span><span class="n">feat</span><span class="p">]])</span>
+
+    <span class="n">tst_user_item_feats_df_din_model</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span> <span class="o">=</span> <span class="n">mm</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tst_user_item_feats_df_din_model</span><span class="p">[[</span><span class="n">feat</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># funrec DIN 排序</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.preprocessing.sequence</span><span class="w"> </span><span class="kn">import</span> <span class="n">pad_sequences</span>
+
+<span class="c1"># FunRec 导入</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.features.feature_column</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeatureColumn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.training.trainer</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_model</span> <span class="k">as</span> <span class="n">funrec_train_model</span>
+
+<span class="c1"># 1) 配置 (mirrors funrec/config/config_din.yaml)</span>
+<span class="n">funrec_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;training&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;build_function&#39;</span><span class="p">:</span> <span class="s1">&#39;funrec.models.din.build_din_model&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;model_params&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;dnn_units&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="s1">&#39;linear_logits&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;metrics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;binary_accuracy&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s1">&#39;validation_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># 2) 构建特征列</span>
+<span class="n">emb_dim</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">max_len</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_nunique</span><span class="p">(</span><span class="n">series_list</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">series_list</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">nunique</span><span class="p">())</span>
+
+<span class="c1"># 使用已有的splits</span>
+<span class="n">df_trn</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df_din_model</span>
+<span class="n">df_val</span> <span class="o">=</span> <span class="n">val_user_item_feats_df_din_model</span> <span class="k">if</span> <span class="n">val_user_item_feats_df_din_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+<span class="n">df_tst</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_din_model</span>
+
+<span class="n">all_frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">df_trn</span><span class="p">,</span> <span class="n">df_tst</span><span class="p">]</span> <span class="o">+</span> <span class="p">([</span><span class="n">df_val</span><span class="p">]</span> <span class="k">if</span> <span class="n">df_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[])</span>
+
+<span class="c1"># 为所有稀疏特征构建连续id映射</span>
+<span class="n">sparse_maps</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">sparse_fea</span><span class="p">:</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">f</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">all_frames</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">feat</span> <span class="o">==</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">:</span>
+        <span class="n">hist_vals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">all_frames</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;hist_click_article_id&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                    <span class="n">hist_vals</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hist_vals</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">vals</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">hist_vals</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int64&#39;</span><span class="p">)],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">codes</span><span class="p">,</span> <span class="n">uniques</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">factorize</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">):</span> <span class="nb">int</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">uniques</span><span class="p">)}</span>
+    <span class="k">if</span> <span class="n">feat</span> <span class="o">==</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">:</span>
+        <span class="c1"># 保留0用于序列填充</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mapping</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">sparse_maps</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span> <span class="o">=</span> <span class="n">mapping</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_vocab_size</span><span class="p">(</span><span class="n">mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">mapping</span> <span class="k">else</span> <span class="mi">1</span>
+
+<span class="n">feature_columns</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># 稀疏特征 (dnn)</span>
+<span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">sparse_fea</span><span class="p">:</span>
+    <span class="n">vocab</span> <span class="o">=</span> <span class="n">_vocab_size</span><span class="p">(</span><span class="n">sparse_maps</span><span class="p">[</span><span class="n">feat</span><span class="p">])</span>
+    <span class="n">feature_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">FeatureColumn</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">feat</span><span class="p">,</span>
+            <span class="n">emb_name</span><span class="o">=</span><span class="n">feat</span><span class="p">,</span>
+            <span class="n">emb_dim</span><span class="o">=</span><span class="n">emb_dim</span><span class="p">,</span>
+            <span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab</span><span class="p">,</span>
+            <span class="n">group</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dnn&#39;</span><span class="p">],</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;sparse&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="c1"># 稠密特征</span>
+<span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">dense_fea</span><span class="p">:</span>
+    <span class="n">feature_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">FeatureColumn</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">feat</span><span class="p">,</span>
+            <span class="n">emb_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;dense&#39;</span><span class="p">,</span>
+            <span class="n">dimension</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">group</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dnn&#39;</span><span class="p">],</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="c1"># 变长稀疏特征: hist_click_article_id使用click_article_id embedding</span>
+<span class="n">click_vocab</span> <span class="o">=</span> <span class="n">_vocab_size</span><span class="p">(</span><span class="n">sparse_maps</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">])</span>
+<span class="n">feature_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">FeatureColumn</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;hist_click_article_id&#39;</span><span class="p">,</span>
+        <span class="n">emb_name</span><span class="o">=</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span>
+        <span class="n">emb_dim</span><span class="o">=</span><span class="n">emb_dim</span><span class="p">,</span>
+        <span class="n">vocab_size</span><span class="o">=</span><span class="n">click_vocab</span><span class="p">,</span>
+        <span class="n">group</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dnn&#39;</span><span class="p">],</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;varlen_sparse&#39;</span><span class="p">,</span>
+        <span class="n">max_len</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span>
+        <span class="n">combiner</span><span class="o">=</span><span class="s1">&#39;mean,din&#39;</span><span class="p">,</span>
+        <span class="n">att_key_name</span><span class="o">=</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># 3) 构建模型输入</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_model_input</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">model_input</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># 稀疏特征</span>
+    <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">sparse_fea</span><span class="p">:</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sparse_maps</span><span class="p">[</span><span class="n">feat</span><span class="p">])</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">model_input</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span> <span class="o">=</span> <span class="n">mapped</span>
+    <span class="c1"># 稠密特征</span>
+    <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">dense_fea</span><span class="p">:</span>
+        <span class="n">model_input</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="c1"># 变长稀疏特征 (右填充)</span>
+    <span class="n">raw_seq_list</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;hist_click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">mapped_seq</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">sparse_maps</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">raw_seq_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+            <span class="n">mapped_seq</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">cmap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span> <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mapped_seq</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">model_input</span><span class="p">[</span><span class="s1">&#39;hist_click_article_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">mapped_seq</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model_input</span>
+
+<span class="n">x_trn_funrec</span> <span class="o">=</span> <span class="n">build_model_input</span><span class="p">(</span><span class="n">df_trn</span><span class="p">)</span>
+<span class="n">y_trn_funrec</span> <span class="o">=</span> <span class="n">df_trn</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">offline</span> <span class="ow">and</span> <span class="n">df_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">x_val_funrec</span> <span class="o">=</span> <span class="n">build_model_input</span><span class="p">(</span><span class="n">df_val</span><span class="p">)</span>
+    <span class="n">y_val_funrec</span> <span class="o">=</span> <span class="n">df_val</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+
+<span class="n">x_tst_funrec</span> <span class="o">=</span> <span class="n">build_model_input</span><span class="p">(</span><span class="n">df_tst</span><span class="p">)</span>
+
+<span class="n">processed_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;train&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="n">x_trn_funrec</span><span class="p">,</span>
+        <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="n">y_trn_funrec</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;test&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="n">x_tst_funrec</span><span class="p">,</span>
+        <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1"># 4) 训练FunRec DIN</span>
+<span class="n">main_model</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">funrec_train_model</span><span class="p">(</span><span class="n">funrec_config</span><span class="p">[</span><span class="s1">&#39;training&#39;</span><span class="p">],</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
+
+<span class="c1"># 5) 预测和保存结果</span>
+<span class="n">tst_user_item_feats_df_din_model</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">main_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_tst_funrec</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">tst_user_item_feats_df_din_model</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;din_rank_score.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">rank_results</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_din_model</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 预测结果重新排序, 及生成提交结果</span>
+<span class="n">submit</span><span class="p">(</span><span class="n">rank_results</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;din&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 五折交叉验证，这里的五折交叉是以用户为目标进行五折划分</span>
+<span class="c1">#  这一部分与前面的单独训练和验证是分开的</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_kfold_users</span><span class="p">(</span><span class="n">trn_df</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">user_ids</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="n">user_set</span> <span class="o">=</span> <span class="p">[</span><span class="n">user_ids</span><span class="p">[</span><span class="n">i</span><span class="p">::</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">user_set</span>
+
+<span class="n">k_fold</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">trn_df</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df_din_model</span>
+<span class="n">user_set</span> <span class="o">=</span> <span class="n">get_kfold_users</span><span class="p">(</span><span class="n">trn_df</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">k_fold</span><span class="p">)</span>
+
+<span class="n">score_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">score_df</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">]]</span>
+<span class="n">sub_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tst_user_item_feats_df_rank_model</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">dense_fea</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dense_fea</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s1">&#39;label&#39;</span><span class="p">]</span>
+<span class="c1"># x_tst, dnn_feature_columns = get_din_feats_columns(tst_user_item_feats_df_din_model, dense_fea,</span>
+<span class="c1">#                                                    sparse_fea, behavior_fea, hist_behavior_fea, max_len=50)</span>
+
+<span class="n">x_tst</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_din_input_data</span><span class="p">(</span><span class="n">tst_user_item_feats_df_din_model</span><span class="p">,</span> <span class="n">dense_fea</span><span class="p">,</span> <span class="n">sparse_fea</span><span class="p">,</span> <span class="n">behavior_fea</span><span class="p">,</span> <span class="n">hist_behavior_fea</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># 五折交叉验证，并将中间结果保存用于staking</span>
+<span class="k">for</span> <span class="n">n_fold</span><span class="p">,</span> <span class="n">valid_user</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">user_set</span><span class="p">):</span>
+    <span class="n">train_idx</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[</span><span class="o">~</span><span class="n">trn_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">valid_user</span><span class="p">)]</span> <span class="c1"># add slide user</span>
+    <span class="n">valid_idx</span> <span class="o">=</span> <span class="n">trn_df</span><span class="p">[</span><span class="n">trn_df</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">valid_user</span><span class="p">)]</span>
+
+    <span class="c1"># 准备训练数据</span>
+    <span class="c1"># x_trn, dnn_feature_columns = get_din_feats_columns(train_idx, dense_fea,</span>
+    <span class="c1">#                                                    sparse_fea, behavior_fea, hist_behavior_fea, max_len=50)</span>
+    <span class="n">x_trn</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_din_input_data</span><span class="p">(</span><span class="n">train_idx</span><span class="p">,</span> <span class="n">dense_fea</span><span class="p">,</span> <span class="n">sparse_fea</span><span class="p">,</span> <span class="n">behavior_fea</span><span class="p">,</span> <span class="n">hist_behavior_fea</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">y_trn</span> <span class="o">=</span> <span class="n">train_idx</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># 准备验证数据</span>
+    <span class="c1"># x_val, dnn_feature_columns = get_din_feats_columns(valid_idx, dense_fea,</span>
+    <span class="c1">#                                                sparse_fea, behavior_fea, hist_behavior_fea, max_len=50)</span>
+    <span class="n">x_val</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_din_input_data</span><span class="p">(</span><span class="n">valid_idx</span><span class="p">,</span> <span class="n">dense_fea</span><span class="p">,</span> <span class="n">sparse_fea</span><span class="p">,</span> <span class="n">behavior_fea</span><span class="p">,</span> <span class="n">hist_behavior_fea</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">y_val</span> <span class="o">=</span> <span class="n">valid_idx</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">history</span> <span class="o">=</span> <span class="n">main_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_trn</span><span class="p">,</span> <span class="n">y_trn</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">)</span> <span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+
+    <span class="c1"># 预测验证集结果</span>
+    <span class="n">valid_idx</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">main_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="n">valid_idx</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">])</span>
+    <span class="n">valid_idx</span><span class="p">[</span><span class="s1">&#39;pred_rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_idx</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 将验证集的预测结果放到一个列表中，后面进行拼接</span>
+    <span class="n">score_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">valid_idx</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">]])</span>
+
+    <span class="c1"># 如果是线上测试，需要计算每次交叉验证的结果相加，最后求平均</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">offline</span><span class="p">:</span>
+        <span class="n">sub_preds</span> <span class="o">+=</span> <span class="n">main_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_tst</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="n">score_df_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">score_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">score_df</span> <span class="o">=</span> <span class="n">score_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">score_df_</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">])</span>
+<span class="c1"># 保存训练集交叉验证产生的新特征</span>
+<span class="n">score_df</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_din_cls_feats.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># 测试集的预测结果，多次交叉验证求平均,将预测的score和对应的rank特征保存，可以用于后面的staking，这里还可以构造其他更多的特征</span>
+<span class="n">tst_user_item_feats_df_din_model</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_preds</span> <span class="o">/</span> <span class="n">k_fold</span>
+<span class="n">tst_user_item_feats_df_din_model</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_din_model</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">norm_sim</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">tst_user_item_feats_df_din_model</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">])</span>
+<span class="n">tst_user_item_feats_df_din_model</span><span class="p">[</span><span class="s1">&#39;pred_rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_din_model</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
+
+<span class="c1"># 保存测试集交叉验证的新特征</span>
+<span class="n">tst_user_item_feats_df_din_model</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_din_cls_feats.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">6.6.6. </span>模型融合<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
+<section id="id8">
+<h3><span class="section-number">6.6.6.1. </span>加权融合<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 读取多个模型的排序结果文件</span>
+<span class="n">lgb_ranker</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;lgb_ranker_score.csv&#39;</span><span class="p">)</span>
+<span class="n">lgb_cls</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;lgb_cls_score.csv&#39;</span><span class="p">)</span>
+<span class="n">din_ranker</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;din_rank_score.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 这里也可以换成交叉验证输出的测试结果进行加权融合</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rank_model</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lgb_ranker&#39;</span><span class="p">:</span> <span class="n">lgb_ranker</span><span class="p">,</span>
+              <span class="s1">&#39;lgb_cls&#39;</span><span class="p">:</span> <span class="n">lgb_cls</span><span class="p">,</span>
+              <span class="s1">&#39;din_ranker&#39;</span><span class="p">:</span> <span class="n">din_ranker</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_ensumble_predict_topk</span><span class="p">(</span><span class="n">rank_model</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="c1"># final_recall = rank_model[&#39;lgb_cls&#39;].append(rank_model[&#39;din_ranker&#39;])</span>
+    <span class="n">final_recall</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">rank_model</span><span class="p">[</span><span class="s1">&#39;lgb_cls&#39;</span><span class="p">],</span> <span class="n">rank_model</span><span class="p">[</span><span class="s1">&#39;din_ranker&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">rank_model</span><span class="p">[</span><span class="s1">&#39;lgb_ranker&#39;</span><span class="p">][</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rank_model</span><span class="p">[</span><span class="s1">&#39;lgb_ranker&#39;</span><span class="p">][</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">norm_sim</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="c1"># final_recall = final_recall.append(rank_model[&#39;lgb_ranker&#39;])</span>
+    <span class="n">final_recall</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">final_recall</span><span class="p">,</span> <span class="n">rank_model</span><span class="p">[</span><span class="s1">&#39;lgb_ranker&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">final_recall</span> <span class="o">=</span> <span class="n">final_recall</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">])[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+    <span class="n">submit</span><span class="p">(</span><span class="n">final_recall</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="n">topk</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;ensemble_fuse&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">get_ensumble_predict_topk</span><span class="p">(</span><span class="n">rank_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="staking">
+<h3><span class="section-number">6.6.6.2. </span>Staking<a class="headerlink" href="#staking" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 读取多个模型的交叉验证生成的结果文件</span>
+<span class="c1"># 训练集</span>
+<span class="n">trn_lgb_ranker_feats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_lgb_ranker_feats.csv&#39;</span><span class="p">)</span>
+<span class="n">trn_lgb_cls_feats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_lgb_cls_feats.csv&#39;</span><span class="p">)</span>
+<span class="n">trn_din_cls_feats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_din_cls_feats.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 测试集</span>
+<span class="n">tst_lgb_ranker_feats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_lgb_ranker_feats.csv&#39;</span><span class="p">)</span>
+<span class="n">tst_lgb_cls_feats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_lgb_cls_feats.csv&#39;</span><span class="p">)</span>
+<span class="n">tst_din_cls_feats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_din_cls_feats.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 将多个模型输出的特征进行拼接</span>
+
+<span class="n">finall_trn_ranker_feats</span> <span class="o">=</span> <span class="n">trn_lgb_ranker_feats</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">]]</span>
+<span class="n">finall_tst_ranker_feats</span> <span class="o">=</span> <span class="n">tst_lgb_ranker_feats</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">]]</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">trn_model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">trn_lgb_ranker_feats</span><span class="p">,</span> <span class="n">trn_lgb_cls_feats</span><span class="p">,</span> <span class="n">trn_din_cls_feats</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="p">[</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">]:</span>
+        <span class="n">col_name</span> <span class="o">=</span> <span class="n">feat</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="n">finall_trn_ranker_feats</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">trn_model</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">tst_model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">tst_lgb_ranker_feats</span><span class="p">,</span> <span class="n">tst_lgb_cls_feats</span><span class="p">,</span> <span class="n">tst_din_cls_feats</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="p">[</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">]:</span>
+        <span class="n">col_name</span> <span class="o">=</span> <span class="n">feat</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="n">finall_tst_ranker_feats</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_model</span><span class="p">[</span><span class="n">feat</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义一个逻辑回归模型再次拟合交叉验证产生的特征对测试集进行预测</span>
+<span class="c1"># 这里需要注意的是，在做交叉验证的时候可以构造多一些与输出预测值相关的特征，来丰富这里简单模型的特征</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="n">feat_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pred_score_0&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank_0&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score_1&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank_1&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score_2&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank_2&#39;</span><span class="p">]</span>
+
+<span class="n">trn_x</span> <span class="o">=</span> <span class="n">finall_trn_ranker_feats</span><span class="p">[</span><span class="n">feat_cols</span><span class="p">]</span>
+<span class="n">trn_y</span> <span class="o">=</span> <span class="n">finall_trn_ranker_feats</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+
+<span class="n">tst_x</span> <span class="o">=</span> <span class="n">finall_tst_ranker_feats</span><span class="p">[</span><span class="n">feat_cols</span><span class="p">]</span>
+
+<span class="c1"># 采样50000行数据 因为全量数据太大了</span>
+<span class="n">sample_indices</span> <span class="o">=</span> <span class="n">trn_x</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
+<span class="n">trn_x_sample</span> <span class="o">=</span> <span class="n">trn_x</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sample_indices</span><span class="p">]</span>
+<span class="n">trn_y_sample</span> <span class="o">=</span> <span class="n">trn_y</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sample_indices</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original training data shape: </span><span class="si">{</span><span class="n">trn_x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sampled training data shape: </span><span class="si">{</span><span class="n">trn_x_sample</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 定义模型</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+
+<span class="c1"># 模型训练</span>
+<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trn_x_sample</span><span class="p">,</span> <span class="n">trn_y_sample</span><span class="p">)</span>
+
+<span class="c1"># 模型预测</span>
+<span class="n">test_score</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">test_batch_size</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tst_x</span><span class="p">),</span> <span class="n">test_batch_size</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">tst_x</span><span class="p">)</span><span class="o">//</span><span class="n">test_batch_size</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Predicting test score&quot;</span><span class="p">):</span>
+    <span class="n">test_score</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">tst_x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">test_batch_size</span><span class="p">])[:,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">finall_tst_ranker_feats</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">test_score</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id9">
+<h2><span class="section-number">6.6.7. </span>总结<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h2>
+<p>本章主要学习了三个排序模型，包括LGB的Rank，
+LGB的Classifier还有深度学习的DIN模型，
+当然，对于这三个模型的原理部分，我们并没有给出详细的介绍，
+请大家课下自己探索原理，也欢迎大家把自己的探索与所学分享出来，我们一块学习和进步。最后，我们进行了简单的模型融合策略，包括简单的加权和Stacking。</p>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">6.6. 排序模型</a><ul>
+<li><a class="reference internal" href="#id2">6.6.1. 读取排序特征</a></li>
+<li><a class="reference internal" href="#id3">6.6.2. 返回排序后的结果</a></li>
+<li><a class="reference internal" href="#lgb">6.6.3. LGB排序模型</a></li>
+<li><a class="reference internal" href="#id4">6.6.4. LGB分类模型</a></li>
+<li><a class="reference internal" href="#din">6.6.5. DIN模型</a><ul>
+<li><a class="reference internal" href="#id5">6.6.5.1. 用户的历史点击行为列表</a></li>
+<li><a class="reference internal" href="#id6">6.6.5.2. DIN模型简介</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id7">6.6.6. 模型融合</a><ul>
+<li><a class="reference internal" href="#id8">6.6.6.1. 加权融合</a></li>
+<li><a class="reference internal" href="#staking">6.6.6.2. Staking</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id9">6.6.7. 总结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="4.feature_engineering.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>6.5. 特征工程</div>
+         </div>
+     </a>
+     <a id="button-next" href="../chapter_6_interview/index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>7. 面试经验</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>
