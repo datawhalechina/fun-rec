@@ -1,0 +1,11 @@
+_build/
+.DS_Store
+*.bkp
+*.dtmp
+tmp/
+tmp_bak/
+__pycache__/
+tests/
+rec_train_set.sample.txt
+.env
+*.egg-info
