@@ -1,0 +1,255 @@
+
+.. _itemcf:
+
+基于物品的协同过滤
+==================
+
+
+当你在购物网站上买了一件T恤后，系统往往会推荐卫衣等其他服装。这背后的逻辑很直观：既然你喜欢这件T恤，那么与它相似的其他服装可能也符合你的品味。这就是基于物品的协同过滤（ItemCF）的核心思想
+:cite:`linden2003amazon`\ 。
+
+与前面介绍的UserCF不同，ItemCF换了一个角度来思考推荐问题。它不再寻找“和你相似的用户还喜欢什么”，而是关注“和你喜欢的物品相似的还有什么”。这种思路建立在一个简单的假设上：用户的兴趣具有一定的连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。
+
+.. figure:: ../../img/itemcf_illustration.svg
+
+   ItemCF 原理示意图
+
+从上图可以看到，当我们要给左方用户推荐物品时，ItemCF会分析T恤和卫衣之间的相似性。由于右方两个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么卫衣就成为了一个不错的推荐选择。
+
+ItemCF的实现流程主要包含以下两个步骤：
+
+**第一步：物品相似度计算**
+
+要实现ItemCF，首先需要量化物品之间的相似程度。在大多数实际应用场景中，我们通常只有用户是否对物品有过交互行为的数据（如点击、购买、收藏等），而没有具体的评分信息。
+
+在理论上，我们可以将每个物品表示为一个用户向量，然后计算向量间的相似度。但当商品数量巨大时，计算所有物品对之间的相似度会变成一个巨大的工程，时间复杂度达到\ :math:`O(|I|^2)`\ 。
+
+实际上，很多物品对之间没有共同的用户交互，它们的相似度必然为0，计算它们就是浪费时间。因此我们从用户出发找物品组合，采用更高效的实现方式：
+
+1. **构建用户-物品倒排表**\ ：为每个用户维护一个交互过的物品列表。
+
+2. **计算物品共现矩阵**\ ：创建一个矩阵\ :math:`C[i][j]`\ 来记录物品\ :math:`i`\ 和\ :math:`j`\ 的共同用户数量。遍历所有用户的物品列表，将列表中的物品两两配对，对应的\ :math:`C[i][j]`\ 值加1，这就构成了共现矩阵。
+
+3. **计算最终相似度**\ ：使用余弦相似度公式计算物品相似度：
+
+.. math:: w_{ij} = \frac{C[i][j]}{\sqrt{|N(i)| \cdot |N(j)|}}
+
+这里\ :math:`|N(i)|`\ 表示与物品\ :math:`i`\ 有交互的用户总数，\ :math:`C[i][j]`\ 是两个物品的共现次数。这个公式很直观：分子是两个物品的共同用户数，分母是对共同用户数的标准化，防止热门商品占据绝对优势。
+
+这种实现方式的时间复杂度约为\ :math:`O(R \cdot \bar{m})`\ ，其中\ :math:`R`\ 是用户-物品交互记录总数，\ :math:`\bar{m}`\ 是用户平均交互的物品数量。在数据稀疏的实际场景中，这比直接计算所有物品对的\ :math:`O(|I|^2)`\ 要高效得多。
+
+**第二步：候选物品推荐**
+
+有了物品相似度矩阵，我们就能预测用户对未接触物品的喜好程度了。计算用户\ :math:`u`\ 对物品\ :math:`i`\ 的兴趣分数：
+
+.. math:: p(u, i) = \sum_{j \in S_i \cap N(u)} w_{ij} r_{uj}
+
+其中\ :math:`S_i`\ 是与物品\ :math:`i`\ 最相似的\ :math:`K`\ 个物品集合，\ :math:`N(u)`\ 是对物品\ :math:`i`\ 有过行为的用户集合。实际推荐时，针对目标用户未交互过的物品计算上述兴趣度量值，并按分值降序排列，选择Top-N物品作为推荐结果。
+
+**处理评分数据：皮尔逊相关系数**
+
+在某些应用场景中，我们不仅知道用户是否与物品有交互，还有具体的评分信息（如5星评分、点赞数等）。这时候可以使用更细致的相似度计算方法。
+
+**皮尔逊相关系数**\ ：当有评分数据时，可以使用皮尔逊相关系数来衡量物品间的相似性
+:cite:`sarwar2001item`\ ：
+
+.. math:: w_{ij} = \frac{\sum_{u \in U}(r_{ui} - \bar{r}_i)(r_{uj} - \bar{r}_j)}{\sqrt{\sum_{u \in U}(r_{ui} - \bar{r}_i)^2}\sqrt{\sum_{u \in U}(r_{uj} - \bar{r}_j)^2}}
+
+这个公式的含义是：我们取出同时评价过物品\ :math:`i`\ 和物品\ :math:`j`\ 的所有用户，比较他们对这两个物品的评分模式。其中\ :math:`r_{ui}`\ 表示用户\ :math:`u`\ 对物品\ :math:`i`\ 的评分，\ :math:`\bar{r}_i`\ 表示物品\ :math:`i`\ 收到的平均评分。如果用户们对两个物品的评分趋势一致（都高或都低），相似度就会较高。
+
+**基于评分的预测**\ ：有了基于评分的相似度，我们可以更精确地预测用户对未接触物品的评分：
+
+.. math:: \hat{r}_{u,j} = \bar{r}_{j} + \frac{\sum_{k \in S_j} w_{jk}\,\left( r_{u,k} - \bar{r}_{k} \right)}{\sum_{k \in S_j} w_{jk}}
+   :label: eq-itemcf-predict
+
+这个预测公式的逻辑是：先以物品\ :math:`j`\ 的平均评分作为基准，然后根据用户\ :math:`u`\ 对相似物品的评分偏好进行调整。\ :math:`S_j`\ 表示与物品\ :math:`j`\ 最相似的物品集合，\ :math:`w_{jk}`\ 是物品\ :math:`j`\ 和\ :math:`k`\ 之间的相似度权重。
+
+皮尔逊相关系数通过中心化处理，有效消除了不同物品评分分布的差异，能够更好地捕获物品间的相似性模式。
+
+应用实践
+--------
+
+1.数据集 表格 :numref:`table-itemcf-data` 是和 :numref:`usercf`
+相同的用户评分数据。
+
+.. _table-itemcf-data:
+
+.. table:: 用户评分数据
+
+   ===== ===== ===== ===== ===== =====
+   \     用户1 用户2 用户3 用户4 用户5
+   ===== ===== ===== ===== ===== =====
+   物品1 5     3     4     3     1
+   物品2 3     1     3     3     5
+   物品3 4     2     4     1     5
+   物品4 4     3     3     5     2
+   物品5 ?     3     5     4     1
+   ===== ===== ===== ===== ===== =====
+
+
+2.手动分析
+计算物品之间的相似度，以物品5和物品1之间的皮尔逊相关系数为例。\ :math:`\hat{r}_{item5}=3.25,\ \hat{r}_{item1}=2.75`,
+向量减去均值:
+:math:`\text{item5}:(-0.25, 1.75, 0.75, -2.25) \quad \text{item1}: (0.25, 1.25, 0.25, -1.75)`.
+
+.. math::
+
+
+   \begin{aligned}
+   \text{sim}(item5,item1)&=\frac{\sum_{u \in U}(r_{u,item5} - \bar{r}_{item5})(r_{u,item1} - \bar{r}_{item1})}{\sqrt{\sum_{u \in U}(r_{u,item5} - \bar{r}_{item5})^2}\sqrt{\sum_{u \in U}(r_{u,item1} - \bar{r}_{item1})^2}}\\
+   &=cos((-0.25,  1.75,  0.75, -2.25),(0.25,  1.25,  0.25, -1.75))\\
+   &=0.96946
+   \end{aligned}
+
+根据皮尔逊相关系数，可以找到与物品5最相似的两个物品是物品1和物品4。基于相似物品，根据上面的计算公式
+:eq:`eq-itemcf-predict`\ ，可以计算出 用户1 对物品5的最终得分是:
+
+.. math::
+
+
+   \begin{aligned}
+   \hat{r}_{user1,item5}&=\bar{r}_{item5}+\frac{\sum_{k=1}^{2}\left(w_{item5,itemk}\left(r_{user1,itemk}-\bar{r}_{itemk}\right)\right)}{\sum_{k=1}^{2} w_{item5,itemk}}\\
+   &=\frac{13}{4}+\frac{0.97*(5-3.2)+0.58*(4-3.4)}{0.97+0.58}\\
+   &=4.6
+   \end{aligned}
+
+代码实践
+--------
+
+1. 数据准备
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   import numpy as np
+   item_data = {
+       'item1': {'user1': 5, 'user2': 3, 'user3': 4, 'user4': 3, 'user5': 1},
+       'item2': {'user1': 3, 'user2': 1, 'user3': 3, 'user4': 3, 'user5': 5},
+       'item3': {'user1': 4, 'user2': 2, 'user3': 4, 'user4': 1, 'user5': 5},
+       'item4': {'user1': 4, 'user2': 3, 'user3': 3, 'user4': 5, 'user5': 2},
+       'item5': {'user2': 3, 'user3': 5, 'user4': 4, 'user5': 1},
+   }
+
+2. 计算物品间的相似度矩阵
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   import pandas as pd
+   similarity_matrix = pd.DataFrame(
+       np.identity(len(item_data)),
+       index=item_data.keys(),
+       columns=item_data.keys(),
+   )
+
+   # 遍历每条物品-用户评分数据
+   for i1, users1 in item_data.items():
+       for i2, users2 in item_data.items():
+           if i1 == i2:
+               continue
+           vec1, vec2 = [], []
+           for user, rating1 in users1.items():
+               rating2 = users2.get(user, -1)
+               if rating2 == -1:
+                   continue
+               vec1.append(rating1)
+               vec2.append(rating2)
+           similarity_matrix[i1][i2] = np.corrcoef(vec1, vec2)[0][1]
+
+   print(similarity_matrix)
+
+3. 评分预测 从user1交互过的物品中，找到与item5最相似的2个物品
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   target_user = 'user1'
+   target_item = 'item5'
+   num = 2
+
+   sim_items = []
+   sim_items_list = similarity_matrix[target_item].sort_values(ascending=False).index.tolist()
+   for item in sim_items_list:
+       # 如果target_user对物品item评分过
+       if target_user in item_data[item]:
+           sim_items.append(item)
+       if len(sim_items) == num:
+           break
+   print(f'与物品{target_item}最相似的{num}个物品为：{sim_items}')
+
+预测用户1对物品5的评分
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   target_user_mean_rating = np.mean(list(item_data[target_item].values()))
+   weighted_scores = 0.
+   corr_values_sum = 0.
+
+
+   for item in sim_items:
+       corr_value = similarity_matrix[target_item][item]
+       user_mean_rating = np.mean(list(item_data[item].values()))
+
+       weighted_scores += corr_value * (item_data[item][target_user] - user_mean_rating)
+       corr_values_sum += corr_value
+
+   target_item_pred = target_user_mean_rating + weighted_scores / corr_values_sum
+   print(f'用户{target_user}对物品{target_item}的预测评分为：{target_item_pred}')
+
+4. 训练模型
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    import os
+    import sys
+    import funrec
+    from funrec.utils import build_metrics_table
+    
+    # 加载配置
+    config = funrec.load_config('item_cf')
+    
+    # 加载数据
+    train_data, test_data = funrec.load_data(config.data)
+    
+    # 准备特征
+    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
+    
+    # 训练模型
+    models = funrec.train_model(config.training, feature_columns, processed_data)
+    
+    # 评估模型
+    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
+    
+    print(build_metrics_table(metrics))
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    +---------------+---------------+--------------+----------------+----------------+---------------+
+    |   hit_rate@10 |   hit_rate@20 |   hit_rate@5 |   precision@10 |   precision@20 |   precision@5 |
+    +===============+===============+==============+================+================+===============+
+    |        0.6594 |        0.7696 |       0.5459 |         0.1444 |         0.1095 |        0.1826 |
+    +---------------+---------------+--------------+----------------+----------------+---------------+
+

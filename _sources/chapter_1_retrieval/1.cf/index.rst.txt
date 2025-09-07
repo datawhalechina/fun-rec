@@ -1,0 +1,13 @@
+
+协同过滤
+========
+
+.. toctree::
+   :maxdepth: 1
+
+   0.intro.md
+   1.usercf.md
+   2.itemcf.md
+   3.swing.md
+   4.mf.md
+   5.summary.md

@@ -1,0 +1,33 @@
+
+《FunRec 推荐系统》
+===================
+
+
+
+.. raw:: html
+   :file: frontpage.html
+
+.. toctree::
+   :maxdepth: 1
+
+   chapter_preface/index
+   chapter_installation/index
+   chapter_notation/index
+
+.. toctree::
+   :maxdepth: 2
+   :numbered:
+
+   chapter_0_introduction/index
+   chapter_1_retrieval/index
+   chapter_2_ranking/index
+   chapter_3_rerank/index
+   chapter_4_trends/index
+   chapter_5_projects/index
+   chapter_6_interview/index
+   chapter_appendix/index
+
+.. toctree::
+   :maxdepth: 1
+
+   chapter_references/references
