@@ -1,0 +1,591 @@
+
+Baseline
+========
+
+本baseline将重点实现ItemCF（基于物品的协同过滤）算法作为召回策略，这是工业界广泛使用的经典方法，具有可解释性强、效果稳定的特点。
+
+导包
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    import gc
+    import logging
+    import math
+    import os
+    import pickle
+    import random
+    import time
+    import warnings
+    from collections import defaultdict
+    from datetime import datetime
+    from operator import itemgetter
+    from pathlib import Path
+    
+    logger = logging.getLogger(__name__)
+    warnings.filterwarnings('ignore')
+    
+    import numpy as np
+    import pandas as pd
+    from dotenv import load_dotenv
+    from tqdm import tqdm
+    
+    load_dotenv()
+    RAW_DATA_PATH = Path(os.getenv('RAW_DATA_PATH'))
+    PROCESSED_DATA_PATH = Path(os.getenv('PROCESSED_DATA_PATH'))
+    
+    
+    # 数据路径
+    data_path = RAW_DATA_PATH / 'news_recommendation/'
+    save_path = PROCESSED_DATA_PATH / 'projects/news_recommendation/'
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
+
+df节省内存函数
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 节约内存的一个标配函数
+    def reduce_mem(df):
+        starttime = time.time()
+        numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+        start_mem = df.memory_usage().sum() / 1024**2
+        for col in df.columns:
+            col_type = df[col].dtypes
+            if col_type in numerics:
+                c_min = df[col].min()
+                c_max = df[col].max()
+                if pd.isnull(c_min) or pd.isnull(c_max):
+                    continue
+                if str(col_type)[:3] == 'int':
+                    if c_min > np.iinfo(np.int8).min and c_max < np.iinfo(np.int8).max:
+                        df[col] = df[col].astype(np.int8)
+                    elif c_min > np.iinfo(np.int16).min and c_max < np.iinfo(np.int16).max:
+                        df[col] = df[col].astype(np.int16)
+                    elif c_min > np.iinfo(np.int32).min and c_max < np.iinfo(np.int32).max:
+                        df[col] = df[col].astype(np.int32)
+                    elif c_min > np.iinfo(np.int64).min and c_max < np.iinfo(np.int64).max:
+                        df[col] = df[col].astype(np.int64)
+                else:
+                    if c_min > np.finfo(np.float16).min and c_max < np.finfo(np.float16).max:
+                        df[col] = df[col].astype(np.float16)
+                    elif c_min > np.finfo(np.float32).min and c_max < np.finfo(np.float32).max:
+                        df[col] = df[col].astype(np.float32)
+                    else:
+                        df[col] = df[col].astype(np.float64)
+        end_mem = df.memory_usage().sum() / 1024**2
+        print('-- Mem. usage decreased to {:5.2f} Mb ({:.1f}% reduction),time spend:{:2.2f} min'.format(end_mem,
+                                                                                                               100*(start_mem-end_mem)/start_mem,
+                                                                                                               (time.time()-starttime)/60))
+        return df
+
+读取采样或全量数据
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # debug模式：从训练集中划出一部分数据来调试代码
+    def get_all_click_sample(data_path, sample_nums=10000):
+        """
+            训练集中采样一部分数据调试
+            data_path: 原数据的存储路径
+            sample_nums: 采样数目（这里由于机器的内存限制，可以采样用户做）
+        """
+        all_click = pd.read_csv(data_path / 'train_click_log.csv')
+        all_user_ids = all_click.user_id.unique()
+    
+        sample_user_ids = np.random.choice(all_user_ids, size=sample_nums, replace=False)
+        all_click = all_click[all_click['user_id'].isin(sample_user_ids)]
+    
+        all_click = all_click.drop_duplicates((['user_id', 'click_article_id', 'click_timestamp']))
+        return all_click
+    
+    # 读取点击数据，这里分成线上和线下，如果是为了获取线上提交结果应该讲测试集中的点击数据合并到总的数据中
+    # 如果是为了线下验证模型的有效性或者特征的有效性，可以只使用训练集
+    # TODO: 这里使用部分数据，快速debug需要
+    def get_all_click_df(data_path, offline=True):
+        if offline:
+            all_click = pd.read_csv(data_path / 'train_click_log.csv')[:20000]
+        else:
+            trn_click = pd.read_csv(data_path / 'train_click_log.csv')[:10000]
+            tst_click = pd.read_csv(data_path / 'testA_click_log.csv')[:10000]
+    
+            all_click = pd.concat([trn_click, tst_click])
+    
+        all_click = all_click.drop_duplicates((['user_id', 'click_article_id', 'click_timestamp'])).reset_index(drop=True)
+        return all_click
+    # 全量训练集
+    all_click_df = get_all_click_df(data_path, offline=False)
+    all_click_df.head()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>click_article_id</th>
+          <th>click_timestamp</th>
+          <th>click_environment</th>
+          <th>click_deviceGroup</th>
+          <th>click_os</th>
+          <th>click_country</th>
+          <th>click_region</th>
+          <th>click_referrer_type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>0</th>
+          <td>199999</td>
+          <td>160417</td>
+          <td>1507029570190</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>13</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <th>1</th>
+          <td>199999</td>
+          <td>5408</td>
+          <td>1507029571478</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>13</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <td>199999</td>
+          <td>50823</td>
+          <td>1507029601478</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>13</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <th>3</th>
+          <td>199998</td>
+          <td>157770</td>
+          <td>1507029532200</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>25</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <th>4</th>
+          <td>199998</td>
+          <td>96613</td>
+          <td>1507029671831</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>25</td>
+          <td>5</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+获取 用户 - 文章 - 点击时间字典
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 根据点击时间获取用户的点击文章序列   {user1: {item1: time1, item2: time2..}...}
+    def get_user_item_time(click_df):
+    
+        click_df = click_df.sort_values('click_timestamp')
+    
+        def make_item_time_pair(df):
+            return list(zip(df['click_article_id'], df['click_timestamp']))
+    
+        user_item_time_df = (
+            click_df.groupby('user_id')[['click_article_id', 'click_timestamp']]
+            .apply(lambda x: make_item_time_pair(x))
+            .reset_index()
+            .rename(columns={0: 'item_time_list'})
+        )
+        user_item_time_dict = dict(zip(user_item_time_df['user_id'], user_item_time_df['item_time_list']))
+    
+        return user_item_time_dict
+
+获取点击最多的Topk个文章
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 获取近期点击最多的文章
+    def get_item_topk_click(click_df, k):
+        topk_click = click_df['click_article_id'].value_counts().index[:k]
+        return topk_click
+
+itemCF的物品相似度计算
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    def itemcf_sim(df):
+        """
+            文章与文章之间的相似性矩阵计算
+            :param df: 数据表
+            :item_created_time_dict:  文章创建时间的字典
+            return : 文章与文章的相似性矩阵
+            思路: 基于物品的协同过滤(详细请参考上一期推荐系统基础的组队学习)， 在多路召回部分会加上关联规则的召回策略
+        """
+    
+        user_item_time_dict = get_user_item_time(df)
+    
+        # 计算物品相似度
+        i2i_sim = {}
+        item_cnt = defaultdict(int)
+        for user, item_time_list in tqdm(user_item_time_dict.items(), disable=not logger.isEnabledFor(logging.DEBUG)):
+            # 在基于商品的协同过滤优化的时候可以考虑时间因素
+            for i, i_click_time in item_time_list:
+                item_cnt[i] += 1
+                i2i_sim.setdefault(i, {})
+                for j, j_click_time in item_time_list:
+                    if(i == j):
+                        continue
+                    i2i_sim[i].setdefault(j, 0)
+    
+                    i2i_sim[i][j] += 1 / math.log(len(item_time_list) + 1)
+    
+        i2i_sim_ = i2i_sim.copy()
+        for i, related_items in i2i_sim.items():
+            for j, wij in related_items.items():
+                i2i_sim_[i][j] = wij / math.sqrt(item_cnt[i] * item_cnt[j])
+    
+        # 将得到的相似性矩阵保存到本地
+        pickle.dump(i2i_sim_, open(save_path / 'itemcf_i2i_sim.pkl', 'wb'))
+    
+        return i2i_sim_
+    
+    i2i_sim = itemcf_sim(all_click_df)
+
+itemCF 的文章推荐
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 基于商品的召回i2i
+    def item_based_recommend(user_id, user_item_time_dict, i2i_sim, sim_item_topk, recall_item_num, item_topk_click):
+        """
+            基于文章协同过滤的召回
+            :param user_id: 用户id
+            :param user_item_time_dict: 字典, 根据点击时间获取用户的点击文章序列   {user1: {item1: time1, item2: time2..}...}
+            :param i2i_sim: 字典，文章相似性矩阵
+            :param sim_item_topk: 整数， 选择与当前文章最相似的前k篇文章
+            :param recall_item_num: 整数， 最后的召回文章数量
+            :param item_topk_click: 列表，点击次数最多的文章列表，用户召回补全
+            return: 召回的文章列表 {item1:score1, item2: score2...}
+            注意: 基于物品的协同过滤(详细请参考上一期推荐系统基础的组队学习)， 在多路召回部分会加上关联规则的召回策略
+        """
+    
+        # 获取用户历史交互的文章
+        user_hist_items = user_item_time_dict[user_id]
+    
+        item_rank = {}
+        for loc, (i, click_time) in enumerate(user_hist_items):
+            for j, wij in sorted(i2i_sim[i].items(), key=lambda x: x[1], reverse=True)[:sim_item_topk]:
+                if j in user_hist_items:
+                    continue
+    
+                item_rank.setdefault(j, 0)
+                item_rank[j] +=  wij
+    
+        # 不足10个，用热门商品补全
+        if len(item_rank) < recall_item_num:
+            for i, item in enumerate(item_topk_click):
+                if item in item_rank.items(): # 填充的item应该不在原来的列表中
+                    continue
+                item_rank[item] = - i - 100 # 随便给个负数就行
+                if len(item_rank) == recall_item_num:
+                    break
+    
+        item_rank = sorted(item_rank.items(), key=lambda x: x[1], reverse=True)[:recall_item_num]
+    
+        return item_rank
+
+给每个用户根据物品的协同过滤推荐文章
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 定义
+    user_recall_items_dict = defaultdict(dict)
+    
+    # 获取 用户 - 文章 - 点击时间的字典
+    user_item_time_dict = get_user_item_time(all_click_df)
+    
+    # 去取文章相似度
+    i2i_sim = pickle.load(open(save_path / 'itemcf_i2i_sim.pkl', 'rb'))
+    
+    # 相似文章的数量
+    sim_item_topk = 10
+    
+    # 召回文章数量
+    recall_item_num = 10
+    
+    # 用户热度补全
+    item_topk_click = get_item_topk_click(all_click_df, k=50)
+    
+    for user in tqdm(all_click_df['user_id'].unique(), disable=not logger.isEnabledFor(logging.DEBUG)):
+        user_recall_items_dict[user] = item_based_recommend(user, user_item_time_dict, i2i_sim,
+                                                            sim_item_topk, recall_item_num, item_topk_click)
+
+召回字典转换成df
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 将字典的形式转换成df
+    user_item_score_list = []
+    
+    for user, items in tqdm(user_recall_items_dict.items(), disable=not logger.isEnabledFor(logging.DEBUG)):
+        for item, score in items:
+            user_item_score_list.append([user, item, score])
+    
+    recall_df = pd.DataFrame(user_item_score_list, columns=['user_id', 'click_article_id', 'pred_score'])
+    recall_df.head()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>click_article_id</th>
+          <th>pred_score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>0</th>
+          <td>199999</td>
+          <td>107301</td>
+          <td>0.178689</td>
+        </tr>
+        <tr>
+          <th>1</th>
+          <td>199999</td>
+          <td>50864</td>
+          <td>0.150742</td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <td>199999</td>
+          <td>160974</td>
+          <td>0.144116</td>
+        </tr>
+        <tr>
+          <th>3</th>
+          <td>199999</td>
+          <td>50383</td>
+          <td>0.135146</td>
+        </tr>
+        <tr>
+          <th>4</th>
+          <td>199999</td>
+          <td>158536</td>
+          <td>0.110413</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+生成提交文件
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 生成提交文件
+   def submit(recall_df, topk=5, model_name=None):
+       recall_df = recall_df.sort_values(by=['user_id', 'pred_score'])
+       recall_df['rank'] = recall_df.groupby(['user_id'])['pred_score'].rank(ascending=False, method='first')
+       
+       # 判断是不是每个用户都有5篇文章及以上
+       tmp = recall_df.groupby('user_id').apply(lambda x: x['rank'].max())
+       assert tmp.min() >= topk
+       
+       del recall_df['pred_score']
+       submit = recall_df[recall_df['rank'] <= topk].set_index(['user_id', 'rank']).unstack(-1).reset_index()
+       
+       submit.columns = [int(col) if isinstance(col, int) else col for col in submit.columns.droplevel(0)]
+       # 按照提交格式定义列名
+       submit = submit.rename(columns={'': 'user_id', 1: 'article_1', 2: 'article_2', 
+                                                     3: 'article_3', 4: 'article_4', 5: 'article_5'})
+       
+       save_name = save_path / (model_name + '_' + datetime.today().strftime('%m-%d') + '.csv')
+       submit.to_csv(save_name, index=False, header=True)
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 获取测试集
+    tst_click = pd.read_csv(data_path / 'testA_click_log.csv')[:10000]
+    tst_users = tst_click['user_id'].unique()
+    
+    # 从所有的召回数据中将测试集中的用户选出来
+    tst_recall = recall_df[recall_df['user_id'].isin(tst_users)]
+    tst_recall.head()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>click_article_id</th>
+          <th>pred_score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>36190</th>
+          <td>249999</td>
+          <td>300470</td>
+          <td>0.293846</td>
+        </tr>
+        <tr>
+          <th>36191</th>
+          <td>249999</td>
+          <td>162300</td>
+          <td>0.277295</td>
+        </tr>
+        <tr>
+          <th>36192</th>
+          <td>249999</td>
+          <td>158536</td>
+          <td>0.269468</td>
+        </tr>
+        <tr>
+          <th>36193</th>
+          <td>249999</td>
+          <td>16129</td>
+          <td>0.248123</td>
+        </tr>
+        <tr>
+          <th>36194</th>
+          <td>249999</td>
+          <td>202557</td>
+          <td>0.173329</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 生成提交文件(这里不执行)
+   submit(tst_recall, topk=5, model_name='itemcf_baseline')

@@ -1,0 +1,2828 @@
+
+数据分析
+========
+
+数据分析的价值主要在于熟悉了解整个数据集的基本情况包括每个文件里有哪些数据，具体的文件中的每个字段表示什么实际含义，以及数据集中特征之间的相关性，在推荐场景下主要就是分析用户本身的基本属性，文章基本属性，以及用户和文章交互的一些分布，这些都有利于后面的召回策略的选择，以及特征工程。
+
+**建议：当特征工程和模型调参已经很难继续上分了，可以回来在重新从新的角度去分析这些数据，或许可以找到上分的灵感**
+
+导包
+----
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 导入相关包
+    %matplotlib inline
+    import gc
+    import os
+    import re
+    import sys
+    import warnings
+    from pathlib import Path
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import pandas as pd
+    import seaborn as sns
+    
+    plt.rc('font', size=13)
+    
+    warnings.filterwarnings("ignore")
+    
+    from dotenv import load_dotenv
+    
+    load_dotenv()
+    RAW_DATA_PATH = Path(os.getenv('RAW_DATA_PATH'))
+    PROCESSED_DATA_PATH = Path(os.getenv('PROCESSED_DATA_PATH'))
+
+读取数据
+--------
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 数据路径
+    data_path = RAW_DATA_PATH / 'news_recommendation/'
+    
+    # 训练集
+    trn_click = pd.read_csv(data_path / 'train_click_log.csv')
+    item_df = pd.read_csv(data_path / 'articles.csv')
+    item_df = item_df.rename(columns={'article_id': 'click_article_id'})  #重命名，方便后续match
+    item_emb_df = pd.read_csv(data_path / 'articles_emb.csv')
+    
+    # 测试集
+    tst_click = pd.read_csv(data_path / 'testA_click_log.csv')
+
+数据预处理
+----------
+
+计算用户点击rank和点击次数
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 对每个用户的点击时间戳进行排序
+    trn_click['rank'] = trn_click.groupby(['user_id'])['click_timestamp'].rank(ascending=False).astype(int)
+    tst_click['rank'] = tst_click.groupby(['user_id'])['click_timestamp'].rank(ascending=False).astype(int)
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #计算用户点击文章的次数，并添加新的一列count
+    trn_click['click_cnts'] = trn_click.groupby(['user_id'])['click_timestamp'].transform('count')
+    tst_click['click_cnts'] = tst_click.groupby(['user_id'])['click_timestamp'].transform('count')
+
+数据浏览
+--------
+
+**训练集用户点击日志**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    trn_click = trn_click.merge(item_df, how='left', on=['click_article_id'])
+    trn_click.head()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>click_article_id</th>
+          <th>click_timestamp</th>
+          <th>click_environment</th>
+          <th>click_deviceGroup</th>
+          <th>click_os</th>
+          <th>click_country</th>
+          <th>click_region</th>
+          <th>click_referrer_type</th>
+          <th>rank</th>
+          <th>click_cnts</th>
+          <th>category_id</th>
+          <th>created_at_ts</th>
+          <th>words_count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>0</th>
+          <td>199999</td>
+          <td>160417</td>
+          <td>1507029570190</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>13</td>
+          <td>1</td>
+          <td>11</td>
+          <td>11</td>
+          <td>281</td>
+          <td>1506942089000</td>
+          <td>173</td>
+        </tr>
+        <tr>
+          <th>1</th>
+          <td>199999</td>
+          <td>5408</td>
+          <td>1507029571478</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>13</td>
+          <td>1</td>
+          <td>10</td>
+          <td>11</td>
+          <td>4</td>
+          <td>1506994257000</td>
+          <td>118</td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <td>199999</td>
+          <td>50823</td>
+          <td>1507029601478</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>13</td>
+          <td>1</td>
+          <td>9</td>
+          <td>11</td>
+          <td>99</td>
+          <td>1507013614000</td>
+          <td>213</td>
+        </tr>
+        <tr>
+          <th>3</th>
+          <td>199998</td>
+          <td>157770</td>
+          <td>1507029532200</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>25</td>
+          <td>5</td>
+          <td>40</td>
+          <td>40</td>
+          <td>281</td>
+          <td>1506983935000</td>
+          <td>201</td>
+        </tr>
+        <tr>
+          <th>4</th>
+          <td>199998</td>
+          <td>96613</td>
+          <td>1507029671831</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>25</td>
+          <td>5</td>
+          <td>39</td>
+          <td>40</td>
+          <td>209</td>
+          <td>1506938444000</td>
+          <td>185</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+``train_click_log.csv``\ 文件数据中每个字段的含义:
+
+1. user_id: 用户的唯一标识
+2. click_article_id: 用户点击的文章唯一标识
+3. click_timestamp: 用户点击文章时的时间戳
+4. click_environment: 用户点击文章的环境
+5. click_deviceGroup: 用户点击文章的设备组
+6. click_os: 用户点击文章时的操作系统
+7. click_country: 用户点击文章时的所在的国家
+8. click_region: 用户点击文章时所在的区域
+9. click_referrer_type: 用户点击文章时，文章的来源
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #用户点击日志信息
+    trn_click.info()
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    <class 'pandas.core.frame.DataFrame'>
+    RangeIndex: 1112623 entries, 0 to 1112622
+    Data columns (total 14 columns):
+     #   Column               Non-Null Count    Dtype
+    ---  ------               --------------    -----
+     0   user_id              1112623 non-null  int64
+     1   click_article_id     1112623 non-null  int64
+     2   click_timestamp      1112623 non-null  int64
+     3   click_environment    1112623 non-null  int64
+     4   click_deviceGroup    1112623 non-null  int64
+     5   click_os             1112623 non-null  int64
+     6   click_country        1112623 non-null  int64
+     7   click_region         1112623 non-null  int64
+     8   click_referrer_type  1112623 non-null  int64
+     9   rank                 1112623 non-null  int64
+     10  click_cnts           1112623 non-null  int64
+     11  category_id          1112623 non-null  int64
+     12  created_at_ts        1112623 non-null  int64
+     13  words_count          1112623 non-null  int64
+    dtypes: int64(14)
+    memory usage: 118.8 MB
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    trn_click.describe()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>click_article_id</th>
+          <th>click_timestamp</th>
+          <th>click_environment</th>
+          <th>click_deviceGroup</th>
+          <th>click_os</th>
+          <th>click_country</th>
+          <th>click_region</th>
+          <th>click_referrer_type</th>
+          <th>rank</th>
+          <th>click_cnts</th>
+          <th>category_id</th>
+          <th>created_at_ts</th>
+          <th>words_count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>count</th>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+          <td>1.112623e+06</td>
+        </tr>
+        <tr>
+          <th>mean</th>
+          <td>1.221198e+05</td>
+          <td>1.951541e+05</td>
+          <td>1.507588e+12</td>
+          <td>3.947786e+00</td>
+          <td>1.815981e+00</td>
+          <td>1.301976e+01</td>
+          <td>1.310776e+00</td>
+          <td>1.813587e+01</td>
+          <td>1.910063e+00</td>
+          <td>7.118518e+00</td>
+          <td>1.323704e+01</td>
+          <td>3.056176e+02</td>
+          <td>1.506598e+12</td>
+          <td>2.011981e+02</td>
+        </tr>
+        <tr>
+          <th>std</th>
+          <td>5.540349e+04</td>
+          <td>9.292286e+04</td>
+          <td>3.363466e+08</td>
+          <td>3.276715e-01</td>
+          <td>1.035170e+00</td>
+          <td>6.967844e+00</td>
+          <td>1.618264e+00</td>
+          <td>7.105832e+00</td>
+          <td>1.220012e+00</td>
+          <td>1.016095e+01</td>
+          <td>1.631503e+01</td>
+          <td>1.155791e+02</td>
+          <td>8.343066e+09</td>
+          <td>5.223881e+01</td>
+        </tr>
+        <tr>
+          <th>min</th>
+          <td>0.000000e+00</td>
+          <td>3.000000e+00</td>
+          <td>1.507030e+12</td>
+          <td>1.000000e+00</td>
+          <td>1.000000e+00</td>
+          <td>2.000000e+00</td>
+          <td>1.000000e+00</td>
+          <td>1.000000e+00</td>
+          <td>1.000000e+00</td>
+          <td>1.000000e+00</td>
+          <td>2.000000e+00</td>
+          <td>1.000000e+00</td>
+          <td>1.166573e+12</td>
+          <td>0.000000e+00</td>
+        </tr>
+        <tr>
+          <th>25%</th>
+          <td>7.934700e+04</td>
+          <td>1.239090e+05</td>
+          <td>1.507297e+12</td>
+          <td>4.000000e+00</td>
+          <td>1.000000e+00</td>
+          <td>2.000000e+00</td>
+          <td>1.000000e+00</td>
+          <td>1.300000e+01</td>
+          <td>1.000000e+00</td>
+          <td>2.000000e+00</td>
+          <td>4.000000e+00</td>
+          <td>2.500000e+02</td>
+          <td>1.507220e+12</td>
+          <td>1.700000e+02</td>
+        </tr>
+        <tr>
+          <th>50%</th>
+          <td>1.309670e+05</td>
+          <td>2.038900e+05</td>
+          <td>1.507596e+12</td>
+          <td>4.000000e+00</td>
+          <td>1.000000e+00</td>
+          <td>1.700000e+01</td>
+          <td>1.000000e+00</td>
+          <td>2.100000e+01</td>
+          <td>2.000000e+00</td>
+          <td>4.000000e+00</td>
+          <td>8.000000e+00</td>
+          <td>3.280000e+02</td>
+          <td>1.507553e+12</td>
+          <td>1.970000e+02</td>
+        </tr>
+        <tr>
+          <th>75%</th>
+          <td>1.704010e+05</td>
+          <td>2.777120e+05</td>
+          <td>1.507841e+12</td>
+          <td>4.000000e+00</td>
+          <td>3.000000e+00</td>
+          <td>1.700000e+01</td>
+          <td>1.000000e+00</td>
+          <td>2.500000e+01</td>
+          <td>2.000000e+00</td>
+          <td>8.000000e+00</td>
+          <td>1.600000e+01</td>
+          <td>4.100000e+02</td>
+          <td>1.507756e+12</td>
+          <td>2.280000e+02</td>
+        </tr>
+        <tr>
+          <th>max</th>
+          <td>1.999990e+05</td>
+          <td>3.640460e+05</td>
+          <td>1.510603e+12</td>
+          <td>4.000000e+00</td>
+          <td>5.000000e+00</td>
+          <td>2.000000e+01</td>
+          <td>1.100000e+01</td>
+          <td>2.800000e+01</td>
+          <td>7.000000e+00</td>
+          <td>2.410000e+02</td>
+          <td>2.410000e+02</td>
+          <td>4.600000e+02</td>
+          <td>1.510666e+12</td>
+          <td>6.690000e+03</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #训练集中的用户数量为20w
+    trn_click.user_id.nunique()
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    200000
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    trn_click.groupby('user_id')['click_article_id'].count().min()  # 训练集里面每个用户至少点击了两篇文章
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    2
+
+
+
+画直方图大体看一下基本的属性分布
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    plt.figure()
+    plt.figure(figsize=(15, 20))
+    i = 1
+    for col in ['click_article_id', 'click_timestamp', 'click_environment', 'click_deviceGroup', 'click_os', 'click_country',
+                'click_region', 'click_referrer_type', 'rank', 'click_cnts']:
+        plot_envs = plt.subplot(5, 2, i)
+        i += 1
+        v = trn_click[col].value_counts().reset_index()[:10]
+        # Use iloc to access columns by position to avoid column name issues
+        fig = sns.barplot(x=v.iloc[:, 0], y=v.iloc[:, 1])
+        for item in fig.get_xticklabels():
+            item.set_rotation(90)
+        plt.title(col)
+    plt.tight_layout()
+    plt.show()
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    <Figure size 640x480 with 0 Axes>
+
+
+
+.. figure:: output_2.analysis_37698d_15_1.png
+
+
+从点击时间clik_timestamp来看，分布较为平均，可不做特殊处理。由于时间戳是13位的，后续将时间格式转换成10位方便计算。
+
+从点击环境click_environment来看，仅有1922次（占0.1%）点击环境为1；仅有24617次（占2.3%）点击环境为2；剩余（占97.6%）点击环境为4。
+
+从点击设备组click_deviceGroup来看，设备1占大部分（60.4%），设备3占36%。
+
+**测试集用户点击日志**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    tst_click = tst_click.merge(item_df, how='left', on=['click_article_id'])
+    tst_click.head()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>click_article_id</th>
+          <th>click_timestamp</th>
+          <th>click_environment</th>
+          <th>click_deviceGroup</th>
+          <th>click_os</th>
+          <th>click_country</th>
+          <th>click_region</th>
+          <th>click_referrer_type</th>
+          <th>rank</th>
+          <th>click_cnts</th>
+          <th>category_id</th>
+          <th>created_at_ts</th>
+          <th>words_count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>0</th>
+          <td>249999</td>
+          <td>160974</td>
+          <td>1506959142820</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>13</td>
+          <td>2</td>
+          <td>19</td>
+          <td>19</td>
+          <td>281</td>
+          <td>1506912747000</td>
+          <td>259</td>
+        </tr>
+        <tr>
+          <th>1</th>
+          <td>249999</td>
+          <td>160417</td>
+          <td>1506959172820</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>13</td>
+          <td>2</td>
+          <td>18</td>
+          <td>19</td>
+          <td>281</td>
+          <td>1506942089000</td>
+          <td>173</td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <td>249998</td>
+          <td>160974</td>
+          <td>1506959056066</td>
+          <td>4</td>
+          <td>1</td>
+          <td>12</td>
+          <td>1</td>
+          <td>13</td>
+          <td>2</td>
+          <td>5</td>
+          <td>5</td>
+          <td>281</td>
+          <td>1506912747000</td>
+          <td>259</td>
+        </tr>
+        <tr>
+          <th>3</th>
+          <td>249998</td>
+          <td>202557</td>
+          <td>1506959086066</td>
+          <td>4</td>
+          <td>1</td>
+          <td>12</td>
+          <td>1</td>
+          <td>13</td>
+          <td>2</td>
+          <td>4</td>
+          <td>5</td>
+          <td>327</td>
+          <td>1506938401000</td>
+          <td>219</td>
+        </tr>
+        <tr>
+          <th>4</th>
+          <td>249997</td>
+          <td>183665</td>
+          <td>1506959088613</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>15</td>
+          <td>5</td>
+          <td>7</td>
+          <td>7</td>
+          <td>301</td>
+          <td>1500895686000</td>
+          <td>256</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    tst_click.describe()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>click_article_id</th>
+          <th>click_timestamp</th>
+          <th>click_environment</th>
+          <th>click_deviceGroup</th>
+          <th>click_os</th>
+          <th>click_country</th>
+          <th>click_region</th>
+          <th>click_referrer_type</th>
+          <th>rank</th>
+          <th>click_cnts</th>
+          <th>category_id</th>
+          <th>created_at_ts</th>
+          <th>words_count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>count</th>
+          <td>518010.000000</td>
+          <td>518010.000000</td>
+          <td>5.180100e+05</td>
+          <td>518010.000000</td>
+          <td>518010.000000</td>
+          <td>518010.000000</td>
+          <td>518010.000000</td>
+          <td>518010.000000</td>
+          <td>518010.000000</td>
+          <td>518010.000000</td>
+          <td>518010.000000</td>
+          <td>518010.000000</td>
+          <td>5.180100e+05</td>
+          <td>518010.000000</td>
+        </tr>
+        <tr>
+          <th>mean</th>
+          <td>227342.428169</td>
+          <td>193803.792550</td>
+          <td>1.507387e+12</td>
+          <td>3.947300</td>
+          <td>1.738285</td>
+          <td>13.628467</td>
+          <td>1.348209</td>
+          <td>18.250250</td>
+          <td>1.819614</td>
+          <td>15.521785</td>
+          <td>30.043586</td>
+          <td>305.324961</td>
+          <td>1.506883e+12</td>
+          <td>210.966331</td>
+        </tr>
+        <tr>
+          <th>std</th>
+          <td>14613.907188</td>
+          <td>88279.388177</td>
+          <td>3.706127e+08</td>
+          <td>0.323916</td>
+          <td>1.020858</td>
+          <td>6.625564</td>
+          <td>1.703524</td>
+          <td>7.060798</td>
+          <td>1.082657</td>
+          <td>33.957702</td>
+          <td>56.868021</td>
+          <td>110.411513</td>
+          <td>5.816668e+09</td>
+          <td>83.040065</td>
+        </tr>
+        <tr>
+          <th>min</th>
+          <td>200000.000000</td>
+          <td>137.000000</td>
+          <td>1.506959e+12</td>
+          <td>1.000000</td>
+          <td>1.000000</td>
+          <td>2.000000</td>
+          <td>1.000000</td>
+          <td>1.000000</td>
+          <td>1.000000</td>
+          <td>1.000000</td>
+          <td>1.000000</td>
+          <td>1.000000</td>
+          <td>1.265812e+12</td>
+          <td>0.000000</td>
+        </tr>
+        <tr>
+          <th>25%</th>
+          <td>214926.000000</td>
+          <td>128551.000000</td>
+          <td>1.507026e+12</td>
+          <td>4.000000</td>
+          <td>1.000000</td>
+          <td>12.000000</td>
+          <td>1.000000</td>
+          <td>13.000000</td>
+          <td>1.000000</td>
+          <td>4.000000</td>
+          <td>10.000000</td>
+          <td>252.000000</td>
+          <td>1.506970e+12</td>
+          <td>176.000000</td>
+        </tr>
+        <tr>
+          <th>50%</th>
+          <td>229109.000000</td>
+          <td>199197.000000</td>
+          <td>1.507308e+12</td>
+          <td>4.000000</td>
+          <td>1.000000</td>
+          <td>17.000000</td>
+          <td>1.000000</td>
+          <td>21.000000</td>
+          <td>2.000000</td>
+          <td>8.000000</td>
+          <td>19.000000</td>
+          <td>323.000000</td>
+          <td>1.507249e+12</td>
+          <td>199.000000</td>
+        </tr>
+        <tr>
+          <th>75%</th>
+          <td>240182.000000</td>
+          <td>272143.000000</td>
+          <td>1.507666e+12</td>
+          <td>4.000000</td>
+          <td>3.000000</td>
+          <td>17.000000</td>
+          <td>1.000000</td>
+          <td>25.000000</td>
+          <td>2.000000</td>
+          <td>18.000000</td>
+          <td>35.000000</td>
+          <td>399.000000</td>
+          <td>1.507630e+12</td>
+          <td>232.000000</td>
+        </tr>
+        <tr>
+          <th>max</th>
+          <td>249999.000000</td>
+          <td>364043.000000</td>
+          <td>1.508832e+12</td>
+          <td>4.000000</td>
+          <td>5.000000</td>
+          <td>20.000000</td>
+          <td>11.000000</td>
+          <td>28.000000</td>
+          <td>7.000000</td>
+          <td>938.000000</td>
+          <td>938.000000</td>
+          <td>460.000000</td>
+          <td>1.509949e+12</td>
+          <td>3082.000000</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+我们可以看出训练集和测试集的用户是完全不一样的,
+训练集的用户ID由0\ :sub:`199999，而测试集A的用户ID由200000`\ 249999。
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #测试集中的用户数量为5w
+    tst_click.user_id.nunique()
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    50000
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    tst_click.groupby('user_id')['click_article_id'].count().min() # 注意测试集里面有只点击过一次文章的用户
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    1
+
+
+
+**新闻文章信息数据表**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #新闻文章数据集浏览
+    item_df.head()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>click_article_id</th>
+          <th>category_id</th>
+          <th>created_at_ts</th>
+          <th>words_count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>0</th>
+          <td>0</td>
+          <td>0</td>
+          <td>1513144419000</td>
+          <td>168</td>
+        </tr>
+        <tr>
+          <th>1</th>
+          <td>1</td>
+          <td>1</td>
+          <td>1405341936000</td>
+          <td>189</td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <td>2</td>
+          <td>1</td>
+          <td>1408667706000</td>
+          <td>250</td>
+        </tr>
+        <tr>
+          <th>3</th>
+          <td>3</td>
+          <td>1</td>
+          <td>1408468313000</td>
+          <td>230</td>
+        </tr>
+        <tr>
+          <th>4</th>
+          <td>4</td>
+          <td>1</td>
+          <td>1407071171000</td>
+          <td>162</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    item_df['words_count'].value_counts()
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    words_count
+    176     3485
+    182     3480
+    179     3463
+    178     3458
+    174     3456
+            ... 
+    556        1
+    625        1
+    2798       1
+    767        1
+    841        1
+    Name: count, Length: 866, dtype: int64
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    print(item_df['category_id'].nunique())     # 461个文章主题
+    item_df['category_id'].hist()
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    461
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    <Axes: >
+
+
+
+
+.. figure:: output_2.analysis_37698d_25_2.png
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    item_df.shape       # 364047篇文章
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    (364047, 4)
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    item_emb_df.head()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>article_id</th>
+          <th>emb_0</th>
+          <th>emb_1</th>
+          <th>emb_2</th>
+          <th>emb_3</th>
+          <th>emb_4</th>
+          <th>emb_5</th>
+          <th>emb_6</th>
+          <th>emb_7</th>
+          <th>emb_8</th>
+          <th>...</th>
+          <th>emb_240</th>
+          <th>emb_241</th>
+          <th>emb_242</th>
+          <th>emb_243</th>
+          <th>emb_244</th>
+          <th>emb_245</th>
+          <th>emb_246</th>
+          <th>emb_247</th>
+          <th>emb_248</th>
+          <th>emb_249</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>0</th>
+          <td>0</td>
+          <td>-0.161183</td>
+          <td>-0.957233</td>
+          <td>-0.137944</td>
+          <td>0.050855</td>
+          <td>0.830055</td>
+          <td>0.901365</td>
+          <td>-0.335148</td>
+          <td>-0.559561</td>
+          <td>-0.500603</td>
+          <td>...</td>
+          <td>0.321248</td>
+          <td>0.313999</td>
+          <td>0.636412</td>
+          <td>0.169179</td>
+          <td>0.540524</td>
+          <td>-0.813182</td>
+          <td>0.286870</td>
+          <td>-0.231686</td>
+          <td>0.597416</td>
+          <td>0.409623</td>
+        </tr>
+        <tr>
+          <th>1</th>
+          <td>1</td>
+          <td>-0.523216</td>
+          <td>-0.974058</td>
+          <td>0.738608</td>
+          <td>0.155234</td>
+          <td>0.626294</td>
+          <td>0.485297</td>
+          <td>-0.715657</td>
+          <td>-0.897996</td>
+          <td>-0.359747</td>
+          <td>...</td>
+          <td>-0.487843</td>
+          <td>0.823124</td>
+          <td>0.412688</td>
+          <td>-0.338654</td>
+          <td>0.320786</td>
+          <td>0.588643</td>
+          <td>-0.594137</td>
+          <td>0.182828</td>
+          <td>0.397090</td>
+          <td>-0.834364</td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <td>2</td>
+          <td>-0.619619</td>
+          <td>-0.972960</td>
+          <td>-0.207360</td>
+          <td>-0.128861</td>
+          <td>0.044748</td>
+          <td>-0.387535</td>
+          <td>-0.730477</td>
+          <td>-0.066126</td>
+          <td>-0.754899</td>
+          <td>...</td>
+          <td>0.454756</td>
+          <td>0.473184</td>
+          <td>0.377866</td>
+          <td>-0.863887</td>
+          <td>-0.383365</td>
+          <td>0.137721</td>
+          <td>-0.810877</td>
+          <td>-0.447580</td>
+          <td>0.805932</td>
+          <td>-0.285284</td>
+        </tr>
+        <tr>
+          <th>3</th>
+          <td>3</td>
+          <td>-0.740843</td>
+          <td>-0.975749</td>
+          <td>0.391698</td>
+          <td>0.641738</td>
+          <td>-0.268645</td>
+          <td>0.191745</td>
+          <td>-0.825593</td>
+          <td>-0.710591</td>
+          <td>-0.040099</td>
+          <td>...</td>
+          <td>0.271535</td>
+          <td>0.036040</td>
+          <td>0.480029</td>
+          <td>-0.763173</td>
+          <td>0.022627</td>
+          <td>0.565165</td>
+          <td>-0.910286</td>
+          <td>-0.537838</td>
+          <td>0.243541</td>
+          <td>-0.885329</td>
+        </tr>
+        <tr>
+          <th>4</th>
+          <td>4</td>
+          <td>-0.279052</td>
+          <td>-0.972315</td>
+          <td>0.685374</td>
+          <td>0.113056</td>
+          <td>0.238315</td>
+          <td>0.271913</td>
+          <td>-0.568816</td>
+          <td>0.341194</td>
+          <td>-0.600554</td>
+          <td>...</td>
+          <td>0.238286</td>
+          <td>0.809268</td>
+          <td>0.427521</td>
+          <td>-0.615932</td>
+          <td>-0.503697</td>
+          <td>0.614450</td>
+          <td>-0.917760</td>
+          <td>-0.424061</td>
+          <td>0.185484</td>
+          <td>-0.580292</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>5 rows × 251 columns</p>
+    </div>
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    item_emb_df.shape
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    (364047, 251)
+
+
+
+分析
+----
+
+**用户重复点击**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    user_click_merge = pd.concat([trn_click, tst_click])
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #用户重复点击
+    user_click_count = user_click_merge.groupby(['user_id', 'click_article_id'])['click_timestamp'].agg({'count'}).reset_index()
+    user_click_count[:5]
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>click_article_id</th>
+          <th>count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>0</th>
+          <td>0</td>
+          <td>30760</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <th>1</th>
+          <td>0</td>
+          <td>157507</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <td>1</td>
+          <td>63746</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <th>3</th>
+          <td>1</td>
+          <td>289197</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <th>4</th>
+          <td>2</td>
+          <td>36162</td>
+          <td>1</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    user_click_count[user_click_count['count']>7]
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>click_article_id</th>
+          <th>count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>311242</th>
+          <td>86295</td>
+          <td>74254</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <th>311243</th>
+          <td>86295</td>
+          <td>76268</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <th>393761</th>
+          <td>103237</td>
+          <td>205948</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <th>393763</th>
+          <td>103237</td>
+          <td>235689</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <th>576902</th>
+          <td>134850</td>
+          <td>69463</td>
+          <td>13</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    user_click_count['count'].unique()
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    array([ 1,  2,  4,  3,  6,  5, 10,  7, 13])
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #用户点击新闻次数
+    user_click_count.loc[:,'count'].value_counts()
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    count
+    1     1605541
+    2       11621
+    3         422
+    4          77
+    5          26
+    6          12
+    10          4
+    7           3
+    13          1
+    Name: count, dtype: int64
+
+
+
+可以看出：有1605541（约占99.2%）的用户未重复阅读过文章，仅有极少数用户重复点击过某篇文章。
+这个也可以单独制作成特征
+
+**用户点击环境变化分析**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    def plot_envs(df, cols, r, c):
+        plt.figure()
+        plt.figure(figsize=(10, 5))
+        i = 1
+        for col in cols:
+            plt.subplot(r, c, i)
+            i += 1
+            v = df[col].value_counts().reset_index()
+            fig = sns.barplot(x=v.iloc[:, 0], y=v.iloc[:, 1])
+            for item in fig.get_xticklabels():
+                item.set_rotation(90)
+            plt.title(col)
+        plt.tight_layout()
+        plt.show()
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 分析用户点击环境变化是否明显，这里随机采样10个用户分析这些用户的点击环境分布
+    sample_user_ids = np.random.choice(tst_click['user_id'].unique(), size=5, replace=False)
+    sample_users = user_click_merge[user_click_merge['user_id'].isin(sample_user_ids)]
+    cols = ['click_environment','click_deviceGroup', 'click_os', 'click_country', 'click_region','click_referrer_type']
+    for _, user_df in sample_users.groupby('user_id'):
+        plot_envs(user_df, cols, 2, 3)
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    <Figure size 640x480 with 0 Axes>
+
+
+
+.. figure:: output_2.analysis_37698d_37_1.png
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    <Figure size 640x480 with 0 Axes>
+
+
+
+.. figure:: output_2.analysis_37698d_37_3.png
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    <Figure size 640x480 with 0 Axes>
+
+
+
+.. figure:: output_2.analysis_37698d_37_5.png
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    <Figure size 640x480 with 0 Axes>
+
+
+
+.. figure:: output_2.analysis_37698d_37_7.png
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    <Figure size 640x480 with 0 Axes>
+
+
+
+.. figure:: output_2.analysis_37698d_37_9.png
+
+
+可以看出绝大多数数的用户的点击环境是比较固定的。思路：可以基于这些环境的统计特征来代表该用户本身的属性
+
+**用户点击新闻数量的分布**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    user_click_item_count = sorted(user_click_merge.groupby('user_id')['click_article_id'].count().values, reverse=True)
+    plt.plot(user_click_item_count)
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x33a145f10>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_39_1.png
+
+
+可以根据用户的点击文章次数看出用户的活跃度
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #点击次数在前50的用户
+    plt.plot(user_click_item_count[:50])
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x33a1bbcd0>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_41_1.png
+
+
+点击次数排前50的用户的点击次数都在100次以上。思路：我们可以定义点击次数大于等于100次的用户为活跃用户，这是一种简单的处理思路，
+判断用户活跃度，更加全面的是再结合上点击时间，后面我们会基于点击次数和点击时间两个方面来判断用户活跃度。
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #点击次数排名在[25000:50000]之间
+    plt.plot(user_click_item_count[25000:50000])
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x33a23ef70>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_43_1.png
+
+
+可以看出点击次数小于等于两次的用户非常的多，这些用户可以认为是非活跃用户
+
+**新闻点击次数分析**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    item_click_count = sorted(user_click_merge.groupby('click_article_id')['user_id'].count(), reverse=True)
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    plt.plot(item_click_count)
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x33a2c5580>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_46_1.png
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    plt.plot(item_click_count[:100])
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x33a34d7c0>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_47_1.png
+
+
+可以看出点击次数最多的前100篇新闻，点击次数大于1000次
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    plt.plot(item_click_count[:20])
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x33a3cd3d0>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_49_1.png
+
+
+可以看出点击次数最多的前20篇新闻，点击次数大于2500。思路：可以定义这些新闻为热门新闻，
+这个也是简单的处理方式，后面我们也是根据点击次数和时间进行文章热度的一个划分。
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    plt.plot(item_click_count[3500:])
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x33a454370>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_51_1.png
+
+
+可以发现很多新闻只被点击过一两次。思路：可以定义这些新闻是冷门新闻。
+
+**新闻共现频次：两篇新闻连续出现的次数**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    tmp = user_click_merge.sort_values('click_timestamp')
+    tmp['next_item'] = tmp.groupby(['user_id'])['click_article_id'].transform(lambda x:x.shift(-1))
+    union_item = tmp.groupby(['click_article_id','next_item'])['click_timestamp'].agg({'count'}).reset_index().sort_values('count', ascending=False)
+    union_item[['count']].describe()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>count</th>
+          <td>433597.000000</td>
+        </tr>
+        <tr>
+          <th>mean</th>
+          <td>3.184139</td>
+        </tr>
+        <tr>
+          <th>std</th>
+          <td>18.851753</td>
+        </tr>
+        <tr>
+          <th>min</th>
+          <td>1.000000</td>
+        </tr>
+        <tr>
+          <th>25%</th>
+          <td>1.000000</td>
+        </tr>
+        <tr>
+          <th>50%</th>
+          <td>1.000000</td>
+        </tr>
+        <tr>
+          <th>75%</th>
+          <td>2.000000</td>
+        </tr>
+        <tr>
+          <th>max</th>
+          <td>2202.000000</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+由统计数据可以看出，平均共现次数2.88，最高为1687。
+
+说明用户看的新闻，相关性是比较强的。
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #画个图直观地看一看
+    x = union_item['click_article_id']
+    y = union_item['count']
+    plt.scatter(x, y)
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    <matplotlib.collections.PathCollection at 0x3414cb1c0>
+
+
+
+
+.. figure:: output_2.analysis_37698d_55_1.png
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    plt.plot(union_item['count'].values[40000:])
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x33a2d0a30>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_56_1.png
+
+
+大概有70000个pair至少共现一次
+
+**新闻文章信息**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #不同类型的新闻出现的次数
+    plt.plot(user_click_merge['category_id'].value_counts().values)
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x327cb2dc0>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_58_1.png
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #出现次数比较少的新闻类型, 有些新闻类型，基本上就出现过几次
+    plt.plot(user_click_merge['category_id'].value_counts().values[150:])
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x327c82cd0>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_59_1.png
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #新闻字数的描述性统计
+    user_click_merge['words_count'].describe()
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    count    1.630633e+06
+    mean     2.043012e+02
+    std      6.382198e+01
+    min      0.000000e+00
+    25%      1.720000e+02
+    50%      1.970000e+02
+    75%      2.290000e+02
+    max      6.690000e+03
+    Name: words_count, dtype: float64
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    plt.plot(user_click_merge['words_count'].values)
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x32c1795b0>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_61_1.png
+
+
+**用户点击的新闻类型的偏好**
+
+此特征可以用于度量用户的兴趣是否广泛。
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    plt.plot(sorted(user_click_merge.groupby('user_id')['category_id'].nunique(), reverse=True))
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x32c4db040>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_63_1.png
+
+
+从上图中可以看出有一小部分用户阅读类型是极其广泛的，大部分人都处在20个新闻类型以下。
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    user_click_merge.groupby('user_id')['category_id'].nunique().reset_index().describe()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>category_id</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>count</th>
+          <td>250000.000000</td>
+          <td>250000.000000</td>
+        </tr>
+        <tr>
+          <th>mean</th>
+          <td>124999.500000</td>
+          <td>4.573188</td>
+        </tr>
+        <tr>
+          <th>std</th>
+          <td>72168.927986</td>
+          <td>4.419800</td>
+        </tr>
+        <tr>
+          <th>min</th>
+          <td>0.000000</td>
+          <td>1.000000</td>
+        </tr>
+        <tr>
+          <th>25%</th>
+          <td>62499.750000</td>
+          <td>2.000000</td>
+        </tr>
+        <tr>
+          <th>50%</th>
+          <td>124999.500000</td>
+          <td>3.000000</td>
+        </tr>
+        <tr>
+          <th>75%</th>
+          <td>187499.250000</td>
+          <td>6.000000</td>
+        </tr>
+        <tr>
+          <th>max</th>
+          <td>249999.000000</td>
+          <td>95.000000</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+**用户查看文章的长度的分布**
+
+通过统计不同用户点击新闻的平均字数，这个可以反映用户是对长文更感兴趣还是对短文更感兴趣。
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    plt.plot(sorted(user_click_merge.groupby('user_id')['words_count'].mean(), reverse=True))
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x32c45b3d0>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_67_1.png
+
+
+从上图中可以发现有一小部分人看的文章平均词数非常高，也有一小部分人看的平均文章次数非常低。
+大多数人偏好于阅读字数在200-400字之间的新闻。
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #挑出大多数人的区间仔细看看
+    plt.plot(sorted(user_click_merge.groupby('user_id')['words_count'].mean(), reverse=True)[1000:45000])
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x32c662d30>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_69_1.png
+
+
+可以发现大多数人都是看250字以下的文章
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #更加详细的参数
+    user_click_merge.groupby('user_id')['words_count'].mean().reset_index().describe()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>words_count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>count</th>
+          <td>250000.000000</td>
+          <td>250000.000000</td>
+        </tr>
+        <tr>
+          <th>mean</th>
+          <td>124999.500000</td>
+          <td>205.830189</td>
+        </tr>
+        <tr>
+          <th>std</th>
+          <td>72168.927986</td>
+          <td>47.174030</td>
+        </tr>
+        <tr>
+          <th>min</th>
+          <td>0.000000</td>
+          <td>8.000000</td>
+        </tr>
+        <tr>
+          <th>25%</th>
+          <td>62499.750000</td>
+          <td>187.500000</td>
+        </tr>
+        <tr>
+          <th>50%</th>
+          <td>124999.500000</td>
+          <td>202.000000</td>
+        </tr>
+        <tr>
+          <th>75%</th>
+          <td>187499.250000</td>
+          <td>217.750000</td>
+        </tr>
+        <tr>
+          <th>max</th>
+          <td>249999.000000</td>
+          <td>3434.500000</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+**用户点击新闻的时间分析**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    #为了更好的可视化，这里把时间进行归一化操作
+    from sklearn.preprocessing import MinMaxScaler
+    
+    mm = MinMaxScaler()
+    user_click_merge['click_timestamp'] = mm.fit_transform(user_click_merge[['click_timestamp']])
+    user_click_merge['created_at_ts'] = mm.fit_transform(user_click_merge[['created_at_ts']])
+    
+    user_click_merge = user_click_merge.sort_values('click_timestamp')
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    user_click_merge.head()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>click_article_id</th>
+          <th>click_timestamp</th>
+          <th>click_environment</th>
+          <th>click_deviceGroup</th>
+          <th>click_os</th>
+          <th>click_country</th>
+          <th>click_region</th>
+          <th>click_referrer_type</th>
+          <th>rank</th>
+          <th>click_cnts</th>
+          <th>category_id</th>
+          <th>created_at_ts</th>
+          <th>words_count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>18</th>
+          <td>249990</td>
+          <td>162300</td>
+          <td>0.000000</td>
+          <td>4</td>
+          <td>3</td>
+          <td>20</td>
+          <td>1</td>
+          <td>25</td>
+          <td>2</td>
+          <td>5</td>
+          <td>5</td>
+          <td>281</td>
+          <td>0.989186</td>
+          <td>193</td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <td>249998</td>
+          <td>160974</td>
+          <td>0.000002</td>
+          <td>4</td>
+          <td>1</td>
+          <td>12</td>
+          <td>1</td>
+          <td>13</td>
+          <td>2</td>
+          <td>5</td>
+          <td>5</td>
+          <td>281</td>
+          <td>0.989092</td>
+          <td>259</td>
+        </tr>
+        <tr>
+          <th>30</th>
+          <td>249985</td>
+          <td>160974</td>
+          <td>0.000003</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>8</td>
+          <td>2</td>
+          <td>8</td>
+          <td>8</td>
+          <td>281</td>
+          <td>0.989092</td>
+          <td>259</td>
+        </tr>
+        <tr>
+          <th>50</th>
+          <td>249979</td>
+          <td>162300</td>
+          <td>0.000004</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>25</td>
+          <td>2</td>
+          <td>2</td>
+          <td>2</td>
+          <td>281</td>
+          <td>0.989186</td>
+          <td>193</td>
+        </tr>
+        <tr>
+          <th>25</th>
+          <td>249988</td>
+          <td>160974</td>
+          <td>0.000004</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>21</td>
+          <td>2</td>
+          <td>17</td>
+          <td>17</td>
+          <td>281</td>
+          <td>0.989092</td>
+          <td>259</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    def mean_diff_time_func(df, col):
+        df = pd.DataFrame(df, columns=[col])
+        df['time_shift1'] = df[col].shift(1).fillna(0)
+        df['diff_time'] = abs(df[col] - df['time_shift1'])
+        return df['diff_time'].mean()
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 点击时间差的平均值
+    mean_diff_click_time = user_click_merge.groupby('user_id')[['click_timestamp', 'created_at_ts']].apply(lambda x: mean_diff_time_func(x, 'click_timestamp'))
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    plt.plot(sorted(mean_diff_click_time.values, reverse=True))
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x3278aa820>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_77_1.png
+
+
+从上图可以发现不同用户点击文章的时间差是有差异的。
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 前后点击文章的创建时间差的平均值
+    mean_diff_created_time = user_click_merge.groupby('user_id')[['click_timestamp', 'created_at_ts']].apply(lambda x: mean_diff_time_func(x, 'created_at_ts'))
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    plt.plot(sorted(mean_diff_created_time.values, reverse=True))
+
+
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    [<matplotlib.lines.Line2D at 0x32bc49400>]
+
+
+
+
+.. figure:: output_2.analysis_37698d_80_1.png
+
+
+从图中可以发现用户先后点击文章，文章的创建时间也是有差异的
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 用户前后点击文章的相似性分布
+    item_idx_2_rawid_dict = dict(zip(item_emb_df['article_id'], item_emb_df.index))
+    del item_emb_df['article_id']
+    item_emb_np = np.ascontiguousarray(item_emb_df.values, dtype=np.float32)
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # 随机选择5个用户，查看这些用户前后查看文章的相似性
+    sub_user_ids = np.random.choice(user_click_merge.user_id.unique(), size=15, replace=False)
+    sub_user_info = user_click_merge[user_click_merge['user_id'].isin(sub_user_ids)]
+    
+    sub_user_info.head()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>user_id</th>
+          <th>click_article_id</th>
+          <th>click_timestamp</th>
+          <th>click_environment</th>
+          <th>click_deviceGroup</th>
+          <th>click_os</th>
+          <th>click_country</th>
+          <th>click_region</th>
+          <th>click_referrer_type</th>
+          <th>rank</th>
+          <th>click_cnts</th>
+          <th>category_id</th>
+          <th>created_at_ts</th>
+          <th>words_count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>2</th>
+          <td>249998</td>
+          <td>160974</td>
+          <td>0.000002</td>
+          <td>4</td>
+          <td>1</td>
+          <td>12</td>
+          <td>1</td>
+          <td>13</td>
+          <td>2</td>
+          <td>5</td>
+          <td>5</td>
+          <td>281</td>
+          <td>0.989092</td>
+          <td>259</td>
+        </tr>
+        <tr>
+          <th>3</th>
+          <td>249998</td>
+          <td>202557</td>
+          <td>0.000010</td>
+          <td>4</td>
+          <td>1</td>
+          <td>12</td>
+          <td>1</td>
+          <td>13</td>
+          <td>2</td>
+          <td>4</td>
+          <td>5</td>
+          <td>327</td>
+          <td>0.989167</td>
+          <td>219</td>
+        </tr>
+        <tr>
+          <th>20325</th>
+          <td>241824</td>
+          <td>160974</td>
+          <td>0.001655</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>25</td>
+          <td>1</td>
+          <td>12</td>
+          <td>12</td>
+          <td>281</td>
+          <td>0.989092</td>
+          <td>259</td>
+        </tr>
+        <tr>
+          <th>20326</th>
+          <td>241824</td>
+          <td>272660</td>
+          <td>0.001786</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>25</td>
+          <td>1</td>
+          <td>11</td>
+          <td>12</td>
+          <td>399</td>
+          <td>0.989007</td>
+          <td>246</td>
+        </tr>
+        <tr>
+          <th>20327</th>
+          <td>241824</td>
+          <td>300470</td>
+          <td>0.001794</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>25</td>
+          <td>1</td>
+          <td>10</td>
+          <td>12</td>
+          <td>428</td>
+          <td>0.989182</td>
+          <td>203</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    def get_item_sim_list(df):
+        sim_list = []
+        item_list = df['click_article_id'].values
+        for i in range(0, len(item_list)-1):
+            emb1 = item_emb_np[item_idx_2_rawid_dict[item_list[i]]]
+            emb2 = item_emb_np[item_idx_2_rawid_dict[item_list[i+1]]]
+            sim_list.append(np.dot(emb1,emb2)/(np.linalg.norm(emb1)*(np.linalg.norm(emb2))))
+        sim_list.append(0)
+        return sim_list
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    for _, user_df in sub_user_info.groupby('user_id'):
+        item_sim_list = get_item_sim_list(user_df)
+        plt.plot(item_sim_list)
+
+
+
+.. figure:: output_2.analysis_37698d_85_0.png
+
+
+从图中可以看出有些用户前后看的商品的相似度波动比较大，有些波动比较小，也是有一定的区分度的。
+
+总结
+----
+
+通过数据分析的过程， 我们目前可以得到以下几点重要的信息，
+这个对于我们进行后面的特征制作和分析非常有帮助：
+
+1. 训练集和测试集的用户id没有重复，也就是测试集里面的用户没有模型是没有见过的
+2. 训练集中用户最少的点击文章数是2， 而测试集里面用户最少的点击文章数是1
+3. 用户对于文章存在重复点击的情况， 但这个都存在于训练集里面
+4. 同一用户的点击环境存在不唯一的情况，后面做这部分特征的时候可以采用统计特征
+5. 用户点击文章的次数有很大的区分度，后面可以根据这个制作衡量用户活跃度的特征
+6. 文章被用户点击的次数也有很大的区分度，后面可以根据这个制作衡量文章热度的特征
+7. 用户看的新闻，相关性是比较强的，所以往往我们判断用户是否对某篇文章感兴趣的时候，
+   在很大程度上会和他历史点击过的文章有关
+8. 用户点击的文章字数有比较大的区别， 这个可以反映用户对于文章字数的区别
+9. 用户点击过的文章主题也有很大的区别， 这个可以反映用户的主题偏好
+   10.不同用户点击文章的时间差也会有所区别，
+   这个可以反映用户对于文章时效性的偏好
+
+所以根据上面的一些分析，可以更好的帮助我们后面做好特征工程，
+充分挖掘数据的隐含信息。

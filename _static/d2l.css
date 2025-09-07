@@ -1,0 +1,92 @@
+
+dl.citation > dt.label {
+    width: 100%;
+}
+
+dl.citation span.brackets {
+    padding-right: .8em;
+}
+
+a.copybtn {
+    position: absolute;
+    top: 12px;
+    right: 24px;
+    width: 1.2em;
+    height: 1.2em;
+    padding: 0 0 0 10px;
+    opacity: .4;
+    transition: opacity 0.5s;
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+div.highlight  {
+    position: relative;
+}
+
+.highlight:hover .copybtn {
+	opacity: 1;
+}
+
+.o-tooltip--left {
+    position: relative;
+}
+
+.o-tooltip--left:after {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    content: attr(data-tooltip);
+    padding: 2px 10px;
+    top: -2px;
+    left: 0;
+    background: #666;
+    font-size: 1rem;
+    color: white;
+    white-space: nowrap;
+    z-index: 2;
+    border-radius: 2px;
+    transform: translateX(-102%) translateY(0);
+    transition: opacity 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+}
+
+.o-tooltip--left:hover:after {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-100%) translateY(0);
+    transition: opacity 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+}
+
+pre.output {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+div[class^="output"] {
+    margin-bottom: 1em;
+}
+
+div.mdl-tabs__tab-bar { justify-content: left; }
+
+.mdl-tabs .mdl-tabs__tab {
+    font-size: 13px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 4px 4px 0 0;
+    letter-spacing: .5px;
+}
+
+.mdl-tabs .mdl-tabs__tab-bar {
+    height: 32px;
+}
+
+.mdl-tabs .mdl-tabs__tab-bar.text {
+    margin-bottom: .5em;
+}
+
+.mdl-tabs .mdl-tabs__tab-bar.code {
+    margin-bottom: -1em;
+}
+
+.mdl-tabs__tab.is-active {
+    background: rgb(0,0,0,.09);
+}
