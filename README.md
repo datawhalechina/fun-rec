@@ -1,4 +1,15 @@
-# FunRec 推荐系统
+# FunRec-推荐系统 [在线阅读](https://datawhalechina.github.io/fun-rec/)
+<p align="left">
+  <img src='https://img.shields.io/badge/python-3.8+-blue'>
+  <img src='https://img.shields.io/badge/TensorFlow-2.13.0-blue'>
+  <img src='https://img.shields.io/badge/pandas-2.0.3-brightgreen'>
+  <img src='https://img.shields.io/badge/scikit--learn-1.3.2+-brightgreen'>
+  <img src='https://img.shields.io/badge/gensim-4.3.3-brightgreen'>
+  <img src='https://img.shields.io/badge/networkx-3.1-brightgreen'>
+  <img src='https://img.shields.io/badge/lightgbm-4.6.0-brightgreen'>
+  <img src='https://img.shields.io/badge/faiss--cpu-1.7.4-brightgreen'>
+  <img src='https://img.shields.io/badge/seaborn-0.13.2-brightgreen'>
+</p>
 
 本教程是一本全面系统的推荐系统学习指南，主要面向具有机器学习基础并希望深入推荐算法领域的同学。教程内容涵盖推荐系统的理论基础、核心算法、工程实践和面试准备四个维度，为初学者构建了从理论学习到实战应用再到求职面试的完整学习闭环。
 
