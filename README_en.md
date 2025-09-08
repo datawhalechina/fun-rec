@@ -68,7 +68,7 @@ Through this tutorial, you will be able to:
 We also establish a **FunRec learning community (WeChat group + knowledge planet)**, where the WeChat group is convenient for daily communication and discussion, and the knowledge planet is convenient for content retention. Some early recorded videos related to technology are also on Bilibili [All technical sharing content is on Bilibili](https://space.bilibili.com/431850986/channel/collectiondetail?sid=339597). Since the WeChat group's QR code is only valid for 7 days, just add the following WeChat Code, with remark: **Fun-Rec**, you will be added into a Fun-Rec discussion group. If you think the WeChat group is too noisy, it is recommended to add the knowledge planet directly!
 
 <div align=center> 
-<img src="book/img/join_community.png" alt="image-20220408193745249" width="400px";" />
+<img src="imgs/join_community.png" alt="image-20220408193745249" width="400px";" />
 </div>
 
 
@@ -98,7 +98,7 @@ Special thanks to [kenken-xr](https://github.com/kenken-xr)、[swallown1](https:
 ## Follow Us
 <div align=center>
 <p>Scan the QR code below to follow the Datawhale Official Account</p>
-<img src="book/img/datawhale_qrcode.jpg" width = "180" height = "180">
+<img src="imgs/datawhale_qrcode.jpg" width = "180" height = "180">
 </div>
 
 Datawhale, a learning community focused on the field of AI. Our mission is for the learner, and grow together with learners. Currently, there are thousands of people have joined the learning community, and we have organized learning in various fields such as machine learning, deep learning, data analysis, data mining, web crawling, programming, statistics, MySQL, and data competitions. You can join us by searching for the Datawhale Official Account on WeChat.
