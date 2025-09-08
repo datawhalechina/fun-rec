@@ -30,12 +30,13 @@ Baseline
     
     import numpy as np
     import pandas as pd
-    from dotenv import load_dotenv
+    from funrec.utils import load_env_with_fallback
     from tqdm import tqdm
     
-    load_dotenv()
-    RAW_DATA_PATH = Path(os.getenv('RAW_DATA_PATH'))
-    PROCESSED_DATA_PATH = Path(os.getenv('PROCESSED_DATA_PATH'))
+    load_env_with_fallback()
+    
+    RAW_DATA_PATH = Path(os.getenv('FUNREC_RAW_DATA_PATH'))
+    PROCESSED_DATA_PATH = Path(os.getenv('FUNREC_PROCESSED_DATA_PATH'))
     
     
     # 数据路径

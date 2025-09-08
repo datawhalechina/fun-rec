@@ -2,8 +2,10 @@
 模型评估
 """
 
-import os
+import logging
 from typing import Dict, Any, List, Tuple, Union
+
+logger = logging.getLogger(__name__)
 
 import numpy as np
 import pandas as pd
@@ -13,6 +15,10 @@ from sklearn.preprocessing import normalize
 from sklearn.metrics import roc_auc_score
 from tqdm import tqdm
 
+
+from ..config import load_config, Config
+from ..data.loaders import load_data
+from ..features.processors import prepare_features
 from ..features.feature_column import FeatureColumn
 from .metrics import (
     precision_at_k,
@@ -22,11 +28,8 @@ from .metrics import (
     evaluate_sasmodel_sampling_item,
     group_auc,
 )
-
-
-import logging
-
-logger = logging.getLogger(__name__)
+from ..training.trainer import train_model
+from ..utils import build_model_comparison_table
 
 
 def evaluate_model(
@@ -44,7 +47,7 @@ def evaluate_model(
         processed_data: 处理后的数据字典，包含测试特征
         evaluation_config: 评估配置字典，包含:
             - classical_model: 布尔值，指示是否为经典模型
-            - k_values: 评估的K值列表
+            - k_list: 评估的K值列表
             - 其他模型特定参数
 
     Returns:
@@ -79,14 +82,14 @@ def evaluate_model(
             test_interactions.append((user_ids[i], item_ids[i], test_labels[i]))
 
         # 获取评估参数
-        k_values = evaluation_config.get("k_values", [5])
+        k_list = evaluation_config.get("k_list", [5, 10])
         exclude_train = evaluation_config.get("exclude_train", True)
 
         # 使用统一评估函数评估经典模型
         metrics = evaluate_classical_model(
             model=classical_model,
             test_data=test_interactions,
-            k_values=k_values,
+            k_list=k_list,
             exclude_train=exclude_train,
         )
 
@@ -391,7 +394,7 @@ def evaluate_embedding_model(
     item_embs,
     test_model_input,
     test_label,
-    k_list=[5, 10, 20, 50, 100],
+    k_list=[5, 10],
     model_config=None,
 ):
     """
@@ -475,7 +478,7 @@ def evaluate_embedding_model(
 
 
 def evaluate_classical_model(
-    model, test_data, k_values=[5, 10, 20, 50, 100], exclude_train=True
+    model, test_data, k_list=[5, 10], exclude_train=True
 ):
     """
     经典推荐模型评估。
@@ -484,7 +487,7 @@ def evaluate_classical_model(
     -----------
     model : 经典推荐模型实例
     test_data : 测试数据，DataFrame 或者 (user_id, item_id, label) 的列表
-    k_values : 评估的K值列表
+    k_list : 评估的K值列表
     exclude_train : 是否排除训练物品
 
     Returns:
@@ -502,11 +505,11 @@ def evaluate_classical_model(
     test_users = set(user_test_items.keys())
 
     # 找到最大的K值，用于高效计算
-    max_k = max(k_values) if k_values else 100
+    max_k = max(k_list) if k_list else 100
 
     # 初始化指标
     metrics = {}
-    for k in k_values:
+    for k in k_list:
         metrics[f"hit_rate@{k}"] = []
         metrics[f"precision@{k}"] = []
 
@@ -534,7 +537,7 @@ def evaluate_classical_model(
         recommended_items = [item_id for item_id, _ in recommendations]
 
         # 计算每个k的指标
-        for k in k_values:
+        for k in k_list:
             hit_rate = hit_rate_at_k(recommended_items, relevant_items, k)
             precision = precision_at_k(recommended_items, relevant_items, k)
 
@@ -584,7 +587,7 @@ def cosine_similarity_3d(X, Y):
 
 
 def evaluate_mind_model(
-    user_embs, item_embs, test_model_input, k_list=[5, 10, 20, 50, 100]
+    user_embs, item_embs, test_model_input, k_list=[5, 10]
 ):
     """
     评估MIND模型，使用Hit Rate@k, NDCG@k, and Precision@k。
@@ -813,7 +816,7 @@ def evaluate_rerank_model(
         old_label_list.append(label)
 
     # 计算原始和重排后的标签的P@K和MAP@K
-    k_list = evaluation_config.get("k_list", [5, 10, 30])
+    k_list = evaluation_config.get("k_list", [5, 10])
     metrics: Dict[str, float] = {}
 
     # 计算平均精确率@K
@@ -860,3 +863,67 @@ def evaluate_rerank_model(
         metrics[f"map@{k}"] = metrics[f"new_map@{k}"]
 
     return metrics
+
+
+def compare_models(
+    models: List[str],
+    return_table: bool = True,
+) -> Union[Dict[str, Dict[str, Any]], Tuple[Dict[str, Dict[str, Any]], str]]:
+    """
+    训练和评估多个模型并比较它们的指标。
+
+    每个模型可以通过以下方式指定：
+    - name (str): 加载funrec.config下的模型
+
+    参数:
+        models: 模型列表
+        return_table: 是否同时返回格式化的比较表格
+
+    返回:
+        - 如果return_table为False: 模型显示名称 -> 指标字典的映射
+        - 如果return_table为True: (结果字典, 表格字符串)
+    """
+    # 将输入标准化为(display_name, Config)的列表
+    normalized: List[Tuple[str, Config]] = []
+
+    for model in models:
+        normalized.append((model, load_config(model)))
+
+    results: Dict[str, Dict[str, Any]] = {}
+
+    for display_name, cfg in normalized:
+        try:
+            # 1) 加载数据
+            train_data, test_data = load_data(cfg.data)
+            # 2) 准备特征
+            feature_columns, processed_data = prepare_features(
+                cfg.features, train_data, test_data
+            )
+            # 3) 训练
+            model_tuple = train_model(cfg.training, feature_columns, processed_data)
+            # 4) 评估
+            metrics = evaluate_model(
+                model_tuple, processed_data, cfg.evaluation, feature_columns
+            )
+            results[str(display_name)] = metrics
+        except Exception as e:
+            # 捕获失败信息，保持表格对齐
+            results[str(display_name)] = {"error": str(e)}
+
+    if return_table:
+        # 过滤成功的指标字典用于显示；在单独列中包含错误
+        any_error = any(("error" in m) for m in results.values())
+        if any_error:
+            # 构建包含'error'列的组合表格（如果存在）
+            # 合并指标键并包含'error'
+            model_to_metrics: Dict[str, Dict[str, Any]] = {}
+            for name, m in results.items():
+                if "error" in m:
+                    model_to_metrics[name] = {"error": m["error"]}
+                else:
+                    model_to_metrics[name] = m
+            table = build_model_comparison_table(model_to_metrics)
+        else:
+            table = build_model_comparison_table(results)
+        return results, table
+    return results

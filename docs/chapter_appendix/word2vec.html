@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -72,14 +71,9 @@ Show Source
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation">
           
-              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/notebooks.zip">
+              <a  class="mdl-navigation__link" href="https://funrec-notebooks.s3.eu-west-3.amazonaws.com/fun-rec.zip">
                   <i class="fas fa-download"></i>
                   Jupyter 记事本
-              </a>
-          
-              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/fun-rec.pdf">
-                  <i class="fas fa-file-pdf"></i>
-                  PDF
               </a>
           
               <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
@@ -355,9 +349,9 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="word2vec">
+  <div class="section" id="word2vec">
 <span id="id1"></span><h1><span class="section-number">8.1. </span>Word2vec<a class="headerlink" href="#word2vec" title="Permalink to this heading">¶</a></h1>
-<section id="id2">
+<div class="section" id="id2">
 <h2><span class="section-number">8.1.1. </span>基本原理<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>在自然语言处理（NLP）任务中，如何将单词转换为能够被机器直接处理的数值形式一直是一个根本问题。早期的方法（例如
 one-hot
@@ -370,34 +364,30 @@ one-hot
 <li><p>单词之间的关系可以通过向量运算反映出其内在联系。</p></li>
 </ul>
 <p>这样得到的词向量可以直接应用于文本分类、机器翻译、信息检索等下游任务中。</p>
-</section>
+</div>
 <hr class="docutils" />
-<section id="id4">
+<div class="section" id="id4">
 <h2><span class="section-number">8.1.2. </span>方法描述<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
-<section id="id5">
+<div class="section" id="id5">
 <h3><span class="section-number">8.1.2.1. </span>Word2vec概述<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <p>Word2vec
 通过上下文（context）来学习单词的向量表示。文本的上下文为现代语言学中的一个基本概念，由
 <span id="id6">(<a class="reference internal" href="../chapter_references/references.html#id16" title="Firth, J. R. (1957). Studies in Linguistic Analysis. Blackwell.">Firth, 1957</a>)</span> 提出：“You shall know a word by the
 company it keeps.”
 这一假设指导我们通过观察单词在大量文本中与哪些词共同出现，来推断该单词的语义。具体来说，当单词出现在文本中时，其上下文是该单词周围的一些单词。例如下图：</p>
-<figure class="align-default" id="id17">
-<img alt="../_images/w2v_example.svg" src="../_images/w2v_example.svg" /><figcaption>
-<p><span class="caption-number">图8.1.1 </span><span class="caption-text">上下文示例</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<div class="figure align-default" id="id17">
+<img alt="../_images/w2v_example.svg" src="../_images/w2v_example.svg" /><p class="caption"><span class="caption-number">图8.1.1 </span><span class="caption-text">上下文示例</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+</div>
 <p>这些上下文单词决定了单词<code class="docutils literal notranslate"><span class="pre">loves</span></code>的语义。Word2vec
 使用了大量的文本语料库来学习单词的向量表示。它遍历语料库中的每个单词，并通过调整单词的向量表示，使得模型预测的上下文单词与语料库中的真实上下文单词尽可能一致。</p>
 <p>Word2vec 主要包含两种模型：<strong>Skip-gram</strong> 和 <strong>Continuous Bag of Words
 model (CBOW)</strong>。</p>
-</section>
-<section id="skip-gram">
+</div>
+<div class="section" id="skip-gram">
 <h3><span class="section-number">8.1.2.2. </span>Skip-gram 模型<a class="headerlink" href="#skip-gram" title="Permalink to this heading">¶</a></h3>
-<figure class="align-default" id="id18">
-<img alt="../_images/w2v_skip_gram.svg" src="../_images/w2v_skip_gram.svg" /><figcaption>
-<p><span class="caption-number">图8.1.2 </span><span class="caption-text">skip-gram</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<div class="figure align-default" id="id18">
+<img alt="../_images/w2v_skip_gram.svg" src="../_images/w2v_skip_gram.svg" /><p class="caption"><span class="caption-number">图8.1.2 </span><span class="caption-text">skip-gram</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
+</div>
 <p>Skip-gram
 模型通过中心词预测上下文词。具体来说，给定一个中心词，模型预测其上下文词
 出现的概率。如果我们考虑在语料库中的滑行窗口，在位置 <span class="math notranslate nohighlight">\(t\)</span>
@@ -411,8 +401,8 @@ model (CBOW)</strong>。</p>
 的向量表示。那么，将滑行窗口遍历整个语料库，我们可以得到似然函数：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-appendix-word2vec-0">
 <span class="eqno">(8.1.2)<a class="headerlink" href="#equation-chapter-appendix-word2vec-0" title="Permalink to this equation">¶</a></span>\[\prod_{t=1}^{T} \prod_{m&lt;=j&lt;=m} P(w_{t+j} | w_t)\]</div>
-</section>
-<section id="cbow">
+</div>
+<div class="section" id="cbow">
 <h3><span class="section-number">8.1.2.3. </span>CBOW 模型<a class="headerlink" href="#cbow" title="Permalink to this heading">¶</a></h3>
 <p><img alt="cbow" src="../_images/w2v_cbow.svg" /> CBOW 模型通过上下文词预测中心词。具体来说，给定上下文词
 <span class="math notranslate nohighlight">\(o\)</span>，模型预测中心词 <span class="math notranslate nohighlight">\(c\)</span> 出现的概率。CBOW
@@ -422,20 +412,18 @@ model (CBOW)</strong>。</p>
 <p>将滑行窗口遍历整个语料库，我们可以得到似然函数：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-appendix-word2vec-1">
 <span class="eqno">(8.1.4)<a class="headerlink" href="#equation-chapter-appendix-word2vec-1" title="Permalink to this equation">¶</a></span>\[\prod_{t=1}^{T} \prod_{m&lt;=j&lt;=m} P(w_t | w_{t+j})\]</div>
-</section>
-<section id="id7">
+</div>
+<div class="section" id="id7">
 <h3><span class="section-number">8.1.2.4. </span>Word2vec 的模型结构<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <p>在以上条件概率公式中，容易引起误会的是 中心词的向量 <span class="math notranslate nohighlight">\(v_{w_t}\)</span> 和
 上下文词的向量 <span class="math notranslate nohighlight">\(v_{w_{t+j}}\)</span> 实际并不在一个向量空间中
 <span id="id8">(<a class="reference internal" href="../chapter_references/references.html#id17" title="Rong, X. (2014). Word2vec parameter learning explained. arXiv preprint arXiv:1411.2738.">Rong, 2014</a>)</span>。以 Skip-gram
 模型为例，假设向量空间的维度为<span class="math notranslate nohighlight">\(D\)</span>，中心词向量表<span class="math notranslate nohighlight">\(\mathbf{W} \in \mathbb{R}^{V \times D}\)</span>，上下文词向量表<span class="math notranslate nohighlight">\(\mathbf{W}^c \in \mathbb{R}^{V \times D}\)</span>，其中<span class="math notranslate nohighlight">\(V\)</span>是词汇表的大小。Word2vec
 的模型结构如下：</p>
-<figure class="align-default" id="id19">
+<div class="figure align-default" id="id19">
 <a class="reference internal image-reference" href="../_images/w2v_model.svg"><img alt="../_images/w2v_model.svg" src="../_images/w2v_model.svg" width="500px" /></a>
-<figcaption>
-<p><span class="caption-number">图8.1.3 </span><span class="caption-text">word2vec 模型</span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图8.1.3 </span><span class="caption-text">word2vec 模型</span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
+</div>
 <p>从左到右，输入给定一个中心词的one-hot表示
 <span class="math notranslate nohighlight">\(\mathbf{x}_t \in \{0, 1\}^V\)</span>，中心词的向量
 <span class="math notranslate nohighlight">\(\mathbf{w}_{t}\)</span> 可以表示为：</p>
@@ -446,8 +434,8 @@ model (CBOW)</strong>。</p>
 第<span class="math notranslate nohighlight">\(t+j\)</span>行相乘，得到softmax的分母的输入。而分子输入为上下文向量词表
 <span class="math notranslate nohighlight">\(\mathbf{W}^o\)</span> 整个与中心词向量 <span class="math notranslate nohighlight">\(\mathbf{v}_{w_t}\)</span>
 的乘积。最后，通过softmax, 可以对上下文词的概率进行预测。</p>
-</section>
-<section id="id9">
+</div>
+<div class="section" id="id9">
 <h3><span class="section-number">8.1.2.5. </span>负采样<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
 <p>在计算softmax <a class="reference internal" href="#equation-skip-gram-likelihood">(8.1.1)</a> 和
 <a class="reference internal" href="#equation-cbow-likelihood">(8.1.3)</a>
@@ -468,30 +456,30 @@ model (CBOW)</strong>。</p>
 <a class="reference internal" href="#equation-skip-gram-likelihood">(8.1.1)</a>
 的优化目标一致，并且在最大化原始似然函数的同时
 <span class="math notranslate nohighlight">\(\max P(w_{t+j} | w_t)\)</span>, 并且避免了对整个词汇表的计算。</p>
-</section>
-</section>
-<section id="id10">
+</div>
+</div>
+<div class="section" id="id10">
 <h2><span class="section-number">8.1.3. </span>实验验证<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h2>
-<section id="id11">
+<div class="section" id="id11">
 <h3><span class="section-number">8.1.3.1. </span>数据集<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
 <p>TBA</p>
-</section>
-<section id="id12">
+</div>
+<div class="section" id="id12">
 <h3><span class="section-number">8.1.3.2. </span>手动分析<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
 <p>TBA</p>
 <!-- 在模型训练完成后，我们可以通过以下几种方式进行手动分析：
 - **近邻查询**：输入一个单词，观察其在词向量空间中的最近邻（例如，查询“banking”时，是否返回“finance”、“loan”等相关词）。
 - **向量运算**：检验向量之间是否存在某些语义关系，如 “king - man + woman ≈ queen”。
 
-这种直观的分析可以帮助我们判断词向量是否捕捉到单词间的语义和语法关系。[cite] --></section>
-<section id="id13">
+这种直观的分析可以帮助我们判断词向量是否捕捉到单词间的语义和语法关系。[cite] --></div>
+<div class="section" id="id13">
 <h3><span class="section-number">8.1.3.3. </span>编程验证<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h3>
 <p>TBA</p>
-</section>
-</section>
-<section id="id14">
+</div>
+</div>
+<div class="section" id="id14">
 <h2><span class="section-number">8.1.4. </span>分析讨论<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h2>
-<section id="id15">
+<div class="section" id="id15">
 <h3><span class="section-number">8.1.4.1. </span>优点<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><strong>计算效率高</strong>：利用负采样或层次 Softmax
@@ -500,8 +488,8 @@ model (CBOW)</strong>。</p>
 <li><p><strong>易于迁移</strong>：得到的词向量可以直接用于各种下游 NLP
 任务，如文本分类、情感分析等，从而提升整体模型的效果。</p></li>
 </ul>
-</section>
-<section id="id16">
+</div>
+<div class="section" id="id16">
 <h3><span class="section-number">8.1.4.2. </span>缺点<a class="headerlink" href="#id16" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><strong>语义多义性</strong>：Word2vec
@@ -509,9 +497,9 @@ model (CBOW)</strong>。</p>
 <li><p><strong>负采样依赖采样策略</strong>：负采样的效果与采样策略密切相关，不恰当的采样可能会影响模型性能。</p></li>
 <li><p><strong>缺乏句法信息</strong>：尽管能捕捉词语之间的关系，但在句法结构建模上还存在一定的局限性。</p></li>
 </ul>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
         </div>

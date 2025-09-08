@@ -227,7 +227,7 @@ def compute_gauc(test_sample_dict, test_label_list, pred_ans, user_id_col="user_
 
 
 def evaluate_sasmodel_all_item(
-    user_embs, item_embs, test_label_list, k_list=[5, 10, 20, 50, 100]
+    user_embs, item_embs, test_label_list, k_list=[5, 10]
 ):
     """
     评估推荐模型性能，计算Hit Rate@k和NDCG@k指标
@@ -236,7 +236,7 @@ def evaluate_sasmodel_all_item(
         user_embs: np.array, 用户嵌入向量，维度为[N, D]，其中N是用户数量，D是嵌入维度
         item_embs: np.array, 物品嵌入向量，维度为[T, D]，其中T是物品数量，D是嵌入维度
         test_label_list: list, 每个用户的真实点击物品ID，长度为N
-        k_list: list, 要评估的k值列表，默认为[5, 10, 20, 50, 100]
+        k_list: list, 要评估的k值列表，默认为[5, 10]
 
     返回:
         dict: 包含每个k值对应的Hit Rate和NDCG指标的字典

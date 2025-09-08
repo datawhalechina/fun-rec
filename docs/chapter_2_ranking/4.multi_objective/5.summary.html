@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -72,14 +71,9 @@ Show Source
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation">
           
-              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/notebooks.zip">
+              <a  class="mdl-navigation__link" href="https://funrec-notebooks.s3.eu-west-3.amazonaws.com/fun-rec.zip">
                   <i class="fas fa-download"></i>
                   Jupyter 记事本
-              </a>
-          
-              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/fun-rec.pdf">
-                  <i class="fas fa-file-pdf"></i>
-                  PDF
               </a>
           
               <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
@@ -355,13 +349,13 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="id1">
+  <div class="section" id="id1">
 <h1><span class="section-number">3.5.5. </span>小结<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>多目标建模的发展历程反映了推荐系统从单一优化向协同优化的演进。早期的Shared-Bottom架构虽然简单，但任务间的负迁移问题促使了MMoE等专家混合模型的出现。随着业务复杂度提升，PLE进一步引入了专家分离机制，而STAR则通过拓扑结构优化解决了参数冗余问题。</p>
 <p>在依赖关系建模方面，ESSM通过概率链式分解解决了样本选择偏差，ESM2则将这一思想扩展到更复杂的用户行为序列。这些方法的核心都是将复杂的多阶段问题转化为可建模的数学形式，从而实现端到端的联合优化。</p>
 <p>损失融合优化则从另一个角度解决多目标冲突。无论是简单的加权求和，还是复杂的动态平衡策略，其本质都是在不同业务目标间寻找最优的权衡点。实践中，这往往需要结合具体的业务场景和数据特点来选择合适的融合策略。</p>
 <p>多目标建模仍在快速发展中，但核心思想已经相对成熟：在共享与独立之间找到平衡，在效率与效果之间做出权衡。对于实际应用来说，选择合适的方法比追求最新的技术更重要。</p>
-</section>
+</div>
 
 
         </div>

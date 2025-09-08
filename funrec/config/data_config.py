@@ -3,11 +3,14 @@
 """
 
 import os
-from dotenv import load_dotenv
+from ..utils import load_env_with_fallback
 
-load_dotenv()
-PROCESSED_DATA_PATH = os.getenv('PROCESSED_DATA_PATH')
+# 自动加载环境变量
+load_env_with_fallback()
 
+PROCESSED_DATA_PATH = os.getenv('FUNREC_PROCESSED_DATA_PATH')
+if not PROCESSED_DATA_PATH:
+    raise ValueError("FUNREC_PROCESSED_DATA_PATH 未设置, 请在环境变量中设置")
 
 DATASET_CONFIG = {
     "ml_latest_small_youtubednn": {

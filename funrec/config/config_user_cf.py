@@ -35,10 +35,9 @@ CONFIG: Dict[str, Any] = {
             "precision@5",
             "precision@10",
         ],
-        "k_values": [
+        "k_list": [
             5,
             10,
-            20,
         ],
         "exclude_train": True,
         "classical_model": True,

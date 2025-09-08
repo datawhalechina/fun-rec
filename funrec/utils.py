@@ -1,11 +1,52 @@
-from typing import Dict, Any, List, Tuple, Union, Optional
+import os
+import warnings
+import logging
+from pathlib import Path
+from typing import Dict, Any, List
+logger = logging.getLogger(__name__)
 
+from dotenv import find_dotenv, load_dotenv
 from tabulate import tabulate
-from .config import load_config, Config
-from .data.loaders import load_data
-from .features.processors import prepare_features
-from .training.trainer import train_model
-from .evaluation.evaluator import evaluate_model
+
+
+def load_env_with_fallback() -> None:
+    """
+    自动定位并加载 .env 文件，提供合理的默认路径作为回退。
+
+    查找顺序：
+    1. 使用 find_dotenv() 自动查找 .env 文件
+    2. 如果未找到，使用合理的默认路径并发出警告
+
+    默认路径：
+    - FUNREC_RAW_DATA_PATH: ./data/raw
+    - FUNREC_PROCESSED_DATA_PATH: ./book/tmp
+    """
+    # 尝试自动查找 .env 文件
+    dotenv_path = find_dotenv(usecwd=True)
+
+    if dotenv_path:
+        load_dotenv(dotenv_path)
+        logger.debug(f"已加载环境变量文件: {dotenv_path}")
+
+    else:
+        # 如果没有找到 .env 文件，使用默认值并警告用户
+        warnings.warn(
+            "未找到 .env 文件。使用默认路径作为回退。"
+            "建议创建 .env 文件并设置 FUNREC_RAW_DATA_PATH 和 FUNREC_PROCESSED_DATA_PATH。"
+            "或者使用默认路径: data（输入数据）和 tmp（处理后的数据）",
+            UserWarning,
+        )
+
+        # 设置默认路径（相对于当前工作目录）
+        if not os.getenv("FUNREC_RAW_DATA_PATH"):
+            default_raw_path = str(Path.cwd() / "data")
+            os.environ["FUNREC_RAW_DATA_PATH"] = default_raw_path
+            warnings.warn(f"使用默认 RAW_DATA_PATH: {default_raw_path}")
+
+        if not os.getenv("FUNREC_PROCESSED_DATA_PATH"):
+            default_processed_path = str(Path.cwd() / "tmp")
+            os.environ["FUNREC_PROCESSED_DATA_PATH"] = default_processed_path
+            warnings.warn(f"使用默认 PROCESSED_DATA_PATH: {default_processed_path}")
 
 
 def build_results_table(results: Dict[str, Dict[str, Any]]) -> str:
@@ -118,67 +159,3 @@ def build_model_comparison_table(model_to_metrics: Dict[str, Dict[str, Any]]) ->
         table_data.append(row)
 
     return tabulate(table_data, headers=headers, tablefmt="grid")
-
-
-def compare_models(
-    models: List[str],    
-    return_table: bool = True,
-) -> Union[Dict[str, Dict[str, Any]], Tuple[Dict[str, Dict[str, Any]], str]]:
-    """
-    训练和评估多个模型并比较它们的指标。
-
-    每个模型可以通过以下方式指定：
-    - name (str): 加载funrec.config下的模型
-
-    参数:
-        models: 模型列表    
-        return_table: 是否同时返回格式化的比较表格
-
-    返回:
-        - 如果return_table为False: 模型显示名称 -> 指标字典的映射
-        - 如果return_table为True: (结果字典, 表格字符串)
-    """
-    # 将输入标准化为(display_name, Config)的列表
-    normalized: List[Tuple[str, Config]] = []
-
-    for model in models:
-        normalized.append((model, load_config(model)))
-
-    results: Dict[str, Dict[str, Any]] = {}
-
-    for display_name, cfg in normalized:
-        try:
-            # 1) 加载数据
-            train_data, test_data = load_data(cfg.data)
-            # 2) 准备特征
-            feature_columns, processed_data = prepare_features(
-                cfg.features, train_data, test_data
-            )
-            # 3) 训练
-            model_tuple = train_model(cfg.training, feature_columns, processed_data)
-            # 4) 评估
-            metrics = evaluate_model(
-                model_tuple, processed_data, cfg.evaluation, feature_columns
-            )
-            results[str(display_name)] = metrics
-        except Exception as e:
-            # 捕获失败信息，保持表格对齐
-            results[str(display_name)] = {"error": str(e)}
-
-    if return_table:
-        # 过滤成功的指标字典用于显示；在单独列中包含错误
-        any_error = any(("error" in m) for m in results.values())
-        if any_error:
-            # 构建包含'error'列的组合表格（如果存在）
-            # 合并指标键并包含'error'
-            model_to_metrics: Dict[str, Dict[str, Any]] = {}
-            for name, m in results.items():
-                if "error" in m:
-                    model_to_metrics[name] = {"error": m["error"]}
-                else:
-                    model_to_metrics[name] = m
-            table = build_model_comparison_table(model_to_metrics)
-        else:
-            table = build_model_comparison_table(results)
-        return results, table
-    return results

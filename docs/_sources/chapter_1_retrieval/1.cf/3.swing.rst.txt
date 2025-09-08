@@ -222,25 +222,39 @@ Score的计算，它通过分析用户-物品二部图中的swing结构来度量
 
 .. code:: python
 
-   import os
-   import sys
+    import os
+    import sys
+    import funrec
+    from funrec.utils import build_metrics_table
+    
+    # 加载配置
+    config = funrec.load_config('swing')
+    
+    # 加载数据
+    train_data, test_data = funrec.load_data(config.data)
+    
+    # 准备特征
+    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
+    
+    # 训练模型
+    models = funrec.train_model(config.training, feature_columns, processed_data)
+    
+    # 评估模型
+    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
+    
+    print(build_metrics_table(metrics))
 
-   import funrec
-   from funrec.utils import build_metrics_table
 
-   # 加载配置
-   config = funrec.load_config('swing')
+.. raw:: latex
 
-   # 加载数据
-   train_data, test_data = funrec.load_data(config.data)
+   \diilbookstyleoutputcell
 
-   # 准备特征
-   feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
+.. parsed-literal::
+    :class: output
 
-   # 训练模型
-   models = funrec.train_model(config.training, feature_columns, processed_data)
+    +---------------+--------------+----------------+---------------+
+    |   hit_rate@10 |   hit_rate@5 |   precision@10 |   precision@5 |
+    +===============+==============+================+===============+
+    |        0.6194 |       0.5042 |         0.1282 |        0.1629 |
+    +---------------+--------------+----------------+---------------+
 
-   # 评估模型
-   metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-
-   print(build_metrics_table(metrics))

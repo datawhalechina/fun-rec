@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -71,14 +70,9 @@ Show Source
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation">
           
-              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/notebooks.zip">
+              <a  class="mdl-navigation__link" href="https://funrec-notebooks.s3.eu-west-3.amazonaws.com/fun-rec.zip">
                   <i class="fas fa-download"></i>
                   Jupyter 记事本
-              </a>
-          
-              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/fun-rec.pdf">
-                  <i class="fas fa-file-pdf"></i>
-                  PDF
               </a>
           
               <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
@@ -354,7 +348,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="baseline">
+  <div class="section" id="baseline">
 <h1><span class="section-number">6.2. </span>Baseline<a class="headerlink" href="#baseline" title="Permalink to this heading">¶</a></h1>
 <p>本baseline将重点实现ItemCF（基于物品的协同过滤）算法作为召回策略，这是工业界广泛使用的经典方法，具有可解释性强、效果稳定的特点。</p>
 <p>导包</p>
@@ -376,12 +370,13 @@ Show Source
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_env_with_fallback</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="n">load_dotenv</span><span class="p">()</span>
-<span class="n">RAW_DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;RAW_DATA_PATH&#39;</span><span class="p">))</span>
-<span class="n">PROCESSED_DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;PROCESSED_DATA_PATH&#39;</span><span class="p">))</span>
+<span class="n">load_env_with_fallback</span><span class="p">()</span>
+
+<span class="n">RAW_DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;FUNREC_RAW_DATA_PATH&#39;</span><span class="p">))</span>
+<span class="n">PROCESSED_DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;FUNREC_PROCESSED_DATA_PATH&#39;</span><span class="p">))</span>
 
 
 <span class="c1"># 数据路径</span>
@@ -846,7 +841,7 @@ Show Source
 <span class="n">submit</span><span class="p">(</span><span class="n">tst_recall</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;itemcf_baseline&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
+</div>
 
 
         </div>

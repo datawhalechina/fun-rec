@@ -7,10 +7,6 @@ import tensorflow as tf
 import networkx as nx
 import numpy as np
 from tqdm import tqdm
-from dotenv import load_dotenv
-
-load_dotenv()
-PROCESSED_DATA_PATH = os.getenv("PROCESSED_DATA_PATH")
 
 
 class SimpleWalker:
@@ -198,10 +194,6 @@ def build_eges_model(feature_columns, model_config):
         raise ValueError("EGES requires 'dataset_name' in model_config")
 
     dataset_cfg = dict(DATASET_CONFIG.get(dataset_name, {}))
-    if data_dir:
-        for k, v in dataset_cfg.items():
-            if isinstance(v, str) and v.startswith(PROCESSED_DATA_PATH):
-                dataset_cfg[k] = v.replace(PROCESSED_DATA_PATH, data_dir)
 
     feature_dict = read_pkl_data(dataset_cfg["dict_path"])
 

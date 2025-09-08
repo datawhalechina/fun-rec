@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -72,14 +71,9 @@ Show Source
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation">
           
-              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/notebooks.zip">
+              <a  class="mdl-navigation__link" href="https://funrec-notebooks.s3.eu-west-3.amazonaws.com/fun-rec.zip">
                   <i class="fas fa-download"></i>
                   Jupyter 记事本
-              </a>
-          
-              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/fun-rec.pdf">
-                  <i class="fas fa-file-pdf"></i>
-                  PDF
               </a>
           
               <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
@@ -355,12 +349,12 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="id1">
+  <div class="section" id="id1">
 <h1><span class="section-number">2.3.4. </span>总结<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>序列召回标志着推荐理念的一次深刻转变：从为用户绘制静态的兴趣“快照”，转向理解并续写用户行为的动态“故事”。它不再满足于回答“用户是谁”，而是聚焦于预测“用户下一步会做什么”。这一核心思想的转变，旨在捕捉用户行为中丰富的时序依赖、兴趣演化和多重意图，从而实现更精准、更即时的推荐。</p>
 <p>为了实现这一目标，序列召回主要沿着两条技术路径演进。第一条路径致力于深化用户表示，通过构建更立体的用户画像来提升检索精度。例如，MIND模型使用多个向量捕捉用户的并行兴趣，解决了单一向量的表达瓶颈；而SDM则进一步融合了用户的长短期偏好，让用户画像既能反映稳定爱好，又能捕捉即时需求。另一条路径则在范式上进行了革新，将推荐直接视为序列生成任务。它不再试图“总结”用户，而是直接预测行为序列的下一个物品。SASRec率先引入Transformer模型，直接对物品间的时序依赖建模；而HSTU则将这一思想推向极致，将所有异构特征统一为“事件流”，学习其内在的生成规律。</p>
 <p>尽管技术路径不同，所有序列召回模型的最终使命是统一的：通过深度挖掘时序规律，更精准地预测用户的即时意图，实现从“相关”到“恰当”的推荐升级。这一演进也预示了推荐系统的未来方向，即模型不仅要理解用户的过去，更要具备生成和预测未来的能力。如何平衡这些先进模型的强大能力与在线服务的高效性，以及如何与大语言模型等技术深度融合，将是下一代召回技术需要探索的核心命题。</p>
-</section>
+</div>
 
 
         </div>

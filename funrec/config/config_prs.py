@@ -143,7 +143,6 @@ CONFIG: Dict[str, Any] = {
         "k_list": [
             5,
             10,
-            30,
         ],
         "beam_size": 2,
         "max_length": 10,

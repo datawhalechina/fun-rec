@@ -5,11 +5,14 @@
 import os
 from pathlib import Path
 from typing import Dict, Any, Tuple
+from ..utils import load_env_with_fallback
 
-from dotenv import load_dotenv
+# 自动加载环境变量
+load_env_with_fallback()
 
-load_dotenv()
-RAW_DATA_PATH = os.getenv("RAW_DATA_PATH")
+RAW_DATA_PATH = os.getenv("FUNREC_RAW_DATA_PATH")
+if not RAW_DATA_PATH:
+    raise ValueError("FUNREC_RAW_DATA_PATH 未设置, 请在环境变量中设置")
 
 from ..config.data_config import DATASET_CONFIG
 from .data_utils import read_pkl_data

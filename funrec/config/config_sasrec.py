@@ -67,9 +67,6 @@ CONFIG: Dict[str, Any] = {
         "k_list": [
             5,
             10,
-            20,
-            50,
-            100,
         ],
         "model_config": {
             "user_id_col": "seq_ids",

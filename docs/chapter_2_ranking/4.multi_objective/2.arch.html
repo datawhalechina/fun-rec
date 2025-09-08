@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -73,14 +72,9 @@ Show Source
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation">
           
-              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/notebooks.zip">
+              <a  class="mdl-navigation__link" href="https://funrec-notebooks.s3.eu-west-3.amazonaws.com/fun-rec.zip">
                   <i class="fas fa-download"></i>
                   Jupyter 记事本
-              </a>
-          
-              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec/fun-rec.pdf">
-                  <i class="fas fa-file-pdf"></i>
-                  PDF
               </a>
           
               <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
@@ -356,9 +350,9 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="multi-objective-arch">
+  <div class="section" id="multi-objective-arch">
 <span id="id1"></span><h1><span class="section-number">3.5.2. </span>基础结构演进<a class="headerlink" href="#multi-objective-arch" title="Permalink to this heading">¶</a></h1>
-<section id="shared-bottom">
+<div class="section" id="shared-bottom">
 <h2><span class="section-number">3.5.2.1. </span>Shared-Bottom<a class="headerlink" href="#shared-bottom" title="Permalink to this heading">¶</a></h2>
 <p>Shared-Bottom
 模型作为多目标建模的奠基性架构，采用“共享地基+独立塔楼”的设计范式。其核心结构包含两个关键组件：</p>
@@ -368,12 +362,10 @@ Bottom）：所有任务共用同一组特征转换层，负责学习跨任务�
 <li><p>任务特定塔（Task-Specific
 Towers）：每个任务拥有独立的顶层网络，基于共享表示学习任务特定决策边界。</p></li>
 </ul>
-<figure class="align-default" id="id2">
+<div class="figure align-default" id="id2">
 <img alt="../../_images/shared-bottom.png" src="../../_images/shared-bottom.png" />
-<figcaption>
-<p><span class="caption-number">图3.5.1 </span><span class="caption-text">Shared-Bottom</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.1 </span><span class="caption-text">Shared-Bottom</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
 <p>这种架构的数学表达可描述为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-2-arch-0">
 <span class="eqno">(3.5.1)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-arch-0" title="Permalink to this equation">¶</a></span>\[\hat{y}_t = f_t(W_t \cdot g(W_s \mathbf{x}))\]</div>
@@ -450,19 +442,17 @@ DNN网络，遍历创建各个任务独立的DNN塔，最后输出多个塔的�
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 <span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">valid_users_is_click</span> <span class="o">|</span>   <span class="n">valid_users_is_like</span> <span class="o">|</span>   <span class="n">valid_users_long_view</span> <span class="o">|</span>
 <span class="o">+================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+</span>
-<span class="o">|</span>         <span class="mf">0.5868</span> <span class="o">|</span>        <span class="mf">0.4242</span> <span class="o">|</span>          <span class="mf">0.4489</span> <span class="o">|</span>      <span class="mf">0.4867</span> <span class="o">|</span>          <span class="mf">0.5743</span> <span class="o">|</span>         <span class="mf">0.4421</span> <span class="o">|</span>           <span class="mf">0.4579</span> <span class="o">|</span>       <span class="mf">0.4914</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
+<span class="o">|</span>          <span class="mf">0.593</span> <span class="o">|</span>        <span class="mf">0.4303</span> <span class="o">|</span>          <span class="mf">0.4291</span> <span class="o">|</span>      <span class="mf">0.4841</span> <span class="o">|</span>          <span class="mf">0.5733</span> <span class="o">|</span>         <span class="mf">0.4433</span> <span class="o">|</span>           <span class="mf">0.4417</span> <span class="o">|</span>       <span class="mf">0.4861</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
 <span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 </pre></div>
 </div>
-</section>
-<section id="mmoe">
+</div>
+<div class="section" id="mmoe">
 <h2><span class="section-number">3.5.2.2. </span>MMOE<a class="headerlink" href="#mmoe" title="Permalink to this heading">¶</a></h2>
-<figure class="align-default" id="id3">
+<div class="figure align-default" id="id3">
 <img alt="../../_images/mmoe.png" src="../../_images/mmoe.png" />
-<figcaption>
-<p><span class="caption-number">图3.5.2 </span><span class="caption-text">MMOE模型结构</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.2 </span><span class="caption-text">MMOE模型结构</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
 <p>针对Shared-Bottom对相关性低的多个任务出现负迁移的现象，OMOE将底层共享的一个Shared-Bottom模块拆分成了多个Expert，最终OMOE的输出为多个Expert的加权和，本质可以看成是专家网络和全局门控的双层结构。</p>
 <p>虽然OMOE通过底层多专家融合的方式提升了特征表征的多样性，从最终的实验结果看，确实可以一定程度上缓解低相关性任务的负迁移问题，但没有彻底解决多任务冲突的问题。因为不同任务反向传播的梯度还是会直接影响底层专家网络的学习。</p>
 <p>为了进一步缓解多任务冲突，MMOE为每个任务配备专属门控网络，实现了门控从“全局共享”升级为“任务自适应”的方式。MMoE的数学表达式可以表示为：</p>
@@ -549,12 +539,12 @@ g_t(\mathbf{x}) &amp;= \text{softmax}(\mathbf{W}_t \mathbf{x}) \\
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 <span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">valid_users_is_click</span> <span class="o">|</span>   <span class="n">valid_users_is_like</span> <span class="o">|</span>   <span class="n">valid_users_long_view</span> <span class="o">|</span>
 <span class="o">+================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+</span>
-<span class="o">|</span>         <span class="mf">0.6046</span> <span class="o">|</span>        <span class="mf">0.4222</span> <span class="o">|</span>          <span class="mf">0.4654</span> <span class="o">|</span>      <span class="mf">0.4974</span> <span class="o">|</span>          <span class="mf">0.5743</span> <span class="o">|</span>         <span class="mf">0.4396</span> <span class="o">|</span>           <span class="mf">0.4673</span> <span class="o">|</span>       <span class="mf">0.4937</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.5958</span> <span class="o">|</span>        <span class="mf">0.4258</span> <span class="o">|</span>           <span class="mf">0.434</span> <span class="o">|</span>      <span class="mf">0.4852</span> <span class="o">|</span>          <span class="mf">0.5731</span> <span class="o">|</span>         <span class="mf">0.4472</span> <span class="o">|</span>           <span class="mf">0.4484</span> <span class="o">|</span>       <span class="mf">0.4896</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
 <span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 </pre></div>
 </div>
-</section>
-<section id="ple">
+</div>
+<div class="section" id="ple">
 <h2><span class="section-number">3.5.2.3. </span>PLE<a class="headerlink" href="#ple" title="Permalink to this heading">¶</a></h2>
 <p>MMoE
 通过为每个任务配备专属门控网络，在一定程度上缓解了多任务冲突问题。专属门控网络能够根据任务特性选择专家组合，从而使得不同任务可以关注不同的特征表示。但其架构仍存在一个根本性局限：所有专家对所有任务门控可见。这种“软隔离”设计在实践中仍面临两大挑战：</p>
@@ -574,12 +564,10 @@ g_t(\mathbf{x}) &amp;= \text{softmax}(\mathbf{W}_t \mathbf{x}) \\
 </li>
 </ol>
 <p>为解决上述问题，CGC结构被提出，其核心思想是通过硬性结构约束，显式分离共享知识与任务特定知识：</p>
-<figure class="align-default" id="id4">
+<div class="figure align-default" id="id4">
 <img alt="../../_images/cgc.png" src="../../_images/cgc.png" />
-<figcaption>
-<p><span class="caption-number">图3.5.3 </span><span class="caption-text">CGC网络结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.3 </span><span class="caption-text">CGC网络结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>专家职责强制分离</strong>：</p>
 <ul class="simple">
 <li><p>共享专家
@@ -673,12 +661,10 @@ g_t(\mathbf{x}) &amp;= \text{softmax}(\mathbf{W}_t \mathbf{x}) \\
 <p>CGC解决了知识分离的核心问题，但其本质是单层结构，表征学习深度有限。受深度神经网络逐层抽象特征的启发，PLE
 (Progressive Layered Extraction)
 将多个CGC单元纵向堆叠，形成深层架构，实现渐进式知识提取与融合。</p>
-<figure class="align-default" id="id5">
+<div class="figure align-default" id="id5">
 <img alt="../../_images/ple.png" src="../../_images/ple.png" />
-<figcaption>
-<p><span class="caption-number">图3.5.4 </span><span class="caption-text">PLE网络结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.4 </span><span class="caption-text">PLE网络结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
 <ul class="simple">
 <li><p>第1层 (输入层 CGC)：</p>
 <ul>
@@ -788,12 +774,12 @@ g_t(\mathbf{x}) &amp;= \text{softmax}(\mathbf{W}_t \mathbf{x}) \\
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 <span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">valid_users_is_click</span> <span class="o">|</span>   <span class="n">valid_users_is_like</span> <span class="o">|</span>   <span class="n">valid_users_long_view</span> <span class="o">|</span>
 <span class="o">+================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+</span>
-<span class="o">|</span>         <span class="mf">0.5987</span> <span class="o">|</span>        <span class="mf">0.4261</span> <span class="o">|</span>            <span class="mf">0.45</span> <span class="o">|</span>      <span class="mf">0.4916</span> <span class="o">|</span>          <span class="mf">0.5758</span> <span class="o">|</span>         <span class="mf">0.4425</span> <span class="o">|</span>           <span class="mf">0.4521</span> <span class="o">|</span>       <span class="mf">0.4901</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.5981</span> <span class="o">|</span>        <span class="mf">0.4207</span> <span class="o">|</span>          <span class="mf">0.4491</span> <span class="o">|</span>      <span class="mf">0.4893</span> <span class="o">|</span>          <span class="mf">0.5734</span> <span class="o">|</span>         <span class="mf">0.4437</span> <span class="o">|</span>           <span class="mf">0.4477</span> <span class="o">|</span>       <span class="mf">0.4883</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
 <span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
         </div>

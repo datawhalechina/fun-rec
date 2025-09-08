@@ -139,7 +139,6 @@ CONFIG: Dict[str, Any] = {
         "k_list": [
             5,
             10,
-            30,
         ],
     },
 }

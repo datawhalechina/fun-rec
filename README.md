@@ -1,15 +1,11 @@
-# FunRec-推荐系统 [在线阅读](https://datawhalechina.github.io/fun-rec/)
-<p align="left">
-  <img src='https://img.shields.io/badge/python-3.8+-blue'>
-  <img src='https://img.shields.io/badge/TensorFlow-2.13.0-blue'>
-  <img src='https://img.shields.io/badge/pandas-2.0.3-brightgreen'>
-  <img src='https://img.shields.io/badge/scikit--learn-1.3.2+-brightgreen'>
-  <img src='https://img.shields.io/badge/gensim-4.3.3-brightgreen'>
-  <img src='https://img.shields.io/badge/networkx-3.1-brightgreen'>
-  <img src='https://img.shields.io/badge/lightgbm-4.6.0-brightgreen'>
-  <img src='https://img.shields.io/badge/faiss--cpu-1.7.4-brightgreen'>
-  <img src='https://img.shields.io/badge/seaborn-0.13.2-brightgreen'>
-</p>
+<div align=center>
+  <h1>FunRec 推荐系统</h1>
+</div>
+<div align="center">
+
+中文 | [English](./README_en.md)
+
+</div>
 
 本教程是一本全面系统的推荐系统学习指南，主要面向具有机器学习基础并希望深入推荐算法领域的同学。教程内容涵盖推荐系统的理论基础、核心算法、工程实践和面试准备四个维度，为初学者构建了从理论学习到实战应用再到求职面试的完整学习闭环。
 
@@ -70,7 +66,7 @@
 为了方便学习和交流，**我们建立了FunRec学习社区（微信群+知识星球）**，微信群方便大家平时日常交流和讨论，知识星球方便沉淀内容，B站上还有一些早期录制的相关视频[跟技术相关的分享内容都放在了B站](https://space.bilibili.com/431850986/channel/collectiondetail?sid=339597)。由于微信群的二维码只有7天内有效，所以直接加下面这个微信，备注：**Fun-Rec**，会被拉到Fun-Rec交流群，如果觉得微信群比较吵建议直接加知识星球！。
 
 <div align=center> 
-<img src="imgs/join_community.png" alt="image-20220408193745249" width="400px";" />
+<img src="book/img/join_community.png" alt="image-20220408193745249" width="400px";" />
 </div>
 
 
@@ -100,7 +96,7 @@
 ## 关注我们
 <div align=center>
 <p>扫描下方二维码关注公众号：Datawhale</p>
-<img src="imgs/datawhale_qrcode.jpg" width = "180" height = "180">
+<img src="book/img/datawhale_qrcode.jpg" width = "180" height = "180">
 </div>
 
 Datawhale，一个专注于AI领域的学习圈子。初衷是for the learner，和学习者一起成长。目前加入学习社群的人数已经数千人，组织了机器学习，深度学习，数据分析，数据挖掘，爬虫，编程，统计学，Mysql，数据竞赛等多个领域的内容学习，微信搜索公众号Datawhale可以加入我们。

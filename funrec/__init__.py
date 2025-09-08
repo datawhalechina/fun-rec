@@ -6,8 +6,8 @@ from .config import load_config
 from .data.loaders import load_data
 from .features.processors import prepare_features
 from .training.trainer import train_model
-from .evaluation.evaluator import evaluate_model
-from .utils import compare_models, build_model_comparison_table
+from .evaluation import evaluate_model, compare_models
+from .utils import build_model_comparison_table
 
 __version__ = "0.1.0"
 __all__ = [
