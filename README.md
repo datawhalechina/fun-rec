@@ -66,7 +66,7 @@
 为了方便学习和交流，**我们建立了FunRec学习社区（微信群+知识星球）**，微信群方便大家平时日常交流和讨论，知识星球方便沉淀内容，B站上还有一些早期录制的相关视频[跟技术相关的分享内容都放在了B站](https://space.bilibili.com/431850986/channel/collectiondetail?sid=339597)。由于微信群的二维码只有7天内有效，所以直接加下面这个微信，备注：**Fun-Rec**，会被拉到Fun-Rec交流群，如果觉得微信群比较吵建议直接加知识星球！。
 
 <div align=center> 
-<img src="book/img/join_community.png" alt="image-20220408193745249" width="400px";" />
+<img src="imgs/join_community.png" alt="image-20220408193745249" width="400px";" />
 </div>
 
 
@@ -96,7 +96,7 @@
 ## 关注我们
 <div align=center>
 <p>扫描下方二维码关注公众号：Datawhale</p>
-<img src="book/img/datawhale_qrcode.jpg" width = "180" height = "180">
+<img src="imgs/datawhale_qrcode.jpg" width = "180" height = "180">
 </div>
 
 Datawhale，一个专注于AI领域的学习圈子。初衷是for the learner，和学习者一起成长。目前加入学习社群的人数已经数千人，组织了机器学习，深度学习，数据分析，数据挖掘，爬虫，编程，统计学，Mysql，数据竞赛等多个领域的内容学习，微信搜索公众号Datawhale可以加入我们。
