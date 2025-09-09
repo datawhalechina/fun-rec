@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -350,29 +349,27 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="cold-start">
+  <div class="section" id="cold-start">
 <span id="id1"></span><h1><span class="section-number">5.3. </span>冷启动问题<a class="headerlink" href="#cold-start" title="Permalink to this heading">¶</a></h1>
-<section id="id2">
+<div class="section" id="id2">
 <h2><span class="section-number">5.3.1. </span>内容冷启动<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>在推荐系统的发展历程中，内容冷启动一直是一个核心挑战。新上线的物品由于缺乏用户交互历史，传统的协同过滤方法难以为其提供有效推荐。而基于内容的方法虽然能够处理新物品，但推荐质量往往不如协同过滤。</p>
 <p>针对这一挑战，研究者们提出了多种创新解决方案。本节将重点介绍两种具有代表性的方法：CB2CF（Content-Based
 to Collaborative
 Filtering）和MetaEmbedding。CB2CF通过学习内容特征到协同过滤表示的映射关系，让新物品能够直接获得协同过滤质量的推荐效果；MetaEmbedding则通过元学习的思想，利用物品的辅助属性信息为新物品生成更好的初始embedding表示。这两种方法从不同角度解决了内容冷启动问题，为推荐系统的实际应用提供了有效的技术支撑。</p>
-<section id="cb2cf">
+<div class="section" id="cb2cf">
 <h3><span class="section-number">5.3.1.1. </span>CB2CF<a class="headerlink" href="#cb2cf" title="Permalink to this heading">¶</a></h3>
 <p>协同过滤依赖用户-物品交互数据学习用户偏好和物品特征，能够发现复杂的隐式关联模式，但面对新物品时束手无策。基于内容的方法利用物品的属性信息进行推荐，可以处理新物品，但往往只能捕捉到表面的相似性。</p>
 <p>这种分离带来了一个根本性问题：如何让新物品能够享受到协同过滤的推荐质量？CB2CF（Content-Based
 to Collaborative Filtering）正是为解决这一问题而提出的创新方案。</p>
 <p>CB2CF的基本理念是学习从物品内容特征到协同过滤表示的映射关系。具体来说，对于那些既有内容描述又有丰富用户交互的物品，我们可以同时获得它们的内容特征向量和协同过滤嵌入向量。通过深度神经网络学习这两种表示之间的映射函数，新物品就能够基于其内容特征直接获得协同过滤表示。</p>
-<section id="id3">
+<div class="section" id="id3">
 <h4><span class="section-number">5.3.1.1.1. </span>CB2CF模型架构<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h4>
 <p>CB2CF采用多视图深度学习架构，主要包含以下组件：</p>
-<figure class="align-default" id="id7">
+<div class="figure align-default" id="id7">
 <img alt="../_images/cb2cf_arch.png" src="../_images/cb2cf_arch.png" />
-<figcaption>
-<p><span class="caption-number">图5.3.1 </span><span class="caption-text">CB2CF架构</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图5.3.1 </span><span class="caption-text">CB2CF架构</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
 <p>从架构图可以看出，CB2CF模型主要由三个核心模块构成：</p>
 <p><strong>内容编码器（Content
 Encoder）</strong>：负责将物品的多模态内容特征（如文本描述、图像、类别等）编码为统一的内容表示向量。对于不同类型的内容特征，模型采用相应的编码器进行处理，例如使用卷积神经网络处理图像特征，使用循环神经网络或Transformer处理文本特征。</p>
@@ -380,26 +377,24 @@ Encoder）</strong>：负责将物品的多模态内容特征（如文本描述�
 Network）</strong>：这是CB2CF的核心组件，由多层全连接神经网络构成，负责学习从内容特征空间到协同过滤嵌入空间的非线性映射关系。映射网络通过深度学习的方式捕捉内容特征与用户偏好之间的复杂关联。</p>
 <p><strong>约束优化模块（Constraint
 Optimization）</strong>：通过余弦相似度约束确保映射后的表示与真实的协同过滤嵌入在语义上保持一致。这个模块是训练过程中的关键，它保证了模型学习到的映射关系的有效性。</p>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h4><span class="section-number">5.3.1.1.2. </span>协同过滤向量生成<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h4>
 <p>在CB2CF中，协同过滤向量可以通过多种方法生成。对于有交互历史的物品，模型可以通过不同的协同过滤算法学习得到物品的嵌入向量。常见的协同过滤向量生成方法包括：</p>
 <p><strong>矩阵分解方法</strong>：给定用户-物品交互矩阵<span class="math notranslate nohighlight">\(R \in \mathbb{R}^{m \times n}\)</span>，其中<span class="math notranslate nohighlight">\(m\)</span>为用户数量，<span class="math notranslate nohighlight">\(n\)</span>为物品数量，通过分解<span class="math notranslate nohighlight">\(R \approx UV^T\)</span>来学习用户嵌入矩阵<span class="math notranslate nohighlight">\(U \in \mathbb{R}^{m \times d}\)</span>和物品嵌入矩阵<span class="math notranslate nohighlight">\(V \in \mathbb{R}^{n \times d}\)</span>，其中<span class="math notranslate nohighlight">\(d\)</span>为嵌入维度。物品<span class="math notranslate nohighlight">\(i\)</span>的协同过滤向量即为<span class="math notranslate nohighlight">\(V\)</span>的第<span class="math notranslate nohighlight">\(i\)</span>行<span class="math notranslate nohighlight">\(v_i\)</span>。</p>
 <p><strong>双塔召回模型</strong>：通过构建用户塔和物品塔的深度神经网络架构，分别将用户特征和物品特征编码为低维向量表示。物品塔输出的向量即为物品的协同过滤嵌入，这种方法能够更好地处理稀疏特征和复杂的非线性关系。</p>
 <p><strong>其他深度学习方法</strong>：如神经协同过滤（NCF）、自编码器等方法也能生成高质量的物品嵌入向量，这些方法通过深度神经网络学习用户-物品交互的复杂模式。</p>
 <p>对于新物品，由于缺乏交互数据，无法直接通过上述协同过滤方法获得嵌入向量。CB2CF通过学习映射函数<span class="math notranslate nohighlight">\(f: \mathcal{C} \rightarrow \mathcal{V}\)</span>，将新物品的内容特征<span class="math notranslate nohighlight">\(c_i\)</span>映射到协同过滤空间，得到<span class="math notranslate nohighlight">\(\hat{v}_i = f(c_i)\)</span>，从而实现冷启动推荐。这种映射关系的学习使得新物品能够获得与现有协同过滤方法生成的向量在语义上一致的表示。</p>
-</section>
-</section>
-<section id="metaembedding">
+</div>
+</div>
+<div class="section" id="metaembedding">
 <h3><span class="section-number">5.3.1.2. </span>MetaEmbedding<a class="headerlink" href="#metaembedding" title="Permalink to this heading">¶</a></h3>
 <p>CB2CF通过学习内容特征到协同过滤表示的映射，有效解决了新物品的冷启动问题。然而，在实际应用中，我们还面临着另一个挑战：如何为新物品生成更好的初始embedding表示？传统做法通常采用随机初始化新物品的embedding，但这种简单粗暴的方式往往导致新物品在初期表现不佳，需要大量交互数据才能收敛到有效状态。</p>
 <p>MetaEmbedding正是针对这一问题提出的解决方案。与CB2CF专注于学习内容到协同过滤的映射不同，MetaEmbedding关注的是如何利用物品的辅助属性信息，通过元学习的思想为新物品生成更好的初始embedding。</p>
-<figure class="align-default" id="id8">
+<div class="figure align-default" id="id8">
 <img alt="../_images/meta_embedding_alg.png" src="../_images/meta_embedding_alg.png" />
-<figcaption>
-<p><span class="caption-number">图5.3.2 </span><span class="caption-text">MetaEmbedding两阶段训练</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图5.3.2 </span><span class="caption-text">MetaEmbedding两阶段训练</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
 <p>MetaEmbedding采用基于SGD的元学习训练算法，其核心思想是通过模拟物品从冷启动到预热的完整过程来优化embedding生成器。该算法为每个物品ID学习一个能够快速适应的初始embedding，从而解决新物品的冷启动问题。</p>
 <p>算法的输入包括预训练的基础模型<span class="math notranslate nohighlight">\(f_\theta\)</span>、所有现有物品ID的集合<span class="math notranslate nohighlight">\(\mathcal{I}\)</span>、元损失的权重系数<span class="math notranslate nohighlight">\(\alpha\)</span>，以及梯度更新的步长参数<span class="math notranslate nohighlight">\(a\)</span>和<span class="math notranslate nohighlight">\(b\)</span>。训练过程首先随机初始化Meta-Embedding生成器的参数<span class="math notranslate nohighlight">\(w\)</span>，然后在主循环中重复执行以下操作直到收敛。</p>
 <p>在每次迭代中，算法从物品集合<span class="math notranslate nohighlight">\(\mathcal{I}\)</span>中随机采样<span class="math notranslate nohighlight">\(n\)</span>个物品ID，记为<span class="math notranslate nohighlight">\(\{i_1, i_2, \ldots, i_n\}\)</span>。对于每个采样的物品<span class="math notranslate nohighlight">\(i\)</span>，算法执行双阶段训练过程。</p>
@@ -419,26 +414,24 @@ Optimization）</strong>：通过余弦相似度约束确保映射后的表示�
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-3">
 <span class="eqno">(5.3.4)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-3" title="Permalink to this equation">¶</a></span>\[w \leftarrow w - b \sum_{i \in \{i_1, \ldots, i_n\}} \frac{\partial l_{\text{meta},i}}{\partial w}\]</div>
 <p>这种双阶段机制的深层含义在于优化embedding的“可学习性”而非embedding本身。通过在大量现有物品上重复“初始化→适应→评估”的过程，Meta-Embedding生成器学会了如何为新物品提供一个既有良好初始性能，又具备强适应潜力的embedding起点。当面对真正的新物品时，生成器能够基于其内容特征直接输出一个“聪明”的初始embedding，该embedding经过少量真实交互数据的训练后能够快速收敛到高质量的表示，从而显著改善冷启动性能。</p>
-</section>
-</section>
-<section id="id5">
+</div>
+</div>
+<div class="section" id="id5">
 <h2><span class="section-number">5.3.2. </span>用户冷启动<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
 <p>除了内容冷启动之外，推荐系统还面临着另一个重要挑战——用户冷启动。与内容冷启动关注新物品的推荐不同，用户冷启动问题聚焦于如何为新用户提供高质量的个性化推荐。当新用户刚加入推荐系统时，由于缺乏历史交互数据，传统的协同过滤方法难以准确捕捉其偏好特征，往往只能提供基于流行度的通用推荐，导致用户体验不佳。</p>
 <p>下面将重点介绍两种用户冷启动解决方案：MeLU（Meta-Learned User preference
 estimator）和POSO。MeLU是基于元学习的方法，通过MAML框架学习用户偏好估计器，能够基于少量交互快速捕捉新用户的个性化偏好；POSO则采用分人群的架构设计思路，通过引入多个用户群体专用的子模块和个性化门控机制来解决用户冷启动问题。这两种方法分别从元学习和模型架构优化的角度展示了解决推荐系统冷启动问题的不同思路。</p>
-<section id="melu">
+<div class="section" id="melu">
 <h3><span class="section-number">5.3.2.1. </span>MELU<a class="headerlink" href="#melu" title="Permalink to this heading">¶</a></h3>
 <p>正如我们在MetaEmbedding中看到的，元学习为解决冷启动问题提供了一种全新的思路——通过学习如何快速适应新任务来应对数据稀缺的挑战。这一思想同样适用于用户冷启动场景：我们可以将每个新用户的偏好学习视为一个独立的学习任务，通过元学习框架训练一个能够快速适应新用户偏好的模型。</p>
 <p>MeLU的核心思想是将每个用户的偏好学习视为一个独立的学习任务，通过元学习框架训练一个能够快速适应新用户偏好的推荐模型。与传统方法不同，MeLU不仅关注如何基于少量交互数据进行推荐，还创新性地提出了证据候选选择策略，用于确定最能区分用户偏好的物品集合。</p>
 <p>具体而言，MeLU将推荐问题建模为一个评分预测任务。给定用户<span class="math notranslate nohighlight">\(u\)</span>和物品<span class="math notranslate nohighlight">\(i\)</span>，模型需要预测用户对物品的评分<span class="math notranslate nohighlight">\(r_{ui}\)</span>。模型的核心是一个用户偏好估计器，由用户嵌入、物品嵌入以及多层决策网络组成。与传统方法为每个用户学习固定嵌入不同，MeLU学习的是一个能够快速生成个性化用户表示的元模型。</p>
-<section id="id6">
+<div class="section" id="id6">
 <h4><span class="section-number">5.3.2.1.1. </span>双阶段元学习机制<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h4>
-<figure class="align-default" id="id9">
+<div class="figure align-default" id="id9">
 <img alt="../_images/melu_arch.png" src="../_images/melu_arch.png" />
-<figcaption>
-<p><span class="caption-number">图5.3.3 </span><span class="caption-text">MeLU双阶段训练</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图5.3.3 </span><span class="caption-text">MeLU双阶段训练</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
 <p>MeLU的训练过程严格遵循MAML框架，但针对推荐系统的特点进行了专门的设计。算法采用双层参数结构：
 - <span class="math notranslate nohighlight">\(\theta_1\)</span>控制用户和物品的embedding参数 -
 <span class="math notranslate nohighlight">\(\theta_2\)</span>负责模型的核心决策网络参数。</p>
@@ -456,27 +449,23 @@ estimator）和POSO。MeLU是基于元学习的方法，通过MAML框架学习�
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-5">
 <span class="eqno">(5.3.6)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-5" title="Permalink to this equation">¶</a></span>\[\theta_2 \leftarrow \theta_2 - \beta \sum_{i \in B} \nabla_{\theta_2} \mathcal{L}_i'(f_{\theta_1, \theta_2^i})\]</div>
 <p>与标准MAML不同，MeLU的关键创新在于参数分离设计。<span class="math notranslate nohighlight">\(\theta_1\)</span>负责学习用户和物品的通用embedding表示，这些表示在所有用户间共享；而<span class="math notranslate nohighlight">\(\theta_2\)</span>专门负责快速适应个体用户的决策偏好。这种设计使得模型既能保持良好的表示学习能力，又能在面对新用户时实现快速的个性化适应。</p>
-</section>
-</section>
-<section id="poso">
+</div>
+</div>
+<div class="section" id="poso">
 <h3><span class="section-number">5.3.2.2. </span>POSO<a class="headerlink" href="#poso" title="Permalink to this heading">¶</a></h3>
 <p>与MeLU从元学习角度解决用户冷启动不同，POSO（Personalized COld Start
 MOdules）从模型架构设计的角度提出了一种全新的解决思路。POSO的核心洞察在于：用户冷启动问题的根本原因并非仅仅是数据稀缺，更重要的是新用户与老用户行为分布的巨大差异，以及现有模型在处理这种不平衡分布时的“个性化淹没”现象。</p>
 <p>新用户与老用户在行为模式上存在显著差异。新老用户的行为差异如下图所示：新用户通常表现出更高的点赞率（因为新鲜感）、更高的完播率（产品机制倾向于推送更短的视频）、但更低的观看时长和视频播放量（尚未形成使用粘性）。这种分布差异使得单一模型难以同时服务好两类用户群体。</p>
-<figure class="align-default" id="id10">
+<div class="figure align-default" id="id10">
 <img alt="../_images/poso_feature.png" src="../_images/poso_feature.png" />
-<figcaption>
-<p><span class="caption-number">图5.3.4 </span><span class="caption-text">POSO新老用户行为差异</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图5.3.4 </span><span class="caption-text">POSO新老用户行为差异</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div>
 <p>POSO的设计具有很强的通用性，可以灵活地集成到推荐系统的各种神经网络模块中。下面详细介绍POSO在三种典型模块中的具体应用方式，分别为MLP、MAH及MMoE。</p>
-<figure class="align-default" id="id11">
+<div class="figure align-default" id="id11">
 <img alt="../_images/poso_arch.png" src="../_images/poso_arch.png" />
-<figcaption>
-<p><span class="caption-number">图5.3.5 </span><span class="caption-text">poso模型结构</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<section id="poso-mlp">
+<p class="caption"><span class="caption-number">图5.3.5 </span><span class="caption-text">poso模型结构</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="poso-mlp">
 <h4><span class="section-number">5.3.2.2.1. </span>POSO-MLP<a class="headerlink" href="#poso-mlp" title="Permalink to this heading">¶</a></h4>
 <p>在传统的多层感知机（MLP）中，所有用户共享相同的权重参数。POSO-MLP通过引入多个并行的MLP子网络来解决这一问题：</p>
 <p><strong>子模块设计</strong>：假设原始MLP层的变换为<span class="math notranslate nohighlight">\(y = \sigma(Wx + b)\)</span>，POSO-MLP引入<span class="math notranslate nohighlight">\(K\)</span>个并行的MLP子模块，每个子模块<span class="math notranslate nohighlight">\(i\)</span>具有独立的权重矩阵<span class="math notranslate nohighlight">\(W_i\)</span>和偏置向量<span class="math notranslate nohighlight">\(b_i\)</span>：</p>
@@ -489,8 +478,8 @@ MOdules）从模型架构设计的角度提出了一种全新的解决思路。P
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-8">
 <span class="eqno">(5.3.9)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-8" title="Permalink to this equation">¶</a></span>\[\hat{y} = \sum_{i=1}^K g_i(x^{pc}) \cdot f_i(x)\]</div>
 <p>这种设计使得新用户可以主要依赖专门为其优化的子模块，而老用户则使用另一组专门的子模块，有效避免了特征淹没问题。</p>
-</section>
-<section id="poso-mha">
+</div>
+<div class="section" id="poso-mha">
 <h4><span class="section-number">5.3.2.2.2. </span>POSO-MHA<a class="headerlink" href="#poso-mha" title="Permalink to this heading">¶</a></h4>
 <p>多头注意力机制（Multi-Head Attention,
 MHA）在序列建模中发挥着重要作用。POSO-MHA通过为不同用户群体提供专门的注意力头来实现个性化：</p>
@@ -505,8 +494,8 @@ MHA）在序列建模中发挥着重要作用。POSO-MHA通过为不同用户群
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-11">
 <span class="eqno">(5.3.12)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-11" title="Permalink to this equation">¶</a></span>\[\hat{y} = \sum_{i=1}^K g_i(x^{pc}) \cdot f_i(x)\]</div>
 <p>这种设计让新用户和老用户能够关注到不同的序列模式，新用户的注意力机制可能更关注内容的新颖性和多样性，而老用户则更关注与历史偏好的匹配度。</p>
-</section>
-<section id="poso-mmoe">
+</div>
+<div class="section" id="poso-mmoe">
 <h4><span class="section-number">5.3.2.2.3. </span>POSO-MMoE<a class="headerlink" href="#poso-mmoe" title="Permalink to this heading">¶</a></h4>
 <p>多任务学习中的专家混合模型（Multi-gate Mixture-of-Experts,
 MMoE）本身就具有专家分工的思想，POSO-MMoE在此基础上进一步引入用户群体的个性化：</p>
@@ -528,10 +517,10 @@ MMoE）本身就具有专家分工的思想，POSO-MMoE在此基础上进一步�
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-14">
 <span class="eqno">(5.3.15)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-14" title="Permalink to this equation">¶</a></span>\[y_t = \sum_{i=1}^K \beta_i \left( \sum_{j=1}^M \alpha_{t,i,j} \cdot s_{i,j}\left(\sum_{k=1}^E \alpha_{t,k} \cdot e_k(x)\right) \right)\]</div>
 <p>这种设计实现了任务级别和用户群体级别的双重个性化，既保证了多任务学习的效果，又解决了不同用户群体的差异化需求。</p>
-</section>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
+</div>
 
 
         </div>

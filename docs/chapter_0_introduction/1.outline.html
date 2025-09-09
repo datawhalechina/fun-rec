@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -349,16 +348,14 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="id1">
+  <div class="section" id="id1">
 <h1><span class="section-number">1.2. </span>本书概览<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>理解了推荐系统的核心逻辑后，我们现在需要为这个复杂的技术体系绘制一份清晰的地图。本书将按照推荐系统的工业流水线——召回、排序、重排——来组织内容，每个阶段都会深入探讨从经典方法到前沿技术的演进脉络。同时，我们还会关注推荐系统的发展趋势和实际应用，帮你建立从理论到实践的完整知识框架。</p>
 <p><strong>第二章：召回系统——从海量到精选的第一道过滤</strong></p>
 <p><strong>召回系统</strong>是推荐流水线的起点，需要在毫秒级时间内从亿级候选中筛选出千级相关物品。本章将沿着三条技术演进路径，展现召回技术从简单到复杂、从静态到动态的发展历程。</p>
-<figure class="align-default" id="id2">
-<img alt="../_images/chapter_02_outline.svg" src="../_images/chapter_02_outline.svg" /><figcaption>
-<p><span class="caption-number">图1.2.1 </span><span class="caption-text">召回模型演化图</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<div class="figure align-default" id="id2">
+<img alt="../_images/chapter_02_outline.svg" src="../_images/chapter_02_outline.svg" /><p class="caption"><span class="caption-number">图1.2.1 </span><span class="caption-text">召回模型演化图</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>协同过滤（Collaborative Filtering）</strong>
 是推荐系统的经典起点。我们将探讨基于用户的协同过滤（UserCF，<a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html#usercf"><span class="std std-numref">2.1.2节</span></a>）如何通过“找到相似用户，推荐他们喜欢的物品”来实现推荐，以及基于物品的协同过滤（ItemCF，<a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html#itemcf"><span class="std std-numref">2.1.3节</span></a>）如何通过“推荐与用户历史行为相似的物品”来提升推荐效果。Swing算法（<a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html#swing"><span class="std std-numref">2.1.4节</span></a>）展示了如何通过考虑用户活跃度来改进物品相似度计算。最后，矩阵分解（Matrix
 Factorization，<a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html#matrix-factorization"><span class="std std-numref">2.1.5节</span></a>）技术将协同过滤从统计方法推向了机器学习时代，通过学习用户和物品的隐向量表示来预测偏好。</p>
@@ -368,11 +365,9 @@ Factorization，<a class="reference internal" href="../chapter_1_retrieval/1.cf/
 则关注用户行为的时序特性。传统方法将用户历史行为“压扁”成静态向量，丢失了宝贵的时序信息。我们将探讨两种解决思路：一是通过MIND和SDM等模型深化用户兴趣表示（<a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html#user-interests"><span class="std std-numref">2.3.2节</span></a>），捕捉多元兴趣和长短期偏好；二是将推荐视为序列生成任务，通过SASRec、HSTU和TIGER等模型直接预测用户行为序列的下一个物品（<a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html#generateive-recall"><span class="std std-numref">2.3.3节</span></a>）。</p>
 <p><strong>第三章：排序系统——精准预测用户偏好的核心引擎</strong></p>
 <p>经过召回阶段的快速筛选，<strong>排序系统</strong>需要对数千个候选物品进行精准的偏好预测。本章将展现排序模型从简单线性模型到复杂深度学习模型的演进历程。</p>
-<figure class="align-default" id="id3">
-<img alt="../_images/chapter_03_outline.svg" src="../_images/chapter_03_outline.svg" /><figcaption>
-<p><span class="caption-number">图1.2.2 </span><span class="caption-text">排序模型演化图</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<div class="figure align-default" id="id3">
+<img alt="../_images/chapter_03_outline.svg" src="../_images/chapter_03_outline.svg" /><p class="caption"><span class="caption-number">图1.2.2 </span><span class="caption-text">排序模型演化图</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
 <p>我们从<strong>Wide &amp;
 Deep模型</strong>（<a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html#wide-and-deep"><span class="std std-numref">3.2节</span></a>）开始，这个模型巧妙地结合了线性模型的“记忆”能力和深度模型的“泛化”能力，为后续模型发展奠定了基础。Wide部分通过人工设计的交叉特征快速学习显性关联规则，Deep部分则通过嵌入层和多层神经网络自动发现深层次的非线性关系，两者通过联合训练实现优势互补。</p>
 <p><strong>特征交叉（Feature Crossing）</strong>
@@ -410,7 +405,7 @@ Model）等方法展示了如何根据用户特征动态调整重排策略，实
 (<a class="reference internal" href="../chapter_6_interview/index.html#chap-interview"><span class="std std-numref">7节</span></a>)
 将分享如何准备推荐系统面试，包括简历准备、常见问题解析、技术栈梳理等实用技巧。</p>
 <p>通过这样的章节安排，本书将为你提供一个从基础概念到前沿技术、从理论原理到实践应用的完整学习路径。每个章节都会包含详细的算法原理、代码实现、以及关键技术的演进关系图，帮助你建立对推荐系统技术体系的深入理解。</p>
-</section>
+</div>
 
 
         </div>

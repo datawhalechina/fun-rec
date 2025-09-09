@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -349,7 +348,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="id1">
+  <div class="section" id="id1">
 <h1><span class="section-number">6.5. </span>特征工程<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>我们先捋一下基于原始的给定数据， 有哪些特征可以直接利用：</p>
 <ol class="arabic simple">
@@ -402,7 +401,7 @@ item3)的形式， 这就是监督测试集时候的前两列特征。</p>
 最后的召回列表， 文章的信息表和embedding向量</p></li>
 <li><p>制作标签， 形成最后的监督学习数据集</p></li>
 </ol>
-<section id="id2">
+<div class="section" id="id2">
 <h2><span class="section-number">6.5.1. </span>导包<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gc</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
@@ -422,8 +421,8 @@ item3)的形式， 这就是监督测试集时候的前两列特征。</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">MinMaxScaler</span>
 </pre></div>
 </div>
-</section>
-<section id="df">
+</div>
+<div class="section" id="df">
 <h2><span class="section-number">6.5.2. </span>df节省内存函数<a class="headerlink" href="#df" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 节省内存的一个函数</span>
 <span class="c1"># 减少内存</span>
@@ -461,8 +460,8 @@ item3)的形式， 这就是监督测试集时候的前两列特征。</p>
     <span class="k">return</span> <span class="n">df</span>
 </pre></div>
 </div>
-</section>
-<section id="id3">
+</div>
+<div class="section" id="id3">
 <h2><span class="section-number">6.5.3. </span>定义数据路径<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;../tmp/projects/news_recommendation&#39;</span><span class="p">)</span>
 <span class="n">data_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">/</span> <span class="s1">&#39;data_raw&#39;</span>
@@ -471,10 +470,10 @@ item3)的形式， 这就是监督测试集时候的前两列特征。</p>
     <span class="n">save_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h2><span class="section-number">6.5.4. </span>数据读取<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
-<section id="id5">
+<div class="section" id="id5">
 <h3><span class="section-number">6.5.4.1. </span>训练和验证集的划分<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <p>划分训练和验证集的原因是为了在线下验证模型参数的好坏，为了完全模拟测试集，我们这里就在训练集中抽取部分用户的所有信息来作为验证集。提前做训练验证集划分的好处就是可以分解制作排序特征时的压力，一次性做整个数据集的排序特征可能时间会比较长。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># all_click_df指的是训练集</span>
@@ -503,8 +502,8 @@ item3)的形式， 这就是监督测试集时候的前两列特征。</p>
     <span class="k">return</span> <span class="n">click_trn</span><span class="p">,</span> <span class="n">click_val</span><span class="p">,</span> <span class="n">val_ans</span>
 </pre></div>
 </div>
-</section>
-<section id="id6">
+</div>
+<div class="section" id="id6">
 <h3><span class="section-number">6.5.4.2. </span>获取历史点击和最后一次点击<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 获取当前数据的历史点击和最后一次点击</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_hist_and_last_click</span><span class="p">(</span><span class="n">all_click</span><span class="p">):</span>
@@ -523,8 +522,8 @@ item3)的形式， 这就是监督测试集时候的前两列特征。</p>
     <span class="k">return</span> <span class="n">click_hist_df</span><span class="p">,</span> <span class="n">click_last_df</span>
 </pre></div>
 </div>
-</section>
-<section id="id7">
+</div>
+<div class="section" id="id7">
 <h3><span class="section-number">6.5.4.3. </span>读取训练、验证及测试集<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_trn_val_tst_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">offline</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
@@ -542,8 +541,8 @@ item3)的形式， 这就是监督测试集时候的前两列特征。</p>
     <span class="k">return</span> <span class="n">click_trn</span><span class="p">,</span> <span class="n">click_val</span><span class="p">,</span> <span class="n">click_tst</span><span class="p">,</span> <span class="n">val_ans</span>
 </pre></div>
 </div>
-</section>
-<section id="id8">
+</div>
+<div class="section" id="id8">
 <h3><span class="section-number">6.5.4.4. </span>读取召回列表<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 返回多路召回列表或者单路召回</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_recall_list</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">single_recall_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">multi_recall</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -560,10 +559,10 @@ item3)的形式， 这就是监督测试集时候的前两列特征。</p>
         <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;youtube_u2i_dict.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-</section>
-<section id="embedding">
+</div>
+<div class="section" id="embedding">
 <h3><span class="section-number">6.5.4.5. </span>读取各种Embedding<a class="headerlink" href="#embedding" title="Permalink to this heading">¶</a></h3>
-<section id="word2vecgensim">
+<div class="section" id="word2vecgensim">
 <h4><span class="section-number">6.5.4.5.1. </span>Word2Vec训练及gensim的使用<a class="headerlink" href="#word2vecgensim" title="Permalink to this heading">¶</a></h4>
 <p>Word2Vec主要思想是：一个词的上下文可以很好的表达出词的语义。通过无监督学习产生词向量的方式。word2vec中有两个非常经典的模型：skip-gram和cbow。</p>
 <ul class="simple">
@@ -646,9 +645,9 @@ Sampling的模型</a></div>
     <span class="k">return</span> <span class="n">item_content_emb_dict</span><span class="p">,</span> <span class="n">item_w2v_emb_dict</span><span class="p">,</span> <span class="n">item_youtube_emb_dict</span><span class="p">,</span> <span class="n">user_youtube_emb_dict</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="id9">
+</div>
+</div>
+<div class="section" id="id9">
 <h3><span class="section-number">6.5.4.6. </span>读取文章信息<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_article_info_df</span><span class="p">():</span>
     <span class="n">article_info_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;articles.csv&#39;</span><span class="p">)</span>
@@ -657,8 +656,8 @@ Sampling的模型</a></div>
     <span class="k">return</span> <span class="n">article_info_df</span>
 </pre></div>
 </div>
-</section>
-<section id="id10">
+</div>
+<div class="section" id="id10">
 <h3><span class="section-number">6.5.4.7. </span>读取数据<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 这里offline的online的区别就是验证集是否为空</span>
 <span class="n">click_trn</span><span class="p">,</span> <span class="n">click_val</span><span class="p">,</span> <span class="n">click_tst</span><span class="p">,</span> <span class="n">val_ans</span> <span class="o">=</span> <span class="n">get_trn_val_tst_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">offline</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -674,9 +673,9 @@ Sampling的模型</a></div>
 <span class="n">click_tst_hist</span> <span class="o">=</span> <span class="n">click_tst</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="id11">
+</div>
+</div>
+<div class="section" id="id11">
 <h2><span class="section-number">6.5.5. </span>对训练数据做负采样<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h2>
 <p>通过召回我们将数据转换成三元组的形式（user1, item1,
 label）的形式，观察发现正负样本差距极度不平衡，我们可以先对负样本进行下采样，下采样的目的一方面缓解了正负样本比例的问题，另一方面也减小了我们做排序特征的压力，我们在做负采样的时候又有哪些东西是需要注意的呢？</p>
@@ -786,8 +785,8 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_user_item_label_df</span><span class="o">.</span><span class="n">label</span>
 </pre></div>
 </div>
-</section>
-<section id="id12">
+</div>
+<div class="section" id="id12">
 <h2><span class="section-number">6.5.6. </span>将召回数据转换成字典<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 将最终的召回的df数据转换成字典的形式做排序特征</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">make_tuple_func</span><span class="p">(</span><span class="n">group_df</span><span class="p">):</span>
@@ -808,8 +807,8 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <span class="n">tst_user_item_label_tuples_dict</span> <span class="o">=</span> <span class="n">tst_user_item_label_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">make_tuple_func</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 </pre></div>
 </div>
-</section>
-<section id="id13">
+</div>
+<div class="section" id="id13">
 <h2><span class="section-number">6.5.7. </span>用户历史行为相关特征<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h2>
 <p>对于每个用户召回的每个商品， 做特征。 具体步骤如下： * 对于每个用户，
 获取最后点击的N个商品的item_id， * 对于该用户的每个召回商品，
@@ -911,10 +910,10 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <span class="n">tst_user_item_feats_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_user_item_feats_df.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id14">
+</div>
+<div class="section" id="id14">
 <h2><span class="section-number">6.5.8. </span>用户和文章特征<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h2>
-<section id="id15">
+<div class="section" id="id15">
 <h3><span class="section-number">6.5.8.1. </span>用户相关特征<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h3>
 <p>这一块，正式进行特征工程，既要拼接上已有的特征，
 也会做更多的特征出来，我们来梳理一下已有的特征和可构造特征： 1.
@@ -950,7 +949,7 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">all_data</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
-<section id="id16">
+<div class="section" id="id16">
 <h4><span class="section-number">6.5.8.1.1. </span>分析一下点击时间和点击文章的次数，区分用户活跃度<a class="headerlink" href="#id16" title="Permalink to this heading">¶</a></h4>
 <p>如果某个用户点击文章之间的时间间隔比较小， 同时点击的文章次数很多的话，
 那么我们认为这种用户一般就是活跃用户,
@@ -1005,8 +1004,8 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_act_fea</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-</section>
-<section id="id17">
+</div>
+<div class="section" id="id17">
 <h4><span class="section-number">6.5.8.1.2. </span>分析一下点击时间和被点击文章的次数， 衡量文章热度特征<a class="headerlink" href="#id17" title="Permalink to this heading">¶</a></h4>
 <p>和上面同样的思路， 如果一篇文章在很短的时间间隔之内被点击了很多次，
 说明文章比较热门，实现的逻辑和上面的基本一致，
@@ -1056,8 +1055,8 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">article_hot_fea</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-</section>
-<section id="id18">
+</div>
+<div class="section" id="id18">
 <h4><span class="section-number">6.5.8.1.3. </span>用户的系列习惯<a class="headerlink" href="#id18" title="Permalink to this heading">¶</a></h4>
 <p>这个基于原来的日志表做一个类似于article的那种DataFrame，
 存放用户特有的信息, 主要包括点击习惯， 爱好特征之类的 *
@@ -1068,8 +1067,8 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 这个最好是multi-hot进行编码， 先试试行不 * 用户文章的字数差特征，
 用户的爱好文章的字数习惯</p>
 <p>这些就是对用户进行分组， 然后统计即可</p>
-</section>
-<section id="id19">
+</div>
+<div class="section" id="id19">
 <h4><span class="section-number">6.5.8.1.4. </span>用户的设备习惯<a class="headerlink" href="#id19" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">device_fea</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1093,8 +1092,8 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_device_info</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-</section>
-<section id="id20">
+</div>
+<div class="section" id="id20">
 <h4><span class="section-number">6.5.8.1.5. </span>用户的时间习惯<a class="headerlink" href="#id20" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">user_time_hob_fea</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1119,8 +1118,8 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <span class="n">user_time_hob_info</span> <span class="o">=</span> <span class="n">user_time_hob_fea</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">user_time_hob_cols</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id21">
+</div>
+<div class="section" id="id21">
 <h4><span class="section-number">6.5.8.1.6. </span>用户的主题爱好<a class="headerlink" href="#id21" title="Permalink to this heading">¶</a></h4>
 <p>这里先把用户点击的文章属于的主题转成一个列表，
 后面再总的汇总的时候单独制作一个特征， 就是文章的主题如果属于这里面，
@@ -1145,15 +1144,15 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <span class="n">user_cat_hob_info</span> <span class="o">=</span> <span class="n">user_cat_hob_fea</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">user_category_hob_cols</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id22">
+</div>
+<div class="section" id="id22">
 <h4><span class="section-number">6.5.8.1.7. </span>用户的字数偏好特征<a class="headerlink" href="#id22" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_wcou_info</span> <span class="o">=</span> <span class="n">all_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 <span class="n">user_wcou_info</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;words_count&#39;</span><span class="p">:</span> <span class="s1">&#39;words_hbo&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id23">
+</div>
+<div class="section" id="id23">
 <h4><span class="section-number">6.5.8.1.8. </span>用户的信息特征合并保存<a class="headerlink" href="#id23" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 所有表进行合并</span>
 <span class="n">user_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_act_fea</span><span class="p">,</span> <span class="n">user_device_info</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
@@ -1166,9 +1165,9 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <span class="n">user_info</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;user_info.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="id24">
+</div>
+</div>
+<div class="section" id="id24">
 <h3><span class="section-number">6.5.8.2. </span>用户特征直接读入<a class="headerlink" href="#id24" title="Permalink to this heading">¶</a></h3>
 <p>如果前面关于用户的特征工程已经给做完了，后面可以直接读取</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 把用户信息直接读入进来</span>
@@ -1202,8 +1201,8 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
 </div>
-</section>
-<section id="id25">
+</div>
+<div class="section" id="id25">
 <h3><span class="section-number">6.5.8.3. </span>文章的特征直接读入<a class="headerlink" href="#id25" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">articles</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;articles.csv&#39;</span><span class="p">)</span>
 <span class="n">articles</span> <span class="o">=</span> <span class="n">reduce_mem</span><span class="p">(</span><span class="n">articles</span><span class="p">)</span>
@@ -1220,8 +1219,8 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <span class="n">tst_user_item_feats_df</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">articles</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;article_id&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id26">
+</div>
+<div class="section" id="id26">
 <h3><span class="section-number">6.5.8.4. </span>召回文章的主题是否在用户的爱好里面<a class="headerlink" href="#id26" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;is_cat_hab&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">category_id</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">cate_list</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">val_user_item_feats_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1253,9 +1252,9 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <span class="k">del</span> <span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;article_id&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="id27">
+</div>
+</div>
+<div class="section" id="id27">
 <h2><span class="section-number">6.5.9. </span>保存特征<a class="headerlink" href="#id27" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 训练验证特征</span>
 <span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;trn_user_item_feats_df.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1264,15 +1263,15 @@ label）的形式，观察发现正负样本差距极度不平衡，我们可以
 <span class="n">tst_user_item_feats_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_user_item_feats_df.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id28">
+</div>
+<div class="section" id="id28">
 <h2><span class="section-number">6.5.10. </span>总结<a class="headerlink" href="#id28" title="Permalink to this heading">¶</a></h2>
 <p>特征工程和数据清洗转换是比赛中至关重要的一块，
 因为<strong>数据和特征决定了机器学习的上限，而算法和模型只是逼近这个上限而已</strong>，所以特征工程的好坏往往决定着最后的结果，<strong>特征工程</strong>可以一步增强数据的表达能力，通过构造新特征，我们可以挖掘出数据的更多信息，使得数据的表达能力进一步放大。
 在本节内容中，我们主要是先通过制作特征和标签把预测问题转成了监督学习问题，然后围绕着用户画像和文章画像进行一系列特征的制作，
 此外，为了保证正负样本的数据均衡，我们还学习了负采样就技术等。当然本节内容只是对构造特征提供了一些思路，也请学习者们在学习过程中开启头脑风暴，尝试更多的构造特征的方法，也欢迎我们一块探讨和交流。</p>
-</section>
-</section>
+</div>
+</div>
 
 
         </div>

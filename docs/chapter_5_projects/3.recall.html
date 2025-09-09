@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -349,15 +348,13 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="id1">
+  <div class="section" id="id1">
 <h1><span class="section-number">6.4. </span>多路召回<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>所谓的“多路召回”策略，就是指采用不同的策略、特征或简单模型，分别召回一部分候选集，然后把候选集混合在一起供后续排序模型使用，可以明显的看出，“多路召回策略”是在“计算速度”和“召回率”之间进行权衡的结果。其中，各种简单策略保证候选集的快速召回，从不同角度设计的策略保证召回率接近理想的状态，不至于损伤排序效果。如下图是多路召回的一个示意图，在多路召回中，每个策略之间毫不相关，所以一般可以写并发多线程同时进行，这样可以更加高效。</p>
-<figure class="align-default" id="id16">
+<div class="figure align-default" id="id16">
 <img alt="../_images/3_multi_channel_recall.png" src="../_images/3_multi_channel_recall.png" />
-<figcaption>
-<p><span class="caption-number">图6.4.1 </span><span class="caption-text">多路召回</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图6.4.1 </span><span class="caption-text">多路召回</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+</div>
 <p>上图只是一个多路召回的例子，也就是说可以使用多种不同的策略来获取用户排序的候选商品集合，而具体使用哪些召回策略其实是与业务强相关的
 ，针对不同的任务就会有对于该业务真实场景下需要考虑的召回规则。例如新闻推荐，召回规则可以是“热门视频”、“导演召回”、“演员召回”、“最近上映“、”流行趋势“、”类型召回“等等。</p>
 <p><strong>导包</strong></p>
@@ -395,7 +392,7 @@ Show Source
 <span class="n">metric_recall</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
 </div>
-<section id="id2">
+<div class="section" id="id2">
 <h2><span class="section-number">6.4.1. </span>读取数据<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>在一般的推荐系统比赛中读取数据部分主要分为三种模式，
 不同的模式对应的不同的数据集： 1. Debug模式：
@@ -492,10 +489,10 @@ Show Source
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">item_emb_dict</span> <span class="o">=</span> <span class="n">get_item_emb_dict</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id3">
+</div>
+<div class="section" id="id3">
 <h2><span class="section-number">6.4.2. </span>工具函数<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
-<section id="id4">
+<div class="section" id="id4">
 <h3><span class="section-number">6.4.2.1. </span>获取用户-文章-时间函数<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
 <p>这个在基于关联规则的用户协同过滤的时候会用到</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 根据点击时间获取用户的点击文章序列   {user1: {item1: time1, item2: time2..}...}</span>
@@ -513,8 +510,8 @@ Show Source
     <span class="k">return</span> <span class="n">user_item_time_dict</span>
 </pre></div>
 </div>
-</section>
-<section id="id5">
+</div>
+<div class="section" id="id5">
 <h3><span class="section-number">6.4.2.2. </span>获取文章-用户-时间函数<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <p>这个在基于关联规则的文章协同过滤的时候会用到</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 根据时间获取商品被点击的用户序列  {item1: {user1: time1, user2: time2...}...}</span>
@@ -531,8 +528,8 @@ Show Source
     <span class="k">return</span> <span class="n">item_user_time_dict</span>
 </pre></div>
 </div>
-</section>
-<section id="id6">
+</div>
+<div class="section" id="id6">
 <h3><span class="section-number">6.4.2.3. </span>获取历史和最后一次点击<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
 <p>这个在评估召回结果， 特征工程和制作标签转成监督学习测试集的时候回用到</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 获取当前数据的历史点击和最后一次点击</span>
@@ -553,8 +550,8 @@ Show Source
     <span class="k">return</span> <span class="n">click_hist_df</span><span class="p">,</span> <span class="n">click_last_df</span>
 </pre></div>
 </div>
-</section>
-<section id="id7">
+</div>
+<div class="section" id="id7">
 <h3><span class="section-number">6.4.2.4. </span>获取文章属性特征<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 获取文章id对应的基本属性，保存成字典的形式，方便后面召回阶段，冷启动阶段直接使用</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_item_info_dict</span><span class="p">(</span><span class="n">item_info_df</span><span class="p">):</span>
@@ -568,8 +565,8 @@ Show Source
     <span class="k">return</span> <span class="n">item_type_dict</span><span class="p">,</span> <span class="n">item_words_dict</span><span class="p">,</span> <span class="n">item_created_time_dict</span>
 </pre></div>
 </div>
-</section>
-<section id="id8">
+</div>
+<div class="section" id="id8">
 <h3><span class="section-number">6.4.2.5. </span>获取用户历史点击的文章信息<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_user_hist_item_info_dict</span><span class="p">(</span><span class="n">all_click</span><span class="p">):</span>
 
@@ -598,8 +595,8 @@ Show Source
     <span class="k">return</span> <span class="n">user_hist_item_typs_dict</span><span class="p">,</span> <span class="n">user_hist_item_ids_dict</span><span class="p">,</span> <span class="n">user_hist_item_words_dict</span><span class="p">,</span> <span class="n">user_last_item_created_time_dict</span>
 </pre></div>
 </div>
-</section>
-<section id="top-k">
+</div>
+<div class="section" id="top-k">
 <h3><span class="section-number">6.4.2.6. </span>获取点击次数最多的Top-k个文章<a class="headerlink" href="#top-k" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 获取近期点击最多的文章</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_item_topk_click</span><span class="p">(</span><span class="n">click_df</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
@@ -607,8 +604,8 @@ Show Source
     <span class="k">return</span> <span class="n">topk_click</span>
 </pre></div>
 </div>
-</section>
-<section id="id9">
+</div>
+<div class="section" id="id9">
 <h3><span class="section-number">6.4.2.7. </span>定义多路召回字典<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 获取文章的属性信息，保存成字典的形式方便查询</span>
 <span class="n">item_type_dict</span><span class="p">,</span> <span class="n">item_words_dict</span><span class="p">,</span> <span class="n">item_created_time_dict</span> <span class="o">=</span> <span class="n">get_item_info_dict</span><span class="p">(</span><span class="n">item_info_df</span><span class="p">)</span>
@@ -627,8 +624,8 @@ Show Source
 <span class="n">trn_hist_click_df</span><span class="p">,</span> <span class="n">trn_last_click_df</span> <span class="o">=</span> <span class="n">get_hist_and_last_click</span><span class="p">(</span><span class="n">all_click_df</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id10">
+</div>
+<div class="section" id="id10">
 <h3><span class="section-number">6.4.2.8. </span>召回效果评估<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h3>
 <p>做完了召回有时候也需要对当前的召回方法或者参数进行调整以达到更好的召回效果，因为召回的结果决定了最终排序的上限，下面也会提供一个召回评估的方法</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 依次评估召回的前10, 20, 30, 40, 50个文章中的击中率</span>
@@ -648,12 +645,12 @@ Show Source
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; topk: &#39;</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="s1">&#39; : &#39;</span><span class="p">,</span> <span class="s1">&#39;hit_num: &#39;</span><span class="p">,</span> <span class="n">hit_num</span><span class="p">,</span> <span class="s1">&#39;hit_rate: &#39;</span><span class="p">,</span> <span class="n">hit_rate</span><span class="p">,</span> <span class="s1">&#39;user_num : &#39;</span><span class="p">,</span> <span class="n">user_num</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="id11">
+</div>
+</div>
+<div class="section" id="id11">
 <h2><span class="section-number">6.4.3. </span>计算相似性矩阵<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h2>
 <p>这一部分主要是通过协同过滤以及向量检索得到相似性矩阵，相似性矩阵主要分为user2user和item2item，下面依次获取基于itemCF的item2item的相似性矩阵。</p>
-<section id="itemcf-i2i-sim">
+<div class="section" id="itemcf-i2i-sim">
 <h3><span class="section-number">6.4.3.1. </span>itemCF i2i_sim<a class="headerlink" href="#itemcf-i2i-sim" title="Permalink to this heading">¶</a></h3>
 <p>借鉴KDD2020的去偏商品推荐，在计算item2item相似性矩阵时，使用关联规则，使得计算的文章的相似性还考虑到了:
 1. 用户点击的时间权重 2. 用户点击的顺序权重 3. 文章创建的时间权重</p>
@@ -707,8 +704,8 @@ Show Source
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">i2i_sim</span> <span class="o">=</span> <span class="n">itemcf_sim</span><span class="p">(</span><span class="n">all_click_df</span><span class="p">,</span> <span class="n">item_created_time_dict</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="usercf-u2u-sim">
+</div>
+<div class="section" id="usercf-u2u-sim">
 <h3><span class="section-number">6.4.3.2. </span>userCF u2u_sim<a class="headerlink" href="#usercf-u2u-sim" title="Permalink to this heading">¶</a></h3>
 <p>在计算用户之间的相似度的时候，也可以使用一些简单的关联规则，比如用户活跃度权重，这里将用户的点击次数作为用户活跃度的指标</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_user_activate_degree_dict</span><span class="p">(</span><span class="n">all_click_df</span><span class="p">):</span>
@@ -764,8 +761,8 @@ Show Source
 <span class="n">u2u_sim</span> <span class="o">=</span> <span class="n">usercf_sim</span><span class="p">(</span><span class="n">all_click_df</span><span class="p">,</span> <span class="n">user_activate_degree_dict</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="item-embedding-sim">
+</div>
+<div class="section" id="item-embedding-sim">
 <h3><span class="section-number">6.4.3.3. </span>item embedding sim<a class="headerlink" href="#item-embedding-sim" title="Permalink to this heading">¶</a></h3>
 <p>使用Embedding计算item之间的相似度是为了后续冷启动的时候可以获取未出现在点击数据中的文章，后面有对冷启动专门的介绍，这里简单的说一下faiss。</p>
 <p>aiss是Facebook的AI团队开源的一套用于做聚类或者相似性搜索的软件库，底层是用C++实现。Faiss因为超级优越的性能，被广泛应用于推荐相关的业务当中.</p>
@@ -836,9 +833,9 @@ quantization算法</a></div>
 <span class="n">emb_i2i_sim</span> <span class="o">=</span> <span class="n">embdding_sim</span><span class="p">(</span><span class="n">all_click_df</span><span class="p">,</span> <span class="n">item_emb_df</span><span class="p">,</span> <span class="n">save_path</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># topk可以自行设置</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="id12">
+</div>
+</div>
+<div class="section" id="id12">
 <h2><span class="section-number">6.4.4. </span>召回<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h2>
 <p>这个就是我们开篇提到的那个问题， 面的36万篇文章， 20多万用户的推荐，
 我们又有哪些策略来缩减问题的规模？
@@ -853,17 +850,15 @@ quantization算法</a></div>
 还有一种思路是类似矩阵分解的思路，先计算出用户和文章的embedding之后，就可以直接算用户和文章的相似度，
 根据这个相似度进行推荐， 比如YouTube DNN。
 我们下面详细来看一下每一个召回方法：</p>
-<section id="youtubednn">
+<div class="section" id="youtubednn">
 <h3><span class="section-number">6.4.4.1. </span>YoutubeDNN召回<a class="headerlink" href="#youtubednn" title="Permalink to this heading">¶</a></h3>
 <p><strong>(这一步是直接获取用户召回的候选文章列表)</strong></p>
 <p><a class="reference external" href="https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/45530.pdf">论文下载地址</a></p>
 <p><strong>Youtubednn召回架构</strong></p>
-<figure class="align-default" id="id17">
+<div class="figure align-default" id="id17">
 <img alt="../_images/youtubednn_candidate.png" src="../_images/youtubednn_candidate.png" />
-<figcaption>
-<p><span class="caption-number">图6.4.2 </span><span class="caption-text">YoutubeDNN召回架构</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图6.4.2 </span><span class="caption-text">YoutubeDNN召回架构</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+</div>
 <p>关于YoutubeDNN原理和应用推荐看王喆的两篇博客：</p>
 <ol class="arabic simple">
 <li><p><a class="reference external" href="https://zhuanlan.zhihu.com/p/52169807">重读Youtube深度学习推荐系统论文，字字珠玑，惊为神文</a></p></li>
@@ -1076,8 +1071,8 @@ word2vec放到排序中的w2v的介绍部分</p>
     <span class="n">metrics_recall</span><span class="p">(</span><span class="n">user_multi_recall_dict</span><span class="p">[</span><span class="s1">&#39;youtubednn_recall&#39;</span><span class="p">],</span> <span class="n">trn_last_click_df</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="itemcf-recall">
+</div>
+<div class="section" id="itemcf-recall">
 <h3><span class="section-number">6.4.4.2. </span>itemCF recall<a class="headerlink" href="#itemcf-recall" title="Permalink to this heading">¶</a></h3>
 <p>上面已经通过协同过滤，Embedding检索的方式得到了文章的相似度矩阵，下面使用协同过滤的思想，给用户召回与其历史文章相似的文章。
 这里在召回的时候，也是用了关联规则的方式：</p>
@@ -1138,7 +1133,7 @@ word2vec放到排序中的w2v的介绍部分</p>
     <span class="k">return</span> <span class="n">item_rank</span>
 </pre></div>
 </div>
-<section id="itemcf-sim">
+<div class="section" id="itemcf-sim">
 <h4><span class="section-number">6.4.4.2.1. </span>itemCF sim召回<a class="headerlink" href="#itemcf-sim" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 先进行itemcf召回, 为了召回评估，所以提取最后一次点击</span>
 
@@ -1170,8 +1165,8 @@ word2vec放到排序中的w2v的介绍部分</p>
     <span class="n">metrics_recall</span><span class="p">(</span><span class="n">user_multi_recall_dict</span><span class="p">[</span><span class="s1">&#39;itemcf_sim_itemcf_recall&#39;</span><span class="p">],</span> <span class="n">trn_last_click_df</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="n">recall_item_num</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="embedding-sim">
+</div>
+<div class="section" id="embedding-sim">
 <h4><span class="section-number">6.4.4.2.2. </span>embedding sim 召回<a class="headerlink" href="#embedding-sim" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 这里是为了召回评估，所以提取最后一次点击</span>
 <span class="k">if</span> <span class="n">metric_recall</span><span class="p">:</span>
@@ -1200,9 +1195,9 @@ word2vec放到排序中的w2v的介绍部分</p>
     <span class="n">metrics_recall</span><span class="p">(</span><span class="n">user_multi_recall_dict</span><span class="p">[</span><span class="s1">&#39;embedding_sim_item_recall&#39;</span><span class="p">],</span> <span class="n">trn_last_click_df</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="n">recall_item_num</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="usercf">
+</div>
+</div>
+<div class="section" id="usercf">
 <h3><span class="section-number">6.4.4.3. </span>userCF召回<a class="headerlink" href="#usercf" title="Permalink to this heading">¶</a></h3>
 <p>基于用户协同过滤，核心思想是给用户推荐与其相似的用户历史点击文章，因为这里涉及到了相似用户的历史文章，这里仍然可以加上一些关联规则来给用户可能点击的文章进行加权，这里使用的关联规则主要是考虑相似用户的历史点击文章与被推荐用户历史点击商品的关系权重，而这里的关系就可以直接借鉴基于物品的协同过滤相似的做法，只不过这里是对被推荐物品关系的一个累加的过程，下面是使用的一些关系权重，及相关的代码：</p>
 <ol class="arabic simple">
@@ -1268,7 +1263,7 @@ word2vec放到排序中的w2v的介绍部分</p>
     <span class="k">return</span> <span class="n">items_rank</span>
 </pre></div>
 </div>
-<section id="usercf-sim">
+<div class="section" id="usercf-sim">
 <h4><span class="section-number">6.4.4.3.1. </span>userCF sim召回<a class="headerlink" href="#usercf-sim" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 这里是为了召回评估，所以提取最后一次点击</span>
 <span class="c1"># 由于usercf中计算user之间的相似度的过程太费内存了，全量数据这里就没有跑，跑了一个采样之后的数据</span>
@@ -1297,8 +1292,8 @@ word2vec放到排序中的w2v的介绍部分</p>
     <span class="n">metrics_recall</span><span class="p">(</span><span class="n">user_recall_items_dict</span><span class="p">,</span> <span class="n">trn_last_click_df</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="n">recall_item_num</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="user-embedding-sim">
+</div>
+<div class="section" id="user-embedding-sim">
 <h4><span class="section-number">6.4.4.3.2. </span>user embedding sim召回<a class="headerlink" href="#user-embedding-sim" title="Permalink to this heading">¶</a></h4>
 <p>虽然没有直接跑usercf的计算用户之间的相似度，为了验证上述基于用户的协同过滤的代码，下面使用了YoutubeDNN过程中产生的user
 embedding来进行向量检索每个user最相似的topk个user，在使用这里得到的u2u的相似性矩阵，使用usercf进行召回，具体代码如下</p>
@@ -1370,10 +1365,10 @@ embedding来进行向量检索每个user最相似的topk个user，在使用这�
     <span class="n">metrics_recall</span><span class="p">(</span><span class="n">user_multi_recall_dict</span><span class="p">[</span><span class="s1">&#39;youtubednn_usercf_recall&#39;</span><span class="p">],</span> <span class="n">trn_last_click_df</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="n">recall_item_num</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
-<section id="id13">
+</div>
+</div>
+</div>
+<div class="section" id="id13">
 <h2><span class="section-number">6.4.5. </span>冷启动问题<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h2>
 <p><strong>冷启动问题可以分成三类：文章冷启动，用户冷启动，系统冷启动。</strong></p>
 <ul class="simple">
@@ -1486,8 +1481,8 @@ embedding来进行向量检索每个user最相似的topk个user，在使用这�
 <span class="n">user_multi_recall_dict</span><span class="p">[</span><span class="s1">&#39;cold_start_recall&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cold_start_user_items_dict</span>
 </pre></div>
 </div>
-</section>
-<section id="id14">
+</div>
+<div class="section" id="id14">
 <h2><span class="section-number">6.4.6. </span>多路召回合并<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h2>
 <p>多路召回合并就是将前面所有的召回策略得到的用户文章列表合并起来，下面是对前面所有召回结果的汇总
 1. 基于itemcf计算的item之间的相似度sim进行的召回 2.
@@ -1562,8 +1557,8 @@ YoutubeDNN得到的user之间的相似度进行的召回 5. 基于冷启动策�
 <span class="n">final_recall_items_dict_rank</span> <span class="o">=</span> <span class="n">combine_recall_results</span><span class="p">(</span><span class="n">user_multi_recall_dict</span><span class="p">,</span> <span class="n">weight_dict</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id15">
+</div>
+<div class="section" id="id15">
 <h2><span class="section-number">6.4.7. </span>总结<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h2>
 <p>上述实现了如下召回策略：</p>
 <ol class="arabic simple">
@@ -1573,8 +1568,8 @@ YoutubeDNN得到的user之间的相似度进行的召回 5. 基于冷启动策�
 <li><p>冷启动召回</p></li>
 </ol>
 <p>对于上述实现的召回策略其实都不是最优的结果，我们只是做了个简单的尝试，其中还有很多地方可以优化，包括已经实现的这些召回策略的参数或者新加一些，修改一些关联规则都可以。当然还可以尝试更多的召回策略，比如对新闻进行热度召回等等。</p>
-</section>
-</section>
+</div>
+</div>
 
 
         </div>

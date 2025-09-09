@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -350,7 +349,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="id1">
+  <div class="section" id="id1">
 <h1><span class="section-number">6.1. </span>赛题理解<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>赛题理解是切入一道赛题的基础，会影响后续特征工程和模型构建等各种工作，也影响着后续发展工作的方向，正确了解赛题背后的思想以及赛题业务逻辑的清晰，有利于花费更少时间构建更为有效的特征模型，
 在各种比赛中， 赛题理解都是极其重要且必须走好的第一步，
@@ -363,13 +362,13 @@ Show Source
 即用户的最后一次点击的新闻文章</strong>，
 这道赛题的设计初衷是引导大家了解推荐系统中的一些业务背景，
 解决实际问题。</p>
-<section id="id2">
+<div class="section" id="id2">
 <h2><span class="section-number">6.1.1. </span>数据概况<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>该数据来自某新闻APP平台的用户交互数据，包括30万用户，近300万次点击，共36万多篇不同的新闻文章，同时每篇新闻文章有对应的embedding向量表示。为了保证比赛的公平性，从中抽取20万用户的点击日志数据作为训练集，5万用户的点击日志数据作为测试集A，5万用户的点击日志数据作为测试集B。具体数据表和参数，
 大家可以参考赛题说明。下面说一下拿到这样的数据如何进行理解，
 来有效的开展下一步的工作。</p>
-</section>
-<section id="id3">
+</div>
+<div class="section" id="id3">
 <h2><span class="section-number">6.1.2. </span>评价方式理解<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
 <p>理解评价方式， 我们需要结合着最后的提交文件来看，
 根据sample.submit.csv， 我们最后提交的格式是针对每个用户，
@@ -387,8 +386,8 @@ article5$。</p>
 则<span class="math notranslate nohighlight">\(s(\text{user},2)=1/2,s(\text{user},1,3,4,5)\)</span>都是0。也就是<span class="math notranslate nohighlight">\(score(\text{user})\)</span>命中第几条的倒数。如果都没中，
 则<span class="math notranslate nohighlight">\(score(\text{user1})=0\)</span>。 这个是合理的，
 因为我们希望的就是命中的结果尽量靠前， 而此时分数正好比较高。</p>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h2><span class="section-number">6.1.3. </span>问题分析<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
 <p>根据赛题简介，我们首先要明确我们此次比赛的目标：
 根据用户历史浏览点击新闻的数据信息预测用户最后一次点击的新闻文章。从这个目标上看，
@@ -423,8 +422,8 @@ article5$。</p>
 我们又能利用哪些特征？ 我们又可以尝试哪些模型？ 面对36万篇文章，
 20多万用户的推荐，
 我们又有哪些策略来缩减问题的规模？如何进行最后的预测？</p>
-</section>
-</section>
+</div>
+</div>
 
 
         </div>

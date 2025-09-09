@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -351,19 +350,17 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="dependency-modeling">
+  <div class="section" id="dependency-modeling">
 <span id="id1"></span><h1><span class="section-number">3.5.3. </span>任务依赖建模<a class="headerlink" href="#dependency-modeling" title="Permalink to this heading">¶</a></h1>
 <p>前面介绍的多目标方法主要解决任务间的相关性冲突，但现实场景中任务间往往存在明确的依赖关系。用户行为具有天然的时序性：曝光→点击→转化，这种严格的依赖关系带来了新的挑战。</p>
 <p>传统方法在处理这种依赖时面临两个核心问题：样本选择偏差（CVR模型在点击样本上训练，却要在全量样本上预测）和数据稀疏性（转化事件极其稀少）。</p>
 <p>本节介绍两个全空间建模方法：ESSM解决经典的CTR-CVR联合建模问题，ESM2将思想扩展到更复杂的多阶段行为链路。</p>
-<section id="essm">
+<div class="section" id="essm">
 <h2><span class="section-number">3.5.3.1. </span>ESSM<a class="headerlink" href="#essm" title="Permalink to this heading">¶</a></h2>
-<figure class="align-default" id="id2">
+<div class="figure align-default" id="id2">
 <img alt="../../_images/essm_sample_bias.png" src="../../_images/essm_sample_bias.png" />
-<figcaption>
-<p><span class="caption-number">图3.5.5 </span><span class="caption-text">点击率和转化率预估的样本空间</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.5 </span><span class="caption-text">点击率和转化率预估的样本空间</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
 <p>在推荐系统的用户行为链中，存在严格的时序依赖关系。以电商场景为例：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-3-dependency-modeling-0">
 <span class="eqno">(3.5.6)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-3-dependency-modeling-0" title="Permalink to this equation">¶</a></span>\[\text{曝光(Impression)} \rightarrow \text{点击(Click)} \rightarrow \text{转化(Conversion)}\]</div>
@@ -376,12 +373,10 @@ CVR，典型场景：CTR≈2%, CVR≈0.5% →
 转化样本仅为曝光的万分之一，稀疏样本难以支撑复杂模型学习</p></li>
 </ol>
 <p>ESSM (Entire Space Multi-task Model) 通过概率图约束重建任务关系：</p>
-<figure class="align-default" id="id3">
+<div class="figure align-default" id="id3">
 <img alt="../../_images/essm.png" src="../../_images/essm.png" />
-<figcaption>
-<p><span class="caption-number">图3.5.6 </span><span class="caption-text">ESSM模型结构</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.6 </span><span class="caption-text">ESSM模型结构</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
 <ul class="simple">
 <li><p>输入层：全量曝光样本特征 <span class="math notranslate nohighlight">\(\mathbf{x}\)</span></p></li>
 <li><p>共享表征层：基础特征提取模块（原论文中采用的是Shared-Bottom的简单共享结构，也可将其直接替换成MMoE、PLE等复杂的底层共享模型）</p></li>
@@ -475,29 +470,25 @@ Tower的参数更新是在曝光空间下进行的</strong>：</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-------------+-----------------+----------------+--------------+------------------------+-----------------------+</span>
 <span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">valid_users_is_click</span> <span class="o">|</span>   <span class="n">valid_users_is_like</span> <span class="o">|</span>
 <span class="o">+================+===============+=============+=================+================+==============+========================+=======================+</span>
-<span class="o">|</span>         <span class="mf">0.6043</span> <span class="o">|</span>        <span class="mf">0.6709</span> <span class="o">|</span>      <span class="mf">0.6376</span> <span class="o">|</span>          <span class="mf">0.5724</span> <span class="o">|</span>         <span class="mf">0.5775</span> <span class="o">|</span>        <span class="mf">0.575</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.5993</span> <span class="o">|</span>        <span class="mf">0.6717</span> <span class="o">|</span>      <span class="mf">0.6355</span> <span class="o">|</span>          <span class="mf">0.5723</span> <span class="o">|</span>         <span class="mf">0.5844</span> <span class="o">|</span>       <span class="mf">0.5783</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>
 <span class="o">+----------------+---------------+-------------+-----------------+----------------+--------------+------------------------+-----------------------+</span>
 </pre></div>
 </div>
-</section>
-<section id="esm2">
+</div>
+<div class="section" id="esm2">
 <h2><span class="section-number">3.5.3.2. </span>ESM2<a class="headerlink" href="#esm2" title="Permalink to this heading">¶</a></h2>
 <p>ESSM成功解决了曝光→点击→转化这一两阶段行为链路的样本偏差问题，但在真实工业场景中，用户行为链路往往更长更复杂。</p>
-<figure class="align-default" id="id4">
+<div class="figure align-default" id="id4">
 <img alt="../../_images/esm2_seq.png" src="../../_images/esm2_seq.png" />
-<figcaption>
-<p><span class="caption-number">图3.5.7 </span><span class="caption-text">用户下单链路图</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.7 </span><span class="caption-text">用户下单链路图</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
 <p>如图所示，用户从曝光到转化可能会有非常多条的路径，例如
 <code class="docutils literal notranslate"><span class="pre">曝光-&gt;点击-&gt;加入购物车-&gt;购买</span></code>、<code class="docutils literal notranslate"><span class="pre">曝光-&gt;点击-&gt;加入许愿池-&gt;加入购物车-&gt;购买</span></code>等。为了方便后续建模，对点击后的行为分解做了进一步的简化，将加入购物车、加入心愿单归并为决定行为（Deterministic
 Action，DAction），将其余行为归并为其他行为（Other Action，OAction）</p>
-<figure class="align-default" id="id5">
+<div class="figure align-default" id="id5">
 <img alt="../../_images/esm2_seq_2.png" src="../../_images/esm2_seq_2.png" />
-<figcaption>
-<p><span class="caption-number">图3.5.8 </span><span class="caption-text">简化后的用户下单链路图</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.8 </span><span class="caption-text">简化后的用户下单链路图</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
 <p>为了更好理解后续建模时的数学表达，先对简化后图中的过程，做进一步的数学表示。</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(y_1=p(\text{点击}|\text{曝光})\)</span></p></li>
@@ -506,12 +497,10 @@ Action，DAction），将其余行为归并为其他行为（Other Action，OAct
 <li><p><span class="math notranslate nohighlight">\(y_4=p(\text{购买}|\text{其他行为})\)</span></p></li>
 </ul>
 <p>根据上述定义，更便于理解ESM2模型的结构图：</p>
-<figure class="align-default" id="id6">
+<div class="figure align-default" id="id6">
 <img alt="../../_images/esm2.png" src="../../_images/esm2.png" />
-<figcaption>
-<p><span class="caption-number">图3.5.9 </span><span class="caption-text">ESM2模型结构图</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.9 </span><span class="caption-text">ESM2模型结构图</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
 <p>ESM2模型有四个塔，分别用来预测上述的<span class="math notranslate nohighlight">\(y_1,y_2,y_3\)</span>和<span class="math notranslate nohighlight">\(y_4\)</span>，对于这四个塔的输出并不是算4个Loss，而是分别计算<code class="docutils literal notranslate"><span class="pre">曝光-&gt;点击</span></code>、<code class="docutils literal notranslate"><span class="pre">曝光-&gt;决定行为</span></code>和<code class="docutils literal notranslate"><span class="pre">曝光-&gt;购买</span></code>这三个Loss。可以很明显的看出，这三个Loss都是在曝光空间上计算的，和ESSM在曝光空间优化CVR有着异曲同工之处。下面对于上述的三个Loss做简单的介绍，下面的<span class="math notranslate nohighlight">\(BCE_{Loss}\)</span>表示的是二元交叉熵损失。</p>
 <p><span class="math notranslate nohighlight">\(L_{ctr}\)</span>点击率预估损失：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-3-dependency-modeling-5">
@@ -545,8 +534,8 @@ L_{ctcvr}
 <span class="eqno">(3.5.14)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-3-dependency-modeling-8" title="Permalink to this equation">¶</a></span>\[L_{final} = w_{ctr} \cdot L_{ctr} +  w_{ctavr} \cdot L_{ctavr} + w_{ctcvr} \cdot L_{ctcvr}\]</div>
 <p>其中<span class="math notranslate nohighlight">\(w_{ctr},w_{ctavr},w_{ctcvr}\)</span>分别为三个损失的权重。</p>
 <p>ESM2通过这种多阶段的概率乘积方式，将复杂的用户行为链路分解为多个可建模的子任务，同时确保每个任务都在曝光空间中进行联合优化。这种设计不仅有效解决了样本选择偏差问题，还通过共享底层特征表征，降低了数据稀疏性对模型性能的影响。更重要的是，ESM2提供了一种通用的建模思路，可以灵活扩展到更长的行为链路和更多样化的用户决策路径中。</p>
-</section>
-</section>
+</div>
+</div>
 
 
         </div>

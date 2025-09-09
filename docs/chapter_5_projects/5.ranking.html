@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -349,7 +348,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="id1">
+  <div class="section" id="id1">
 <h1><span class="section-number">6.6. </span>排序模型<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>通过召回的操作， 我们已经进行了问题规模的缩减， 对于每个用户，
 选择出了N篇文章作为了候选集，并基于召回的候选集构建了与用户历史相关的特征，以及用户本身的属性特征，文章本省的属性特征，以及用户与文章之间的特征，下面就是使用机器学习模型来对构造好的特征进行学习，然后对测试集进行预测，得到测试集中的每个候选集用户点击的概率，返回点击概率最大的topk个文章，作为最终的结果。</p>
@@ -381,7 +380,7 @@ Show Source
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">MinMaxScaler</span>
 </pre></div>
 </div>
-<section id="id2">
+<div class="section" id="id2">
 <h2><span class="section-number">6.6.1. </span>读取排序特征<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;../tmp/projects/news_recommendation&#39;</span><span class="p">)</span>
 <span class="n">data_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">/</span> <span class="s1">&#39;data_raw&#39;</span>
@@ -409,8 +408,8 @@ Show Source
 <span class="k">del</span> <span class="n">tst_user_item_feats_df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-</section>
-<section id="id3">
+</div>
+<div class="section" id="id3">
 <h2><span class="section-number">6.6.2. </span>返回排序后的结果<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">submit</span><span class="p">(</span><span class="n">recall_df</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">recall_df</span> <span class="o">=</span> <span class="n">recall_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">])</span>
@@ -446,8 +445,8 @@ Show Source
     <span class="k">return</span> <span class="n">sim_df</span>
 </pre></div>
 </div>
-</section>
-<section id="lgb">
+</div>
+<div class="section" id="lgb">
 <h2><span class="section-number">6.6.3. </span>LGB排序模型<a class="headerlink" href="#lgb" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 防止中间出错之后重新读取数据</span>
 <span class="n">trn_user_item_feats_df_rank_model</span> <span class="o">=</span> <span class="n">trn_user_item_feats_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -577,8 +576,8 @@ Show Source
 <span class="n">submit</span><span class="p">(</span><span class="n">rank_results</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;lgb_ranker&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h2><span class="section-number">6.6.4. </span>LGB分类模型<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 模型及参数的定义</span>
 <span class="n">lgb_Classfication</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">LGBMClassifier</span><span class="p">(</span><span class="n">boosting_type</span><span class="o">=</span><span class="s1">&#39;gbdt&#39;</span><span class="p">,</span> <span class="n">num_leaves</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span> <span class="n">reg_alpha</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">reg_lambda</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -675,10 +674,10 @@ Show Source
 <span class="n">submit</span><span class="p">(</span><span class="n">rank_results</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;lgb_cls&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="din">
+</div>
+<div class="section" id="din">
 <h2><span class="section-number">6.6.5. </span>DIN模型<a class="headerlink" href="#din" title="Permalink to this heading">¶</a></h2>
-<section id="id5">
+<div class="section" id="id5">
 <h3><span class="section-number">6.6.5.1. </span>用户的历史点击行为列表<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <p>这个是为后面的DIN模型服务的</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
@@ -715,20 +714,18 @@ Show Source
 <span class="n">tst_user_item_feats_df_din_model</span> <span class="o">=</span> <span class="n">tst_user_item_feats_df_din_model</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">his_behavior_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="id6">
+</div>
+<div class="section" id="id6">
 <h3><span class="section-number">6.6.5.2. </span>DIN模型简介<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
 <p>我们下面尝试使用DIN模型， DIN的全称是Deep Interest Network，
 这是阿里2018年基于前面的深度学习模型无法表达用户多样化的兴趣而提出的一个模型，
 它可以通过考虑【给定的候选广告】和【用户的历史行为】的相关性，来计算用户兴趣的表示向量。具体来说就是通过引入局部激活单元，通过软搜索历史行为的相关部分来关注相关的用户兴趣，并采用加权和来获得有关候选广告的用户兴趣的表示。与候选广告相关性较高的行为会获得较高的激活权重，并支配着用户兴趣。该表示向量在不同广告上有所不同，大大提高了模型的表达能力。所以该模型对于此次新闻推荐的任务也比较适合，
 我们在这里通过当前的候选文章与用户历史点击文章的相关性来计算用户对于文章的兴趣。
 该模型的结构如下：</p>
-<figure class="align-default" id="id10">
+<div class="figure align-default" id="id10">
 <img alt="../_images/din_architecture.png" src="../_images/din_architecture.png" />
-<figcaption>
-<p><span class="caption-number">图6.6.1 </span><span class="caption-text">DIN模型结构</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图6.6.1 </span><span class="caption-text">DIN模型结构</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div>
 <p>我们这里直接调包来使用这个模型，
 关于这个模型的详细细节部分我们会在下一期的推荐系统组队学习中给出。下面说一下该模型如何具体使用：deepctr的函数原型如下：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">DIN</span><span class="p">(</span><span class="n">dnn_feature_columns</span><span class="p">,</span> <span class="n">history_feature_list</span><span class="p">,</span> <span class="n">dnn_use_bn</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1126,11 +1123,11 @@ DIN模型的处理会有不同</p>
 <span class="n">tst_user_item_feats_df_din_model</span><span class="p">[[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;click_article_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_score&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_rank&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;tst_din_cls_feats.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="id7">
+</div>
+</div>
+<div class="section" id="id7">
 <h2><span class="section-number">6.6.6. </span>模型融合<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
-<section id="id8">
+<div class="section" id="id8">
 <h3><span class="section-number">6.6.6.1. </span>加权融合<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 读取多个模型的排序结果文件</span>
 <span class="n">lgb_ranker</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s1">&#39;lgb_ranker_score.csv&#39;</span><span class="p">)</span>
@@ -1160,8 +1157,8 @@ DIN模型的处理会有不同</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">get_ensumble_predict_topk</span><span class="p">(</span><span class="n">rank_model</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="staking">
+</div>
+<div class="section" id="staking">
 <h3><span class="section-number">6.6.6.2. </span>Staking<a class="headerlink" href="#staking" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 读取多个模型的交叉验证生成的结果文件</span>
 <span class="c1"># 训练集</span>
@@ -1225,16 +1222,16 @@ DIN模型的处理会有不同</p>
 <span class="n">finall_tst_ranker_feats</span><span class="p">[</span><span class="s1">&#39;pred_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">test_score</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="id9">
+</div>
+</div>
+<div class="section" id="id9">
 <h2><span class="section-number">6.6.7. </span>总结<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h2>
 <p>本章主要学习了三个排序模型，包括LGB的Rank，
 LGB的Classifier还有深度学习的DIN模型，
 当然，对于这三个模型的原理部分，我们并没有给出详细的介绍，
 请大家课下自己探索原理，也欢迎大家把自己的探索与所学分享出来，我们一块学习和进步。最后，我们进行了简单的模型融合策略，包括简单的加权和Stacking。</p>
-</section>
-</section>
+</div>
+</div>
 
 
         </div>
