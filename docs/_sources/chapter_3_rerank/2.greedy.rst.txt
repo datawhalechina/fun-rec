@@ -190,13 +190,13 @@ DPP：行列式点过程
 行列式如何度量多样性
 ~~~~~~~~~~~~~~~~~~~~
 
-上述MMR原理中可以看出，MMR通过候选内容和已选内容计算两两相似度，贪心的选择一个和已选所有内容相似度总和最低的内容。这种方式无法捕捉多个物品间的复杂排斥关系（如三个相似物品的冗余效应），而行列式可以实现这一点。为了解释清楚行列式如何度量多样性，下面会花一定的篇幅做详细的介绍。
+上述MMR原理中可以看出，MMR通过候选内容和已选内容计算两两相似度，贪心的选择一个和已选所有内容相似度最低的内容。这种方式无法捕捉多个物品间的复杂排斥关系（如三个相似物品的冗余效应），而行列式可以实现这一点。为了解释清楚行列式如何度量多样性，下面会花一定的篇幅做详细的介绍。
 
 假设我们通过余弦相似度的方式来计算物品之间的相似度，对于每一个物品都有一个向量表示\ :math:`x_i`\ ，那么对于待排序的所有物品\ :math:`X`\ ，很容易得到所有物品两两之间的相似度矩阵\ :math:`S=X^TX`\ 。
 
 我们知道矩阵行列式的几何意义表示的是，矩阵列向量张成的超面体的“有向体积”。在矩阵\ :math:`S`\ 中，如果列向量都线性相关，意味着列向量“塌缩”在更低维的空间中（在2D中，两个向量共线；在3D中，三个向量共面），此时矩阵\ :math:`S`\ 的行列式\ :math:`det(S)=0`\ 。反之，如果线性不相关，向量张成的高纬空间没有冗余，线性不相关。
 
-假如我们有4个物品，对应的标签分别为：\ :math:`a=\text{科幻动作片},b=\text{科幻喜剧片},c=\text{古装爱情片},d=\text{古装悬疑片}`\ ，计算物品之间的两两相似度，得到相似度矩阵\ :math:`S_t`\ ，物品{a,b,c,d}的相似度矩阵：
+假如我们有4个物品，对应的标签分别为：\ :math:`a=\text{科幻动作片},b=\text{科幻喜剧片},c=\text{古装爱情片},d=\text{古装悬疑片}`\ ，计算物品之间的两两相似度，得到相似度矩阵\ :math:`S_t`\ ，物品\ :math:`{a,b,c,d}`\ 的相似度矩阵：
 
 .. math::
 
@@ -208,8 +208,8 @@ DPP：行列式点过程
    0.2 & 0.1 & 0.8 & 1
    \end{pmatrix}
 
-分别计算物品{a,b}和物品{b,d}的相似度矩阵\ :math:`S_{a,b}` 和
-:math:`S_{b,d}`\ ：
+分别计算物品 ${a,b} $和物品 :math:`{b,d}` 的相似度矩阵 :math:`S_{a,b}`
+和 :math:`S_{b,d}`\ ：
 
 .. math::
 
@@ -238,7 +238,7 @@ DPP：行列式点过程
 相关性与多样性融合
 ~~~~~~~~~~~~~~~~~~
 
-在推荐中，相关性和多样性是两个重要的指标。相关性指的是物品之间的相似性，即物品的相关性越高，推荐的结果越相关。在DPP中，通过引入一个半正定的核矩阵\ :math:`L`\ 来同时优化物品的相关性和多样性。该半正定核矩阵可以分解为\ :math:`L=B^TB`\ ，其中\ :math:`B`\ 的每一列表示重排候选集中物品的表示向量。具体来说，\ :math:`B`\ 的向量是通过相关性得分\ :math:`r_i`\ 和归一化后的物品向量的乘积计算得来。因此核矩阵中的元素\ :math:`L_{i,j}`\ 可以表示为：
+在推荐中，相关性和多样性是两个重要的指标。相关性指的是物品之间的相似性，即物品的相关性越高，推荐的结果越相似。在DPP中，通过引入一个半正定的核矩阵\ :math:`L`\ 来同时优化物品的相关性和多样性。该半正定核矩阵可以分解为\ :math:`L=B^TB`\ ，其中\ :math:`B`\ 的每一列表示重排候选集中物品的表示向量。具体来说，\ :math:`B`\ 的向量是通过相关性得分\ :math:`r_i`\ 和归一化后的物品向量的乘积计算得来。因此核矩阵中的元素\ :math:`L_{i,j}`\ 可以表示为：
 
 .. math::
 
@@ -306,8 +306,8 @@ DPP：行列式点过程
       =
       \begin{bmatrix}
       0.9 & 0.72 & 0.18 \\
-      0 & 0.7 & 0.42 \\
-      0 & 0 & 0.5
+      0.56 & 0.7 & 0.42 \\
+      0.1 & 0.3 & 0.5
       \end{bmatrix}
 
    然后计算 :math:`(\text{Diag}(r) \cdot S) \cdot \text{Diag}(r)`\ ：
@@ -317,8 +317,8 @@ DPP：行列式点过程
 
       (\text{Diag}(r) \cdot S) \cdot \text{Diag}(r) = \begin{bmatrix}
       0.9 & 0.72 & 0.18 \\
-      0 & 0.7 & 0.42 \\
-      0 & 0 & 0.5
+      0.56 & 0.7 & 0.42 \\
+      0.1 & 0.3 & 0.5
       \end{bmatrix}
       \begin{bmatrix}
       0.9 & 0 & 0 \\
@@ -328,8 +328,8 @@ DPP：行列式点过程
       =
       \begin{bmatrix}
       0.81 & 0.504 & 0.09 \\
-      0 & 0.49 & 0.21 \\
-      0 & 0 & 0.25
+      0.504 & 0.49 & 0.21 \\
+      0.09 & 0.21 & 0.25
       \end{bmatrix}
 
 **构建完核矩阵后，继续上述的公式推导，根据行列式的乘法性质可得到：**
@@ -358,6 +358,7 @@ DPP：行列式点过程
 其中：
 
 -  第一项只跟“相关性”有关，越相关 :math:`r_{u,i}^2` 越大；
+
 -  第二项 :math:`\log |S|` 只跟“多样性”有关，S 越接近正交（余弦越接近
    0），行列式越大。
 
@@ -371,16 +372,15 @@ DPP：行列式点过程
 贪心求解过程
 ~~~~~~~~~~~~
 
-上述介绍了相似矩阵的行列式可以度量多样性，通过核矩阵可以融合相关性和多样性，下面主要来看一下贪心求解过程。重排从物品候选列表中选择一个子集，使得\ :math:`\log |L_{R_u}|`\ 的值最大需要通过DPP（行列式点过程）来实现。
+上述介绍了相似矩阵的行列式可以度量多样性，通过核矩阵可以融合相关性和多样性，下面继续来看一下贪心求解的过程。重排从物品候选列表中选择一个子集，使得\ :math:`\log |L_{R_u}|`\ 的值最大需要通过DPP（行列式点过程）来实现。
 
 DPP是一种性能较高的概率模型，能将复杂的概率计算转换成简单的行列式计算，通过核矩阵的行列式计算每一个子集的概率，这一筛选过程就是行列式点过程的最大后验概率推断MAP（maximum
 a posteriori
 inference），行列式点过程的MAP求解是一个复杂的过程，Hulu的论文中提出了一种改进的贪心算法能够快速求解
 :cite:`chen2018fast`\ 。
 
-这一求解过程简单来说就是每次从候选集中贪心地选择一个能使边际收益（
-marginal
-gain）最大的商品加入到最终的结果子集中，直到满足停止条件为止，即每次选择物品\ :math:`j`\ 添加到结果集\ :math:`Y_g`\ 中，
+这一求解过程简单来说就是每次从候选集中贪心地选择一个能使边际收益（Marginal
+Gain）最大的商品加入到最终的结果子集中，直到满足停止条件为止，即每次选择物品\ :math:`j`\ 添加到结果集\ :math:`Y_g`\ 中，
 :math:`Y_g`\ 初始化为空集，物品\ :math:`j`\ 需要满足下面的等式：
 
 .. math::
@@ -411,17 +411,34 @@ gain）最大的商品加入到最终的结果子集中，直到满足停止条�
    c_i V^\top & c_i c_i^\top + d_i^2
    \end{bmatrix}
 
-其中\ :math:`\mathbf{L}_{Y_g,i}`\ 表示的是\ :math:`Y_g`\ 所有行索引及对应新增的第i列索引对应的列向量，\ :math:`\mathbf{L}_{i,Y_g}`\ 表示的是\ :math:`Y_g`\ 所有列索引及对应新增第i行索引对应的行矩阵，\ :math:`L_{ii}`\ 表示的是新的核矩阵右下角元素。其中行向量\ :math:`c_i`\ 和标量\ :math:`d_i`\ 满足如下条件：
+其中：
+
+-  :math:`\mathbf{V}` 是已选择物品集合 :math:`Y_g`
+   对应的Cholesky分解的下三角矩阵
+
+-  :math:`\mathbf{L}_{Y_g,i}` 是核矩阵 :math:`\mathbf{L}`
+   中已选择物品集合 :math:`Y_g` 与候选物品 :math:`i` 之间的相关性向量
+
+-  :math:`L_{ii}` 是核矩阵 :math:`\mathbf{L}` 中物品 :math:`i`
+   的对角元素，\ :math:`r_i r_i \langle \mathbf{f}_i, \mathbf{f}_i \rangle=r_i^2`
+
+此外，行向量\ :math:`c_i`\ 和标量\ :math:`d_i`\ 满足如下条件：
 
 .. math::
 
 
-   \mathbf{V} \mathbf{c}_i^\top = \mathbf{L}_{Y_g,i},\mathbf{c}_i \mathbf{V^\top} = \mathbf{L}_{i,Y_g} => \mathbf{L}_{Y_g,i}=\mathbf{L}_{i,Y_g}^T
+   \mathbf{V} \mathbf{c}_i^\top = \mathbf{L}_{Y_g,i}
 
 .. math::
 
 
    d_i^2 = \mathbf{L}_{ii} - \|\mathbf{c}_i\|_2^2.
+
+因此，\ :math:`c_i`\ 和\ :math:`d_i`\ 可以求解得到：
+
+-  :math:`c_i^T = V^T \mathbf{L}_{Y_g,i}`
+
+-  :math:`d_i = \sqrt{\mathbf{L}_{ii} - \|\mathbf{c}_i\|_2^2}`
 
 根据上述公式，我们有Cholesky分解的分块形式：
 
@@ -481,14 +498,58 @@ gain）最大的商品加入到最终的结果子集中，直到满足停止条�
 
    \det(\mathbf{L}_{\mathbf{Y}_g \cup \{i\}}) = \det(\mathbf{L}_{\mathbf{Y}_g}) \cdot \det(d_i^2) = \det(\mathbf{L}_{\mathbf{Y}_g}) \cdot d_i^2
 
-在将\ :math:`\det(\mathbf{L}_{\mathbf{Y}_g \cup \{i\}})`\ 的结果代入优化目标可得：
+再将\ :math:`\det(\mathbf{L}_{\mathbf{Y}_g \cup \{i\}})`\ 的结果代入优化目标可得：
 
 .. math::
 
 
    j = \arg\max_{i \in Z \setminus Y_g} \log(d_i^2).
 
-**详细的求解算法流程如下：**
+如果上式得解，即可以得到\ :math:`L_{Y_k \cup \{j\}}`\ 的Cholesky分解：
+
+.. math::
+
+
+   L_{Y_k \cup \{j\}} = \begin{bmatrix}
+   V & 0 \\
+   c_j & d_j
+   \end{bmatrix}
+   \begin{bmatrix}
+   V & 0 \\
+   c_j & d_j
+   \end{bmatrix}^T
+
+按照上述的思路，如果\ :math:`c_j`\ 和\ :math:`d_j`\ 被求解出来了，\ :math:`Y_g`\ 就会被更新。在此基础上，对于未被选中的内容\ :math:`i`\ ，我们可以快速的计算出对应的\ :math:`c_i'`\ 和\ :math:`d_i'`
+
+.. math::
+
+
+   \begin{bmatrix}
+   V & 0 \\
+   c_j & d_j
+   \end{bmatrix}
+   c_i^T = \mathbf{L}_{Y_g \cup \{j\}, i} = \begin{bmatrix}
+   \mathbf{L}_{Y_g, i} \\
+   \mathbf{L}_{j,i}
+   \end{bmatrix}
+
+即(详细推导不展开)：
+
+.. math::
+
+
+   c_i' = [c_i \quad (L_{ji} - \langle c_j, c_i \rangle)/d_j] = [c_i \quad e_i]
+
+.. math::
+
+
+   d_i^2 = L_{ii} - \|c_i\|_2^2 = L_{ii} - \|c_i\|_2^2 - c_i^2 = d_i^2 - c_i^2
+
+当 :math:`d_i'` 得到之后可根据
+:math:`j = \arg\max_{i \in Z \setminus Y_g} \log(d_i^2)`
+得到最优的内容放入到 :math:`Y_g`\ 中。
+
+**最终贪心算法的算法流程如下**
 
 1. 初始化：
 
@@ -510,7 +571,7 @@ gain）最大的商品加入到最终的结果子集中，直到满足停止条�
 
 3. 返回：返回 :math:`Y_g`
 
-代码实现
+DPP贪心求解算法的代码实现如下：
 
 .. raw:: latex
 
@@ -518,71 +579,159 @@ gain）最大的商品加入到最终的结果子集中，直到满足停止条�
 
 .. code:: python
 
-    import math
-    import numpy as np
-    
-    
-    def dpp(kernel_matrix, max_length, epsilon=1E-10):
-        """
-        贪心算法的实现
-        :param kernel_matrix: 2-d 数组
-        :param max_length: 正整数
-        :param epsilon: 较小正数
-        :return: 列表
-        """
-        item_size = kernel_matrix.shape[0]
-        cis = np.zeros((max_length, item_size))
-        di2s = np.copy(np.diag(kernel_matrix))
-        selected_items = list()
-        selected_item = np.argmax(di2s)
-        selected_items.append(selected_item)
-        while len(selected_items) < max_length:
-            k = len(selected_items) - 1
-            ci_optimal = cis[:k, selected_item]
-            di_optimal = math.sqrt(di2s[selected_item])
-            elements = kernel_matrix[selected_item, :]
-            eis = (elements - np.dot(ci_optimal, cis[:k, :])) / di_optimal
-            cis[k, :] = eis
-            di2s -= np.square(eis)
-            selected_item = np.argmax(di2s)
-            if di2s[selected_item] < epsilon:
-                break
-            selected_items.append(selected_item)
-        return selected_items
+   from typing import List, Callable, Dict, Any
+   import numpy as np
+   import math
+   import copy
+   import time
 
-.. raw:: latex
+   class Item:
+       def __init__(
+           self, 
+           id: str, 
+           rel: float, 
+           dense_vector: List[float] = None,
+           sparse_features: Dict[str, Any] = None
+       ) -> None:
+           self.id = id
+           self.rel = rel  # 相关性分数（精排分）
+           self.dense_vector = dense_vector  # 稠密向量表示（如嵌入向量）
+           self.sparse_features = sparse_features  # 稀疏特征（标签、类别、作者等）
 
-   \diilbookstyleinputcell
+   def DPP_Reranking(
+       item_pool: List[Item], 
+       k: int,
+       kernel_matrix: np.ndarray,
+       epsilon: float = 1E-10) -> List[Item]:
+       """
+       基于行列式点过程(DPP)的贪心重排实现
+       
+       参数:
+       item_pool -- 候选物品列表
+       k -- 最终返回的物品数量
+       kernel_matrix -- 核矩阵，融合了相关性和多样性
+       epsilon -- 数值稳定性阈值
+       
+       返回:
+       重排后的物品列表
+       """
+       # 创建副本避免修改原始输入
+       candidates = copy.deepcopy(item_pool)
+       item_size = len(candidates)
+       
+       if not candidates or k <= 0:
+           return []
+       
+       # 初始化Cholesky分解相关变量
+       cis = np.zeros((k, item_size))  # 存储c_i向量
+       di2s = np.copy(np.diag(kernel_matrix))  # 存储d_i^2值
+       selected_items = []  # 已选择物品的索引
+       
+       # 第一步：选择初始物品（d_i^2最大的物品）
+       selected_item_idx = np.argmax(di2s)
+       selected_items.append(selected_item_idx)
+       
+       # 第二步：贪心迭代选择
+       while len(selected_items) < k and len(selected_items) < item_size:
+           k_current = len(selected_items) - 1  # 当前迭代轮次
+           
+           # 获取当前选中物品的c_i和d_i
+           ci_optimal = cis[:k_current, selected_item_idx]
+           di_optimal = math.sqrt(di2s[selected_item_idx])
+           
+           # 计算与当前选中物品的核矩阵元素
+           elements = kernel_matrix[selected_item_idx, :]
+           
+           # 更新所有候选物品的c_i和d_i^2
+           # e_i = (L_{ji} - <c_j, c_i>) / d_j
+           eis = (elements - np.dot(ci_optimal, cis[:k_current, :])) / di_optimal
+           cis[k_current, :] = eis
+           
+           # 更新d_i^2 = d_i^2 - e_i^2
+           di2s -= np.square(eis)
+           
+           # 选择下一个物品：argmax log(d_i^2)
+           selected_item_idx = np.argmax(di2s)
+           
+           # 数值稳定性检查
+           if di2s[selected_item_idx] < epsilon:
+               break
+               
+           selected_items.append(selected_item_idx)
+       
+       # 根据选中的索引返回对应的物品
+       result = [candidates[idx] for idx in selected_items]
+       return result
 
-.. code:: python
+   def create_kernel_matrix(
+       item_pool: List[Item],
+       sim_func: Callable[[Item, Item], float]
+   ) -> np.ndarray:
+       """
+       构建DPP核矩阵，融合相关性和多样性
+       
+       参数:
+       item_pool -- 候选物品列表
+       sim_func -- 物品相似度计算函数
+       
+       返回:
+       核矩阵 L = diag(r) * S * diag(r)
+       """
+       n = len(item_pool)
+       
+       # 构建相关性向量
+       relevance_scores = np.array([item.rel for item in item_pool])
+       
+       # 构建相似度矩阵
+       similarity_matrix = np.zeros((n, n))
+       for i in range(n):
+           for j in range(n):
+               if i == j:
+                   similarity_matrix[i, j] = 1.0
+               else:
+                   similarity_matrix[i, j] = sim_func(item_pool[i], item_pool[j])
+       
+       # 构建核矩阵: L = diag(r) * S * diag(r)
+       kernel_matrix = (
+           relevance_scores.reshape((n, 1)) * 
+           similarity_matrix * 
+           relevance_scores.reshape((1, n))
+       )
+       
+       return kernel_matrix
 
-    import time
-    
-    item_size = 5000
-    feature_dimension = 5000
-    max_length = 1000
-    
-    scores = np.exp(0.01 * np.random.randn(item_size) + 0.2)
-    feature_vectors = np.random.randn(item_size, feature_dimension)
-    
-    feature_vectors /= np.linalg.norm(feature_vectors, axis=1, keepdims=True)
-    similarities = np.dot(feature_vectors, feature_vectors.T)
-    kernel_matrix = scores.reshape((item_size, 1)) * similarities * scores.reshape((1, item_size))
-    
-    print('核矩阵生成完成！')
-    
-    t = time.time()
-    result = dpp(kernel_matrix, max_length)
-    print('算法运行时间: ' + '\t' + "{0:.4e}".format(time.time() - t))
+   # 生成测试数据
+   item_size = 1000
+   feature_dimension = 100
+   max_length = 50
 
+   # 创建测试物品
+   test_items = []
+   for i in range(item_size):
+       rel_score = np.exp(0.01 * np.random.randn() + 0.2)
+       dense_vec = np.random.randn(feature_dimension)
+       dense_vec /= np.linalg.norm(dense_vec)  # 归一化
+       
+       item = Item(
+           id=f"item_{i}",
+           rel=rel_score,
+           dense_vector=dense_vec.tolist()
+       )
+       test_items.append(item)
 
-.. raw:: latex
+   # 定义相似度函数
+   def cosine_similarity_func(item1: Item, item2: Item) -> float:
+       vec1 = np.array(item1.dense_vector)
+       vec2 = np.array(item2.dense_vector)
+       return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
 
-   \diilbookstyleoutputcell
+   # 构建核矩阵
+   print('开始构建核矩阵...')
+   kernel_matrix = create_kernel_matrix(test_items, cosine_similarity_func)
+   print('核矩阵生成完成！')
 
-.. parsed-literal::
-    :class: output
-
-    核矩阵生成完成！
-    算法运行时间: 	3.6709e-01
-
+   # 执行DPP重排
+   t = time.time()
+   result = DPP_Reranking(test_items, max_length, kernel_matrix)
+   print('算法运行时间: ' + '\t' + "{0:.4e}".format(time.time() - t))
+   print(f'选择了 {len(result)} 个物品')

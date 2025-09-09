@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -350,20 +351,22 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="second-order-feature-crossing">
+  <section id="second-order-feature-crossing">
 <span id="id1"></span><h1><span class="section-number">3.3.2. </span>二阶特征交叉<a class="headerlink" href="#second-order-feature-crossing" title="Permalink to this heading">¶</a></h1>
 <p>针对 Wide &amp; Deep
 模型中人工特征工程的局限性，特征交叉自动化成为了一个迫切需要解决的问题。在这一探索过程中，首先要攻克的是：<strong>如何自动、高效地捕捉所有成对（二阶）特征的交互，并将其与深度学习模型结合。</strong>
 这里的挑战不仅在于“自动”，更在于面对推荐场景下海量、高维、稀疏的数据时如何实现“高效”。直接暴力计算所有特征对的组合是不可行的，我们需要一种更巧妙的机制来参数化这些交互。同时，在解决了二阶交互的自动化表达后，如何将这些捕获到的低阶、显式交互信息，与能够学习高阶、隐式关系的深度神经网络（DNN）进行有效融合，也成为这一阶段模型探索的重点。</p>
-<div class="section" id="fm">
+<section id="fm">
 <h2><span class="section-number">3.3.2.1. </span>FM: 隐向量内积与参数共享<a class="headerlink" href="#fm" title="Permalink to this heading">¶</a></h2>
 <p>我们在召回章节 <a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html#fm-matching-model"><span class="std std-numref">2.2.3.1节</span></a> 已经初步了解了FM
 <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id12" title="Rendle, S. (2010). Factorization machines. 2010 IEEE International conference on data mining (pp. 995–1000).">Rendle, 2010</a>)</span>
 ，并见证了它如何作为双塔模型的雏形，通过向量匹配实现召回。在精排阶段，FM的价值得到了更核心的体现。它作为解决特征交叉自动化问题的开创性模型，其核心思想——<strong>为每个特征学习一个低维隐向量，并用向量内积来参数化所有二阶交叉项的权重</strong>——不仅有效解决了参数数量过多和数据稀疏性两大难题，也为这一小节后续模型奠定了方法论的基础。</p>
-<div class="figure align-default" id="id11">
+<figure class="align-default" id="id11">
 <img alt="../../_images/fm_model.png" src="../../_images/fm_model.png" />
-<p class="caption"><span class="caption-number">图3.3.1 </span><span class="caption-text">FM模型结构</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.3.1 </span><span class="caption-text">FM模型结构</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>为了捕捉特征间的交互关系，一个直接的想法是在线性模型的基础上增加所有特征的二阶组合项，即多项式模型：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-0">
 <span class="eqno">(3.3.1)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-0" title="Permalink to this equation">¶</a></span>\[y = w_0 + \sum_{i=1}^n w_i x_i + \sum_{i=1}^{n-1} \sum_{j=i+1}^n w_{ij} x_i x_j\]</div>
@@ -397,17 +400,19 @@ Show Source
 和 <span class="math notranslate nohighlight">\(x_j\)</span> 的交叉效应。此外，通过巧妙的数学变换，FM
 的二阶交叉项计算复杂度可以从 <span class="math notranslate nohighlight">\(O(kn^2)\)</span> 优化到线性的
 <span class="math notranslate nohighlight">\(O(kn)\)</span>，使其在工业界得到了广泛应用。</p>
-</div>
-<div class="section" id="afm">
+</section>
+<section id="afm">
 <h2><span class="section-number">3.3.2.2. </span>AFM: 注意力加权的交叉特征<a class="headerlink" href="#afm" title="Permalink to this heading">¶</a></h2>
 <p>FM
 对所有特征交叉给予了相同的权重，但实际上不同交叉组合的重要性是不同的。AFM
 <span id="id3">(<a class="reference internal" href="../../chapter_references/references.html#id48" title="Xiao, J., Ye, H., He, X., Zhang, H., Wu, F., &amp; Chua, T.-S. (2017). Attentional factorization machines: learning the weight of feature interactions via attention networks. arXiv preprint arXiv:1708.04617.">Xiao <em>et al.</em>, 2017</a>)</span>
 在此基础上引入注意力机制，为不同的特征交叉分配权重，使模型能关注到更重要的交互。例如，在预测一位用户是否会点击一条体育新闻时，“用户年龄=18-24岁”与“新闻类别=体育”的交叉，其重要性显然要高于“用户年龄=18-24岁”与“新闻发布时间=周三”的交叉。</p>
-<div class="figure align-default" id="id12">
+<figure class="align-default" id="id12">
 <img alt="../../_images/afm_architecture.png" src="../../_images/afm_architecture.png" />
-<p class="caption"><span class="caption-number">图3.3.2 </span><span class="caption-text">AFM模型结构</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.3.2 </span><span class="caption-text">AFM模型结构</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>AFM 的模型结构在 FM
 的基础上进行了扩展。它首先将所有成对特征的隐向量进行<strong>元素积（Hadamard
 Product, 记为 :math:`odot`）</strong>，而不是像 FM
@@ -439,8 +444,8 @@ Pooling）。</p>
 是一个投影向量，用于将最终的交叉结果映射为标量。通过引入注意力机制，<strong>AFM
 不仅提升了模型的表达能力，还通过可视化注意力权重</strong> <span class="math notranslate nohighlight">\(a_{ij}\)</span>
 <strong>赋予了模型更好的可解释性</strong>，让我们可以洞察哪些特征交叉对预测结果的贡献最大。</p>
-</div>
-<div class="section" id="nfm">
+</section>
+<section id="nfm">
 <h2><span class="section-number">3.3.2.3. </span>NFM: 交叉特征的深度学习<a class="headerlink" href="#nfm" title="Permalink to this heading">¶</a></h2>
 <p>NFM <span id="id4">(<a class="reference internal" href="../../chapter_references/references.html#id47" title="He, X., &amp; Chua, T.-S. (2017). Neural factorization machines for sparse predictive analytics. Proceedings of the 40th International ACM SIGIR conference on Research and Development in Information Retrieval (pp. 355–364).">He and Chua, 2017</a>)</span> 探索了如何更深入地利用交叉信息。它将 FM
 的二阶交叉结果（用哈达玛积表示的向量）作为输入，送入一个深度神经网络（DNN），从而在
@@ -471,8 +476,8 @@ Pooling Layer）来对所有特征对的 Embedding
 FM 的二阶交叉能力与 DNN 的高阶非线性建模能力结合在了一起。FM
 可以被看作是 NFM 在没有隐藏层时的特例，这表明 NFM 是对 FM
 的一个自然扩展和深度化。</p>
-</div>
-<div class="section" id="pnn">
+</section>
+<section id="pnn">
 <h2><span class="section-number">3.3.2.4. </span>PNN: 多样化的乘积操作<a class="headerlink" href="#pnn" title="Permalink to this heading">¶</a></h2>
 <p>PNN <span id="id5">(<a class="reference internal" href="../../chapter_references/references.html#id41" title="Qu, Y., Cai, H., Ren, K., Zhang, W., Yu, Y., Wen, Y., &amp; Wang, J. (2016). Product-based neural networks for user response prediction. 2016 IEEE 16th international conference on data mining (ICDM) (pp. 1149–1154).">Qu <em>et al.</em>, 2016</a>)</span> 认为仅用内积（Inner
 Product）或元素积（Hadamard
@@ -480,10 +485,12 @@ Product）不足以捕捉所有特征交互信息。因此，它在经典的内�
 Product）作为补充，尝试从更丰富的角度来表示特征间的交互</strong>。PNN
 的核心创新在于其“乘积层”（Product Layer），该层专门用于对特征 Embedding
 进行显式的交叉操作，其输出再送入后续的全连接网络。</p>
-<div class="figure align-default" id="id13">
+<figure class="align-default" id="id13">
 <img alt="../../_images/pnn.png" src="../../_images/pnn.png" />
-<p class="caption"><span class="caption-number">图3.3.3 </span><span class="caption-text">PNN模型结构</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.3.3 </span><span class="caption-text">PNN模型结构</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>PNN 的乘积层会产生两部分信号，一部分是线性信号
 <span class="math notranslate nohighlight">\(\mathbf{l}_z\)</span>，直接来自于各特征的 Embedding 向量，定义为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-10">
@@ -539,18 +546,20 @@ Embedding 向量相加，然后再计算一次外积</strong>：</p>
 <p>PNN
 的独特之处在于，它将“乘积”操作（无论是内积还是外积）作为了网络中的一个核心计算单元，认为这种操作比传统
 DNN 中简单的“加法”操作更能有效地捕捉类别型特征之间的交互关系。</p>
-</div>
-<div class="section" id="fibinet">
+</section>
+<section id="fibinet">
 <h2><span class="section-number">3.3.2.5. </span>FiBiNET: 特征重要性与双线性交互<a class="headerlink" href="#fibinet" title="Permalink to this heading">¶</a></h2>
 <p>虽然 PNN
 通过内积和外积丰富了特征交互的表达方式，但它仍然将所有特征视为同等重要。然而，在实际的推荐场景中，不同特征对于预测结果的贡献度显然是不同的。FiBiNET
 (Feature Importance and Bilinear feature Interaction Network)
 <span id="id6">(<a class="reference internal" href="../../chapter_references/references.html#id22" title="Huang, T., Zhang, Z., &amp; Zhang, J. (2019). Fibinet: combining feature importance and bilinear feature interaction for click-through rate prediction. Proceedings of the 13th ACM conference on recommender systems (pp. 169–177).">Huang <em>et al.</em>, 2019</a>)</span>
 模型认识到了这个问题，<strong>它在进行二阶特征交叉之前，先动态地学习每个特征的重要性权重，然后再通过双线性交互来捕捉更精细的特征关系</strong>。这种设计使得模型能够有选择性地进行特征交互，从而提升二阶特征交叉的质量。</p>
-<div class="figure align-default" id="id14">
+<figure class="align-default" id="id14">
 <img alt="../../_images/fibinet_architecture.png" src="../../_images/fibinet_architecture.png" />
-<p class="caption"><span class="caption-number">图3.3.4 </span><span class="caption-text">FiBiNET架构图</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.3.4 </span><span class="caption-text">FiBiNET架构图</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>FiBiNET 的创新主要体现在两个核心模块上：<strong>SENET
 特征重要性学习机制</strong>和<strong>双线性交互层</strong>。</p>
 <p><strong>SENET 特征重要性学习</strong></p>
@@ -558,10 +567,12 @@ DNN 中简单的“加法”操作更能有效地捕捉类别型特征之间的�
 Network)</strong> <span id="id7">(<a class="reference internal" href="../../chapter_references/references.html#id21" title="Hu, J., Shen, L., &amp; Sun, G. (2018). Squeeze-and-excitation networks. Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 7132–7141).">Hu <em>et al.</em>, 2018</a>)</span>
 机制，用于动态学习每个特征的重要性权重。与传统方法对所有特征一视同仁不同，SENET
 能够自适应地为不同特征分配不同的权重，让模型更加关注那些对预测任务更重要的特征。</p>
-<div class="figure align-default" id="id15">
+<figure class="align-default" id="id15">
 <img alt="../../_images/fibinet_senet.png" src="../../_images/fibinet_senet.png" />
-<p class="caption"><span class="caption-number">图3.3.5 </span><span class="caption-text">SENET层结构详解</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.3.5 </span><span class="caption-text">SENET层结构详解</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>SENET 的工作流程包含三个关键步骤：</p>
 <ol class="arabic">
 <li><p><strong>Squeeze (挤压)</strong>: 通过全局平均池化将每个特征的 <span class="math notranslate nohighlight">\(k\)</span> 维嵌入向量
@@ -597,8 +608,8 @@ Network)</strong> <span id="id7">(<a class="reference internal" href="../../chap
 <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>
 进行双线性交互，然后将这两组交互结果、原始特征以及一个深度神经网络的输出结合起来，共同做出最终的预测。通过这种方式，<strong>FiBiNET
 不仅解决了“哪些特征更重要”的问题，还通过双线性交互提升了二阶特征交叉的表达能力</strong>。</p>
-</div>
-<div class="section" id="deepfm">
+</section>
+<section id="deepfm">
 <span id="id8"></span><h2><span class="section-number">3.3.2.6. </span>DeepFM: 低阶高阶的统一建模<a class="headerlink" href="#deepfm" title="Permalink to this heading">¶</a></h2>
 <p>DeepFM <span id="id9">(<a class="reference internal" href="../../chapter_references/references.html#id50" title="Guo, H., Tang, R., Ye, Y., Li, Z., &amp; He, X. (2017). Deepfm: a factorization-machine based neural network for ctr prediction. arXiv preprint arXiv:1703.04247.">Guo <em>et al.</em>, 2017</a>)</span> 是对 Wide &amp; Deep
 架构的直接改进和优化。它将 Wide &amp; Deep 中需要大量人工特征工程的 Wide
@@ -607,10 +618,12 @@ Network)</strong> <span id="id7">(<a class="reference internal" href="../../chap
 组件和 Deep
 组件共享同一份特征嵌入（Embedding）</strong>，这带来了两大好处：首先，模型可以同时从原始特征中学习低阶和高阶的特征交互；其次，共享
 Embedding 的方式使得模型训练更加高效。</p>
-<div class="figure align-default" id="id16">
+<figure class="align-default" id="id16">
 <img alt="../../_images/deepfm_architecture.png" src="../../_images/deepfm_architecture.png" />
-<p class="caption"><span class="caption-number">图3.3.6 </span><span class="caption-text">DeepFM模型结构</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.3.6 </span><span class="caption-text">DeepFM模型结构</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>DeepFM 的结构非常清晰，它由 FM 和 DNN 两个并行的组件构成，两者共享输入。</p>
 <ul class="simple">
 <li><p><strong>FM 组件</strong>: 负责学习一阶特征和二阶特征交叉。其输出 yFM
@@ -645,8 +658,8 @@ Sigmoid 函数得到最终的点击率预测值：</p>
 <p>DeepFM模型成功地结合了FM的低阶特征学习能力和深度神经网络的高阶特征学习能力。通过FM组件和深度组件共享相同的特征嵌入，模型可以同时从原始特征中学习低阶和高阶特征交互，无需像Wide
 &amp;
 Deep那样依赖专家的特征工程。这种设计使得DeepFM成为一个端到端的自动特征学习模型，在效果和效率上都表现出色。</p>
-</div>
-<div class="section" id="id10">
+</section>
+<section id="id10">
 <h2><span class="section-number">3.3.2.7. </span>代码实践<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
@@ -661,22 +674,22 @@ Deep那样依赖专家的特征工程。这种设计使得DeepFM成为一个端�
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------+--------+--------+---------------+</span>
 <span class="o">|</span> <span class="n">模型</span>    <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
 <span class="o">+=========+========+========+===============+</span>
-<span class="o">|</span> <span class="n">fm</span>      <span class="o">|</span> <span class="mf">0.5949</span> <span class="o">|</span> <span class="mf">0.5697</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fm</span>      <span class="o">|</span> <span class="mf">0.5977</span> <span class="o">|</span> <span class="mf">0.5701</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">afm</span>     <span class="o">|</span> <span class="mf">0.5811</span> <span class="o">|</span> <span class="mf">0.5689</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">afm</span>     <span class="o">|</span> <span class="mf">0.5875</span> <span class="o">|</span> <span class="mf">0.5655</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">nfm</span>     <span class="o">|</span> <span class="mf">0.5905</span> <span class="o">|</span> <span class="mf">0.5667</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">nfm</span>     <span class="o">|</span> <span class="mf">0.5721</span> <span class="o">|</span> <span class="mf">0.5497</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">pnn</span>     <span class="o">|</span> <span class="mf">0.5919</span> <span class="o">|</span> <span class="mf">0.5726</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">pnn</span>     <span class="o">|</span> <span class="mf">0.5918</span> <span class="o">|</span> <span class="mf">0.5733</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">fibinet</span> <span class="o">|</span> <span class="mf">0.5977</span> <span class="o">|</span> <span class="mf">0.5728</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fibinet</span> <span class="o">|</span> <span class="mf">0.5982</span> <span class="o">|</span> <span class="mf">0.5686</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">deepfm</span>  <span class="o">|</span> <span class="mf">0.6013</span> <span class="o">|</span> <span class="mf">0.5723</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">deepfm</span>  <span class="o">|</span> <span class="mf">0.5917</span> <span class="o">|</span> <span class="mf">0.5725</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>

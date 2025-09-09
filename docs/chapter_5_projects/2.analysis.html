@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -348,11 +349,11 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="id1">
+  <section id="id1">
 <h1><span class="section-number">6.3. </span>数据分析<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>数据分析的价值主要在于熟悉了解整个数据集的基本情况包括每个文件里有哪些数据，具体的文件中的每个字段表示什么实际含义，以及数据集中特征之间的相关性，在推荐场景下主要就是分析用户本身的基本属性，文章基本属性，以及用户和文章交互的一些分布，这些都有利于后面的召回策略的选择，以及特征工程。</p>
 <p><strong>建议：当特征工程和模型调参已经很难继续上分了，可以回来在重新从新的角度去分析这些数据，或许可以找到上分的灵感</strong></p>
-<div class="section" id="id2">
+<section id="id2">
 <h2><span class="section-number">6.3.1. </span>导包<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入相关包</span>
 <span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
@@ -379,8 +380,8 @@ Show Source
 <span class="n">PROCESSED_DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;FUNREC_PROCESSED_DATA_PATH&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id3">
+</section>
+<section id="id3">
 <h2><span class="section-number">6.3.2. </span>读取数据<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 数据路径</span>
 <span class="n">data_path</span> <span class="o">=</span> <span class="n">RAW_DATA_PATH</span> <span class="o">/</span> <span class="s1">&#39;news_recommendation/&#39;</span>
@@ -395,8 +396,8 @@ Show Source
 <span class="n">tst_click</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span> <span class="o">/</span> <span class="s1">&#39;testA_click_log.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id4">
+</section>
+<section id="id4">
 <h2><span class="section-number">6.3.3. </span>数据预处理<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
 <p>计算用户点击rank和点击次数</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 对每个用户的点击时间戳进行排序</span>
@@ -409,8 +410,8 @@ Show Source
 <span class="n">tst_click</span><span class="p">[</span><span class="s1">&#39;click_cnts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tst_click</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">])[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id5">
+</section>
+<section id="id5">
 <h2><span class="section-number">6.3.4. </span>数据浏览<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
 <p><strong>训练集用户点击日志</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trn_click</span> <span class="o">=</span> <span class="n">trn_click</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">item_df</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">])</span>
@@ -788,9 +789,9 @@ memory usage: 118.8 MB
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_15_1.png" src="../_images/output_2.analysis_37698d_15_1.png" />
-</div>
+</figure>
 <p>从点击时间clik_timestamp来看，分布较为平均，可不做特殊处理。由于时间戳是13位的，后续将时间格式转换成10位方便计算。</p>
 <p>从点击环境click_environment来看，仅有1922次（占0.1%）点击环境为1；仅有24617次（占2.3%）点击环境为2；剩余（占97.6%）点击环境为4。</p>
 <p>从点击设备组click_deviceGroup来看，设备1占大部分（60.4%），设备3占36%。</p>
@@ -1207,9 +1208,9 @@ memory usage: 118.8 MB
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Axes</span><span class="p">:</span> <span class="o">&gt;</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_25_2.png" src="../_images/output_2.analysis_37698d_25_2.png" />
-</div>
+</figure>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">item_df</span><span class="o">.</span><span class="n">shape</span>       <span class="c1"># 364047篇文章</span>
 </pre></div>
 </div>
@@ -1390,8 +1391,8 @@ memory usage: 118.8 MB
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">364047</span><span class="p">,</span> <span class="mi">251</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id6">
+</section>
+<section id="id6">
 <h2><span class="section-number">6.3.5. </span>分析<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
 <p><strong>用户重复点击</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_click_merge</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">trn_click</span><span class="p">,</span> <span class="n">tst_click</span><span class="p">])</span>
@@ -1570,68 +1571,68 @@ memory usage: 118.8 MB
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_37_1.png" src="../_images/output_2.analysis_37698d_37_1.png" />
-</div>
+</figure>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_37_3.png" src="../_images/output_2.analysis_37698d_37_3.png" />
-</div>
+</figure>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_37_5.png" src="../_images/output_2.analysis_37698d_37_5.png" />
-</div>
+</figure>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_37_7.png" src="../_images/output_2.analysis_37698d_37_7.png" />
-</div>
+</figure>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">Figure</span> <span class="n">size</span> <span class="mi">640</span><span class="n">x480</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_37_9.png" src="../_images/output_2.analysis_37698d_37_9.png" />
-</div>
+</figure>
 <p>可以看出绝大多数数的用户的点击环境是比较固定的。思路：可以基于这些环境的统计特征来代表该用户本身的属性</p>
 <p><strong>用户点击新闻数量的分布</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_click_item_count</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_item_count</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2cfbfd250</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33fceff40</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_39_1.png" src="../_images/output_2.analysis_37698d_39_1.png" />
-</div>
+</figure>
 <p>可以根据用户的点击文章次数看出用户的活跃度</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#点击次数在前50的用户</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_item_count</span><span class="p">[:</span><span class="mi">50</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2a4de3a00</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x339580f70</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_41_1.png" src="../_images/output_2.analysis_37698d_41_1.png" />
-</div>
+</figure>
 <p>点击次数排前50的用户的点击次数都在100次以上。思路：我们可以定义点击次数大于等于100次的用户为活跃用户，这是一种简单的处理思路，
 判断用户活跃度，更加全面的是再结合上点击时间，后面我们会基于点击次数和点击时间两个方面来判断用户活跃度。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#点击次数排名在[25000:50000]之间</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_item_count</span><span class="p">[</span><span class="mi">25000</span><span class="p">:</span><span class="mi">50000</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2cfc2d5e0</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x338f5a7c0</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_43_1.png" src="../_images/output_2.analysis_37698d_43_1.png" />
-</div>
+</figure>
 <p>可以看出点击次数小于等于两次的用户非常的多，这些用户可以认为是非活跃用户</p>
 <p><strong>新闻点击次数分析</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">item_click_count</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;click_article_id&#39;</span><span class="p">)[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1640,42 +1641,42 @@ memory usage: 118.8 MB
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">item_click_count</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2cfd23d90</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33fe69310</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_46_1.png" src="../_images/output_2.analysis_37698d_46_1.png" />
-</div>
+</figure>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">item_click_count</span><span class="p">[:</span><span class="mi">100</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2cfdeff40</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33feebca0</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_47_1.png" src="../_images/output_2.analysis_37698d_47_1.png" />
-</div>
+</figure>
 <p>可以看出点击次数最多的前100篇新闻，点击次数大于1000次</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">item_click_count</span><span class="p">[:</span><span class="mi">20</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2cfe707c0</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x3648c1580</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_49_1.png" src="../_images/output_2.analysis_37698d_49_1.png" />
-</div>
+</figure>
 <p>可以看出点击次数最多的前20篇新闻，点击次数大于2500。思路：可以定义这些新闻为热门新闻，
 这个也是简单的处理方式，后面我们也是根据点击次数和时间进行文章热度的一个划分。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">item_click_count</span><span class="p">[</span><span class="mi">3500</span><span class="p">:])</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2cfef8700</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x36494d550</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_51_1.png" src="../_images/output_2.analysis_37698d_51_1.png" />
-</div>
+</figure>
 <p>可以发现很多新闻只被点击过一两次。思路：可以定义这些新闻是冷门新闻。</p>
 <p><strong>新闻共现频次：两篇新闻连续出现的次数</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tmp</span> <span class="o">=</span> <span class="n">user_click_merge</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">)</span>
@@ -1748,43 +1749,43 @@ memory usage: 118.8 MB
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">collections</span><span class="o">.</span><span class="n">PathCollection</span> <span class="n">at</span> <span class="mh">0x2cff7bc10</span><span class="o">&gt;</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">collections</span><span class="o">.</span><span class="n">PathCollection</span> <span class="n">at</span> <span class="mh">0x3649cc370</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_55_1.png" src="../_images/output_2.analysis_37698d_55_1.png" />
-</div>
+</figure>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">union_item</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">40000</span><span class="p">:])</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2cff7b430</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x36497f3a0</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_56_1.png" src="../_images/output_2.analysis_37698d_56_1.png" />
-</div>
+</figure>
 <p>大概有70000个pair至少共现一次</p>
 <p><strong>新闻文章信息</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#不同类型的新闻出现的次数</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2a4d2fe50</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x3396716d0</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_58_1.png" src="../_images/output_2.analysis_37698d_58_1.png" />
-</div>
+</figure>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#出现次数比较少的新闻类型, 有些新闻类型，基本上就出现过几次</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">150</span><span class="p">:])</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2cfd77250</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x3395a3670</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_59_1.png" src="../_images/output_2.analysis_37698d_59_1.png" />
-</div>
+</figure>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#新闻字数的描述性统计</span>
 <span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
@@ -1803,23 +1804,23 @@ memory usage: 118.8 MB
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">user_click_merge</span><span class="p">[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2a4c6ddc0</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33960f7c0</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_61_1.png" src="../_images/output_2.analysis_37698d_61_1.png" />
-</div>
+</figure>
 <p><strong>用户点击的新闻类型的偏好</strong></p>
 <p>此特征可以用于度量用户的兴趣是否广泛。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2a496bca0</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33945b520</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_63_1.png" src="../_images/output_2.analysis_37698d_63_1.png" />
-</div>
+</figure>
 <p>从上图中可以看出有一小部分用户阅读类型是极其广泛的，大部分人都处在20个新闻类型以下。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;category_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
@@ -1894,24 +1895,24 @@ memory usage: 118.8 MB
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2a01f9f70</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x334c1a760</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_67_1.png" src="../_images/output_2.analysis_37698d_67_1.png" />
-</div>
+</figure>
 <p>从上图中可以发现有一小部分人看的文章平均词数非常高，也有一小部分人看的平均文章次数非常低。
 大多数人偏好于阅读字数在200-400字之间的新闻。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#挑出大多数人的区间仔细看看</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1000</span><span class="p">:</span><span class="mi">45000</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2a41ed490</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x33917dfa0</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_69_1.png" src="../_images/output_2.analysis_37698d_69_1.png" />
-</div>
+</figure>
 <p>可以发现大多数人都是看250字以下的文章</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#更加详细的参数</span>
 <span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;words_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
@@ -2132,12 +2133,12 @@ memory usage: 118.8 MB
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">mean_diff_click_time</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2a4358490</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x338a8bd60</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_77_1.png" src="../_images/output_2.analysis_37698d_77_1.png" />
-</div>
+</figure>
 <p>从上图可以发现不同用户点击文章的时间差是有差异的。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 前后点击文章的创建时间差的平均值</span>
 <span class="n">mean_diff_created_time</span> <span class="o">=</span> <span class="n">user_click_merge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)[[</span><span class="s1">&#39;click_timestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;created_at_ts&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">mean_diff_time_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;created_at_ts&#39;</span><span class="p">))</span>
@@ -2146,12 +2147,12 @@ memory usage: 118.8 MB
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">mean_diff_created_time</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x2a0369700</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span> <span class="n">at</span> <span class="mh">0x338adbe20</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_80_1.png" src="../_images/output_2.analysis_37698d_80_1.png" />
-</div>
+</figure>
 <p>从图中可以发现用户先后点击文章，文章的创建时间也是有差异的</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 用户前后点击文章的相似性分布</span>
 <span class="n">item_idx_2_rawid_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">item_emb_df</span><span class="p">[</span><span class="s1">&#39;article_id&#39;</span><span class="p">],</span> <span class="n">item_emb_df</span><span class="o">.</span><span class="n">index</span><span class="p">))</span>
@@ -2202,89 +2203,89 @@ memory usage: 118.8 MB
   </thead>
   <tbody>
     <tr>
-      <th>29172</th>
-      <td>238528</td>
-      <td>162655</td>
-      <td>0.002731</td>
+      <th>28976</th>
+      <td>238595</td>
+      <td>166581</td>
+      <td>0.005318</td>
       <td>4</td>
       <td>1</td>
       <td>17</td>
       <td>1</td>
-      <td>16</td>
+      <td>21</td>
       <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>281</td>
-      <td>0.989199</td>
-      <td>245</td>
+      <td>21</td>
+      <td>21</td>
+      <td>289</td>
+      <td>0.989241</td>
+      <td>210</td>
     </tr>
     <tr>
-      <th>72024</th>
-      <td>223168</td>
-      <td>160417</td>
-      <td>0.006003</td>
+      <th>28977</th>
+      <td>238595</td>
+      <td>235715</td>
+      <td>0.005344</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>21</td>
+      <td>2</td>
+      <td>20</td>
+      <td>21</td>
+      <td>375</td>
+      <td>0.989179</td>
+      <td>170</td>
+    </tr>
+    <tr>
+      <th>28978</th>
+      <td>238595</td>
+      <td>199198</td>
+      <td>0.005353</td>
+      <td>4</td>
+      <td>1</td>
+      <td>17</td>
+      <td>1</td>
+      <td>21</td>
+      <td>2</td>
+      <td>19</td>
+      <td>21</td>
+      <td>323</td>
+      <td>0.989226</td>
+      <td>221</td>
+    </tr>
+    <tr>
+      <th>82740</th>
+      <td>219181</td>
+      <td>64329</td>
+      <td>0.007078</td>
       <td>4</td>
       <td>3</td>
-      <td>2</td>
+      <td>20</td>
       <td>1</td>
-      <td>8</td>
+      <td>24</td>
       <td>2</td>
-      <td>19</td>
-      <td>19</td>
-      <td>281</td>
-      <td>0.989178</td>
-      <td>173</td>
+      <td>34</td>
+      <td>34</td>
+      <td>134</td>
+      <td>0.989259</td>
+      <td>199</td>
     </tr>
     <tr>
-      <th>72025</th>
-      <td>223168</td>
+      <th>82741</th>
+      <td>219181</td>
       <td>272143</td>
-      <td>0.006114</td>
+      <td>0.007223</td>
       <td>4</td>
       <td>3</td>
-      <td>2</td>
+      <td>20</td>
       <td>1</td>
-      <td>8</td>
+      <td>24</td>
       <td>2</td>
-      <td>18</td>
-      <td>19</td>
+      <td>33</td>
+      <td>34</td>
       <td>399</td>
       <td>0.989235</td>
       <td>184</td>
-    </tr>
-    <tr>
-      <th>72026</th>
-      <td>223168</td>
-      <td>254489</td>
-      <td>0.006133</td>
-      <td>4</td>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
-      <td>8</td>
-      <td>1</td>
-      <td>17</td>
-      <td>19</td>
-      <td>389</td>
-      <td>0.989168</td>
-      <td>185</td>
-    </tr>
-    <tr>
-      <th>72027</th>
-      <td>223168</td>
-      <td>96960</td>
-      <td>0.006198</td>
-      <td>4</td>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
-      <td>8</td>
-      <td>1</td>
-      <td>16</td>
-      <td>19</td>
-      <td>209</td>
-      <td>0.989177</td>
-      <td>208</td>
     </tr>
   </tbody>
 </table>
@@ -2304,12 +2305,12 @@ memory usage: 118.8 MB
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">item_sim_list</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="../_images/output_2.analysis_37698d_85_0.png" src="../_images/output_2.analysis_37698d_85_0.png" />
-</div>
+</figure>
 <p>从图中可以看出有些用户前后看的商品的相似度波动比较大，有些波动比较小，也是有一定的区分度的。</p>
-</div>
-<div class="section" id="id7">
+</section>
+<section id="id7">
 <h2><span class="section-number">6.3.6. </span>总结<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
 <p>通过数据分析的过程， 我们目前可以得到以下几点重要的信息，
 这个对于我们进行后面的特征制作和分析非常有帮助：</p>
@@ -2329,8 +2330,8 @@ memory usage: 118.8 MB
 </ol>
 <p>所以根据上面的一些分析，可以更好的帮助我们后面做好特征工程，
 充分挖掘数据的隐含信息。</p>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>

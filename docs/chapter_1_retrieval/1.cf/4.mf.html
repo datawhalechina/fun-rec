@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -350,19 +351,23 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="matrix-factorization">
+  <section id="matrix-factorization">
 <span id="id1"></span><h1><span class="section-number">2.1.5. </span>矩阵分解<a class="headerlink" href="#matrix-factorization" title="Permalink to this heading">¶</a></h1>
 <p>在推荐系统中，我们经常观察到这样的规律：喜欢《理智与情感》的用户往往也会给《公主日记》好评，而钟爱《致命武器》的观众通常也喜欢《独立日》。这反映了用户偏好的内在结构——一些隐含的“品味因子”在起作用。比如有些用户偏好面向女性的影片，有些则更喜欢面向男性的内容；有些人倾向于严肃深刻的作品如《阿马迪斯》，有些人则更享受轻松娱乐的片子如《阿呆与阿瓜》。</p>
 <p>在前面的章节中，我们了解了UserCF和ItemCF这些基于邻域的协同过滤方法。它们的思路很直观：通过寻找相似的用户或物品来进行推荐，就像
 <a class="reference internal" href="#mf-usercf-illustration"><span class="std std-numref">图2.1.6</span></a> 展示的那样。</p>
-<div class="figure align-default" id="id5">
-<span id="mf-usercf-illustration"></span><img alt="../../_images/mf_usercf_illustration.svg" src="../../_images/mf_usercf_illustration.svg" /><p class="caption"><span class="caption-number">图2.1.6 </span><span class="caption-text">基于用户行为统计的方法。张三喜欢左边的三部电影。为了对他进行预测，系统会找到也喜欢这些电影的相似用户，然后确定他们还喜欢哪些其他电影。在这种情况下，所有三位用户都喜欢《拯救大兵瑞恩》，因此这是首个推荐。接着，其中两位用户喜欢《沙丘》，所以它排在第二位，依此类推。</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
+<figure class="align-default" id="id5">
+<span id="mf-usercf-illustration"></span><img alt="../../_images/mf_usercf_illustration.svg" src="../../_images/mf_usercf_illustration.svg" /><figcaption>
+<p><span class="caption-number">图2.1.6 </span><span class="caption-text">基于用户行为统计的方法。张三喜欢左边的三部电影。为了对他进行预测，系统会找到也喜欢这些电影的相似用户，然后确定他们还喜欢哪些其他电影。在这种情况下，所有三位用户都喜欢《拯救大兵瑞恩》，因此这是首个推荐。接着，其中两位用户喜欢《沙丘》，所以它排在第二位，依此类推。</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>但这种方法有个致命弱点：当评分数据非常稀疏时，很难找到足够的相似用户或物品。想想看，在一个有百万用户和十万电影的系统中，大部分用户只看过其中几十部电影，传统方法很可能因为共同评分太少而失效。</p>
 <p>这时候，矩阵分解登场了。它不再直接寻找相似性，而是换了个思路：假设用户的偏好和电影的特征都可以用几个关键因子来描述。比如，我们可以用“面向男性vs面向女性”和“严肃vs逃避现实”这两个维度来刻画电影，同时用用户对这两类特征的偏好程度来描述用户。这样，预测一个用户对某部电影的评分就变成了计算这两个向量的相似度。</p>
-<div class="figure align-default" id="id6">
-<span id="mf-illustration"></span><img alt="../../_images/mf_illustration.svg" src="../../_images/mf_illustration.svg" /><p class="caption"><span class="caption-number">图2.1.7 </span><span class="caption-text">隐语义模型意图，该方法通过两个维度来刻画用户和电影：一个是面向男性与面向女性，另一个是严肃与逃避现实。</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
+<figure class="align-default" id="id6">
+<span id="mf-illustration"></span><img alt="../../_images/mf_illustration.svg" src="../../_images/mf_illustration.svg" /><figcaption>
+<p><span class="caption-number">图2.1.7 </span><span class="caption-text">隐语义模型意图，该方法通过两个维度来刻画用户和电影：一个是面向男性与面向女性，另一个是严肃与逃避现实。</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>矩阵分解的核心想法建立在两个关键假设上：</p>
 <ul class="simple">
 <li><p>第一个是低秩假设：虽然评分矩阵看起来很复杂，但实际上可能只受少数几个隐含因素影响，比如“面向男性vs面向女性”、“严肃vs逃避现实”等维度。</p></li>
@@ -370,7 +375,7 @@ Show Source
 </ul>
 <p>这种做法的好处是显而易见的：即使两个用户没有看过相同的电影，只要他们在隐含因子上表现相似，我们就能为他们推荐相似的内容。这大大提高了模型处理稀疏数据的能力。</p>
 <p>接下来我们看看如何把这个想法变成具体的算法。我们将介绍两种矩阵分解模型：简单直接的<strong>基础模型</strong>（FunkSVD）和考虑评分偏差的<strong>改进模型</strong>（BiasSVD）。</p>
-<div class="section" id="funksvd">
+<section id="funksvd">
 <h2><span class="section-number">2.1.5.1. </span>FunkSVD: 基础模型<a class="headerlink" href="#funksvd" title="Permalink to this heading">¶</a></h2>
 <p>FunkSVD 由 Simon Funk 在2006年提出
 <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id10" title="Funk, S. (2006). Netflix update: try this at home. Blog. URL: https://sifter.org/simon/journal/20061211.html">Funk, 2006</a>)</span>，是矩阵分解家族中最容易理解的一个。它的想法非常直接：把复杂的用户-物品评分矩阵分解成两个简单的矩阵——用户特征矩阵和物品特征矩阵。</p>
@@ -392,8 +397,8 @@ Show Source
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-4-mf-4">
 <span class="eqno">(2.1.24)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-4-mf-4" title="Permalink to this equation">¶</a></span>\[\min_{P,Q} \frac{1}{2} \sum_{(u,i)\in \mathcal{K}} \left( r_{ui} - p_u^T q_i \right)^2 + \lambda \left( \|p_u\|^2 + \|q_i\|^2 \right)\]</div>
 <p>这样可以避免模型过度拟合训练数据，提高在新数据上的表现。</p>
-</div>
-<div class="section" id="biassvd">
+</section>
+<section id="biassvd">
 <h2><span class="section-number">2.1.5.2. </span>BiasSVD: 改进模型<a class="headerlink" href="#biassvd" title="Permalink to this heading">¶</a></h2>
 <p>基础模型虽然简洁，但在实际使用中我们发现了一个问题：不同用户的评分习惯差异很大。有些用户天生就是“好人”，很少给低分；有些用户则比较严格，平均分都不高。同样，有些电影因为制作精良或者明星云集，普遍得到较高评分；而有些冷门或质量一般的电影则评分偏低。</p>
 <p>这些系统性的偏差如果不处理，会影响推荐的准确性。BiasSVD
@@ -411,8 +416,8 @@ Show Source
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-4-mf-8">
 <span class="eqno">(2.1.28)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-4-mf-8" title="Permalink to this equation">¶</a></span>\[b_i \leftarrow b_i + \eta \left( e_{ui} - \lambda b_i \right)\]</div>
 <p>这种改进看似简单，但效果显著。通过分离出系统性偏差，模型能够更准确地捕捉用户和物品之间的真实交互模式，从而提供更精准的推荐。</p>
-</div>
-<div class="section" id="id4">
+</section>
+<section id="id4">
 <h2><span class="section-number">2.1.5.3. </span>代码实践<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
 <p>FunkSVD 在 MovieLens 数据集上的应用</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -441,7 +446,7 @@ Show Source
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0048</span> <span class="o">|</span>        <span class="mf">0.002</span> <span class="o">|</span>     <span class="mf">0.002</span> <span class="o">|</span>   <span class="mf">0.0011</span> <span class="o">|</span>         <span class="mf">0.0005</span> <span class="o">|</span>        <span class="mf">0.0004</span> <span class="o">|</span>
+<span class="o">|</span>             <span class="mi">0</span> <span class="o">|</span>            <span class="mi">0</span> <span class="o">|</span>         <span class="mi">0</span> <span class="o">|</span>        <span class="mi">0</span> <span class="o">|</span>              <span class="mi">0</span> <span class="o">|</span>             <span class="mi">0</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -466,12 +471,12 @@ Show Source
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0003</span> <span class="o">|</span>       <span class="mf">0.0003</span> <span class="o">|</span>    <span class="mf">0.0003</span> <span class="o">|</span>   <span class="mf">0.0003</span> <span class="o">|</span>              <span class="mi">0</span> <span class="o">|</span>        <span class="mf">0.0001</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0028</span> <span class="o">|</span>       <span class="mf">0.0018</span> <span class="o">|</span>    <span class="mf">0.0016</span> <span class="o">|</span>   <span class="mf">0.0013</span> <span class="o">|</span>         <span class="mf">0.0003</span> <span class="o">|</span>        <span class="mf">0.0004</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>

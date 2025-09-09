@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -350,7 +351,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="multi-loss-optim">
+  <section id="multi-loss-optim">
 <span id="id1"></span><h1><span class="section-number">3.5.4. </span>多目标损失融合<a class="headerlink" href="#multi-loss-optim" title="Permalink to this heading">¶</a></h1>
 <p>多目标往往伴随着多个损失的联合优化，这类优化方法更多的考虑的是在模型结构已经确定的条件下，结合任务的特点对模型进行训练和参数优化。简单的多目标Loss优化，是通过手工结合业务经验设定不同损失的权重，将多个损失加权为一个进行优化，如下所示：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-4-multi-loss-optim-0">
@@ -363,7 +364,7 @@ Show Source
 <li><p>梯度冲突问题：任务梯度方向不一致时产生抵消效应（如CTR与CTR任务梯度夹角&gt;90°）</p></li>
 </ul>
 <p>下面系统解析三大主流优化方法，包含理论框架、实现机制与工程实践。</p>
-<div class="section" id="uncertainty-weight">
+<section id="uncertainty-weight">
 <h2><span class="section-number">3.5.4.1. </span>Uncertainty Weight：基于不确定性的自适应加权<a class="headerlink" href="#uncertainty-weight" title="Permalink to this heading">¶</a></h2>
 <p>基于不确定性加权损失（Uncertainty Weighted Loss,
 UWL）。UWL的核心思想是根据任务的不确定性动态调整权重，具体来说，任务的损失越大，分配的权重越小。论文指出，在任务训练过程中存在两种不确定性：一种是认知不确定性（epistemic
@@ -373,8 +374,8 @@ uncertainty），源于数据本身或任务本身的特性。
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-4-multi-loss-optim-1">
 <span class="eqno">(3.5.16)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-4-multi-loss-optim-1" title="Permalink to this equation">¶</a></span>\[Loss = \approx \frac{1}{2\sigma_1^2} \mathcal{L}_1(\mathbf{W}) + \frac{1}{\sigma_2^2} \mathcal{L}_2(\mathbf{W}) + \log \sigma_1 + \log \sigma_2\]</div>
 <p>其中，<span class="math notranslate nohighlight">\(\sigma\)</span>表示的是任务的不确定性(uncertainty),是可学习的参数。从公式可以看出，当loss较大且<span class="math notranslate nohighlight">\(\sigma\)</span>较小时，<span class="math notranslate nohighlight">\(\frac{1}{2\sigma^2} \mathcal{L}(\mathbf{W})\)</span>会很大，损失函数在优化的时候就会将其往小了优化。可以直观的理解为，模型不会让任务往不确定性较大的方向大幅更新参数。</p>
-</div>
-<div class="section" id="gradnorm">
+</section>
+<section id="gradnorm">
 <h2><span class="section-number">3.5.4.2. </span>GradNorm：梯度标准化方法<a class="headerlink" href="#gradnorm" title="Permalink to this heading">¶</a></h2>
 <p>在多任务优化的过程中，不同的任务loss的量级是不一样的，这样带来的问题就是loss大的任务梯度更新的幅度也会更大，进而导致模型在学习的过程中被loss大的任务主导带偏整个模型。此外，不同的任务由于数据分布的原因，loss的收敛速度也是不同的。为了同时考虑loss的量级和训练的速度。GradNorm在模型优化过程中除了正常的任务loss外，还引入了一个gradient
 loss，该loss通过梯度下降的方式来更新不同任务的loss权重。并且这两个loss是单独优化的，而不是简单的相加得到一个loss去综合优化。</p>
@@ -395,8 +396,8 @@ loss之前，我们先来看一下如何定义梯度的量级和loss的学习速
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-4-multi-loss-optim-6">
 <span class="eqno">(3.5.21)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-4-multi-loss-optim-6" title="Permalink to this equation">¶</a></span>\[L_{\text{grad}}(t; w_i(t)) = \sum_i \left| G_W^{(i)}(t) - \overline{G}_W(t) \times [r_i(t)]^\alpha \right|_1\]</div>
 <p>梯度损失函数综合了上述定义的梯度量级和学习速度，直观理解就是当某个loss的梯度非常大时，该loss的值也会较大进而会将该loss的权重降的更小，避免了梯度大的loss主导了模型的学习。同理当某个任务学习的速度较快时，即<span class="math notranslate nohighlight">\(r_i(t)\)</span>较小，梯度loss也会变得更大，进而使得该loss的权重会变得更小，阻止某个任务过快的收敛。</p>
-</div>
-<div class="section" id="pareto-optimization">
+</section>
+<section id="pareto-optimization">
 <h2><span class="section-number">3.5.4.3. </span>Pareto Optimization：帕累托优化框架<a class="headerlink" href="#pareto-optimization" title="Permalink to this heading">¶</a></h2>
 <p>在多任务学习中，当不同任务的梯度方向存在根本性冲突时（即优化任务A必然损害任务B），我们面临帕累托边界优化问题。传统加权平均方法在此场景下失效，需要专门的优化框架寻找帕累托最优解集：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-4-multi-loss-optim-7">
@@ -438,8 +439,8 @@ loss之前，我们先来看一下如何定义梯度的量级和loss的学习速
 </li>
 </ol>
 <p>PE-LTR的核心贡献在于将多目标优化的帕累托条件转化为权重学习的二次规划问题，通过交替更新模型参数与损失权重，引导模型收敛至帕累托前沿。</p>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>

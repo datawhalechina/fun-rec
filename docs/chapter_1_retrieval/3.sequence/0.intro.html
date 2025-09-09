@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -349,7 +350,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="id1">
+  <section id="id1">
 <h1><span class="section-number">2.3.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>在前面的章节中，我们学习了协同过滤和向量召回的方法。这些方法通常将用户的历史行为汇总成一个静态的表示（比如一个向量），然后基于这个表示进行推荐。但是，用户的行为其实是有时间顺序的，而且这个顺序往往包含了重要的信息。</p>
 <p>比如，一个用户先浏览了跑鞋，然后看了运动服，接着又看了健身器材，这个顺序告诉我们这个用户可能对健身运动感兴趣。如果我们只是简单地把这些行为加起来或者平均，就丢失了这种时间顺序的信息。</p>
@@ -361,7 +362,7 @@ Show Source
 <p>第二种思路是把推荐看作序列预测问题
 (<a class="reference internal" href="2.generateive_recall.html#generateive-recall"><span class="std std-numref">2.3.3节</span></a>)。就像语言模型预测下一个词一样，这种方法直接预测用户下一个可能感兴趣的物品。SASRec是这种方法的代表，它借鉴了自然语言处理中的Transformer模型。在此基础上，HSTU模型考虑了更多的特征信息，而TIGER模型则改进了物品的表示方法。</p>
 <p>在本章中，我们将详细介绍这些序列召回的方法，看看它们是如何利用时间顺序信息来提高推荐效果的。</p>
-</div>
+</section>
 
 
         </div>

@@ -1676,7 +1676,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2cfbfd250>]
+    [<matplotlib.lines.Line2D at 0x33fceff40>]
 
 
 
@@ -1705,7 +1705,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2a4de3a00>]
+    [<matplotlib.lines.Line2D at 0x339580f70>]
 
 
 
@@ -1735,7 +1735,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2cfc2d5e0>]
+    [<matplotlib.lines.Line2D at 0x338f5a7c0>]
 
 
 
@@ -1773,7 +1773,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2cfd23d90>]
+    [<matplotlib.lines.Line2D at 0x33fe69310>]
 
 
 
@@ -1799,7 +1799,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2cfdeff40>]
+    [<matplotlib.lines.Line2D at 0x33feebca0>]
 
 
 
@@ -1827,7 +1827,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2cfe707c0>]
+    [<matplotlib.lines.Line2D at 0x3648c1580>]
 
 
 
@@ -1856,7 +1856,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2cfef8700>]
+    [<matplotlib.lines.Line2D at 0x36494d550>]
 
 
 
@@ -1969,7 +1969,7 @@
 .. parsed-literal::
     :class: output
 
-    <matplotlib.collections.PathCollection at 0x2cff7bc10>
+    <matplotlib.collections.PathCollection at 0x3649cc370>
 
 
 
@@ -1995,7 +1995,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2cff7b430>]
+    [<matplotlib.lines.Line2D at 0x36497f3a0>]
 
 
 
@@ -2026,7 +2026,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2a4d2fe50>]
+    [<matplotlib.lines.Line2D at 0x3396716d0>]
 
 
 
@@ -2053,7 +2053,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2cfd77250>]
+    [<matplotlib.lines.Line2D at 0x3395a3670>]
 
 
 
@@ -2110,7 +2110,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2a4c6ddc0>]
+    [<matplotlib.lines.Line2D at 0x33960f7c0>]
 
 
 
@@ -2140,7 +2140,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2a496bca0>]
+    [<matplotlib.lines.Line2D at 0x33945b520>]
 
 
 
@@ -2254,7 +2254,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2a01f9f70>]
+    [<matplotlib.lines.Line2D at 0x334c1a760>]
 
 
 
@@ -2284,7 +2284,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2a41ed490>]
+    [<matplotlib.lines.Line2D at 0x33917dfa0>]
 
 
 
@@ -2572,7 +2572,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2a4358490>]
+    [<matplotlib.lines.Line2D at 0x338a8bd60>]
 
 
 
@@ -2609,7 +2609,7 @@
 .. parsed-literal::
     :class: output
 
-    [<matplotlib.lines.Line2D at 0x2a0369700>]
+    [<matplotlib.lines.Line2D at 0x338adbe20>]
 
 
 
@@ -2683,89 +2683,89 @@
       </thead>
       <tbody>
         <tr>
-          <th>29172</th>
-          <td>238528</td>
-          <td>162655</td>
-          <td>0.002731</td>
+          <th>28976</th>
+          <td>238595</td>
+          <td>166581</td>
+          <td>0.005318</td>
           <td>4</td>
           <td>1</td>
           <td>17</td>
           <td>1</td>
-          <td>16</td>
+          <td>21</td>
           <td>2</td>
-          <td>1</td>
-          <td>1</td>
-          <td>281</td>
-          <td>0.989199</td>
-          <td>245</td>
+          <td>21</td>
+          <td>21</td>
+          <td>289</td>
+          <td>0.989241</td>
+          <td>210</td>
         </tr>
         <tr>
-          <th>72024</th>
-          <td>223168</td>
-          <td>160417</td>
-          <td>0.006003</td>
+          <th>28977</th>
+          <td>238595</td>
+          <td>235715</td>
+          <td>0.005344</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>21</td>
+          <td>2</td>
+          <td>20</td>
+          <td>21</td>
+          <td>375</td>
+          <td>0.989179</td>
+          <td>170</td>
+        </tr>
+        <tr>
+          <th>28978</th>
+          <td>238595</td>
+          <td>199198</td>
+          <td>0.005353</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>21</td>
+          <td>2</td>
+          <td>19</td>
+          <td>21</td>
+          <td>323</td>
+          <td>0.989226</td>
+          <td>221</td>
+        </tr>
+        <tr>
+          <th>82740</th>
+          <td>219181</td>
+          <td>64329</td>
+          <td>0.007078</td>
           <td>4</td>
           <td>3</td>
-          <td>2</td>
+          <td>20</td>
           <td>1</td>
-          <td>8</td>
+          <td>24</td>
           <td>2</td>
-          <td>19</td>
-          <td>19</td>
-          <td>281</td>
-          <td>0.989178</td>
-          <td>173</td>
+          <td>34</td>
+          <td>34</td>
+          <td>134</td>
+          <td>0.989259</td>
+          <td>199</td>
         </tr>
         <tr>
-          <th>72025</th>
-          <td>223168</td>
+          <th>82741</th>
+          <td>219181</td>
           <td>272143</td>
-          <td>0.006114</td>
+          <td>0.007223</td>
           <td>4</td>
           <td>3</td>
-          <td>2</td>
+          <td>20</td>
           <td>1</td>
-          <td>8</td>
+          <td>24</td>
           <td>2</td>
-          <td>18</td>
-          <td>19</td>
+          <td>33</td>
+          <td>34</td>
           <td>399</td>
           <td>0.989235</td>
           <td>184</td>
-        </tr>
-        <tr>
-          <th>72026</th>
-          <td>223168</td>
-          <td>254489</td>
-          <td>0.006133</td>
-          <td>4</td>
-          <td>3</td>
-          <td>2</td>
-          <td>1</td>
-          <td>8</td>
-          <td>1</td>
-          <td>17</td>
-          <td>19</td>
-          <td>389</td>
-          <td>0.989168</td>
-          <td>185</td>
-        </tr>
-        <tr>
-          <th>72027</th>
-          <td>223168</td>
-          <td>96960</td>
-          <td>0.006198</td>
-          <td>4</td>
-          <td>3</td>
-          <td>2</td>
-          <td>1</td>
-          <td>8</td>
-          <td>1</td>
-          <td>16</td>
-          <td>19</td>
-          <td>209</td>
-          <td>0.989177</td>
-          <td>208</td>
         </tr>
       </tbody>
     </table>
