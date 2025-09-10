@@ -440,7 +440,7 @@ pooling（对应用户-物品交互）。</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0452</span> <span class="o">|</span>       <span class="mf">0.0288</span> <span class="o">|</span>    <span class="mf">0.0223</span> <span class="o">|</span>    <span class="mf">0.017</span> <span class="o">|</span>         <span class="mf">0.0045</span> <span class="o">|</span>        <span class="mf">0.0058</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0012</span> <span class="o">|</span>       <span class="mf">0.0005</span> <span class="o">|</span>    <span class="mf">0.0004</span> <span class="o">|</span>   <span class="mf">0.0002</span> <span class="o">|</span>         <span class="mf">0.0001</span> <span class="o">|</span>        <span class="mf">0.0001</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -452,8 +452,8 @@ pooling（对应用户-物品交互）。</p>
 Structured Semantic Model, DSSM） <span id="id6">(<a class="reference internal" href="../../chapter_references/references.html#id20" title="Huang, P.-S., He, X., Gao, J., Deng, L., Acero, A., &amp; Heck, L. (2013). Learning deep structured semantic models for web search using clickthrough data. Proceedings of the 22nd ACM international conference on Information &amp; Knowledge Management (pp. 2333–2338).">Huang <em>et al.</em>, 2013</a>)</span>
 的出现，将双塔模型的表达能力推向了新的高度——通过深度神经网络替代线性变换，实现了更强的特征学习和表示能力。
 DSSM最初在自然语言处理领域用于文本语义匹配，后来被成功迁移到推荐系统中。其核心思想是通过深度神经网络将用户和物品映射到共同的语义空间中，通过向量间的相似度计算来衡量匹配程度。</p>
-<div class="figure align-default" id="id15">
-<img alt="../../_images/dssm_architecture.svg" src="../../_images/dssm_architecture.svg" /><p class="caption"><span class="caption-number">图2.2.5 </span><span class="caption-text">DSSM双塔架构</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+<div class="figure align-default" id="id16">
+<img alt="../../_images/dssm_architecture.svg" src="../../_images/dssm_architecture.svg" /><p class="caption"><span class="caption-number">图2.2.5 </span><span class="caption-text">DSSM双塔架构</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="id7">
 <h3><span class="section-number">2.2.3.2.1. </span>推荐中的双塔架构<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
@@ -468,8 +468,9 @@ DSSM最初在自然语言处理领域用于文本语义匹配，后来被成功�
 <p>这里<span class="math notranslate nohighlight">\(s(x,y)\)</span>表示用户<span class="math notranslate nohighlight">\(x\)</span>和物品<span class="math notranslate nohighlight">\(y\)</span>的相似度分数，<span class="math notranslate nohighlight">\(P(y|x,\theta)\)</span>表示匹配概率，<span class="math notranslate nohighlight">\(M\)</span>表示整个物料库。由于物料库规模庞大，直接计算这个softmax在计算上不可行，因此实际训练时采用负采样技术，为每个正样本采样一定数量的负样本来近似计算。</p>
 </div>
 <div class="section" id="id9">
-<h3><span class="section-number">2.2.3.2.3. </span>关键的工程细节<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
-<p>DSSM的成功不仅来自架构设计，更源于一些关键的工程技巧：</p>
+<h3><span class="section-number">2.2.3.2.3. </span>双塔模型的细节<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
+<p>除了相对简单的模型结构外，双塔模型在实际应用中的一些关键细节同样值得深入探讨。这些细节往往决定了模型的最终效果，<span id="id10">(<a class="reference internal" href="../../chapter_references/references.html#id24" title="Yi, X., Yang, J., Hong, L., Cheng, D. Z., Heldt, L., Kumthekar, A., … Chi, E. (2019). Sampling-bias-corrected neural modeling for large corpus item recommendations. Proceedings of the 13th ACM conference on recommender systems (pp. 269–277).">Yi <em>et al.</em>, 2019</a>)</span>
+等研究对此进行了分析。</p>
 <p><strong>向量归一化</strong>：对用户塔和物品塔输出的embedding进行L2归一化：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-7">
 <span class="eqno">(2.2.17)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-7" title="Permalink to this equation">¶</a></span>\[u \leftarrow \frac{u}{||u||_2}, \quad v \leftarrow \frac{v}{||v||_2}\]</div>
@@ -483,14 +484,14 @@ DSSM最初在自然语言处理领域用于文本语义匹配，后来被成功�
 <span class="eqno">(2.2.19)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-9" title="Permalink to this equation">¶</a></span>\[s(u,v) = \frac{\langle u,v \rangle}{\tau}\]</div>
 <p>温度系数的引入可以调节softmax分布的“锐利程度”，较小的<span class="math notranslate nohighlight">\(\tau\)</span>使得模型预测更加“确定”，有助于提升训练效果。</p>
 </div>
-<div class="section" id="id10">
-<h3><span class="section-number">2.2.3.2.4. </span>双塔模型的效率与精度权衡<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="id11">
+<h3><span class="section-number">2.2.3.2.4. </span>双塔模型的效率与精度权衡<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
 <p>DSSM在推荐系统中广受欢迎的根本原因在于它在效率和效果之间找到了合适的平衡点。双塔结构使得模型在海量候选数据的召回场景下速度极快，虽然效果可能不是最优的，但通常已经足够满足召回阶段的需求。</p>
 <p>然而，这种设计也带来了固有的局限性。由于用户塔和物品塔相互独立，两侧特征间的交互信息无法得到充分利用。相比之下，精排模型中用户和物品的特征可以在网络的第一层就开始进行细粒度交互，而双塔模型只能在最后的内积计算时才发生交互。这意味着许多有价值的交互信息在经过各自的DNN结构时可能已经被其他特征所混淆，这是双塔架构天然存在的精度损失。</p>
 <p>正是这种权衡关系，使得DSSM成为了召回阶段的经典选择——它用可控的精度损失换取了显著的效率提升，为后续更复杂的排序模型留出了计算资源和优化空间。</p>
 </div>
-<div class="section" id="id11">
-<h3><span class="section-number">2.2.3.2.5. </span>代码实践<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="id12">
+<h3><span class="section-number">2.2.3.2.5. </span>代码实践<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
 <p>现在我们构建、训练和评估DSSM模型：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;dssm&#39;</span><span class="p">)</span>
 
@@ -512,7 +513,7 @@ DSSM最初在自然语言处理领域用于文本语义匹配，后来被成功�
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0389</span> <span class="o">|</span>       <span class="mf">0.0076</span> <span class="o">|</span>    <span class="mf">0.0169</span> <span class="o">|</span>   <span class="mf">0.0058</span> <span class="o">|</span>         <span class="mf">0.0039</span> <span class="o">|</span>        <span class="mf">0.0015</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.046</span> <span class="o">|</span>       <span class="mf">0.0098</span> <span class="o">|</span>    <span class="mf">0.0161</span> <span class="o">|</span>    <span class="mf">0.005</span> <span class="o">|</span>         <span class="mf">0.0046</span> <span class="o">|</span>         <span class="mf">0.002</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -520,11 +521,11 @@ DSSM最初在自然语言处理领域用于文本语义匹配，后来被成功�
 </div>
 <div class="section" id="youtubednn">
 <h2><span class="section-number">2.2.3.3. </span>YouTubeDNN：从匹配到预测用户下一行为<a class="headerlink" href="#youtubednn" title="Permalink to this heading">¶</a></h2>
-<p>YouTube深度神经网络推荐系统 <span id="id12">(<a class="reference internal" href="../../chapter_references/references.html#id28" title="Covington, P., Adams, J., &amp; Sargin, E. (2016). Deep neural networks for youtube recommendations. Proceedings of the 10th ACM conference on recommender systems (pp. 191–198).">Covington <em>et al.</em>, 2016</a>)</span>
+<p>YouTube深度神经网络推荐系统 <span id="id13">(<a class="reference internal" href="../../chapter_references/references.html#id28" title="Covington, P., Adams, J., &amp; Sargin, E. (2016). Deep neural networks for youtube recommendations. Proceedings of the 10th ACM conference on recommender systems (pp. 191–198).">Covington <em>et al.</em>, 2016</a>)</span>
 代表了双塔模型演进的一个重要里程碑。YouTubeDNN在架构上延续了双塔设计，但引入了一个关键的思想转变：将召回任务重新定义为“预测用户下一个会观看的视频”。</p>
-<div class="figure align-default" id="id16">
+<div class="figure align-default" id="id17">
 <img alt="../../_images/youtubednn_candidate.png" src="../../_images/youtubednn_candidate.png" />
-<p class="caption"><span class="caption-number">图2.2.6 </span><span class="caption-text">YouTubeDNN候选生成模型架构</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">图2.2.6 </span><span class="caption-text">YouTubeDNN候选生成模型架构</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
 </div>
 <p>YouTubeDNN采用了“非对称”的双塔架构：用户塔集成了观看历史、搜索历史、人口统计学特征等多模态信息，用户观看的视频ID通过嵌入层映射后进行平均池化聚合，模型还引入了“Example
 Age”特征来建模内容新鲜度的影响；物品塔则相对简化，本质上是一个巨大的嵌入矩阵，每个视频对应一个可学习的向量，避免了复杂的物品特征工程。</p>
@@ -534,21 +535,21 @@ token预测，可以自然地建模为一个极端多分类问题：</p>
 <span class="eqno">(2.2.20)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-10" title="Permalink to this equation">¶</a></span>\[P(w_t=i|U,C) = \frac{e^{v_i \cdot u}}{\sum_{j \in V} e^{v_j \cdot u}}\]</div>
 <p>这里<span class="math notranslate nohighlight">\(w_t\)</span>表示用户在时间<span class="math notranslate nohighlight">\(t\)</span>观看的视频，<span class="math notranslate nohighlight">\(U\)</span>是用户特征，<span class="math notranslate nohighlight">\(C\)</span>是上下文信息，<span class="math notranslate nohighlight">\(V\)</span>是整个视频库。由于视频库规模庞大，直接计算全量softmax不可行，因此采用sampled
 softmax进行高效训练。</p>
-<div class="section" id="id13">
-<h3><span class="section-number">2.2.3.3.1. </span>关键的工程技巧<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h3>
+<div class="section" id="id14">
+<h3><span class="section-number">2.2.3.3.1. </span>关键的工程技巧<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h3>
 <p>YouTubeDNN的成功不仅来自于模型设计，更来自于一系列精心设计的工程技巧：</p>
 <p><strong>非对称的时序分割</strong>：传统协同过滤通常随机保留验证项目，但这种做法存在未来信息泄露问题。视频消费具有明显的不对称模式——剧集通常按顺序观看，用户往往从热门内容开始逐步深入小众领域。因此，YouTubeDNN采用时序分割策略：对于作为预测目标的用户观看记录，只使用该目标之前的历史行为作为输入特征。这种“回滚”机制更符合真实的推荐场景。</p>
-<div class="figure align-default" id="id17">
+<div class="figure align-default" id="id18">
 <img alt="../../_images/youtubednn_temporal_split.png" src="../../_images/youtubednn_temporal_split.png" />
-<p class="caption"><span class="caption-number">图2.2.7 </span><span class="caption-text">非对称共同观看模式</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">图2.2.7 </span><span class="caption-text">非对称共同观看模式</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
 </div>
 <p><strong>负采样策略</strong>：为了高效处理数百万类别的softmax，模型采用重要性采样技术，每次只对数千个负样本进行计算，将训练速度提升了100多倍。</p>
 <p><strong>用户样本均衡</strong>：为每个用户生成固定数量的训练样本，避免高活跃用户主导模型学习。这个看似简单的技巧，对提升长尾用户的推荐效果至关重要。</p>
 <p>YouTubeDNN的成功在于建立了一套可扩展、可工程化的推荐系统范式——训练时使用复杂的多分类目标和丰富的用户特征，服务时通过预计算物品向量和实时计算用户向量，配合高效的ANN检索完成召回。这种设计实现了训练复杂度和服务效率的有效平衡，至今仍被广泛借鉴。</p>
 </div>
 </div>
-<div class="section" id="id14">
-<h2><span class="section-number">2.2.3.4. </span>代码实践<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h2>
+<div class="section" id="id15">
+<h2><span class="section-number">2.2.3.4. </span>代码实践<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h2>
 <p>构建、训练和评估YouTubeDNN模型：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;youtubednn&#39;</span><span class="p">)</span>
 
@@ -570,7 +571,7 @@ softmax进行高效训练。</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0414</span> <span class="o">|</span>       <span class="mf">0.0101</span> <span class="o">|</span>    <span class="mf">0.0145</span> <span class="o">|</span>   <span class="mf">0.0047</span> <span class="o">|</span>         <span class="mf">0.0041</span> <span class="o">|</span>         <span class="mf">0.002</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0224</span> <span class="o">|</span>       <span class="mf">0.0061</span> <span class="o">|</span>    <span class="mf">0.0084</span> <span class="o">|</span>   <span class="mf">0.0033</span> <span class="o">|</span>         <span class="mf">0.0022</span> <span class="o">|</span>        <span class="mf">0.0012</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -596,16 +597,16 @@ softmax进行高效训练。</p>
 <li><a class="reference internal" href="#dssm">2.2.3.2. DSSM：深度结构化语义模型的双塔实现</a><ul>
 <li><a class="reference internal" href="#id7">2.2.3.2.1. 推荐中的双塔架构</a></li>
 <li><a class="reference internal" href="#id8">2.2.3.2.2. 多分类训练范式</a></li>
-<li><a class="reference internal" href="#id9">2.2.3.2.3. 关键的工程细节</a></li>
-<li><a class="reference internal" href="#id10">2.2.3.2.4. 双塔模型的效率与精度权衡</a></li>
-<li><a class="reference internal" href="#id11">2.2.3.2.5. 代码实践</a></li>
+<li><a class="reference internal" href="#id9">2.2.3.2.3. 双塔模型的细节</a></li>
+<li><a class="reference internal" href="#id11">2.2.3.2.4. 双塔模型的效率与精度权衡</a></li>
+<li><a class="reference internal" href="#id12">2.2.3.2.5. 代码实践</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#youtubednn">2.2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a><ul>
-<li><a class="reference internal" href="#id13">2.2.3.3.1. 关键的工程技巧</a></li>
+<li><a class="reference internal" href="#id14">2.2.3.3.1. 关键的工程技巧</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id14">2.2.3.4. 代码实践</a></li>
+<li><a class="reference internal" href="#id15">2.2.3.4. 代码实践</a></li>
 </ul>
 </li>
 </ul>
