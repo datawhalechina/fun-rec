@@ -352,13 +352,13 @@ Show Source
         
   <div class="section" id="itemcf">
 <span id="id1"></span><h1><span class="section-number">2.1.3. </span>基于物品的协同过滤<a class="headerlink" href="#itemcf" title="Permalink to this heading">¶</a></h1>
-<p>当你在购物网站上买了一件T恤后，系统往往会推荐卫衣等其他服装。这背后的逻辑很直观：既然你喜欢这件T恤，那么与它相似的其他服装可能也符合你的品味。这就是基于物品的协同过滤（ItemCF）的核心思想
+<p>当你在购物网站上买了一件T恤后，系统往往会推荐夹克等其他服装。这背后的逻辑很直观：既然你喜欢这件T恤，那么与它相似的其他服装可能也符合你的品味。这就是基于物品的协同过滤（ItemCF）的核心思想
 <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id6" title="Linden, G., Smith, B., &amp; York, J. (2003). Amazon.com recommendations: item-to-item collaborative filtering. IEEE Internet computing, 7(1), 76–80.">Linden <em>et al.</em>, 2003</a>)</span>。</p>
 <p>与前面介绍的UserCF不同，ItemCF换了一个角度来思考推荐问题。它不再寻找“和你相似的用户还喜欢什么”，而是关注“和你喜欢的物品相似的还有什么”。这种思路建立在一个简单的假设上：用户的兴趣具有一定的连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。</p>
 <div class="figure align-default" id="id6">
 <img alt="../../_images/itemcf_illustration.svg" src="../../_images/itemcf_illustration.svg" /><p class="caption"><span class="caption-number">图2.1.2 </span><span class="caption-text">ItemCF 原理示意图</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
-<p>从上图可以看到，当我们要给左方用户推荐物品时，ItemCF会分析T恤和卫衣之间的相似性。由于右方两个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么卫衣就成为了一个不错的推荐选择。</p>
+<p>从上图可以看到，当我们要给左方用户推荐物品时，ItemCF会分析T恤和夹克之间的相似性。由于右方两个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么夹克就成为了一个不错的推荐选择。</p>
 <p>ItemCF的实现流程主要包含以下两个步骤：</p>
 <p><strong>第一步：物品相似度计算</strong></p>
 <p>要实现ItemCF，首先需要量化物品之间的相似程度。在大多数实际应用场景中，我们通常只有用户是否对物品有过交互行为的数据（如点击、购买、收藏等），而没有具体的评分信息。</p>
