@@ -295,90 +295,93 @@ DPP：行列式点过程
 
 其中，\ :math:`\langle \mathbf{f}_i, \mathbf{f}_j \rangle`\ 表示物品\ :math:`i`\ 和物品\ :math:`j`\ 的内积，即相似度得分\ :math:`S_{ij}`\ 。因此，核矩阵\ :math:`L`\ 可以进一步表示为：\ :math:`\mathbf{L} = \text{Diag}(\mathbf{r}) \cdot \mathbf{S} \cdot \text{Diag}(\mathbf{r})`\ ，即分别对相似性矩阵的每一行和每一列分别乘以\ :math:`r_i`\ 。
 
-   在公式推导之前，我们看一个核矩阵的详细构造过程，假设我们有 3
-   个物品，它们之间的相似度矩阵 :math:`S` 如下：
+在公式推导之前，我们看一个核矩阵的详细构造过程，假设我们有 3
+个物品，它们之间的相似度矩阵 :math:`S` 如下：
 
-   .. math::
-
-
-      S = \begin{bmatrix}
-      1 & 0.8 & 0.2 \\
-      0.8 & 1 & 0.6 \\
-      0.2 & 0.6 & 1
-      \end{bmatrix}
-
-   相关性向量 :math:`r` ：
-
-   .. math::
+.. math::
 
 
-      r = \begin{bmatrix}
-      0.9 \\
-      0.7 \\
-      0.5
-      \end{bmatrix}
+   S = \begin{bmatrix}
+   1 & 0.8 & 0.2 \\
+   0.8 & 1 & 0.6 \\
+   0.2 & 0.6 & 1
+   \end{bmatrix}
 
-   构建对角阵：
+相关性向量 :math:`r` ：
 
-   .. math::
-
-
-      \text{Diag}(r) = \begin{bmatrix}
-      0.9 & 0 & 0 \\
-      0 & 0.7 & 0 \\
-      0 & 0 & 0.5
-      \end{bmatrix}
-
-   计算核矩阵：
-
-   .. math::
+.. math::
 
 
-      L = \text{Diag}(r) \cdot S \cdot \text{Diag}(r)
+   r = \begin{bmatrix}
+   0.9 \\
+   0.7 \\
+   0.5
+   \end{bmatrix}
 
-   首先计算\ :math:`\text{Diag}(r) \cdot S`
+构建对角阵：
 
-   .. math::
-
-
-      \text{Diag}(r) \cdot S = \begin{bmatrix}
-      0.9 & 0 & 0 \\
-      0 & 0.7 & 0 \\
-      0 & 0 & 0.5
-      \end{bmatrix}
-      \begin{bmatrix}
-      1 & 0.8 & 0.2 \\
-      0.8 & 1 & 0.6 \\
-      0.2 & 0.6 & 1
-      \end{bmatrix}
-      =
-      \begin{bmatrix}
-      0.9 & 0.72 & 0.18 \\
-      0.56 & 0.7 & 0.42 \\
-      0.1 & 0.3 & 0.5
-      \end{bmatrix}
-
-   然后计算 :math:`(\text{Diag}(r) \cdot S) \cdot \text{Diag}(r)`\ ：
-
-   .. math::
+.. math::
 
 
-      (\text{Diag}(r) \cdot S) \cdot \text{Diag}(r) = \begin{bmatrix}
-      0.9 & 0.72 & 0.18 \\
-      0.56 & 0.7 & 0.42 \\
-      0.1 & 0.3 & 0.5
-      \end{bmatrix}
-      \begin{bmatrix}
-      0.9 & 0 & 0 \\
-      0 & 0.7 & 0 \\
-      0 & 0 & 0.5
-      \end{bmatrix}
-      =
-      \begin{bmatrix}
-      0.81 & 0.504 & 0.09 \\
-      0.504 & 0.49 & 0.21 \\
-      0.09 & 0.21 & 0.25
-      \end{bmatrix}
+   \text{Diag}(r) = \begin{bmatrix}
+   0.9 & 0 & 0 \\
+   0 & 0.7 & 0 \\
+   0 & 0 & 0.5
+   \end{bmatrix}
+
+计算核矩阵：
+
+.. math::
+
+
+   L = \text{Diag}(r) \cdot S \cdot \text{Diag}(r)
+
+首先计算\ :math:`\text{Diag}(r) \cdot S`
+
+.. math::
+
+
+   \begin{aligned}
+   \text{Diag}(r) \cdot S &= \begin{bmatrix}
+   0.9 & 0 & 0 \\
+   0 & 0.7 & 0 \\
+   0 & 0 & 0.5
+   \end{bmatrix}
+   \begin{bmatrix}
+   1 & 0.8 & 0.2 \\
+   0.8 & 1 & 0.6 \\
+   0.2 & 0.6 & 1
+   \end{bmatrix} \\
+   &=
+   \begin{bmatrix}
+   0.9 & 0.72 & 0.18 \\
+   0.56 & 0.7 & 0.42 \\
+   0.1 & 0.3 & 0.5
+   \end{bmatrix}
+   \end{aligned}
+
+然后计算 :math:`(\text{Diag}(r) \cdot S) \cdot \text{Diag}(r)`\ ：
+
+.. math::
+
+
+   \begin{aligned}
+   (\text{Diag}(r) \cdot S) \cdot \text{Diag}(r) &= \begin{bmatrix}
+   0.9 & 0.72 & 0.18 \\
+   0.56 & 0.7 & 0.42 \\
+   0.1 & 0.3 & 0.5
+   \end{bmatrix}
+   \begin{bmatrix}
+   0.9 & 0 & 0 \\
+   0 & 0.7 & 0 \\
+   0 & 0 & 0.5
+   \end{bmatrix} \\
+   &= \begin{bmatrix}
+   0.81 & 0.504 & 0.09 \\
+   0.504 & 0.49 & 0.21 \\
+   0.09 & 0.21 & 0.25
+   \end{bmatrix}
+   \end{aligned}
 
 **构建完核矩阵后，继续上述的公式推导，根据行列式的乘法性质可得到：**
 
@@ -795,6 +798,6 @@ DPP贪心求解算法的代码实现如下：
 
     开始构建核矩阵...
     核矩阵生成完成！
-    算法运行时间: 	2.7148e-02
+    算法运行时间: 	2.7351e-02
     选择了 50 个物品
 

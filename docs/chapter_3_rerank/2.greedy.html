@@ -645,8 +645,7 @@ DPP）。</p>
 <div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-5">
 <span class="eqno">(4.2.6)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-5" title="Permalink to this equation">¶</a></span>\[\mathbf{L}_{ij} = \langle \mathbf{B}_i, \mathbf{B}_j \rangle = \langle r_i \mathbf{f}_i, r_j \mathbf{f}_j \rangle = r_i r_j \langle \mathbf{f}_i, \mathbf{f}_j \rangle.\]</div>
 <p>其中，<span class="math notranslate nohighlight">\(\langle \mathbf{f}_i, \mathbf{f}_j \rangle\)</span>表示物品<span class="math notranslate nohighlight">\(i\)</span>和物品<span class="math notranslate nohighlight">\(j\)</span>的内积，即相似度得分<span class="math notranslate nohighlight">\(S_{ij}\)</span>。因此，核矩阵<span class="math notranslate nohighlight">\(L\)</span>可以进一步表示为：<span class="math notranslate nohighlight">\(\mathbf{L} = \text{Diag}(\mathbf{r}) \cdot \mathbf{S} \cdot \text{Diag}(\mathbf{r})\)</span>，即分别对相似性矩阵的每一行和每一列分别乘以<span class="math notranslate nohighlight">\(r_i\)</span>。</p>
-<blockquote>
-<div><p>在公式推导之前，我们看一个核矩阵的详细构造过程，假设我们有 3
+<p>在公式推导之前，我们看一个核矩阵的详细构造过程，假设我们有 3
 个物品，它们之间的相似度矩阵 <span class="math notranslate nohighlight">\(S\)</span> 如下：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-6">
 <span class="eqno">(4.2.7)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-6" title="Permalink to this equation">¶</a></span>\[\begin{split}S = \begin{bmatrix}
@@ -673,7 +672,8 @@ DPP）。</p>
 <span class="eqno">(4.2.10)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-9" title="Permalink to this equation">¶</a></span>\[L = \text{Diag}(r) \cdot S \cdot \text{Diag}(r)\]</div>
 <p>首先计算<span class="math notranslate nohighlight">\(\text{Diag}(r) \cdot S\)</span></p>
 <div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-10">
-<span class="eqno">(4.2.11)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-10" title="Permalink to this equation">¶</a></span>\[\begin{split}\text{Diag}(r) \cdot S = \begin{bmatrix}
+<span class="eqno">(4.2.11)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-10" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+\text{Diag}(r) \cdot S &amp;= \begin{bmatrix}
 0.9 &amp; 0 &amp; 0 \\
 0 &amp; 0.7 &amp; 0 \\
 0 &amp; 0 &amp; 0.5
@@ -682,16 +682,18 @@ DPP）。</p>
 1 &amp; 0.8 &amp; 0.2 \\
 0.8 &amp; 1 &amp; 0.6 \\
 0.2 &amp; 0.6 &amp; 1
-\end{bmatrix}
-=
+\end{bmatrix} \\
+&amp;=
 \begin{bmatrix}
 0.9 &amp; 0.72 &amp; 0.18 \\
 0.56 &amp; 0.7 &amp; 0.42 \\
 0.1 &amp; 0.3 &amp; 0.5
-\end{bmatrix}\end{split}\]</div>
+\end{bmatrix}
+\end{aligned}\end{split}\]</div>
 <p>然后计算 <span class="math notranslate nohighlight">\((\text{Diag}(r) \cdot S) \cdot \text{Diag}(r)\)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-11">
-<span class="eqno">(4.2.12)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-11" title="Permalink to this equation">¶</a></span>\[\begin{split}(\text{Diag}(r) \cdot S) \cdot \text{Diag}(r) = \begin{bmatrix}
+<span class="eqno">(4.2.12)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-11" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+(\text{Diag}(r) \cdot S) \cdot \text{Diag}(r) &amp;= \begin{bmatrix}
 0.9 &amp; 0.72 &amp; 0.18 \\
 0.56 &amp; 0.7 &amp; 0.42 \\
 0.1 &amp; 0.3 &amp; 0.5
@@ -700,14 +702,13 @@ DPP）。</p>
 0.9 &amp; 0 &amp; 0 \\
 0 &amp; 0.7 &amp; 0 \\
 0 &amp; 0 &amp; 0.5
-\end{bmatrix}
-=
-\begin{bmatrix}
+\end{bmatrix} \\
+&amp;= \begin{bmatrix}
 0.81 &amp; 0.504 &amp; 0.09 \\
 0.504 &amp; 0.49 &amp; 0.21 \\
 0.09 &amp; 0.21 &amp; 0.25
-\end{bmatrix}\end{split}\]</div>
-</div></blockquote>
+\end{bmatrix}
+\end{aligned}\end{split}\]</div>
 <p><strong>构建完核矩阵后，继续上述的公式推导，根据行列式的乘法性质可得到：</strong></p>
 <div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-greedy-12">
 <span class="eqno">(4.2.13)<a class="headerlink" href="#equation-chapter-3-rerank-2-greedy-12" title="Permalink to this equation">¶</a></span>\[|L| = |\text{Diag}(r)| \cdot |S| \cdot |\text{Diag}(r)| = \prod_{i \in R} r_{i}^2 \cdot |S|\]</div>
@@ -1025,7 +1026,7 @@ c_i^T = \mathbf{L}_{Y_g \cup \{j\}, i} = \begin{bmatrix}
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>开始构建核矩阵...
 核矩阵生成完成！
-算法运行时间:     2.7148e-02
+算法运行时间:     2.7351e-02
 选择了 50 个物品
 </pre></div>
 </div>
