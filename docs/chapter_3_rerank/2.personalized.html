@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>4.2. 基于个性化的重排 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.3. 本章小结" href="3.summary.html" />
+    <link rel="prev" title="4.1. 基于贪心的重排" href="1.greedy.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">4. </span>重排模型</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">4.2. </span>基于个性化的重排</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_3_rerank/2.personalized.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://funrec-notebooks.s3.eu-west-3.amazonaws.com/fun-rec.zip">
+                  <i class="fas fa-download"></i>
+                  Jupyter 记事本
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
+                  <i class="fab fa-github"></i>
+                  GitHub
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.3. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.3. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 重排模型</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.1. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.2. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.3. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_5_projects/index.html">6. 项目实践</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.3. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.3. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 重排模型</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.1. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.2. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.3. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_5_projects/index.html">6. 项目实践</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="personalized-rerank">
+<span id="id1"></span><h1><span class="section-number">4.2. </span>基于个性化的重排<a class="headerlink" href="#personalized-rerank" title="Permalink to this heading">¶</a></h1>
+<p>上一节我们探讨了基于贪心策略的重排序方法，如MMR (Maximal Marginal
+Relevance) 和 DPP (Determinantal Point
+Processes)。这些方法通过显式定义多样性、相关性或覆盖度的优化目标，在初始排序列表上进行局部调整。它们计算高效且可解释性强，但在处理复杂的物品间相互影响和深度个性化方面存在局限：目标函数往往需要手工设计，难以捕捉高阶、非线性的交互模式；同时，将用户个性化信息深度融入列表级优化也颇具挑战。</p>
+<p>接下来会介绍两个经典的个性化重排模型：PRM和PRS。</p>
+<section id="prm">
+<h2><span class="section-number">4.2.1. </span>PRM<a class="headerlink" href="#prm" title="Permalink to this heading">¶</a></h2>
+<p>PRM (Personalized Re-Ranking Model) <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id57" title="Pei, C., Zhang, Y., Zhang, Y., Sun, F., Lin, X., Sun, H., … others. (2019). Personalized re-ranking for recommendation. Proceedings of the 13th ACM conference on recommender systems (pp. 3–11).">Pei <em>et al.</em>, 2019</a>)</span>
+的提出，标志着重排序技术从基于规则/启发式向数据驱动、端到端学习的重要转变。其核心思想是：利用强大的序列建模能力（Transformer）自动学习列表中物品间复杂的相互影响，并将细粒度的用户个性化信息深度融入整个重排序过程，通过最大化列表级效用目标（如点击率）进行全局优化。
+PRM不再依赖预设的多样性公式，而是让模型直接从数据中学习最优的物品组合方式，同时精准反映用户的独特偏好。下图展示了PRM的整体架构：</p>
+<figure class="align-default" id="id4">
+<span id="prm-architecture"></span><a class="reference internal image-reference" href="../_images/prm_architecture.png"><img alt="../_images/prm_architecture.png" src="../_images/prm_architecture.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-number">图4.2.1 </span><span class="caption-text">PRM模型架构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><strong>输入层</strong></p>
+<p>输入层的核心任务是为初始列表 <span class="math notranslate nohighlight">\(S = [i_1, i_2, ..., i_n]\)</span>
+中的每个物品 <span class="math notranslate nohighlight">\(i_j\)</span>
+准备一个信息丰富且适合后续处理的初始表示。这个表示需要包含两个至关重要的方面：</p>
+<ol class="arabic simple">
+<li><p>物品自身特征 (<span class="math notranslate nohighlight">\(X\)</span>)：
+例如物品ID嵌入、类别、标签、统计特征等基础信息。</p></li>
+<li><p>用户对该物品的个性化偏好 (<span class="math notranslate nohighlight">\(PV\)</span>)：
+这是PRM实现“个性化”重排序的灵魂所在！它编码了用户<span class="math notranslate nohighlight">\(u\)</span>与物品<span class="math notranslate nohighlight">\(i_j\)</span>之间独特的互动关系和偏好程度。PV
+的生成是其关键创新点，我们将在后面详细探讨。</p></li>
+</ol>
+<p>PRM采用了一个直观且有效的方法：将物品的原始特征向量 <span class="math notranslate nohighlight">\(x_j\)</span>
+与其对应的个性化向量 <span class="math notranslate nohighlight">\(pv_j\)</span>
+拼接（Concatenate）起来，形成一个更全面的基础表示
+<span class="math notranslate nohighlight">\([x_j; pv_j]\)</span>。</p>
+<p>然而，仅有个性化和物品特征还不够。基础排序模型给出的初始列表
+<span class="math notranslate nohighlight">\(S = [i_1, i_2, ..., i_n]\)</span>
+本身包含潜在的序列信息（例如，排名靠前的物品可能相关性更高）。为了利用这一信息，PRM引入了标准的位置嵌入
+(Positional Embedding,
+PE)。这就像给列表中的每个位置（第1位、第2位…第n位）赋予一个独特的、可学习的向量标识。最终，每个物品进入编码层之前的输入表示<span class="math notranslate nohighlight">\(E\)</span>是其融合特征与位置信息的叠加：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-personalized-0">
+<span class="eqno">(4.2.1)<a class="headerlink" href="#equation-chapter-3-rerank-2-personalized-0" title="Permalink to this equation">¶</a></span>\[E = [\text{物品自身特征}(x_j) ; \text{个性化向量}(pv_j)] + \text{位置嵌入}(pe_j)\]</div>
+<p>这个组合结果通常会经过一个简单的前馈网络（线性变换）进行维度调整，以适应后续Transformer编码器的输入要求。</p>
+<p><strong>编码层</strong></p>
+<p>输入层提供了带有个性化烙印和位置信息的物品序列。编码层的核心使命是利用
+Transformer
+架构的强大序列建模能力，让列表中的所有物品能够充分“沟通”和“互动”，从而捕捉它们之间复杂的、高阶的相互影响。这对于重排序至关重要，因为：</p>
+<ul class="simple">
+<li><p>用户是否点击列表中的第 j 个物品，很可能受到第 k
+个（甚至更远）物品的显著影响（例如，它们是替代品、互补品，或者提供了多样性）。</p></li>
+<li><p>这种影响往往是长距离的，不受物品在列表中初始物理位置的限制。</p></li>
+</ul>
+<p>Transformer的核心武器是 自注意力机制
+(Self-Attention)。它赋予了序列中每个物品一项能力：可以动态地“关注”序列中的所有其他物品（包括它自己）。其工作原理是计算每个物品的查询向量(Query)与其他物品的键向量(Key)的相似度，得到一个注意力权重。这个权重决定了在更新当前物品表示时，应该聚合(Value)
+多少来自其他物品的信息。公式
+<span class="math notranslate nohighlight">\(Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d}}) V\)</span>精炼地描述了这个加权聚合过程。</p>
+<p>为了更全面、更鲁棒地捕捉列表中物品间复杂的相互影响，PRM采用了多头注意力，这些多头注意力模块被组织在标准的
+Transformer 编码器块(Block)
+中，每个块包含一个多头自注意力层和一个前馈神经网络层。PRM通过堆叠多层，使模型能够在初始交互表示的基础上，逐层提炼更复杂、更高阶的物品间依赖关系。最终，编码层输出每个物品的高级表示<span class="math notranslate nohighlight">\(F^{N_x}\)</span>，它深度融合了物品自身特征、用户个性化偏好以及在整个列表上下文感知到的深度交互信息。</p>
+<p><strong>输出层</strong></p>
+<p>PRM采用了一个轻量级但有效的输出结构：对每个物品的高级表示
+<span class="math notranslate nohighlight">\(F^{N_x}\)</span>
+应用一个线性变换（<span class="math notranslate nohighlight">\(W^f \cdot F^{N_x} + b^f\)</span>），将其映射为一个标量分数（或称
+logit）。这个分数初步反映了该物品在重排序后的列表中的相对价值。将列表中所有物品的标量分数输入一个
+Softmax 函数。Softmax 在此扮演两个关键角色：</p>
+<ol class="arabic simple">
+<li><p>归一化： 将所有分数转换为一个概率分布
+<span class="math notranslate nohighlight">\(P(y_i | X, PV; \hat{\theta})\)</span>，其中 <span class="math notranslate nohighlight">\(y_i\)</span> 表示物品
+<span class="math notranslate nohighlight">\(i\)</span>
+在最终列表中被认为是最合适（或最可能被点击）的概率。所有物品的概率之和为1。</p></li>
+<li><p>隐含相对关系建模： Softmax
+函数的特性使得每个物品的最终概率不仅取决于它自身的分数，也取决于它与列表中所有其他物品分数的相对比较。这天然地符合重排序需要评估物品间相对重要性的需求</p></li>
+</ol>
+<p><strong>个性化向量 (PV) 的生成</strong></p>
+<p>回顾整个流程，个性化向量 <span class="math notranslate nohighlight">\(PV\)</span>
+是PRM区别于普通重排序模型、实现真正“个性化”的关键所在。那么，<span class="math notranslate nohighlight">\(PV\)</span>
+从何而来？PRM采用了一个巧妙且实用的策略：利用预训练的点击率预估模型来生成PV。</p>
+<ol class="arabic simple">
+<li><p>预训练模型的作用：
+这个模型在海量的用户历史行为数据（用户ID、物品ID、上下文特征、历史点击/转化日志）上进行训练。它的核心任务是学习预测：给定用户
+<span class="math notranslate nohighlight">\(u\)</span> 及其行为历史 <span class="math notranslate nohighlight">\(H_u\)</span>，用户点击某个候选物品 <span class="math notranslate nohighlight">\(i\)</span>
+的概率 <span class="math notranslate nohighlight">\(P(y_i | H_u, u; \theta')\)</span>。</p></li>
+<li><p>提取个性化向量： PRM
+并不直接使用预训练模型预测的点击概率本身。相反，它提取该模型在输出最终点击概率（通常经过Sigmoid激活）之前的那个隐藏层的激活值。这个隐藏层的向量，蕴含了预训练模型学习到的、关于“用户
+<span class="math notranslate nohighlight">\(u\)</span> 对物品 <span class="math notranslate nohighlight">\(i\)</span> 偏好程度”的丰富、抽象的信息，将其作为物品
+<span class="math notranslate nohighlight">\(i\)</span> 相对于用户 <span class="math notranslate nohighlight">\(u\)</span> 的个性化向量 <span class="math notranslate nohighlight">\(pv_i\)</span>。</p></li>
+<li><p>输入PRM： 对于初始列表 <span class="math notranslate nohighlight">\(S = [i_1, i_2, ..., i_n]\)</span> 中的每个物品
+<span class="math notranslate nohighlight">\(i_j\)</span>，都通过上述预训练模型计算出其对应的
+<span class="math notranslate nohighlight">\(pv_j\)</span>，然后作为关键输入送入PRM的输入层。</p></li>
+</ol>
+<p>PRM核心代码如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_prm_model</span><span class="p">(</span><span class="n">feature_columns</span><span class="p">,</span>
+                    <span class="n">max_seq_len</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                    <span class="n">transformer_blocks</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                    <span class="n">nums_head</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">dropout_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                    <span class="n">intermediate_dim</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+                    <span class="n">pos_emb_trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                  <span class="p">):</span>
+    <span class="n">input_layer_dict</span> <span class="o">=</span> <span class="n">build_input_layer</span><span class="p">(</span><span class="n">feature_columns</span><span class="p">)</span>
+    <span class="n">group_embedding_feature_dict</span> <span class="o">=</span> <span class="n">build_group_feature_embedding_table_dict</span><span class="p">(</span><span class="n">feature_columns</span><span class="p">,</span> <span class="n">input_layer_dict</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;embedding/&quot;</span><span class="p">)</span>
+    <span class="n">user_part_embedding</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span><span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="s1">&#39;user_part&#39;</span><span class="p">)</span> <span class="c1"># BxD</span>
+    <span class="c1"># 复制成序列长度份数</span>
+    <span class="n">user_part_embedding</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))(</span><span class="n">user_part_embedding</span><span class="p">)</span> <span class="c1"># [None, max_len, dim]</span>
+
+    <span class="n">item_part_embedding</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span><span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="s1">&#39;item_part&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># Bxmax_seq_lenxK</span>
+    <span class="n">pv_embeddings</span> <span class="o">=</span> <span class="n">input_layer_dict</span><span class="p">[</span><span class="s1">&#39;pv_emb&#39;</span><span class="p">]</span> <span class="c1"># Bxmax_seq_lenxD</span>
+    <span class="n">item_embeddings</span> <span class="o">=</span> <span class="n">input_layer_dict</span><span class="p">[</span><span class="s1">&#39;item_emb&#39;</span><span class="p">]</span> <span class="c1"># Bxmax_seq_lenxD</span>
+
+    <span class="n">page_embedding</span> <span class="o">=</span> <span class="n">concat_func</span><span class="p">([</span><span class="n">user_part_embedding</span><span class="p">,</span> <span class="n">item_part_embedding</span><span class="p">,</span> <span class="n">pv_embeddings</span><span class="p">,</span> <span class="n">item_embeddings</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># [None, max_len, dim]</span>
+
+    <span class="n">position_embedding</span> <span class="o">=</span> <span class="n">PositionEncodingLayer</span><span class="p">(</span>
+        <span class="n">dims</span><span class="o">=</span><span class="n">feature_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">emb_dim</span><span class="p">,</span>
+        <span class="n">max_len</span><span class="o">=</span><span class="n">max_seq_len</span><span class="p">,</span>
+        <span class="n">trainable</span><span class="o">=</span><span class="n">pos_emb_trainable</span><span class="p">,</span>
+        <span class="n">initializer</span><span class="o">=</span><span class="s1">&#39;glorot_uniform&#39;</span><span class="p">)(</span><span class="n">page_embedding</span><span class="p">)</span>
+
+    <span class="n">enc_inputs</span> <span class="o">=</span> <span class="n">add_func</span><span class="p">([</span><span class="n">page_embedding</span><span class="p">,</span> <span class="n">position_embedding</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">transformer_blocks</span><span class="p">):</span>
+        <span class="n">enc_inputs</span> <span class="o">=</span> <span class="n">TransformerEncoder</span><span class="p">(</span>
+                                        <span class="n">intermediate_dim</span><span class="p">,</span>
+                                        <span class="n">nums_head</span><span class="p">,</span>
+                                        <span class="n">dropout_rate</span><span class="p">,</span>
+                                        <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">,</span>
+                                        <span class="n">normalize_first</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                        <span class="n">is_residual</span><span class="o">=</span><span class="kc">True</span>
+                                    <span class="p">)(</span><span class="n">enc_inputs</span><span class="p">)</span>
+
+    <span class="n">enc_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">intermediate_dim</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">)(</span><span class="n">enc_inputs</span><span class="p">)</span>
+    <span class="n">enc_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="n">enc_output</span><span class="p">)</span>
+    <span class="n">flat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">()(</span><span class="n">enc_output</span><span class="p">)</span>
+    <span class="n">score_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Activation</span><span class="p">(</span><span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">)(</span><span class="n">flat</span><span class="p">)</span>
+
+    <span class="c1"># 构建模型</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">input_layer_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">score_output</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+<p><strong>代码实践</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_metrics_table</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;prm&#39;</span><span class="p">)</span>
+<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------+---------+--------------+-------------+------------+-----------+--------------+-------------+------------+-----------+--------+-------+</span>
+<span class="o">|</span>   <span class="nb">map</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="nb">map</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">new_map</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">new_map</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">new_p</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">new_p</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">old_map</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">old_map</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">old_p</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">old_p</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">p</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">p</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
+<span class="o">+==========+=========+==============+=============+============+===========+==============+=============+============+===========+========+=======+</span>
+<span class="o">|</span>   <span class="mf">0.2504</span> <span class="o">|</span>  <span class="mf">0.2456</span> <span class="o">|</span>       <span class="mf">0.2504</span> <span class="o">|</span>      <span class="mf">0.2456</span> <span class="o">|</span>     <span class="mf">0.0706</span> <span class="o">|</span>     <span class="mf">0.087</span> <span class="o">|</span>       <span class="mf">0.2954</span> <span class="o">|</span>      <span class="mf">0.2824</span> <span class="o">|</span>     <span class="mf">0.0936</span> <span class="o">|</span>    <span class="mf">0.1196</span> <span class="o">|</span> <span class="mf">0.0706</span> <span class="o">|</span> <span class="mf">0.087</span> <span class="o">|</span>
+<span class="o">+----------+---------+--------------+-------------+------------+-----------+--------------+-------------+------------+-----------+--------+-------+</span>
+</pre></div>
+</div>
+</section>
+<section id="prs">
+<h2><span class="section-number">4.2.2. </span>PRS<a class="headerlink" href="#prs" title="Permalink to this heading">¶</a></h2>
+<p>虽然PRM通过Transformer架构实现了端到端的个性化重排序，但它仍然存在一个根本性的局限：<strong>缺乏对排列组合影响的深度理解</strong>。
+想象这样一个场景：用户面对商品列表 [A, B, C] 时毫无购买欲望，但当看到
+[B, A, C] 这个排列时却购买了商品A。这种现象被称为 <strong>排列变异影响</strong>
+(Permutation-Variant
+Influence)。一个可能的解释是：将价格较高的商品B放在前面，会让用户觉得商品A相对便宜，从而激发购买欲望。</p>
+<figure class="align-default" id="id5">
+<span id="prs-permutation-influence"></span><a class="reference internal image-reference" href="../_images/prs_permutation_influence.png"><img alt="../_images/prs_permutation_influence.png" src="../_images/prs_permutation_influence.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">图4.2.2 </span><span class="caption-text">排列变异影响</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>这个观察引出了一个重要问题：传统的重排序方法（包括PRM）主要关注单个物品的分数优化，却忽略了<strong>物品排列顺序本身对用户行为的影响</strong>。</p>
+<p>PRS <span id="id3">(<a class="reference internal" href="../chapter_references/references.html#id88" title="Feng, Y., Gong, Y., Sun, F., Ge, J., &amp; Ou, W. (2021). Revisit recommender system in the permutation prospective. arXiv preprint arXiv:2102.12057.">Feng <em>et al.</em>, 2021</a>)</span>
+的设计哲学可以用一个简单而深刻的题目来概括：<strong>如果我们能够评估所有可能的物品排列组合，并选择其中用户体验最佳的那一个，会怎样？</strong>
+当然，对于包含n个物品的列表，所有可能的排列数量是n!，这在计算上是不可行的。PRS的巧妙之处在于提出了一个两阶段的解决方案：</p>
+<ol class="arabic simple">
+<li><p><strong>PMatch阶段</strong>：通过智能搜索算法快速筛选出少数几个“有希望”的候选排列</p></li>
+<li><p><strong>PRank阶段</strong>：使用专门的神经网络模型精确评估这些候选排列的质量，选出最优解</p></li>
+</ol>
+<p>这种设计既保证了计算效率，又能够捕捉到排列组合对用户体验的深层影响。</p>
+<p><strong>PRS整体架构</strong></p>
+<figure class="align-default" id="id6">
+<span id="prs-framework"></span><a class="reference internal image-reference" href="../_images/prs_framework.png"><img alt="../_images/prs_framework.png" src="../_images/prs_framework.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">图4.2.3 </span><span class="caption-text">PRS框架整体架构</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="pmatch">
+<h3><span class="section-number">4.2.2.1. </span>PMatch阶段：智能候选排列生成<a class="headerlink" href="#pmatch" title="Permalink to this heading">¶</a></h3>
+<p>PMatch (Permutation-Matching)
+阶段的使命是从指数级的排列空间中，高效地识别出最有潜力的候选排列。这个阶段采用了一种名为FPSA
+(Fast Permutation Searching Algorithm)
+的创新算法，它结合了目标导向的beam search和两个关键的用户行为预测模型。</p>
+<p><strong>离线训练：双模型预测体系</strong></p>
+<p>PMatch阶段需要两个point-wise预测模型的支持：</p>
+<ol class="arabic simple">
+<li><p><strong>CTR模型</strong>：预测用户点击某个物品的概率 <span class="math notranslate nohighlight">\(P_{CTR}(i|u)\)</span></p></li>
+<li><p><strong>Next模型</strong>：预测用户在浏览完当前物品后继续浏览下一个物品的概率
+<span class="math notranslate nohighlight">\(P_{Next}(i|u)\)</span></p></li>
+</ol>
+<p>Next模型的引入是PRS的一个重要创新。它反映了这样一个现实：用户的浏览行为具有连续性，某个物品不仅要能吸引用户点击，还要能够“引导”用户继续探索列表中的后续内容。这两个模型都采用标准的point-wise建模方式：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-personalized-1">
+<span class="eqno">(4.2.2)<a class="headerlink" href="#equation-chapter-3-rerank-2-personalized-1" title="Permalink to this equation">¶</a></span>\[f_{CTR}(x_u, x_i) = \sigma(W_{CTR} \cdot [x_u; x_i] + b_{CTR})\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-personalized-2">
+<span class="eqno">(4.2.3)<a class="headerlink" href="#equation-chapter-3-rerank-2-personalized-2" title="Permalink to this equation">¶</a></span>\[f_{Next}(x_u, x_i) = \sigma(W_{Next} \cdot [x_u; x_i] + b_{Next})\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(x_u\)</span> 和 <span class="math notranslate nohighlight">\(x_i\)</span>
+分别表示用户和物品的特征向量，<span class="math notranslate nohighlight">\(\sigma\)</span>
+是sigmoid激活函数。两个模型都使用交叉熵损失进行训练。</p>
+<p><strong>在线服务：FPSA算法</strong></p>
+<figure class="align-default" id="id7">
+<span id="prs-fpsa"></span><a class="reference internal image-reference" href="../_images/prs_fpsa.png"><img alt="../_images/prs_fpsa.png" src="../_images/prs_fpsa.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">图4.2.4 </span><span class="caption-text">FPSA结构图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>上图展示了FPSA算法在整个PRS框架中的位置和核心组件。我们可以看到：</p>
+<ol class="arabic simple">
+<li><p><strong>输入处理</strong>：算法接收来自ranking阶段的候选物品集合C，每个物品都有丰富的特征表示</p></li>
+<li><p><strong>双模型预测体系</strong>：</p>
+<ul class="simple">
+<li><p><strong>CTR模型</strong>：预测每个物品的点击概率 <span class="math notranslate nohighlight">\(P^{CTR}_i\)</span></p></li>
+<li><p><strong>Next模型</strong>：预测用户浏览完物品i后继续浏览的概率
+<span class="math notranslate nohighlight">\(P^{NEXT}_i\)</span></p></li>
+</ul>
+</li>
+<li><p><strong>Beam
+Search核心</strong>：通过树状搜索逐步构建候选排列，每一步都基于奖励函数进行剪枝</p></li>
+<li><p><strong>奖励计算机制</strong>：融合rPV和rIPV两个指标，平衡浏览深度和点击收益</p></li>
+</ol>
+<p>FPSA算法的核心创新在于将用户的浏览行为建模为一个<strong>序列决策过程</strong>。传统的重排序方法往往独立地评估每个物品，而FPSA认识到：<strong>物品在序列中的价值不仅取决于自身特征，更取决于它在整个浏览路径中的作用</strong>。</p>
+<p>算法定义了两个关键的奖励指标：</p>
+<ul class="simple">
+<li><p><strong>rPV (Page View
+Reward)</strong>：衡量排列能够带来的总浏览深度，鼓励选择那些能引导用户深度浏览的物品组合</p></li>
+<li><p><strong>rIPV (Item Page View
+Reward)</strong>：衡量排列中物品被点击的总概率，确保排列具有足够的商业价值</p></li>
+</ul>
+<p><strong>FPSA算法流程如下</strong></p>
+<p>FPSA核心代码如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fpsa_algorithm</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">ctr_scores</span><span class="p">,</span> <span class="n">next_scores</span><span class="p">,</span> <span class="n">beam_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fast Permutation Searching Algorithm (根据Algorithm 1实现)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        items: 候选物品列表 (对应Algorithm 1的Input ranking list C)</span>
+<span class="sd">        ctr_scores: 每个物品的CTR分数字典 (对应P^CTR)</span>
+<span class="sd">        next_scores: 每个物品的Next分数字典 (对应P^NEXT)</span>
+<span class="sd">        beam_size: beam search的大小 (对应Beam size integer k)</span>
+<span class="sd">        max_length: 输出序列的最大长度 (对应Output length n)</span>
+<span class="sd">        alpha, beta: 融合系数 (对应Fusion coefficient float $\alpha, \beta$)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        候选排列集合 (对应Output: Candidate list set S)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="p">[()]</span>  <span class="c1"># 候选列表集合，初始包含空序列</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="p">{}</span>    <span class="c1"># 估计奖励集合</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">St</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">S</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">O</span> <span class="ow">in</span> <span class="n">St</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ci</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ci</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">O</span><span class="p">:</span>
+                    <span class="n">Ot</span> <span class="o">=</span> <span class="n">O</span> <span class="o">+</span> <span class="p">(</span><span class="n">ci</span><span class="p">,)</span>
+
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">calculate_estimated_reward</span><span class="p">(</span><span class="n">Ot</span><span class="p">,</span> <span class="n">ctr_scores</span><span class="p">,</span> <span class="n">next_scores</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+
+                    <span class="n">R</span><span class="p">[</span><span class="n">Ot</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
+                    <span class="n">S</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ot</span><span class="p">)</span>
+
+        <span class="n">S</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">R</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="n">beam_size</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">S</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_estimated_reward</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">ctr_scores</span><span class="p">,</span> <span class="n">next_scores</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    计算估计奖励 (对应Algorithm 1的第19-28行 Calculate-Estimated-Reward函数)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        O: 当前排列序列</span>
+<span class="sd">        ctr_scores: CTR分数字典</span>
+<span class="sd">        next_scores: Next分数字典</span>
+<span class="sd">        alpha, beta: 融合系数</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        估计奖励值</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="n">r_pv</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">r_ipv</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">p_expose</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="k">for</span> <span class="n">ci</span> <span class="ow">in</span> <span class="n">O</span><span class="p">:</span>
+        <span class="n">p_ctr_ci</span> <span class="o">=</span> <span class="n">ctr_scores</span><span class="p">[</span><span class="n">ci</span><span class="p">]</span>
+        <span class="n">p_next_ci</span> <span class="o">=</span> <span class="n">next_scores</span><span class="p">[</span><span class="n">ci</span><span class="p">]</span>
+
+        <span class="n">r_ipv</span> <span class="o">=</span> <span class="n">r_ipv</span> <span class="o">+</span> <span class="n">p_expose</span> <span class="o">*</span> <span class="n">p_ctr_ci</span>
+
+        <span class="n">p_expose</span> <span class="o">*=</span> <span class="n">p_next_ci</span>
+
+    <span class="n">r_pv</span> <span class="o">=</span> <span class="n">p_expose</span>
+
+    <span class="n">r_sum</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">r_pv</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">r_ipv</span>
+
+    <span class="k">return</span> <span class="n">r_sum</span>
+
+<span class="c1"># 使用示例保持不变</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ctr_score</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;获取物品的CTR分数&quot;&quot;&quot;</span>
+    <span class="c1"># 这里应该调用预训练的CTR模型</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_next_score</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;获取物品的Next分数&quot;&quot;&quot;</span>
+    <span class="c1"># 这里应该调用预训练的Next模型</span>
+    <span class="k">pass</span>
+
+<span class="c1"># 完整的FPSA调用</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_fpsa</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">beam_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="c1"># 预计算所有物品的CTR和Next分数</span>
+    <span class="n">ctr_scores</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">:</span> <span class="n">get_ctr_score</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">}</span>
+    <span class="n">next_scores</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">:</span> <span class="n">get_next_score</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">}</span>
+
+    <span class="c1"># 运行FPSA算法</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="n">fpsa_algorithm</span><span class="p">(</span>
+        <span class="n">items</span><span class="o">=</span><span class="n">items</span><span class="p">,</span>
+        <span class="n">ctr_scores</span><span class="o">=</span><span class="n">ctr_scores</span><span class="p">,</span>
+        <span class="n">next_scores</span><span class="o">=</span><span class="n">next_scores</span><span class="p">,</span>
+        <span class="n">beam_size</span><span class="o">=</span><span class="n">beam_size</span><span class="p">,</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># 可调节的融合系数</span>
+        <span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">candidates</span>
+</pre></div>
+</div>
+<p>这个算法的精妙之处在于：</p>
+<ul class="simple">
+<li><p><strong>rPV</strong> 鼓励选择那些能够引导用户深度浏览的物品排列</p></li>
+<li><p><strong>rIPV</strong> 确保排列中的物品具有足够的吸引力</p></li>
+<li><p><strong>曝光概率的递减</strong>
+真实地模拟了用户浏览行为：越往后的物品，被用户看到的概率越低</p></li>
+</ul>
+</section>
+<section id="prank">
+<h3><span class="section-number">4.2.2.2. </span>PRank阶段：深度排列评估<a class="headerlink" href="#prank" title="Permalink to this heading">¶</a></h3>
+<p>PRank (Permutation-Ranking)
+阶段接收PMatch生成的候选排列，使用一个专门设计的神经网络模型DPWN (Deep
+Permutation-Wise Network) 来精确评估每个排列的质量。</p>
+<p><strong>DPWN模型架构</strong></p>
+<p>DPWN的设计理念是：<strong>排列中每个物品的价值不仅取决于它自身的特征，更取决于它在整个序列上下文中的位置和作用</strong>。为了捕捉这种复杂的序列依赖关系，DPWN采用了Bi-LSTM架构：</p>
+<figure class="align-default" id="id8">
+<span id="prs-dpwn-architecture"></span><a class="reference internal image-reference" href="../_images/prs_dpwn_architecture.png"><img alt="../_images/prs_dpwn_architecture.png" src="../_images/prs_dpwn_architecture.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">图4.2.5 </span><span class="caption-text">DPWN模型架构</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><strong>模型结构介绍</strong></p>
+<ol class="arabic simple">
+<li><p><strong>序列编码层</strong>：对于输入序列中的第t个物品，DPWN使用双向LSTM计算其上下文表示：</p></li>
+</ol>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-personalized-3">
+<span class="eqno">(4.2.4)<a class="headerlink" href="#equation-chapter-3-rerank-2-personalized-3" title="Permalink to this equation">¶</a></span>\[\overrightarrow{h_t} = LSTM_{forward}(x_{v_t}, \overrightarrow{h_{t-1}})\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-personalized-4">
+<span class="eqno">(4.2.5)<a class="headerlink" href="#equation-chapter-3-rerank-2-personalized-4" title="Permalink to this equation">¶</a></span>\[\overleftarrow{h_t} = LSTM_{backward}(x_{v_t}, \overleftarrow{h_{t+1}})\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-personalized-5">
+<span class="eqno">(4.2.6)<a class="headerlink" href="#equation-chapter-3-rerank-2-personalized-5" title="Permalink to this equation">¶</a></span>\[h_t = [\overrightarrow{h_t}; \overleftarrow{h_t}]\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(x_{v_t}\)</span> 是第t个物品的特征向量，<span class="math notranslate nohighlight">\(h_t\)</span>
+是融合了前向和后向信息的隐状态。</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>特征融合层</strong>：将序列表示与用户特征和物品特征进行融合：</p></li>
+</ol>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-personalized-6">
+<span class="eqno">(4.2.7)<a class="headerlink" href="#equation-chapter-3-rerank-2-personalized-6" title="Permalink to this equation">¶</a></span>\[z_t = [h_t; x_u; x_{v_t}]\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(x_u\)</span> 是用户特征向量。</p>
+<ol class="arabic simple" start="3">
+<li><p><strong>预测层</strong>：通过多层感知机预测每个位置的点击概率：</p></li>
+</ol>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-personalized-7">
+<span class="eqno">(4.2.8)<a class="headerlink" href="#equation-chapter-3-rerank-2-personalized-7" title="Permalink to this equation">¶</a></span>\[p_t = \sigma(MLP(z_t))\]</div>
+<p><strong>List Reward (LR) 计算</strong></p>
+<p>PRank阶段的核心评估指标是List
+Reward，它被定义为排列中所有物品预测点击概率的总和：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-personalized-8">
+<span class="eqno">(4.2.9)<a class="headerlink" href="#equation-chapter-3-rerank-2-personalized-8" title="Permalink to this equation">¶</a></span>\[LR(O) = \sum_{t=1}^{|O|} p_t\]</div>
+<p>这个简单而有效的指标反映了整个排列的预期收益。在线服务时，PRank会计算每个候选排列的LR值，并选择LR最高的排列作为最终输出。</p>
+</section>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">4.2. 基于个性化的重排</a><ul>
+<li><a class="reference internal" href="#prm">4.2.1. PRM</a></li>
+<li><a class="reference internal" href="#prs">4.2.2. PRS</a><ul>
+<li><a class="reference internal" href="#pmatch">4.2.2.1. PMatch阶段：智能候选排列生成</a></li>
+<li><a class="reference internal" href="#prank">4.2.2.2. PRank阶段：深度排列评估</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="1.greedy.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>4.1. 基于贪心的重排</div>
+         </div>
+     </a>
+     <a id="button-next" href="3.summary.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>4.3. 本章小结</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

@@ -84,19 +84,19 @@
       <td>
          <a href="https://github.com/bokang-ugent"><img width="70" height="70" src="https://github.com/bokang-ugent.png?s=40" alt="pic"></a><br>
          <a href="https://bokang.io">Bo Kang</a> 
-        <p><br> 比利时根特大学博士 <br> <a href="https://nobl.ai/">nobl.ai</a> 联合创始人 </p>
+        <p><br> 比利时根特大学博士 <br> nobl.ai 联合创始人 </p>
       </td>
     </tr>
   </tbody>
 </table>
 
-特别感谢[kenken-xr](https://github.com/kenken-xr)、[swallown1](https://github.com/swallown1)、、[Lyons-T](https://github.com/Lyons-T)、[zhongqiangwu960812](https://github.com/zhongqiangwu960812)、[@wangych6](https://github.com/wangych6)、[@morningsky](https://github.com/morningsky)、[@hilbert-yaa](https://github.com/hilbert-yaa)、[@maxxbaba](https://github.com/maxxbaba)、[@pearfl](https://github.com/pearfl)、[@ChungKingExpress](https://github.com/ChungKingExpress)、[@storyandwine](https://github.com/storyandwine)、[@SYC1123](https://github.com/SYC1123)、[@luzixiao](https://github.com/luzixiao)、[@Evan-wyl](https://github.com/Evan-wyl)、[@Sm1les](https://github.com/Sm1les)、[@LSGOMYP](https://github.com/LSGOMYP)等人早期对本项目的帮助与支持。
+特别感谢[kenken-xr](https://github.com/kenken-xr)、[swallown1](https://github.com/swallown1)、[Lyons-T](https://github.com/Lyons-T)、[zhongqiangwu960812](https://github.com/zhongqiangwu960812)、[@wangych6](https://github.com/wangych6)、[@morningsky](https://github.com/morningsky)、[@hilbert-yaa](https://github.com/hilbert-yaa)、[@maxxbaba](https://github.com/maxxbaba)、[@pearfl](https://github.com/pearfl)、[@ChungKingExpress](https://github.com/ChungKingExpress)、[@storyandwine](https://github.com/storyandwine)、[@SYC1123](https://github.com/SYC1123)、[@luzixiao](https://github.com/luzixiao)、[@Evan-wyl](https://github.com/Evan-wyl)、[@Sm1les](https://github.com/Sm1les)、[@LSGOMYP](https://github.com/LSGOMYP)等人早期对本项目的帮助与支持。
 
 
 ## 关注我们
 <div align=center>
 <p>扫描下方二维码关注公众号：Datawhale</p>
-<img src="imgs/join_community.png" width = "180" height = "180">
+<img src="imgs/datawhale_qrcode.jpg" width = "180" height = "180">
 </div>
 
 Datawhale，一个专注于AI领域的学习圈子。初衷是for the learner，和学习者一起成长。目前加入学习社群的人数已经数千人，组织了机器学习，深度学习，数据分析，数据挖掘，爬虫，编程，统计学，Mysql，数据竞赛等多个领域的内容学习，微信搜索公众号Datawhale可以加入我们。

@@ -3,12 +3,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     
-    <title>3.3.2. 二阶特征交叉 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
+    <title>3.2.1. 二阶特征交叉 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
 
     <link rel="stylesheet" href="../../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/sphinx_materialdesign_theme.css" type="text/css" />
@@ -27,8 +28,8 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="3.3.3. 高阶特征交叉" href="2.higher_order.html" />
-    <link rel="prev" title="3.3.1. 简介" href="0.intro.html" /> 
+    <link rel="next" title="3.2.2. 高阶特征交叉" href="2.higher_order.html" />
+    <link rel="prev" title="3.2. 特征交叉" href="index.html" /> 
   </head>
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
@@ -36,8 +37,8 @@
         
         <nav class="mdl-navigation breadcrumb">
             <a class="mdl-navigation__link" href="../index.html"><span class="section-number">3. </span>精排模型</a><i class="material-icons">navigate_next</i>
-            <a class="mdl-navigation__link" href="index.html"><span class="section-number">3.3. </span>特征交叉</a><i class="material-icons">navigate_next</i>
-            <a class="mdl-navigation__link is-active"><span class="section-number">3.3.2. </span>二阶特征交叉</a>
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">3.2. </span>特征交叉</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">3.2.1. </span>二阶特征交叉</a>
         </nav>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
@@ -108,95 +109,85 @@ Show Source
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/3.summary.html">2.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/3.summary.html">2.3.3. 总结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. 精排模型</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../0.intro.html">3.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.3. 特征交叉</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="0.intro.html">3.3.1. 简介</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.2. 二阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.summary.html">3.3.4. 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. 特征交叉</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../3.sequence.html">3.4. 序列建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../4.multi_objective/index.html">3.5. 多目标建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_3_rerank/index.html">4. 重排模型</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.1. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.2. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.3. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.4. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_5_projects/index.html">6. 项目实践</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/0.intro.html">6.1. 赛题理解</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.baseline.html">6.2. Baseline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.analysis.html">6.3. 数据分析</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.recall.html">6.4. 多路召回</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.feature_engineering.html">6.5. 特征工程</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.ranking.html">6.6. 排序模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
@@ -241,95 +232,85 @@ Show Source
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/3.summary.html">2.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/3.summary.html">2.3.3. 总结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. 精排模型</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../0.intro.html">3.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.3. 特征交叉</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="0.intro.html">3.3.1. 简介</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.2. 二阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.summary.html">3.3.4. 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. 特征交叉</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../3.sequence.html">3.4. 序列建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../4.multi_objective/index.html">3.5. 多目标建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_3_rerank/index.html">4. 重排模型</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.1. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.2. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.3. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.4. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_5_projects/index.html">6. 项目实践</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/0.intro.html">6.1. 赛题理解</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.baseline.html">6.2. Baseline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.analysis.html">6.3. 数据分析</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.recall.html">6.4. 多路召回</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.feature_engineering.html">6.5. 特征工程</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.ranking.html">6.6. 排序模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
@@ -350,23 +331,25 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="second-order-feature-crossing">
-<span id="id1"></span><h1><span class="section-number">3.3.2. </span>二阶特征交叉<a class="headerlink" href="#second-order-feature-crossing" title="Permalink to this heading">¶</a></h1>
+  <section id="second-order-feature-crossing">
+<span id="id1"></span><h1><span class="section-number">3.2.1. </span>二阶特征交叉<a class="headerlink" href="#second-order-feature-crossing" title="Permalink to this heading">¶</a></h1>
 <p>针对 Wide &amp; Deep
 模型中人工特征工程的局限性，特征交叉自动化成为了一个迫切需要解决的问题。在这一探索过程中，首先要攻克的是：<strong>如何自动、高效地捕捉所有成对（二阶）特征的交互，并将其与深度学习模型结合。</strong>
 这里的挑战不仅在于“自动”，更在于面对推荐场景下海量、高维、稀疏的数据时如何实现“高效”。直接暴力计算所有特征对的组合是不可行的，我们需要一种更巧妙的机制来参数化这些交互。同时，在解决了二阶交互的自动化表达后，如何将这些捕获到的低阶、显式交互信息，与能够学习高阶、隐式关系的深度神经网络（DNN）进行有效融合，也成为这一阶段模型探索的重点。</p>
-<div class="section" id="fm">
-<h2><span class="section-number">3.3.2.1. </span>FM: 隐向量内积与参数共享<a class="headerlink" href="#fm" title="Permalink to this heading">¶</a></h2>
-<p>我们在召回章节 <a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html#fm-matching-model"><span class="std std-numref">2.2.3.1节</span></a> 已经初步了解了FM
+<section id="fm">
+<h2><span class="section-number">3.2.1.1. </span>FM: 隐向量内积与参数共享<a class="headerlink" href="#fm" title="Permalink to this heading">¶</a></h2>
+<p>我们在召回章节 <a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html#fm-matching-model"><span class="std std-numref">2.2.2.1节</span></a> 已经初步了解了FM
 <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id12" title="Rendle, S. (2010). Factorization machines. 2010 IEEE International conference on data mining (pp. 995–1000).">Rendle, 2010</a>)</span>
 ，并见证了它如何作为双塔模型的雏形，通过向量匹配实现召回。在精排阶段，FM的价值得到了更核心的体现。它作为解决特征交叉自动化问题的开创性模型，其核心思想——<strong>为每个特征学习一个低维隐向量，并用向量内积来参数化所有二阶交叉项的权重</strong>——不仅有效解决了参数数量过多和数据稀疏性两大难题，也为这一小节后续模型奠定了方法论的基础。</p>
-<div class="figure align-default" id="id11">
+<figure class="align-default" id="id11">
 <img alt="../../_images/fm_model.png" src="../../_images/fm_model.png" />
-<p class="caption"><span class="caption-number">图3.3.1 </span><span class="caption-text">FM模型结构</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.2.1 </span><span class="caption-text">FM模型结构</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>为了捕捉特征间的交互关系，一个直接的想法是在线性模型的基础上增加所有特征的二阶组合项，即多项式模型：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-0">
-<span class="eqno">(3.3.1)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-0" title="Permalink to this equation">¶</a></span>\[y = w_0 + \sum_{i=1}^n w_i x_i + \sum_{i=1}^{n-1} \sum_{j=i+1}^n w_{ij} x_i x_j\]</div>
+<span class="eqno">(3.2.1)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-0" title="Permalink to this equation">¶</a></span>\[y = w_0 + \sum_{i=1}^n w_i x_i + \sum_{i=1}^{n-1} \sum_{j=i+1}^n w_{ij} x_i x_j\]</div>
 <p>其中，<span class="math notranslate nohighlight">\(w_0\)</span> 是全局偏置项，<span class="math notranslate nohighlight">\(w_i\)</span> 是特征 <span class="math notranslate nohighlight">\(x_i\)</span>
 的权重，<span class="math notranslate nohighlight">\(w_{ij}\)</span> 是特征 <span class="math notranslate nohighlight">\(x_i\)</span> 和 <span class="math notranslate nohighlight">\(x_j\)</span>
 交互的权重，<span class="math notranslate nohighlight">\(n\)</span>
@@ -379,7 +362,7 @@ Show Source
 分解为两个低维隐向量的内积，即
 <span class="math notranslate nohighlight">\(w_{ij}=\langle\mathbf{v}_i,\mathbf{v}_j\rangle\)</span>。这样，模型的预测公式就演变为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-1">
-<span class="eqno">(3.3.2)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-1" title="Permalink to this equation">¶</a></span>\[y = w_0 + \sum_{i=1}^n w_i x_i + \sum_{i=1}^{n-1} \sum_{j=i+1}^n \langle \mathbf{v}_i, \mathbf{v}_j \rangle x_i x_j\]</div>
+<span class="eqno">(3.2.2)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-1" title="Permalink to this equation">¶</a></span>\[y = w_0 + \sum_{i=1}^n w_i x_i + \sum_{i=1}^{n-1} \sum_{j=i+1}^n \langle \mathbf{v}_i, \mathbf{v}_j \rangle x_i x_j\]</div>
 <p>其中<span class="math notranslate nohighlight">\(\mathbf{v}_i,\mathbf{v}_j\)</span> 分别是特征 <span class="math notranslate nohighlight">\(i\)</span> 和特征
 <span class="math notranslate nohighlight">\(j\)</span> 的 <span class="math notranslate nohighlight">\(k\)</span> 维隐向量（Embedding）。<span class="math notranslate nohighlight">\(k\)</span>
 是一个远小于特征数量 <span class="math notranslate nohighlight">\(n\)</span>
@@ -397,30 +380,32 @@ Show Source
 和 <span class="math notranslate nohighlight">\(x_j\)</span> 的交叉效应。此外，通过巧妙的数学变换，FM
 的二阶交叉项计算复杂度可以从 <span class="math notranslate nohighlight">\(O(kn^2)\)</span> 优化到线性的
 <span class="math notranslate nohighlight">\(O(kn)\)</span>，使其在工业界得到了广泛应用。</p>
-</div>
-<div class="section" id="afm">
-<h2><span class="section-number">3.3.2.2. </span>AFM: 注意力加权的交叉特征<a class="headerlink" href="#afm" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="afm">
+<h2><span class="section-number">3.2.1.2. </span>AFM: 注意力加权的交叉特征<a class="headerlink" href="#afm" title="Permalink to this heading">¶</a></h2>
 <p>FM
 对所有特征交叉给予了相同的权重，但实际上不同交叉组合的重要性是不同的。AFM
 <span id="id3">(<a class="reference internal" href="../../chapter_references/references.html#id48" title="Xiao, J., Ye, H., He, X., Zhang, H., Wu, F., &amp; Chua, T.-S. (2017). Attentional factorization machines: learning the weight of feature interactions via attention networks. arXiv preprint arXiv:1708.04617.">Xiao <em>et al.</em>, 2017</a>)</span>
 在此基础上引入注意力机制，为不同的特征交叉分配权重，使模型能关注到更重要的交互。例如，在预测一位用户是否会点击一条体育新闻时，“用户年龄=18-24岁”与“新闻类别=体育”的交叉，其重要性显然要高于“用户年龄=18-24岁”与“新闻发布时间=周三”的交叉。</p>
-<div class="figure align-default" id="id12">
+<figure class="align-default" id="id12">
 <img alt="../../_images/afm_architecture.png" src="../../_images/afm_architecture.png" />
-<p class="caption"><span class="caption-number">图3.3.2 </span><span class="caption-text">AFM模型结构</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.2.2 </span><span class="caption-text">AFM模型结构</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>AFM 的模型结构在 FM
 的基础上进行了扩展。它首先将所有成对特征的隐向量进行<strong>元素积（Hadamard
 Product, 记为 :math:`odot`）</strong>，而不是像 FM
 那样直接求内积。这样做保留了交叉特征的向量信息，为后续的注意力计算提供了输入。这个步骤被称为成对交互层（Pair-wise
 Interaction Layer）。</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-2">
-<span class="eqno">(3.3.3)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-2" title="Permalink to this equation">¶</a></span>\[f_{PI}(\mathcal{E}) = \{(v_i \odot v_j) x_i x_j \}_{(i,j) \in \mathcal{R}_x}\]</div>
+<span class="eqno">(3.2.3)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-2" title="Permalink to this equation">¶</a></span>\[f_{PI}(\mathcal{E}) = \{(v_i \odot v_j) x_i x_j \}_{(i,j) \in \mathcal{R}_x}\]</div>
 <p>其中，<span class="math notranslate nohighlight">\(\mathcal{E}\)</span>
 表示输入样本中所有非零特征的embedding向量集合，<span class="math notranslate nohighlight">\(\mathcal{R}_x\)</span>
 表示输入样本中所有非零特征的索引对集合。随后，模型引入一个注意力机制，来学习每个交叉特征
 <span class="math notranslate nohighlight">\((v_i \odot v_j)\)</span> 的重要性得分 <span class="math notranslate nohighlight">\(a_{ij}\)</span>。</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-3">
-<span class="eqno">(3.3.4)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(3.2.4)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
 a_{ij}' &amp;= \textbf{h}^T \text{ReLU}(\textbf{W} (\mathbf{v}_i \odot \mathbf{v}_j) x_i x_j + \textbf{b}) \\
 a_{ij} &amp;= \frac{\exp(a_{ij}')}{\sum_{(i,k) \in \mathcal{R}_x} \exp(a_{ik}')}
 \end{aligned}\end{split}\]</div>
@@ -430,18 +415,18 @@ a_{ij} &amp;= \frac{\exp(a_{ij}')}{\sum_{(i,k) \in \mathcal{R}_x} \exp(a_{ik}')}
 归一化后，被用作加权求和的权重，与原始的交叉特征向量相乘，最终汇总成一个向量。这个过程被称为注意力池化层（Attention-based
 Pooling）。</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-4">
-<span class="eqno">(3.3.5)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-4" title="Permalink to this equation">¶</a></span>\[f_{Att} = \sum_{(i,j) \in \mathcal{R}_x} a_{ij} (\mathbf{v}_i \odot \mathbf{v}_j) x_i x_j\]</div>
+<span class="eqno">(3.2.5)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-4" title="Permalink to this equation">¶</a></span>\[f_{Att} = \sum_{(i,j) \in \mathcal{R}_x} a_{ij} (\mathbf{v}_i \odot \mathbf{v}_j) x_i x_j\]</div>
 <p>最后，AFM
 的完整预测公式由一阶线性部分和经过注意力加权的二阶交叉部分组成：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-5">
-<span class="eqno">(3.3.6)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-5" title="Permalink to this equation">¶</a></span>\[\hat{y}_{afm}(x) = w_0 + \sum_{i=1}^n w_i x_i + \textbf{p}^T f_{Att}\]</div>
+<span class="eqno">(3.2.6)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-5" title="Permalink to this equation">¶</a></span>\[\hat{y}_{afm}(x) = w_0 + \sum_{i=1}^n w_i x_i + \textbf{p}^T f_{Att}\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\textbf{p}\)</span>
 是一个投影向量，用于将最终的交叉结果映射为标量。通过引入注意力机制，<strong>AFM
 不仅提升了模型的表达能力，还通过可视化注意力权重</strong> <span class="math notranslate nohighlight">\(a_{ij}\)</span>
 <strong>赋予了模型更好的可解释性</strong>，让我们可以洞察哪些特征交叉对预测结果的贡献最大。</p>
-</div>
-<div class="section" id="nfm">
-<h2><span class="section-number">3.3.2.3. </span>NFM: 交叉特征的深度学习<a class="headerlink" href="#nfm" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="nfm">
+<h2><span class="section-number">3.2.1.3. </span>NFM: 交叉特征的深度学习<a class="headerlink" href="#nfm" title="Permalink to this heading">¶</a></h2>
 <p>NFM <span id="id4">(<a class="reference internal" href="../../chapter_references/references.html#id47" title="He, X., &amp; Chua, T.-S. (2017). Neural factorization machines for sparse predictive analytics. Proceedings of the 40th International ACM SIGIR conference on Research and Development in Information Retrieval (pp. 355–364).">He and Chua, 2017</a>)</span> 探索了如何更深入地利用交叉信息。它将 FM
 的二阶交叉结果（用哈达玛积表示的向量）作为输入，送入一个深度神经网络（DNN），从而在
 FM 的基础上学习更高阶、更复杂的非线性关系。NFM 的核心思想是，<strong>FM
@@ -451,43 +436,45 @@ DNN，由 DNN 来自动学习这些交叉特征之间的高阶组合关系</stro
 Pooling Layer）来对所有特征对的 Embedding
 向量进行处理。这一层的操作如下：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-6">
-<span class="eqno">(3.3.7)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-6" title="Permalink to this equation">¶</a></span>\[f_{BI}(V_x) = \sum_{i=1}^n \sum_{j=i+1}^n x_i \mathbf{v}_i \odot x_j \mathbf{v}_j\]</div>
+<span class="eqno">(3.2.7)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-6" title="Permalink to this equation">¶</a></span>\[f_{BI}(V_x) = \sum_{i=1}^n \sum_{j=i+1}^n x_i \mathbf{v}_i \odot x_j \mathbf{v}_j\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(V_x = \{x_1 v_1, x_2 v_2, ..., x_n v_n\}\)</span>
 是输入样本中所有非零特征的 Embedding 向量集合，<span class="math notranslate nohighlight">\(\odot\)</span>
 仍然是元素积操作。这个操作的结果是一个与 Embedding
 维度相同的向量，它有效地编码了所有的二阶特征交叉信息。值得注意的是，与FM中的变换类似，这一层的计算同样可以被优化到线性时间复杂度，非常高效：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-7">
-<span class="eqno">(3.3.8)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-7" title="Permalink to this equation">¶</a></span>\[f_{BI}(V_x) = \frac{1}{2} \left[\left(\sum_{i=1}^n x_i \mathbf{v}_i\right)^2 - \sum_{i=1}^n (x_i \mathbf{v}_i)^2\right].\]</div>
+<span class="eqno">(3.2.8)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-7" title="Permalink to this equation">¶</a></span>\[f_{BI}(V_x) = \frac{1}{2} \left[\left(\sum_{i=1}^n x_i \mathbf{v}_i\right)^2 - \sum_{i=1}^n (x_i \mathbf{v}_i)^2\right].\]</div>
 <p>得到特征交叉池化层的输出向量 <span class="math notranslate nohighlight">\(f_{BI}(V_x)\)</span> 后，NFM
 将其送入一个标准的多层前馈神经网络（MLP）：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-8">
-<span class="eqno">(3.3.9)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-8" title="Permalink to this equation">¶</a></span>\[z_1 = \sigma_1(\textbf{W}_1 f_{BI}(V_x) + \textbf{b}_1),\ \ldots,\ z_L = \sigma_L(\textbf{W}_L z_{L-1} + \textbf{b}_L)\]</div>
+<span class="eqno">(3.2.9)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-8" title="Permalink to this equation">¶</a></span>\[z_1 = \sigma_1(\textbf{W}_1 f_{BI}(V_x) + \textbf{b}_1),\ \ldots,\ z_L = \sigma_L(\textbf{W}_L z_{L-1} + \textbf{b}_L)\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\textbf{W}_l, \textbf{b}_l, \sigma_l\)</span> 分别是第 <span class="math notranslate nohighlight">\(l\)</span>
 个隐藏层的权重、偏置和非线性激活函数。最后，NFM 将一阶线性部分与 DNN
 部分的输出结合起来，得到最终的预测结果：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-9">
-<span class="eqno">(3.3.10)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-9" title="Permalink to this equation">¶</a></span>\[\hat{y}_{NFM}(x) = w_0 + \sum_{i=1}^n w_i x_i + \textbf{h}^T z_L\]</div>
+<span class="eqno">(3.2.10)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-9" title="Permalink to this equation">¶</a></span>\[\hat{y}_{NFM}(x) = w_0 + \sum_{i=1}^n w_i x_i + \textbf{h}^T z_L\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\textbf{h}\)</span> 是预测层的权重向量。通过这种方式，NFM 巧妙地将
 FM 的二阶交叉能力与 DNN 的高阶非线性建模能力结合在了一起。FM
 可以被看作是 NFM 在没有隐藏层时的特例，这表明 NFM 是对 FM
 的一个自然扩展和深度化。</p>
-</div>
-<div class="section" id="pnn">
-<h2><span class="section-number">3.3.2.4. </span>PNN: 多样化的乘积操作<a class="headerlink" href="#pnn" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="pnn">
+<h2><span class="section-number">3.2.1.4. </span>PNN: 多样化的乘积操作<a class="headerlink" href="#pnn" title="Permalink to this heading">¶</a></h2>
 <p>PNN <span id="id5">(<a class="reference internal" href="../../chapter_references/references.html#id41" title="Qu, Y., Cai, H., Ren, K., Zhang, W., Yu, Y., Wen, Y., &amp; Wang, J. (2016). Product-based neural networks for user response prediction. 2016 IEEE 16th international conference on data mining (ICDM) (pp. 1149–1154).">Qu <em>et al.</em>, 2016</a>)</span> 认为仅用内积（Inner
 Product）或元素积（Hadamard
 Product）不足以捕捉所有特征交互信息。因此，它在经典的内积基础上，<strong>增加了外积（Outer
 Product）作为补充，尝试从更丰富的角度来表示特征间的交互</strong>。PNN
 的核心创新在于其“乘积层”（Product Layer），该层专门用于对特征 Embedding
 进行显式的交叉操作，其输出再送入后续的全连接网络。</p>
-<div class="figure align-default" id="id13">
+<figure class="align-default" id="id13">
 <img alt="../../_images/pnn.png" src="../../_images/pnn.png" />
-<p class="caption"><span class="caption-number">图3.3.3 </span><span class="caption-text">PNN模型结构</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.2.3 </span><span class="caption-text">PNN模型结构</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>PNN 的乘积层会产生两部分信号，一部分是线性信号
 <span class="math notranslate nohighlight">\(\mathbf{l}_z\)</span>，直接来自于各特征的 Embedding 向量，定义为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-10">
-<span class="eqno">(3.3.11)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-10" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_z^n = \sum_{i=1}^N\sum_{k=1}^M (\mathbf{W}_z^n)_{i,k} \mathbf{f}_i^k\]</div>
+<span class="eqno">(3.2.11)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-10" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_z^n = \sum_{i=1}^N\sum_{k=1}^M (\mathbf{W}_z^n)_{i,k} \mathbf{f}_i^k\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\mathbf{f}_i\)</span> 是特征的 Embedding
 向量，<span class="math notranslate nohighlight">\(\mathbf{W}_z^n\)</span> 是第 <span class="math notranslate nohighlight">\(n\)</span>
 个神经元对应的线性信号权重矩阵。<span class="math notranslate nohighlight">\(N\)</span> 为特征字段数量，<span class="math notranslate nohighlight">\(M\)</span>
@@ -497,7 +484,7 @@ Product）作为补充，尝试从更丰富的角度来表示特征间的交互<
 <p><strong>IPNN (Inner Product-based Neural Network)</strong>: 这种变体使用特征
 Embedding 之间的<strong>内积</strong>来计算二次信号。一个直接的计算方式是：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-11">
-<span class="eqno">(3.3.12)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-11" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p^n = \sum_{i=1}^N \sum_{j=1}^N (\textbf{W}_p^n)_{i,j} \langle \mathbf{f}_i, \mathbf{f}_j \rangle\]</div>
+<span class="eqno">(3.2.12)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-11" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p^n = \sum_{i=1}^N \sum_{j=1}^N (\textbf{W}_p^n)_{i,j} \langle \mathbf{f}_i, \mathbf{f}_j \rangle\]</div>
 <p><span class="math notranslate nohighlight">\(\textbf{W}_p^n\)</span> 是第 <span class="math notranslate nohighlight">\(n\)</span>
 个神经元对应的权重矩阵。这种计算方式的复杂度是
 <span class="math notranslate nohighlight">\(O(N^2)\)</span>，<span class="math notranslate nohighlight">\(N\)</span> 为特征字段数量，开销巨大。为了优化，PNN
@@ -505,13 +492,13 @@ Embedding 之间的<strong>内积</strong>来计算二次信号。一个直接�
 <span class="math notranslate nohighlight">\(\theta_n \theta_n^T\)</span>，即
 <span class="math notranslate nohighlight">\((\textbf{W}_p^n)_{i,j} = \theta_{i,n} \theta_{j,n}\)</span>。于是，计算过程可以被重写和简化：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-12">
-<span class="eqno">(3.3.13)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-12" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p^n = \sum_{i=1}^N \sum_{j=1}^N \theta_i^n \theta_j^n \langle \mathbf{f}_i, \mathbf{f}_j \rangle = \sum_{i=1}^N \sum_{j=1}^N \langle \theta_i^n \mathbf{f}_i, \theta_j^n \mathbf{f}_j \rangle = \langle \sum_{i=1}^N \theta_i^n \mathbf{f}_i, \sum_{j=1}^N \theta_j^n \mathbf{f}_j \rangle = \left\|\sum_{i=1}^N \theta_i^n \mathbf{f}_i\right\|^2\]</div>
+<span class="eqno">(3.2.13)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-12" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p^n = \sum_{i=1}^N \sum_{j=1}^N \theta_i^n \theta_j^n \langle \mathbf{f}_i, \mathbf{f}_j \rangle = \sum_{i=1}^N \sum_{j=1}^N \langle \theta_i^n \mathbf{f}_i, \theta_j^n \mathbf{f}_j \rangle = \langle \sum_{i=1}^N \theta_i^n \mathbf{f}_i, \sum_{j=1}^N \theta_j^n \mathbf{f}_j \rangle = \left\|\sum_{i=1}^N \theta_i^n \mathbf{f}_i\right\|^2\]</div>
 <p>通过这个变换，<strong>计算所有内积对的加权和，转变成了先对 Embedding
 进行加权求和，然后计算一次向量的 L2 范数平方</strong>，复杂度成功地从
 <span class="math notranslate nohighlight">\(O(N^2M)\)</span> 降低到了 <span class="math notranslate nohighlight">\(O(NM)\)</span>。</p>
 <p>优化后的完整计算公式为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-13">
-<span class="eqno">(3.3.14)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-13" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p = \left(\left\|\sum_{i=1}^N \theta_i^1 \mathbf{f}_i\right\|^2, \left\|\sum_{i=1}^N \theta_i^2 \mathbf{f}_i\right\|^2, \ldots, \left\|\sum_{i=1}^N \theta_i^n \mathbf{f}_i\right\|^2\right)\]</div>
+<span class="eqno">(3.2.14)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-13" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p = \left(\left\|\sum_{i=1}^N \theta_i^1 \mathbf{f}_i\right\|^2, \left\|\sum_{i=1}^N \theta_i^2 \mathbf{f}_i\right\|^2, \ldots, \left\|\sum_{i=1}^N \theta_i^n \mathbf{f}_i\right\|^2\right)\]</div>
 <p><strong>OPNN (Outer Product-based Neural Network)</strong>: 这种变体使用特征
 Embedding 之间的<strong>外积</strong> <span class="math notranslate nohighlight">\(\mathbf{f}_i\mathbf{f}_j^T\)</span>
 来捕捉更丰富的交互信息。外积会产生一个矩阵，如果对所有外积对进行加权求和
@@ -521,17 +508,17 @@ Embedding 之间的<strong>外积</strong> <span class="math notranslate nohighl
 采用了一种称为“叠加”（superposition）的近似方法来大幅降低复杂度。它不再计算所有成对的外积，而是<strong>先将所有特征的
 Embedding 向量相加，然后再计算一次外积</strong>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-14">
-<span class="eqno">(3.3.15)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-14" title="Permalink to this equation">¶</a></span>\[\sum_{i=1}^N \sum_{j=1}^N \mathbf{f}_i \mathbf{f}_j^T = (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\]</div>
+<span class="eqno">(3.2.15)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-14" title="Permalink to this equation">¶</a></span>\[\sum_{i=1}^N \sum_{j=1}^N \mathbf{f}_i \mathbf{f}_j^T = (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\]</div>
 <p>这样，计算量得到了节省 <span class="math notranslate nohighlight">\(O(M(M+N))\)</span>。优化后的完整计算公式为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-15">
-<span class="eqno">(3.3.16)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-15" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p = \left(\langle\mathbf{W}_p^1, (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\rangle, \langle\mathbf{W}_p^2, (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\rangle, \ldots, \langle\mathbf{W}_p^n, (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\rangle\right)\]</div>
+<span class="eqno">(3.2.16)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-15" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p = \left(\langle\mathbf{W}_p^1, (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\rangle, \langle\mathbf{W}_p^2, (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\rangle, \ldots, \langle\mathbf{W}_p^n, (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\rangle\right)\]</div>
 <p>其中 对称矩阵<span class="math notranslate nohighlight">\(\mathbf{W}_p^n \in \mathbb{R}^{M \times M}\)</span> 是第
 <span class="math notranslate nohighlight">\(n\)</span>
 个神经元对应的权重矩阵，矩阵内积<span class="math notranslate nohighlight">\(\langle \mathbf{A}, \mathbf{B} \rangle = \sum_{i=1}^M \sum_{j=1}^M \mathbf{A}_{i,j} \mathbf{B}_{i,j}\)</span>。</p>
 <p>在得到线性信号 <span class="math notranslate nohighlight">\(l_z\)</span> 和经过优化的二次信号 <span class="math notranslate nohighlight">\(l_p\)</span> 后，PNN
 将它们合并，并送入后续的全连接层进行高阶非线性变换：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-16">
-<span class="eqno">(3.3.17)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-16" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(3.2.17)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-16" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
 \mathbf{l}_1 &amp;= \text{ReLU}(\mathbf{l}_z + \mathbf{l}_p + \mathbf{b}_1) \\
 \mathbf{l}_2 &amp;= \text{ReLU}(\mathbf{W}_2 \mathbf{l}_1 + \mathbf{b}_2) \\
 \hat{y} &amp;= \sigma(\textbf{W}_3 \mathbf{l}_2 + b_3)
@@ -539,18 +526,20 @@ Embedding 向量相加，然后再计算一次外积</strong>：</p>
 <p>PNN
 的独特之处在于，它将“乘积”操作（无论是内积还是外积）作为了网络中的一个核心计算单元，认为这种操作比传统
 DNN 中简单的“加法”操作更能有效地捕捉类别型特征之间的交互关系。</p>
-</div>
-<div class="section" id="fibinet">
-<h2><span class="section-number">3.3.2.5. </span>FiBiNET: 特征重要性与双线性交互<a class="headerlink" href="#fibinet" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="fibinet">
+<h2><span class="section-number">3.2.1.5. </span>FiBiNET: 特征重要性与双线性交互<a class="headerlink" href="#fibinet" title="Permalink to this heading">¶</a></h2>
 <p>虽然 PNN
 通过内积和外积丰富了特征交互的表达方式，但它仍然将所有特征视为同等重要。然而，在实际的推荐场景中，不同特征对于预测结果的贡献度显然是不同的。FiBiNET
 (Feature Importance and Bilinear feature Interaction Network)
 <span id="id6">(<a class="reference internal" href="../../chapter_references/references.html#id22" title="Huang, T., Zhang, Z., &amp; Zhang, J. (2019). Fibinet: combining feature importance and bilinear feature interaction for click-through rate prediction. Proceedings of the 13th ACM conference on recommender systems (pp. 169–177).">Huang <em>et al.</em>, 2019</a>)</span>
 模型认识到了这个问题，<strong>它在进行二阶特征交叉之前，先动态地学习每个特征的重要性权重，然后再通过双线性交互来捕捉更精细的特征关系</strong>。这种设计使得模型能够有选择性地进行特征交互，从而提升二阶特征交叉的质量。</p>
-<div class="figure align-default" id="id14">
+<figure class="align-default" id="id14">
 <img alt="../../_images/fibinet_architecture.png" src="../../_images/fibinet_architecture.png" />
-<p class="caption"><span class="caption-number">图3.3.4 </span><span class="caption-text">FiBiNET架构图</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.2.4 </span><span class="caption-text">FiBiNET架构图</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>FiBiNET 的创新主要体现在两个核心模块上：<strong>SENET
 特征重要性学习机制</strong>和<strong>双线性交互层</strong>。</p>
 <p><strong>SENET 特征重要性学习</strong></p>
@@ -558,28 +547,30 @@ DNN 中简单的“加法”操作更能有效地捕捉类别型特征之间的�
 Network)</strong> <span id="id7">(<a class="reference internal" href="../../chapter_references/references.html#id21" title="Hu, J., Shen, L., &amp; Sun, G. (2018). Squeeze-and-excitation networks. Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 7132–7141).">Hu <em>et al.</em>, 2018</a>)</span>
 机制，用于动态学习每个特征的重要性权重。与传统方法对所有特征一视同仁不同，SENET
 能够自适应地为不同特征分配不同的权重，让模型更加关注那些对预测任务更重要的特征。</p>
-<div class="figure align-default" id="id15">
+<figure class="align-default" id="id15">
 <img alt="../../_images/fibinet_senet.png" src="../../_images/fibinet_senet.png" />
-<p class="caption"><span class="caption-number">图3.3.5 </span><span class="caption-text">SENET层结构详解</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.2.5 </span><span class="caption-text">SENET层结构详解</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>SENET 的工作流程包含三个关键步骤：</p>
 <ol class="arabic">
 <li><p><strong>Squeeze (挤压)</strong>: 通过全局平均池化将每个特征的 <span class="math notranslate nohighlight">\(k\)</span> 维嵌入向量
 <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> 压缩成一个标量统计量：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-17">
-<span class="eqno">(3.3.18)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-17" title="Permalink to this equation">¶</a></span>\[\mathbf{z}_i = F_{\text{sq}}(\mathbf{e}_i) = \frac{1}{k} \sum_{t=1}^k \mathbf{e}_i(t)\]</div>
+<span class="eqno">(3.2.18)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-17" title="Permalink to this equation">¶</a></span>\[\mathbf{z}_i = F_{\text{sq}}(\mathbf{e}_i) = \frac{1}{k} \sum_{t=1}^k \mathbf{e}_i(t)\]</div>
 </li>
 <li><p><strong>Excitation (激励)</strong>:
 使用两个全连接层构成的瓶颈结构来学习特征间的相关性，并生成每个特征的重要性权重：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-18">
-<span class="eqno">(3.3.19)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-18" title="Permalink to this equation">¶</a></span>\[\mathbf{A} = F_{\text{ex}}(\mathbf{Z}) = \sigma_2(\mathbf{W}_2 \sigma_1(\mathbf{W}_1 \mathbf{Z}))\]</div>
+<span class="eqno">(3.2.19)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-18" title="Permalink to this equation">¶</a></span>\[\mathbf{A} = F_{\text{ex}}(\mathbf{Z}) = \sigma_2(\mathbf{W}_2 \sigma_1(\mathbf{W}_1 \mathbf{Z}))\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\mathbf{W}_1 \in \mathbb{R}^{f \times \frac{f}{r}}\)</span> 和
 <span class="math notranslate nohighlight">\(\mathbf{W}_2 \in \mathbb{R}^{\frac{f}{r} \times f}\)</span>
 是可学习的权重矩阵，<span class="math notranslate nohighlight">\(r\)</span> 是缩减率超参数。</p>
 </li>
 <li><p><strong>Re-weight (重新加权)</strong>: 将学习到的权重应用于原始嵌入向量：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-19">
-<span class="eqno">(3.3.20)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-19" title="Permalink to this equation">¶</a></span>\[\mathbf{V} = F_{\text{ReWeight}}(\mathbf{A}, \mathbf{E}) = [\mathbf{a}_1 \cdot \mathbf{e}_1, \mathbf{a}_2 \cdot \mathbf{e}_2, \ldots, \mathbf{a}_f \cdot \mathbf{e}_f]\]</div>
+<span class="eqno">(3.2.20)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-19" title="Permalink to this equation">¶</a></span>\[\mathbf{V} = F_{\text{ReWeight}}(\mathbf{A}, \mathbf{E}) = [\mathbf{a}_1 \cdot \mathbf{e}_1, \mathbf{a}_2 \cdot \mathbf{e}_2, \ldots, \mathbf{a}_f \cdot \mathbf{e}_f]\]</div>
 </li>
 </ol>
 <p><strong>双线性交互层</strong></p>
@@ -590,16 +581,16 @@ Network)</strong> <span id="id7">(<a class="reference internal" href="../../chap
 中的元素积操作相比，双线性交互引入了一个可学习的变换矩阵
 <span class="math notranslate nohighlight">\(\mathbf{W} \in \mathbb{R}^{k \times k}\)</span>，使得模型能够学习更复杂的特征交互模式：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-20">
-<span class="eqno">(3.3.21)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-20" title="Permalink to this equation">¶</a></span>\[\mathbf{p}_{ij} = \mathbf{v}_i \cdot \mathbf{W} \circ \mathbf{v}_j\]</div>
+<span class="eqno">(3.2.21)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-20" title="Permalink to this equation">¶</a></span>\[\mathbf{p}_{ij} = \mathbf{v}_i \cdot \mathbf{W} \circ \mathbf{v}_j\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\circ\)</span>
 表示哈达玛积。这种双线性变换相比于简单的内积或元素积，能够捕捉到更加丰富和细致的特征交互信息。</p>
 <p>FiBiNET 会同时对原始嵌入 <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> 和加权嵌入
 <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>
 进行双线性交互，然后将这两组交互结果、原始特征以及一个深度神经网络的输出结合起来，共同做出最终的预测。通过这种方式，<strong>FiBiNET
 不仅解决了“哪些特征更重要”的问题，还通过双线性交互提升了二阶特征交叉的表达能力</strong>。</p>
-</div>
-<div class="section" id="deepfm">
-<span id="id8"></span><h2><span class="section-number">3.3.2.6. </span>DeepFM: 低阶高阶的统一建模<a class="headerlink" href="#deepfm" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="deepfm">
+<span id="id8"></span><h2><span class="section-number">3.2.1.6. </span>DeepFM: 低阶高阶的统一建模<a class="headerlink" href="#deepfm" title="Permalink to this heading">¶</a></h2>
 <p>DeepFM <span id="id9">(<a class="reference internal" href="../../chapter_references/references.html#id50" title="Guo, H., Tang, R., Ye, Y., Li, Z., &amp; He, X. (2017). Deepfm: a factorization-machine based neural network for ctr prediction. arXiv preprint arXiv:1703.04247.">Guo <em>et al.</em>, 2017</a>)</span> 是对 Wide &amp; Deep
 架构的直接改进和优化。它将 Wide &amp; Deep 中需要大量人工特征工程的 Wide
 部分，<strong>直接替换为了一个无需任何人工干预的 FM
@@ -607,17 +598,19 @@ Network)</strong> <span id="id7">(<a class="reference internal" href="../../chap
 组件和 Deep
 组件共享同一份特征嵌入（Embedding）</strong>，这带来了两大好处：首先，模型可以同时从原始特征中学习低阶和高阶的特征交互；其次，共享
 Embedding 的方式使得模型训练更加高效。</p>
-<div class="figure align-default" id="id16">
+<figure class="align-default" id="id16">
 <img alt="../../_images/deepfm_architecture.png" src="../../_images/deepfm_architecture.png" />
-<p class="caption"><span class="caption-number">图3.3.6 </span><span class="caption-text">DeepFM模型结构</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.2.6 </span><span class="caption-text">DeepFM模型结构</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>DeepFM 的结构非常清晰，它由 FM 和 DNN 两个并行的组件构成，两者共享输入。</p>
 <ul class="simple">
 <li><p><strong>FM 组件</strong>: 负责学习一阶特征和二阶特征交叉。其输出 yFM
 的计算方式与标准 FM 完全相同：</p></li>
 </ul>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-21">
-<span class="eqno">(3.3.22)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-21" title="Permalink to this equation">¶</a></span>\[y_{FM} = \langle w, x \rangle + \sum_{i=1}^d \sum_{j=i+1}^d \langle V_{i}, V_{j} \rangle x_{i}x_{j}\]</div>
+<span class="eqno">(3.2.22)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-21" title="Permalink to this equation">¶</a></span>\[y_{FM} = \langle w, x \rangle + \sum_{i=1}^d \sum_{j=i+1}^d \langle V_{i}, V_{j} \rangle x_{i}x_{j}\]</div>
 <p>这里的 <span class="math notranslate nohighlight">\(V_{i}\)</span> 就是特征 <span class="math notranslate nohighlight">\(i\)</span> 的 Embedding 向量。</p>
 <ul class="simple">
 <li><p><strong>Deep 组件</strong>: 负责学习高阶的非线性特征交叉。它的输入正是 FM
@@ -627,27 +620,27 @@ Embedding 的方式使得模型训练更加高效。</p>
 向量被拼接（concatenate）在一起，形成一个长的向量，作为 DNN 的输入。</p></li>
 </ul>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-22">
-<span class="eqno">(3.3.23)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-22" title="Permalink to this equation">¶</a></span>\[a^{(0)} = [e_1, e_2, ..., e_m]\]</div>
+<span class="eqno">(3.2.23)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-22" title="Permalink to this equation">¶</a></span>\[a^{(0)} = [e_1, e_2, ..., e_m]\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(e_i\)</span> 是第 <span class="math notranslate nohighlight">\(i\)</span> 个特征字段的 Embedding
 向量。这个拼接后的向量随后被送入一个标准的前馈神经网络，前向传播公式为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-23">
-<span class="eqno">(3.3.24)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-23" title="Permalink to this equation">¶</a></span>\[a^{(l+1)} = \sigma(\textbf{W}^{(l)} a^{(l)} + \textbf{b}^{(l)})\]</div>
+<span class="eqno">(3.2.24)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-23" title="Permalink to this equation">¶</a></span>\[a^{(l+1)} = \sigma(\textbf{W}^{(l)} a^{(l)} + \textbf{b}^{(l)})\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(l\)</span> 是层深度，<span class="math notranslate nohighlight">\(\sigma\)</span>
 是激活函数，<span class="math notranslate nohighlight">\(\textbf{W}^{(l)}\)</span>、<span class="math notranslate nohighlight">\(\textbf{b}^{(l)}\)</span>分别是第
 <span class="math notranslate nohighlight">\(l\)</span> 层的权重和偏置。最后输出为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-24">
-<span class="eqno">(3.3.25)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-24" title="Permalink to this equation">¶</a></span>\[y_{Deep} = \textbf{W}^{|H|+1} \cdot a^{|H|} + \textbf{b}^{|H|+1}\]</div>
+<span class="eqno">(3.2.25)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-24" title="Permalink to this equation">¶</a></span>\[y_{Deep} = \textbf{W}^{|H|+1} \cdot a^{|H|} + \textbf{b}^{|H|+1}\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(H\)</span> 是隐藏层数量.</p>
 <p>最终，DeepFM 的总输出是 FM 部分和 Deep 部分输出的简单相加，再通过一个
 Sigmoid 函数得到最终的点击率预测值：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-25">
-<span class="eqno">(3.3.26)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-25" title="Permalink to this equation">¶</a></span>\[\hat{y} = \sigma(y_{FM} + y_{Deep})\]</div>
+<span class="eqno">(3.2.26)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-25" title="Permalink to this equation">¶</a></span>\[\hat{y} = \sigma(y_{FM} + y_{Deep})\]</div>
 <p>DeepFM模型成功地结合了FM的低阶特征学习能力和深度神经网络的高阶特征学习能力。通过FM组件和深度组件共享相同的特征嵌入，模型可以同时从原始特征中学习低阶和高阶特征交互，无需像Wide
 &amp;
 Deep那样依赖专家的特征工程。这种设计使得DeepFM成为一个端到端的自动特征学习模型，在效果和效率上都表现出色。</p>
-</div>
-<div class="section" id="id10">
-<h2><span class="section-number">3.3.2.7. </span>代码实践<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="id10">
+<h2><span class="section-number">3.2.1.7. </span>代码实践<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">funrec.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">compare_models</span>
@@ -661,22 +654,22 @@ Deep那样依赖专家的特征工程。这种设计使得DeepFM成为一个端�
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------+--------+--------+---------------+</span>
 <span class="o">|</span> <span class="n">模型</span>    <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
 <span class="o">+=========+========+========+===============+</span>
-<span class="o">|</span> <span class="n">fm</span>      <span class="o">|</span> <span class="mf">0.5949</span> <span class="o">|</span> <span class="mf">0.5697</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fm</span>      <span class="o">|</span> <span class="mf">0.5977</span> <span class="o">|</span> <span class="mf">0.5701</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">afm</span>     <span class="o">|</span> <span class="mf">0.5811</span> <span class="o">|</span> <span class="mf">0.5689</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">afm</span>     <span class="o">|</span> <span class="mf">0.5875</span> <span class="o">|</span> <span class="mf">0.5655</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">nfm</span>     <span class="o">|</span> <span class="mf">0.5905</span> <span class="o">|</span> <span class="mf">0.5667</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">nfm</span>     <span class="o">|</span> <span class="mf">0.5721</span> <span class="o">|</span> <span class="mf">0.5497</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">pnn</span>     <span class="o">|</span> <span class="mf">0.5919</span> <span class="o">|</span> <span class="mf">0.5726</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">pnn</span>     <span class="o">|</span> <span class="mf">0.5918</span> <span class="o">|</span> <span class="mf">0.5733</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">fibinet</span> <span class="o">|</span> <span class="mf">0.5977</span> <span class="o">|</span> <span class="mf">0.5728</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fibinet</span> <span class="o">|</span> <span class="mf">0.5982</span> <span class="o">|</span> <span class="mf">0.5686</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">deepfm</span>  <span class="o">|</span> <span class="mf">0.6013</span> <span class="o">|</span> <span class="mf">0.5723</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">deepfm</span>  <span class="o">|</span> <span class="mf">0.5917</span> <span class="o">|</span> <span class="mf">0.5725</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>
@@ -687,14 +680,14 @@ Deep那样依赖专家的特征工程。这种设计使得DeepFM成为一个端�
       <span class="caption-text">Table Of Contents</span>
     </p>
     <ul>
-<li><a class="reference internal" href="#">3.3.2. 二阶特征交叉</a><ul>
-<li><a class="reference internal" href="#fm">3.3.2.1. FM: 隐向量内积与参数共享</a></li>
-<li><a class="reference internal" href="#afm">3.3.2.2. AFM: 注意力加权的交叉特征</a></li>
-<li><a class="reference internal" href="#nfm">3.3.2.3. NFM: 交叉特征的深度学习</a></li>
-<li><a class="reference internal" href="#pnn">3.3.2.4. PNN: 多样化的乘积操作</a></li>
-<li><a class="reference internal" href="#fibinet">3.3.2.5. FiBiNET: 特征重要性与双线性交互</a></li>
-<li><a class="reference internal" href="#deepfm">3.3.2.6. DeepFM: 低阶高阶的统一建模</a></li>
-<li><a class="reference internal" href="#id10">3.3.2.7. 代码实践</a></li>
+<li><a class="reference internal" href="#">3.2.1. 二阶特征交叉</a><ul>
+<li><a class="reference internal" href="#fm">3.2.1.1. FM: 隐向量内积与参数共享</a></li>
+<li><a class="reference internal" href="#afm">3.2.1.2. AFM: 注意力加权的交叉特征</a></li>
+<li><a class="reference internal" href="#nfm">3.2.1.3. NFM: 交叉特征的深度学习</a></li>
+<li><a class="reference internal" href="#pnn">3.2.1.4. PNN: 多样化的乘积操作</a></li>
+<li><a class="reference internal" href="#fibinet">3.2.1.5. FiBiNET: 特征重要性与双线性交互</a></li>
+<li><a class="reference internal" href="#deepfm">3.2.1.6. DeepFM: 低阶高阶的统一建模</a></li>
+<li><a class="reference internal" href="#id10">3.2.1.7. 代码实践</a></li>
 </ul>
 </li>
 </ul>
@@ -705,18 +698,18 @@ Deep那样依赖专家的特征工程。这种设计使得DeepFM成为一个端�
 
       <div class="clearer"></div>
     </div><div class="pagenation">
-     <a id="button-prev" href="0.intro.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+     <a id="button-prev" href="index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
          <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
          <div class="pagenation-text">
             <span class="pagenation-direction">Previous</span>
-            <div>3.3.1. 简介</div>
+            <div>3.2. 特征交叉</div>
          </div>
      </a>
      <a id="button-next" href="2.higher_order.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
          <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
         <div class="pagenation-text">
             <span class="pagenation-direction">Next</span>
-            <div>3.3.3. 高阶特征交叉</div>
+            <div>3.2.2. 高阶特征交叉</div>
         </div>
      </a>
   </div>

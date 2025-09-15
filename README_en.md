@@ -86,7 +86,7 @@ We also establish a **FunRec learning community (WeChat group + knowledge planet
       <td>
          <a href="https://github.com/bokang-ugent"><img width="70" height="70" src="https://github.com/bokang-ugent.png?s=40" alt="pic"></a><br>
          <a href="https://bokang.io">Bo Kang</a> 
-        <p><br> PhD, Ghent University <br> Co-founder of <a href="https://nobl.ai/">nobl.ai</a> </p>
+        <p><br> PhD, Ghent University <br> Co-founder of nobl.ai </p>
       </td>
     </tr>
   </tbody>

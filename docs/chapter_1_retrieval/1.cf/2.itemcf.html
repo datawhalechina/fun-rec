@@ -3,12 +3,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     
-    <title>2.1.3. 基于物品的协同过滤 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
+    <title>2.1.2. 基于物品的协同过滤 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
 
     <link rel="stylesheet" href="../../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/sphinx_materialdesign_theme.css" type="text/css" />
@@ -27,8 +28,8 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="2.1.4. Swing 算法" href="3.swing.html" />
-    <link rel="prev" title="2.1.2. 基于用户的协同过滤" href="1.usercf.html" /> 
+    <link rel="next" title="2.1.3. Swing 算法" href="3.swing.html" />
+    <link rel="prev" title="2.1.1. 基于用户的协同过滤" href="1.usercf.html" /> 
   </head>
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
@@ -37,7 +38,7 @@
         <nav class="mdl-navigation breadcrumb">
             <a class="mdl-navigation__link" href="../index.html"><span class="section-number">2. </span>召回模型</a><i class="material-icons">navigate_next</i>
             <a class="mdl-navigation__link" href="index.html"><span class="section-number">2.1. </span>协同过滤</a><i class="material-icons">navigate_next</i>
-            <a class="mdl-navigation__link is-active"><span class="section-number">2.1.3. </span>基于物品的协同过滤</a>
+            <a class="mdl-navigation__link is-active"><span class="section-number">2.1.2. </span>基于物品的协同过滤</a>
         </nav>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
@@ -108,95 +109,85 @@ Show Source
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 召回模型</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.1. 协同过滤</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="0.intro.html">2.1.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.3. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.swing.html">2.1.4. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.5. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="5.summary.html">2.1.6. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.2. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.swing.html">2.1.3. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="5.summary.html">2.1.5. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../2.embedding/0.intro.html">2.2.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../2.embedding/3.summary.html">2.2.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/3.summary.html">2.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../3.sequence/0.intro.html">2.3.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../3.sequence/3.summary.html">2.3.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/3.summary.html">2.3.3. 总结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_2_ranking/index.html">3. 精排模型</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_3_rerank/index.html">4. 重排模型</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.1. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.2. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.3. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.4. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_5_projects/index.html">6. 项目实践</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/0.intro.html">6.1. 赛题理解</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.baseline.html">6.2. Baseline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.analysis.html">6.3. 数据分析</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.recall.html">6.4. 多路召回</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.feature_engineering.html">6.5. 特征工程</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.ranking.html">6.6. 排序模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
@@ -241,95 +232,85 @@ Show Source
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 召回模型</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.1. 协同过滤</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="0.intro.html">2.1.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.3. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.swing.html">2.1.4. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.5. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="5.summary.html">2.1.6. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.2. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.swing.html">2.1.3. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="5.summary.html">2.1.5. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../2.embedding/0.intro.html">2.2.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../2.embedding/3.summary.html">2.2.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/3.summary.html">2.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../3.sequence/0.intro.html">2.3.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../3.sequence/3.summary.html">2.3.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/3.summary.html">2.3.3. 总结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_2_ranking/index.html">3. 精排模型</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_3_rerank/index.html">4. 重排模型</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/0.intro.html">5.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.2. 模型去偏</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.3. 冷启动问题</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.4. 生成式推荐</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.5. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.1. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.2. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.3. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.4. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_5_projects/index.html">6. 项目实践</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/0.intro.html">6.1. 赛题理解</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.baseline.html">6.2. Baseline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.analysis.html">6.3. 数据分析</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.recall.html">6.4. 多路召回</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.feature_engineering.html">6.5. 特征工程</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.ranking.html">6.6. 排序模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
@@ -350,14 +331,16 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="itemcf">
-<span id="id1"></span><h1><span class="section-number">2.1.3. </span>基于物品的协同过滤<a class="headerlink" href="#itemcf" title="Permalink to this heading">¶</a></h1>
+  <section id="itemcf">
+<span id="id1"></span><h1><span class="section-number">2.1.2. </span>基于物品的协同过滤<a class="headerlink" href="#itemcf" title="Permalink to this heading">¶</a></h1>
 <p>当你在购物网站上买了一件T恤后，系统往往会推荐夹克等其他服装。这背后的逻辑很直观：既然你喜欢这件T恤，那么与它相似的其他服装可能也符合你的品味。这就是基于物品的协同过滤（ItemCF）的核心思想
 <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id6" title="Linden, G., Smith, B., &amp; York, J. (2003). Amazon.com recommendations: item-to-item collaborative filtering. IEEE Internet computing, 7(1), 76–80.">Linden <em>et al.</em>, 2003</a>)</span>。</p>
 <p>与前面介绍的UserCF不同，ItemCF换了一个角度来思考推荐问题。它不再寻找“和你相似的用户还喜欢什么”，而是关注“和你喜欢的物品相似的还有什么”。这种思路建立在一个简单的假设上：用户的兴趣具有一定的连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。</p>
-<div class="figure align-default" id="id6">
-<img alt="../../_images/itemcf_illustration.svg" src="../../_images/itemcf_illustration.svg" /><p class="caption"><span class="caption-number">图2.1.2 </span><span class="caption-text">ItemCF 原理示意图</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
+<figure class="align-default" id="id6">
+<img alt="../../_images/itemcf_illustration.svg" src="../../_images/itemcf_illustration.svg" /><figcaption>
+<p><span class="caption-number">图2.1.2 </span><span class="caption-text">ItemCF 原理示意图</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>从上图可以看到，当我们要给左方用户推荐物品时，ItemCF会分析T恤和夹克之间的相似性。由于右方两个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么夹克就成为了一个不错的推荐选择。</p>
 <p>ItemCF的实现流程主要包含以下两个步骤：</p>
 <p><strong>第一步：物品相似度计算</strong></p>
@@ -390,20 +373,12 @@ Show Source
 <span class="eqno">(2.1.11)<a class="headerlink" href="#equation-eq-itemcf-predict" title="Permalink to this equation">¶</a></span>\[\hat{r}_{u,j} = \bar{r}_{j} + \frac{\sum_{k \in S_j} w_{jk}\,\left( r_{u,k} - \bar{r}_{k} \right)}{\sum_{k \in S_j} w_{jk}}\]</div>
 <p>这个预测公式的逻辑是：先以物品<span class="math notranslate nohighlight">\(j\)</span>的平均评分作为基准，然后根据用户<span class="math notranslate nohighlight">\(u\)</span>对相似物品的评分偏好进行调整。<span class="math notranslate nohighlight">\(S_j\)</span>表示与物品<span class="math notranslate nohighlight">\(j\)</span>最相似的物品集合，<span class="math notranslate nohighlight">\(w_{jk}\)</span>是物品<span class="math notranslate nohighlight">\(j\)</span>和<span class="math notranslate nohighlight">\(k\)</span>之间的相似度权重。</p>
 <p>皮尔逊相关系数通过中心化处理，有效消除了不同物品评分分布的差异，能够更好地捕获物品间的相似性模式。</p>
-<div class="section" id="id4">
-<h2><span class="section-number">2.1.3.1. </span>应用实践<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
-<p>1.数据集 表格 <a class="reference internal" href="#table-itemcf-data"><span class="std std-numref">表2.1.2</span></a> 是和 <a class="reference internal" href="1.usercf.html#usercf"><span class="std std-numref">2.1.2节</span></a>
+<section id="id4">
+<h2><span class="section-number">2.1.2.1. </span>应用实践<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
+<p>1.数据集 表格 <a class="reference internal" href="#table-itemcf-data"><span class="std std-numref">表2.1.2</span></a> 是和 <a class="reference internal" href="1.usercf.html#usercf"><span class="std std-numref">2.1.1节</span></a>
 相同的用户评分数据。</p>
 <span id="table-itemcf-data"></span><table class="docutils align-default" id="id7">
 <caption><span class="caption-number">表2.1.2 </span><span class="caption-text">用户评分数据</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col style="width: 17%" />
-<col style="width: 17%" />
-<col style="width: 17%" />
-<col style="width: 17%" />
-<col style="width: 17%" />
-<col style="width: 17%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p></p></th>
 <th class="head"><p>用户1</p></th>
@@ -469,9 +444,9 @@ Show Source
 &amp;=\frac{13}{4}+\frac{0.97*(5-3.2)+0.58*(4-3.4)}{0.97+0.58}\\
 &amp;=4.6
 \end{aligned}\end{split}\]</div>
-</div>
-<div class="section" id="id5">
-<h2><span class="section-number">2.1.3.2. </span>代码实践<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="id5">
+<h2><span class="section-number">2.1.2.2. </span>代码实践<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>数据准备</p></li>
 </ol>
@@ -580,8 +555,8 @@ Show Source
 <span class="o">+---------------+--------------+----------------+---------------+</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>
@@ -592,9 +567,9 @@ Show Source
       <span class="caption-text">Table Of Contents</span>
     </p>
     <ul>
-<li><a class="reference internal" href="#">2.1.3. 基于物品的协同过滤</a><ul>
-<li><a class="reference internal" href="#id4">2.1.3.1. 应用实践</a></li>
-<li><a class="reference internal" href="#id5">2.1.3.2. 代码实践</a></li>
+<li><a class="reference internal" href="#">2.1.2. 基于物品的协同过滤</a><ul>
+<li><a class="reference internal" href="#id4">2.1.2.1. 应用实践</a></li>
+<li><a class="reference internal" href="#id5">2.1.2.2. 代码实践</a></li>
 </ul>
 </li>
 </ul>
@@ -609,14 +584,14 @@ Show Source
          <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
          <div class="pagenation-text">
             <span class="pagenation-direction">Previous</span>
-            <div>2.1.2. 基于用户的协同过滤</div>
+            <div>2.1.1. 基于用户的协同过滤</div>
          </div>
      </a>
      <a id="button-next" href="3.swing.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
          <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
         <div class="pagenation-text">
             <span class="pagenation-direction">Next</span>
-            <div>2.1.4. Swing 算法</div>
+            <div>2.1.3. Swing 算法</div>
         </div>
      </a>
   </div>

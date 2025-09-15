@@ -51,8 +51,8 @@ Swing score 的基础计算公式为：
 其中，\ :math:`\alpha` 是平滑系数，用来防止分母过小导致数值不稳定。
 
 让我们通过一个具体例子来理解这个公式。如 :numref:`swing_score`
-所示，红色边连接的子图表示一个swing结构。用户A和B有三个swing结构，分别是
-:math:`[A, t, B]`\ 、\ :math:`[A, r, B]`\ 、\ :math:`[A, p, B]`\ 。
+所示，红色边连接的子图表示一个swing结构。用户A和B有四个swing结构，分别是
+:math:`[A, h, B]`\ 、\ :math:`[A, t, B]`\ 、\ :math:`[A, r, B]`\ 、\ :math:`[A, p, B]`\ 。
 
 .. _swing_score:
 
@@ -64,15 +64,15 @@ Swing score 的基础计算公式为：
 假设 :math:`\alpha = 1`\ ，那么：
 
 -  用户对 :math:`[A, B]`
-   的贡献分数为：\ :math:`\frac{1}{1 + 3} = \frac{1}{4}`
+   的贡献分数为：\ :math:`\frac{1}{1 + 4} = \frac{1}{5}`
 -  用户对 :math:`[B, C]`
-   的贡献分数为：\ :math:`\frac{1}{1 + 1} = \frac{1}{2}`
+   的贡献分数为：\ :math:`\frac{1}{1 + 2} = \frac{1}{3}`
 -  用户对 :math:`[A, C]`
-   的贡献分数为：\ :math:`\frac{1}{1 + 1} = \frac{1}{2}`
+   的贡献分数为：\ :math:`\frac{1}{1 + 2} = \frac{1}{3}`
 
 因此，物品h和p之间的swing
-score为：\ :math:`s(h, p) = \frac{1}{4} + \frac{1}{2} + \frac{1}{2} = 1.25`\ ，而物品h和t（或r）之间的swing
-score为：\ :math:`s(h, t) = s(h, r) = \frac{1}{2} = 0.5`\ 。
+score为：\ :math:`s(h, p) = \frac{1}{5} + \frac{1}{3} + \frac{1}{3} = \frac{13}{15}`\ ，而物品h和t（或r）之间的swing
+score为：\ :math:`s(h, t) = s(h, r) = \frac{1}{3}`\ 。
 
 **用户权重调整**\ ：为了降低活跃用户对计算结果的过度影响，我们引入用户权重
 :math:`w_u = \frac{1}{\sqrt{|I_u|}}`\ 。最终的物品相似度计算公式为：

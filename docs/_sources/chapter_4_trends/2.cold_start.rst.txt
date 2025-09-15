@@ -29,9 +29,14 @@ CB2CF模型架构
 
 CB2CF采用多视图深度学习架构，主要包含以下组件：
 
+.. _cb2cf_arch:
+
 .. figure:: ../img/cb2cf_arch.png
+   :width: 400px
 
    CB2CF架构
+
+
 
 从架构图可以看出，CB2CF模型主要由三个核心模块构成：
 
@@ -64,9 +69,14 @@ CB2CF通过学习内容特征到协同过滤表示的映射，有效解决了新
 
 MetaEmbedding正是针对这一问题提出的解决方案。与CB2CF专注于学习内容到协同过滤的映射不同，MetaEmbedding关注的是如何利用物品的辅助属性信息，通过元学习的思想为新物品生成更好的初始embedding。
 
+.. _meta_embedding_alg:
+
 .. figure:: ../img/meta_embedding_alg.png
+   :width: 500px
 
    MetaEmbedding两阶段训练
+
+
 
 MetaEmbedding采用基于SGD的元学习训练算法，其核心思想是通过模拟物品从冷启动到预热的完整过程来优化embedding生成器。该算法为每个物品ID学习一个能够快速适应的初始embedding，从而解决新物品的冷启动问题。
 
@@ -118,9 +128,14 @@ MeLU的核心思想是将每个用户的偏好学习视为一个独立的学习�
 双阶段元学习机制
 ^^^^^^^^^^^^^^^^
 
+.. _melu_arch:
+
 .. figure:: ../img/melu_arch.png
+   :width: 450px
 
    MeLU双阶段训练
+
+
 
 MeLU的训练过程严格遵循MAML框架，但针对推荐系统的特点进行了专门的设计。算法采用双层参数结构：
 - :math:`\theta_1`\ 控制用户和物品的embedding参数 -
@@ -154,15 +169,25 @@ MOdules）从模型架构设计的角度提出了一种全新的解决思路。P
 
 新用户与老用户在行为模式上存在显著差异。新老用户的行为差异如下图所示：新用户通常表现出更高的点赞率（因为新鲜感）、更高的完播率（产品机制倾向于推送更短的视频）、但更低的观看时长和视频播放量（尚未形成使用粘性）。这种分布差异使得单一模型难以同时服务好两类用户群体。
 
+.. _poso_feature:
+
 .. figure:: ../img/poso_feature.png
+   :width: 300px
 
    POSO新老用户行为差异
 
+
+
 POSO的设计具有很强的通用性，可以灵活地集成到推荐系统的各种神经网络模块中。下面详细介绍POSO在三种典型模块中的具体应用方式，分别为MLP、MAH及MMoE。
 
-.. figure:: ../img/poso_arch.png
+.. _poso_arch:
 
-   poso模型结构
+.. figure:: ../img/poso_arch.png
+   :width: 600px
+
+   POSO模型结构
+
+
 
 POSO-MLP
 ^^^^^^^^

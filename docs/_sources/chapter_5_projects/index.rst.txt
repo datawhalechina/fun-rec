@@ -5,12 +5,14 @@
 ========
 
 
+在掌握推荐系统的核心方法后，本章将通过一个完整的项目实践，展示如何将理论知识应用于实践。我们将从需求理解与数据分析入手，建立评测指标与基线；然后逐步构建多路召回与冷启动策略，开展特征工程，并训练排序模型；最后对结果进行验证与融合。本章旨在将前述章节的算法与技术串联起来，覆盖从数据处理、模型构建到离线评测的完整流程，帮助读者建立系统化的实战能力。
+
 .. toctree::
    :maxdepth: 1
 
-   0.intro.md
-   1.baseline.md
-   2.analysis.md
-   3.recall.md
-   4.feature_engineering.md
-   5.ranking.md
+   1.understanding.md
+   2.baseline.md
+   3.analysis.md
+   4.recall.md
+   5.feature_engineering.md
+   6.ranking.md

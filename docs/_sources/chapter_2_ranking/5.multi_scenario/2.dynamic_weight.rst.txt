@@ -1,0 +1,666 @@
+
+.. _dynamic_weight:
+
+动态权重建模
+============
+
+
+在前一小节，我们探讨了 HMoE 和 STAR
+这类基于多塔结构的多场景建模方案。它们通过为不同场景构建独立的“专家”网络或塔底参数，有效地捕获了场景间的特异性信息，解决了模型在跨场景迁移时因参数冲突导致的性能下降问题。这类模型的核心思想是“分而治之”，通过物理隔离的参数空间来保障场景的独特性。
+
+为了在保持模型参数高效共享的同时，实现更细粒度、更灵活的场景感知能力，研究者们提出了“动态权重建模”的新范式。
+这类方法的核心理念不再是构建物理隔离的参数塔，而是让模型的核心网络参数在不同场景下共享一个基础，但通过动态生成的、与场景/样本高度相关的“权重”来调制（Modulate）这些共享参数的行为。这相当于为共享网络“注入”了场景和样本的上下文信息，使其能够根据当前上下文动态调整其计算逻辑。
+
+本节将重点介绍几种具有代表性的动态权重建模方案，它们展示了如何巧妙地设计“权重生成器”来调制共享网络。它们通过引入动态性，在参数效率、灵活性和性能之间取得了更优的平衡，为构建更加智能、自适应的多场景推荐系统提供了有力工具。
+
+PEPNET
+------
+
+PEPNet（Parameter and Embedding Personalized
+Network）核心目标是解决多场景多任务中的双重跷跷板效应（Double Seesaw
+Phenomenon）。
+
+-  场景跷跷板（Domain
+   Seesaw）：混合训练时不同场景数据分布差异导致表征无法对齐；
+-  任务跷跷板（Task
+   Seesaw）：多任务间稀疏性与依赖关系失衡导致目标相互抑制；
+
+PEPNet通过两大模块实现动态权重调控，形成“底层场景适配 +
+顶层任务适配”的分层个性化，这也是PEPNet实现参数个性化的核心思路，PEPNet模型结构如下：
+
+.. figure:: ../../img/pepnet.png
+
+   PEPNet模型结构
+
+在介绍PEPNet的量大核心组件之前，需要先简单介绍一个通过模块Gate
+NU，EPNet与PPNet均基于轻量级门控单元Gate
+NU构建，以极低参数量实现参数个性化，Gate
+NU受语音识别领域LHUC模型启发，通过两层网络生成动态缩放权重：
+
+.. math::
+
+
+   \begin{aligned}
+   &\mathbf{x'} = \text{ReLU}(\mathbf{x} \mathbf{W_1} + \mathbf{b_1}) \\
+   &\delta = \gamma \cdot \text{Sigmoid}(\mathbf{x'} \mathbf{W_2} + \mathbf{b_2}) \quad \in [0, \gamma]
+   \end{aligned}
+
+其中\ :math:`\mathbf{x}`\ 为个性化先验特征（如场景ID或用户画像），\ :math:`\gamma`\ 为缩放强度（经验值设为2）。输出\ :math:`\boldsymbol{\delta}`\ 与目标参数维度对齐，通过逐元素相乘（\ :math:`\otimes`\ ）实现调制。Gate
+NU的代码实现如下：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   class GateNU(tf.keras.layers.Layer):
+       def __init__(self,
+                    hidden_units,
+                    gamma=2.,
+                    l2_reg=0.):
+           assert len(hidden_units) == 2
+           self.gamma = gamma
+           self.dense_layers = [
+               tf.keras.layers.Dense(hidden_units[0], activation="relu", kernel_regularizer=tf.keras.regularizers.l2(l2_reg)),
+               tf.keras.layers.Dense(hidden_units[1], activation="sigmoid", kernel_regularizer=tf.keras.regularizers.l2(l2_reg))
+           ]
+           super(GateNU, self).__init__()
+
+       def call(self, inputs):
+           output = self.dense_layers[0](inputs)
+           output = self.gamma * self.dense_layers[1](output)
+           return output
+
+EPNet：场景感知的嵌入个性化
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+在实际的推荐模型中，特征Embedding层的参数量往往是最大的，共享底层Embedding也成为了业界标准的做法。但在多场景建模中，这种底层共享的机制更多的强调的是不同场景之间的共性，忽略了不同场景下Embedding的差异性。为此EPNet在Embedding层的基础上，将场景先验信息通过门控机制的方式以较低的参数量实现Embedding层的场景个性化。
+
+EPNet 中Embedding层的门控单元\ :math:`U_{ep}`\ ，以场景共享Embedding
+:math:`E`\ 和输入的场景先验特征的Embedding
+:math:`E(\mathcal{F}_d)`\ 拼接后的结果作为输入，EPNet的场景个性化输出\ :math:`\delta_{domain}`\ 表示如下：
+
+.. math::
+
+
+   \delta_{domain} = \mathcal{U}_{ep}(E(\mathcal{F}_d) \oplus (\oslash(E))),
+
+其中，\ :math:`U_{ep}`\ 是EPNet模块的Gate NU网络。
+
+为了让场景感知的个性化模块EPNet不影响底层共享Embedding的学习，在计算个性化门控结果时让共享Embedding层的梯度不反向传播，\ :math:`\oslash`\ 表示的是Stop
+Gredient。
+
+然后，通过元素级乘积得到场景个性化的Embedding表征\ :math:`O_{ep}`\ ：
+
+.. math::
+
+
+   O_{ep} = \delta_{domain} \otimes E
+
+通过将场景个性化先验信息整合到Embedding层中，EPNet可以有效地平衡多场景之间的共性和差异。
+
+EPNet的实现代码如下：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   class EPNet(tf.keras.layers.Layer):
+       def __init__(self,
+                    l2_reg=0.,
+                    **kwargs):
+           self.l2_reg = l2_reg
+           self.gate_nu = None
+           super(EPNet, self).__init__( **kwargs)
+
+       def build(self, input_shape):
+           assert len(input_shape) == 2
+           shape1, shape2 = input_shape
+           self.gate_nu = GateNU(hidden_units=[shape2[-1], shape2[-1]], l2_reg=self.l2_reg)
+
+       def call(self, inputs, *args, **kwargs):
+           domain, emb = inputs
+           return self.gate_nu(tf.concat([domain, tf.stop_gradient(emb)], axis=-1)) * emb
+
+PPNet：用户感知的参数个性化
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+EPNet解决的是多场景跷跷板问题，PPNet则更多考虑的是多任务之间的跷跷板。相比MMOE，PLE等其他多任务模型是任务级的个性化而言，PPNet则可以看成是样本粒度的个性化。PEPNet将用户ID、内容ID及作者ID作为个性化的先验特征，同时拼接上述EPNet得到的场景个性化的Embedding
+:math:`O_{ep}`\ 作为所有任务塔DNN参数个性化门控\ :math:`U_{pp}`\ 的输入。
+
+.. math::
+
+
+   O_{prior} = E(F_u) \oplus E(F_i) \oplus E(F_a) \\
+   \delta_{task}  = \mathcal{U} _ {pp} (O_{prior} \oplus ( \odot (O_{ep} )))
+
+为了防止PPNet模块影响到EPNet的参数更新，在计算\ :math:`\delta_{task}`\ 时\ :math:`O_{ep}`\ 部分不能梯度回传，\ :math:`\delta_{task}`\ 表示的是用户个性化门控的输出结果。
+
+在得到了用户个性化的门控结果后，将其应用在所有任务塔中每个DNN网络上，从模型的结构图中可以看出不同任务塔中DNN的个性化门控是共享一份的，对于某个task的第\ :math:`l`\ 层DNN网络的参数个性化表达如下：
+
+.. math::
+
+
+   \begin{aligned}
+   \mathbf{O}^{(l)}_{pp} &= \delta^{(l)}_{task} \otimes \mathbf{H}^{(l)} \\
+   \mathbf{H}^{(l+1)} &= f\left( \mathbf{O}^{(l)}_{pp} \mathbf{W}^{(l)} + \mathbf{b}^{(l)} \right), l \in \{1, \ldots, L\}
+   \end{aligned}
+
+其中，\ :math:`L`\ 表示任务塔DNN网络的总层数，\ :math:`\mathbf{H}^{(l)}`\ 表示第\ :math:`l`\ 层DNN的输出同时也是第\ :math:`l+1`\ 层DNN的输入，\ :math:`\mathbf{O}^{(l)}_{pp}`\ 表示的是任务塔中第\ :math:`l`\ 层DNN的输出乘上个性化参数门控\ :math:`\delta_{task}`\ 后的输出结果。
+
+PPNet实现代码如下：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   class PPNet(tf.keras.layers.Layer):
+       def __init__(self,
+                    multiples,
+                    hidden_units,
+                    activation,
+                    dropout=0.,
+                    l2_reg=0.,
+                    **kwargs):
+           self.hidden_units = hidden_units
+           self.l2_reg = l2_reg
+           self.multiples = multiples
+           self.dense_layers = []
+           self.dropout_layers = []
+           for i in range(multiples):
+               self.dense_layers.append(
+                   [tf.keras.layers.Dense(units, activation=activation, kernel_regularizer=tf.keras.regularizers.l2(l2_reg)) for units in hidden_units]
+               )
+               self.dropout_layers.append(
+                   [tf.keras.layers.Dropout(dropout) for _ in hidden_units]
+               )
+           self.gate_nu = []
+           super(PPNet, self).__init__( **kwargs)
+
+       def build(self, input_shape):
+           self.gate_nu = [GateNU([i*self.multiples, i*self.multiples], l2_reg=self.l2_reg
+                                  ) for i in self.hidden_units]
+
+       def call(self, inputs, training=None, **kwargs):
+           inputs, persona = inputs
+
+           gate_list = []
+           for i in range(len(self.hidden_units)):
+               gate = self.gate_nu[i](tf.concat([persona, tf.stop_gradient(inputs)], axis=-1))
+               gate = tf.split(gate, self.multiples, axis=1)
+               gate_list.append(gate)
+           
+           output_list = []
+           for n in range(self.multiples):
+               output = inputs
+               for i in range(len(self.hidden_units)):
+                   fc = self.dense_layers[n][i](output)
+                   output = gate_list[i][n] * fc
+                   output = self.dropout_layers[n][i](output, training=training)
+               output_list.append(output)
+           return output_list
+
+完整的实践流程： **1. 导入相关代码包**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    # -*- coding: utf-8 -*-
+    import sys
+    import funrec
+    from funrec.utils import build_metrics_table
+    
+    config = funrec.load_config('mmoe')
+
+**2. 特征处理**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    train_data, test_data = funrec.load_data(config.data)
+    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
+
+**3. 模型定义及训练**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    model = funrec.train_model(config.training, feature_columns, processed_data)
+
+**4. 模型效果评估**
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    metrics = funrec.evaluate_model(model, processed_data, config.evaluation, feature_columns)
+    print(build_metrics_table(metrics))
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+
+    |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   valid_users_is_click |   valid_users_is_like |   valid_users_long_view |
+    +================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+
+    |         0.6051 |        0.4249 |           0.448 |      0.4927 |          0.5742 |         0.4442 |           0.4574 |        0.492 |                    928 |                   530 |                     925 |
+    +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+
+
+
+APG
+---
+
+在上一小节中，介绍了PEPNet通过场景/个性化的先验信号作为门控网络的输入，然后将门控网络的输出作用在底层Embedding和多目标塔的DNN层上，分别实现了基于门控的场景和多任务塔参数的个性化。本节将要介绍的APG模型同样希望实现样本粒度的个性化，但是做法却与PEPNet不太相同。APG的核心思想是为不同的样本动态生成模型参数，根据样本的不同生成相应的参数，从而提升模型的容量和表达能力。
+
+APG通过\ **样本感知的输入**\ 来生成自适应参数，这种方式可以应用在大多数的混合样本分布建模的问题中，多场景建模也不例外。具体来说，它提出了三种策略来生成样本的条件表示
+
+1. Group-wise策略，适用于样本可以被分组成不同Group的情况，同一Group内的样本具有相似的模式，此时可以将Group相关特征作为输入
+2. Mix-wise策略，将多种因素考虑进来生成，能够实现更细粒度的样本组划分，甚至可以做到
+   “千样本千模型”，如将<user, item> pair向量作为输入。
+3. Self-wise策略，不需要先验知识的输入，直接将Deep CTR
+   Models的隐层输出作为参数生成的输入。
+
+在APG中通过MLP来自适应生成参数，将需要感知样本的输入\ :math:`\mathbf{z_i}`\ 输入到MLP中，然后Reshape成一个矩阵，
+
+.. math::
+
+
+   \mathbf{W}_i = \text{reshape}(\text{MLP}( \mathbf{z}_i ))
+
+生成的参数矩阵，等价于MLP网络中的参数矩阵，通过矩阵乘法和激活函数实现和MLP一样的功能，如点击率模型的预估可以表示如下：
+
+.. math::
+
+
+   y_i = \sigma(\mathbf{W}_i \mathbf{x}_i)
+
+APG的核心思想比较简单，但要实际的上生产还需要经过一些优化。
+
+**低质参数优化**\ ：借鉴低秩相关方法，APG假设自适应参数存在低秩关系，将参数矩阵分解成三个子矩阵相乘的形式。通过设置较小的秩值，可以有效控制计算和存储开销，同时在需要时也可以通过增大秩值来增加参数空间，参数分解表达式如下：
+
+.. math::
+
+
+   \mathbf{U}_i, \mathbf{S}_i, \mathbf{V}_i = \text{reshape}(\text{MLP}( \mathbf{z}_i ))
+
+.. figure:: ../../img/apg_1.png
+
+   参数分解
+
+**分解前向计算**\ ：在低秩参数化的基础上，APG设计了一种分解前向计算的方式，让输入依次乘以各个子矩阵。这种方式避免了计算开销较大的子矩阵乘操作，降低了整体的计算复杂度，
+
+.. math::
+
+
+   y_i = \sigma(\mathbf{W}_i \mathbf{x}_i) = \sigma((\mathbf{U}_i \mathbf{S}_i \mathbf{V}_i) \mathbf{x}_i) = \sigma(\mathbf{U}_i (\mathbf{S}_i (\mathbf{V}_i \mathbf{x}_i)))
+
+.. figure:: ../../img/apg_2.png
+
+   前向计算优化
+
+**参数共享和过参数化**\ ：得益于矩阵分解带来的灵活性，APG将参数矩阵分为私有参数和共享参数两类。私有参数用于刻画不同样本的特性，共享参数则用于刻画样本共性。通过这种划分，APG在生成自适应参数的同时，也保留了对样本共性的表达，丰富了模型的表达能力。而且，由于私有参数规模的缩减，整体的计算和存储开销也得到了降低。此外，APG
+将共享参数替代为两个大矩阵，这种设计不仅可以增加参数数量来提升模型容量，还具有隐含的正则效果，有助于防止过拟合。
+
+.. math::
+
+
+   \mathbf{S}_{i}=\text{reshape}(\text{MLP}(\mathbf{z}_{i})) \\
+   \mathbf{U} = \mathbf{U}^l \mathbf{U}^r, \mathbf{V} = \mathbf{V}^l \mathbf{V}^r \\ 
+   y_{i}=\sigma(\mathbf{U}(\mathbf{S}_{i}\mathbf{V}\mathbf{x}_{i})) 
+
+.. figure:: ../../img/apg_3.png
+
+   参数共享及过参数化
+
+APG Layer核心代码：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   class APGLayer(tf.keras.layers.Layer):
+       """注意力个性化门控层 (Attention Personalized Gating Layer)
+
+       该层实现了基于场景嵌入的注意力个性化机制，通过共享权重和场景特定权重的组合，
+       动态调整输入特征的转换过程，支持矩阵分解和不同的权重共享策略。
+
+       参数:
+           input_dim: 输入特征维度
+           output_dim: 输出特征维度
+           scene_emb_dim: 场景嵌入向量维度
+           activation: 输出激活函数名称
+           generate_activation: 权重生成网络的激活函数
+           inner_activation: 内部层激活函数
+           use_uv_shared: 是否使用UV共享权重模式
+           mf_k: 矩阵分解中K路径的分割因子
+           use_mf_p: 是否使用P路径的矩阵分解
+           mf_p: 矩阵分解中P路径的分割因子
+       """
+       def __init__(self, input_dim, output_dim, scene_emb_dim, activation='relu', generate_activation=None,
+                    inner_activation=None, use_uv_shared=True, mf_k=16, use_mf_p=True, mf_p=4, **kwargs):
+           super(APGLayer, self).__init__( **kwargs)
+           self.input_dim = input_dim                  # 输入特征维度
+           self.output_dim = output_dim                # 输出特征维度
+           self.scene_emb_dim = scene_emb_dim          # 场景嵌入向量维度
+           self.use_uv_shared = use_uv_shared          # 是否使用UV共享权重模式
+           self.use_mf_p = use_mf_p                    # 是否使用P路径矩阵分解
+           self.mf_k = mf_k                            # K路径矩阵分解分割因子
+           self.mf_p = mf_p                            # P路径矩阵分解分割因子
+           
+           # 激活函数初始化
+           self.activation = get_activation(activation) if activation else None
+           self.inner_activation = get_activation(inner_activation) if inner_activation else None
+           
+           # 计算矩阵分解维度
+           min_dim = min(input_dim, output_dim)
+           self.p_dim = np.math.ceil(min_dim / mf_p) if use_mf_p else None  # P路径维度
+           self.k_dim = np.math.ceil(min_dim / mf_k)                        # K路径维度
+           
+           # 场景特定KK权重生成器
+           # 用于从场景嵌入生成KK权重矩阵和偏置
+           kk_weight_size = self.k_dim * self.k_dim
+           self.specific_weight_kk = DNNs([kk_weight_size], activation=generate_activation)
+           self.specific_bias_kk = DNNs([self.k_dim], activation=generate_activation)
+           
+           # 权重初始化: 共享权重模式或场景特定权重模式
+           if use_uv_shared:
+               # UV共享权重模式: 使用共享矩阵进行特征转换
+               if use_mf_p:
+                   # P路径矩阵分解: NP -> PK -> KK -> KP -> PM
+                   self.shared_weight_np = self.add_weight(shape=(input_dim, self.p_dim), initializer='glorot_uniform', name='shared_weight_np')
+                   self.shared_bias_np = self.add_weight(shape=(self.p_dim,), initializer='zeros', name='shared_bias_np')
+                   self.shared_weight_pk = self.add_weight(shape=(self.p_dim, self.k_dim), initializer='glorot_uniform', name='shared_weight_pk')
+                   self.shared_bias_pk = self.add_weight(shape=(self.k_dim,), initializer='zeros', name='shared_bias_pk')
+                   self.shared_weight_kp = self.add_weight(shape=(self.k_dim, self.p_dim), initializer='glorot_uniform', name='shared_weight_kp')
+                   self.shared_bias_kp = self.add_weight(shape=(self.p_dim,), initializer='zeros', name='shared_bias_kp')
+                   self.shared_weight_pm = self.add_weight(shape=(self.p_dim, output_dim), initializer='glorot_uniform', name='shared_weight_pm')
+                   self.shared_bias_pm = self.add_weight(shape=(output_dim,), initializer='zeros', name='shared_bias_pm')
+               else:
+                   # 无P路径矩阵分解: NK -> KK -> KM
+                   self.shared_weight_nk = self.add_weight(shape=(input_dim, self.k_dim), initializer='glorot_uniform', name='shared_weight_nk')
+                   self.shared_bias_nk = self.add_weight(shape=(self.k_dim,), initializer='zeros', name='shared_bias_nk')
+                   self.shared_weight_km = self.add_weight(shape=(self.k_dim, output_dim), initializer='glorot_uniform', name='shared_weight_km')
+                   self.shared_bias_km = self.add_weight(shape=(output_dim,), initializer='zeros', name='shared_bias_km')
+           else:
+               # 场景特定权重模式: NK和KM权重由场景嵌入生成
+               nk_weight_size = input_dim * self.k_dim
+               km_weight_size = self.k_dim * output_dim
+               self.specific_weight_nk = DNNs([nk_weight_size], activation=generate_activation)
+               self.specific_bias_nk = DNNs([self.k_dim], activation=generate_activation)
+               self.specific_weight_km = DNNs([km_weight_size], activation=generate_activation)
+               self.specific_bias_km = DNNs([output_dim], activation=generate_activation)
+
+       def call(self, inputs):
+           """前向传播方法
+
+           参数:
+               inputs: 包含两个元素的列表 [x, scene_emb]
+                   x: 输入特征张量，形状为 (batch_size, input_dim)
+                   scene_emb: 场景嵌入张量，形状为 (batch_size, scene_emb_dim)
+
+           返回:
+               output: 经过注意力个性化门控处理的输出张量，形状为 (batch_size, output_dim)
+           """
+           x, scene_emb = inputs  # x: 输入特征, scene_emb: 场景嵌入
+           batch_size = tf.shape(x)[0]
+           
+           # 生成场景特定KK权重矩阵和偏置
+           specific_weight_kk = self.specific_weight_kk(scene_emb)  # 形状: (batch_size, k_dim*k_dim)
+           specific_weight_kk = tf.reshape(specific_weight_kk, (-1, self.k_dim, self.k_dim))  # 重塑为矩阵
+           specific_bias_kk = self.specific_bias_kk(scene_emb)  # KK偏置
+           
+           if self.use_uv_shared:
+               # UV共享权重模式下的前向传播
+               if self.use_mf_p:
+                   # P路径矩阵分解路径: NP -> PK -> KK -> KP -> PM
+                   # 1. NP: 输入特征到P维度空间
+                   output_np = tf.matmul(x, self.shared_weight_np) + self.shared_bias_np
+                   if self.inner_activation: output_np = self.inner_activation(output_np)
+                   
+                   # 2. PK: P维度到K维度空间
+                   output_pk = tf.matmul(output_np, self.shared_weight_pk) + self.shared_bias_pk
+                   if self.inner_activation: output_pk = self.inner_activation(output_pk)
+                   
+                   # 3. KK: 应用场景特定KK权重
+                   output_kk = tf.matmul(tf.expand_dims(output_pk, 1), specific_weight_kk)
+                   output_kk = tf.squeeze(output_kk, 1) + specific_bias_kk
+                   if self.inner_activation: output_kk = self.inner_activation(output_kk)
+                   
+                   # 4. KP: K维度到P维度空间
+                   output_kp = tf.matmul(output_kk, self.shared_weight_kp) + self.shared_bias_kp
+                   if self.inner_activation: output_kp = self.inner_activation(output_kp)
+                   
+                   # 5. PM: P维度到输出维度
+                   output = tf.matmul(output_kp, self.shared_weight_pm) + self.shared_bias_pm
+               else:
+                   # 无P路径矩阵分解路径: NK -> KK -> KM
+                   # 1. NK: 输入特征到K维度空间
+                   output_nk = tf.matmul(x, self.shared_weight_nk) + self.shared_bias_nk
+                   if self.inner_activation: output_nk = self.inner_activation(output_nk)
+                   
+                   # 2. KK: 应用场景特定KK权重
+                   output_kk = tf.matmul(tf.expand_dims(output_nk, 1), specific_weight_kk)
+                   output_kk = tf.squeeze(output_kk, 1) + specific_bias_kk
+                   if self.inner_activation: output_kk = self.inner_activation(output_kk)
+                   
+                   # 3. KM: K维度到输出维度
+                   output = tf.matmul(output_kk, self.shared_weight_km) + self.shared_bias_km
+           else:
+               # 场景特定权重模式下的前向传播: NK -> KK -> KM
+               # 1. NK: 生成场景特定NK权重并应用
+               specific_weight_nk = self.specific_weight_nk(scene_emb)
+               specific_weight_nk = tf.reshape(specific_weight_nk, (-1, self.input_dim, self.k_dim))
+               specific_bias_nk = self.specific_bias_nk(scene_emb)
+               
+               output_nk = tf.matmul(tf.expand_dims(x, 1), specific_weight_nk)
+               output_nk = tf.squeeze(output_nk, 1) + specific_bias_nk
+               if self.inner_activation: output_nk = self.inner_activation(output_nk)
+               
+               # 2. KK: 应用场景特定KK权重
+               output_kk = tf.matmul(tf.expand_dims(output_nk, 1), specific_weight_kk)
+               output_kk = tf.squeeze(output_kk, 1) + specific_bias_kk
+               if self.inner_activation: output_kk = self.inner_activation(output_kk)
+               
+               # 3. KM: 生成场景特定KM权重并应用
+               specific_weight_km = self.specific_weight_km(scene_emb)
+               specific_weight_km = tf.reshape(specific_weight_km, (-1, self.k_dim, self.output_dim))
+               specific_bias_km = self.specific_bias_km(scene_emb)
+               
+               output = tf.matmul(tf.expand_dims(output_kk, 1), specific_weight_km)
+               output = tf.squeeze(output, 1) + specific_bias_km
+           
+           # 应用输出激活函数
+           if self.activation: output = self.activation(output)
+           return output
+
+完整训练流程如下：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    config = funrec.load_config('apg')
+    train_data, test_data = funrec.load_data(config.data)
+    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
+    model = funrec.train_model(config.training, feature_columns, processed_data)
+    metrics = funrec.evaluate_model(model, processed_data, config.evaluation, feature_columns)
+    print(build_metrics_table(metrics))
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    +-------+--------+---------------+
+    |   auc |   gauc |   valid_users |
+    +=======+========+===============+
+    |  0.68 | 0.6357 |           217 |
+    +-------+--------+---------------+
+
+
+M2M
+---
+
+在推荐系统的多场景建模中，动态参数生成技术展现出了巨大的潜力。除了 APG
+模型外，基于元学习的多场景多任务商家建模（M2M）是另一个在该领域具有重要影响的模型。M2M模型结构中主要包含底层的主干网络和顶层的元学习网络，下面将分别展开详细的介绍。
+
+.. figure:: ../../img/m2m.png
+
+   M2M模型结构
+
+主干网络
+~~~~~~~~
+
+主干网络中包括三部分内容：专家信息表征\ :math:`E_i`\ ，任务信息表征\ :math:`T_t`\ ，场景信息表征\ :math:`\tilde{\mathbf{S}}`
+
+**专家信息表征**\ ：主干网络中有一个多专家的网络结构，每个专家输入的特征是将序列特征和其他特征拼接后的结果，而序列特征都由多头注意力机制进行聚合，第\ :math:`i`\ 个专家的数学表示为：
+
+.. math::
+
+
+   \begin{aligned}
+   \mathbf{E}_i = f_{MLP}(\text{Concat}(X_{seq}, X_{other}))
+   \end{aligned}
+
+其中，\ :math:`X_{seq},X_{other}`\ 分别表示序列特征和除序列特征以外的其他特征，其中序列特征使用多头注意力网络进行聚合，其他特征Embedding直接进行拼接。\ :math:`f_{MLP}`\ 表示MLP网络，\ :math:`MAH`\ 表示多头注意力网络。
+
+**任务信息表征**:
+为了更好的表达不同任务的差异性，M2M将不同类别的任务进行全局表征，也就是对于每一条样本都会有对应多个任务表征特征。第t个任务对应的特征表征的数学形式：
+
+.. math::
+
+
+   \mathbf{T}_t = f_{MLP}(\text{Embedding}(t))
+
+**场景信息表征**\ ：与任务信息表征类似，为了更好的表达场景之间的差异性，通过MLP网络对场景信息进行单独的表征，其输入的信息不仅包括了直接与场景相关的特征\ :math:`S`\ 还有跟广告主相关的特征\ :math:`A`\ ，场景信息表征\ :math:`\tilde{\mathbf{S}}`\ 的数学形式为：
+
+.. math::
+
+
+   \tilde{\mathbf{S}}  = f_{MLP}(\mathbf{S}, \mathbf{A})
+
+与任务信息表征不同的是，每条样本都有所属的场景，所以场景表达并不是全局的，此外由于该方法最早提出来是为了解决广告业务的，在实际的应用场景中，我们也可以将广告主相关的特征替换成我们业务中更合适的特征。
+
+元学习网络
+~~~~~~~~~~
+
+在传统的机器学习中，权重\ :math:`(W, b)`\ 通过反向传播在固定数据集上优化，学习目标是任务本身的表示。在M2M模型的元学习网络中，用一个MLP（元学习器）根据输入特征动态生成另一个网络（任务模型）的权重\ :math:`(W, b)`\ 。这相当于让MLP学会“如何针对不同输入特征生成合适的任务模型参数”，而非直接学习任务本身，使任务模型动态适应不同任务/输入分布，这正是元学习的核心目标。
+
+.. figure:: ../../img/m2m_meta_unit.png
+
+   Meta Unit网络结构
+
+**元学习单元原理**
+在M2M中元学习单元用来显式建模场景信息，为了更好的捕捉动态的场景相关信息，元学习单元将上述主干网络中得到的场景信息表征\ :math:`\tilde{\mathbf{S}}`\ 作为元学习单元的输入，元学习单元通过通过MLP网络将\ :math:`\tilde{\mathbf{S}}`\ 转换成每个场景动态的网络参数\ :math:`(W,b)`\ ，然后再将生成的参数作用于输入的特征上，下面\ :math:`Meta`\ 函数中包含了完整的元学习处理过程。
+
+.. math::
+
+
+   h^{output} = \text{Meta}(h^{input}),
+
+其中，元学习单元处理的过程如下：
+
+.. math::
+
+
+   \begin{aligned}
+   \text{输入：} & \quad \text{场景信息表征 } \tilde{\mathbf{S}}, \text{ 输入特征 } \mathbf{h}_{\text{input}} \\
+   \text{输出：} & \quad \text{输出特征 } \mathbf{h}^{\text{output}} \\
+   \text{步骤：} \\
+   & 1. \quad \text{初始化：} \\
+   & \quad \quad \mathbf{h}^{(0)} = \mathbf{h}_{\text{input}} \\
+   & 2. \quad \text{动态参数生成：} \\
+   & \quad \quad \text{对于每一层元学习处理（} i \text{ 从 } 1 \text{ 到 } K \text{）：} \\
+   & \quad \quad \quad \mathbf{W}^{(i-1)} = \text{Reshape}(\mathbf{V}_w \tilde{\mathbf{S}} + \mathbf{v}_w) \\
+   & \quad \quad \quad \mathbf{b}^{(i-1)} = \text{Reshape}(\mathbf{V}_b \tilde{\mathbf{S}} + \mathbf{v}_b) \\
+   & 3. \quad \text{元学习处理：} \\
+   & \quad \quad \text{对于每一层元学习处理（} i \text{ 从 } 1 \text{ 到 } K \text{）：} \\
+   & \quad \quad \quad \mathbf{h}^{(i)} = \sigma(\mathbf{W}^{(i-1)} \mathbf{h}^{(i-1)} + \mathbf{b}^{(i-1)}) \\
+   & 4. \quad \text{输出：} \\
+   & \quad \quad \mathbf{h}^{\text{output}} = \mathbf{h}^{(K)}
+   \end{aligned}
+
+元学习单元在后续多专家融合、多任务塔的建模中都有使用，为了方便理解，我们可以将经过元学习单元处理过的特征看成是，特征处理时注入了场景信息的一种类似MLP的通用结构。
+
+元学习单元的实现代码：
+
+**Attention元网络**
+
+传统的多专家融合方式是将样本中的部分特征输入到门控网络中得到多个专家的融合参数，这种方式在模型训练的过程中，门控网络可以学习到任务与专家之间的关系，却忽略了场景的因素。为此，Attention网络在计算融合权重时引入场景信息，实现了不同场景的融合参数是更个性化的，权重系数的计算如下：
+
+.. math::
+
+
+   a_{t_i} = \mathbf{v}^T \text{Meta}_t([\mathbf{E}_i \parallel \mathbf{T}_t]) \\
+   \alpha_{t_i} = \frac{\exp(a_{t_i})}{\sum_{j=1}^M \exp(a_{t_j})} \\
+   \mathbf{R}_t = \sum_{i=1}^k \alpha_{t_i} \mathbf{E}_{t_i}
+
+其中，\ :math:`\mathbf{R}_t`\ 是任务\ :math:`t`\ 融合多专家后的表征，\ :math:`E_i,T_t`\ 分别是第\ :math:`i`\ 个专家的特征和任务\ :math:`t`\ 的任务信息表征。
+
+Attention元网络的实现代码：
+
+**Tower元网络**
+为了进一步增强场景信息的表征能力，和Attention元网络类似，在多任务塔输出时也引入了元学习单元，并且通过残差的方式实现，Tower元网络的数学形式如下：
+
+.. math::
+
+
+   \mathbf{L}_t^{(0)} = \mathbf{R}_t, \\
+   \mathbf{L}_t^{(j)} = \sigma( \text{Meta}^{(j-1)}( \mathbf{L}_t^{(j-1)} ) + \mathbf{L}_t^{(j-1)} ), \quad \forall j \in 1, 2, \ldots, L
+
+Tower元网络的代码实现如下：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    config = funrec.load_config('m2m')
+    train_data, test_data = funrec.load_data(config.data)
+    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
+    model = funrec.train_model(config.training, feature_columns, processed_data)
+    metrics = funrec.evaluate_model(model, processed_data, config.evaluation, feature_columns)
+    print(build_metrics_table(metrics))
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+
+    |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   valid_users_is_click |   valid_users_is_like |   valid_users_long_view |
+    +================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+
+    |         0.6482 |        0.6092 |          0.6648 |      0.6407 |           0.593 |         0.6246 |           0.6123 |         0.61 |                    217 |                   131 |                     217 |
+    +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+
+

@@ -5,5 +5,5 @@
 .. toctree::
    :maxdepth: 1
 
-   0.intro.md
-   1.outline.md
+   1.intro.md
+   2.outline.md

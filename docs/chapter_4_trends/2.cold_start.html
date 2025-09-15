@@ -3,12 +3,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     
-    <title>5.3. 冷启动问题 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
+    <title>5.2. 冷启动问题 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
 
     <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
@@ -27,8 +28,8 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="5.4. 生成式推荐" href="3.generative.html" />
-    <link rel="prev" title="5.2. 模型去偏" href="1.debias.html" /> 
+    <link rel="next" title="5.3. 生成式推荐" href="3.generative.html" />
+    <link rel="prev" title="5.1. 模型去偏" href="1.debias.html" /> 
   </head>
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
@@ -36,7 +37,7 @@
         
         <nav class="mdl-navigation breadcrumb">
             <a class="mdl-navigation__link" href="index.html"><span class="section-number">5. </span>难点及热点研究</a><i class="material-icons">navigate_next</i>
-            <a class="mdl-navigation__link is-active"><span class="section-number">5.3. </span>冷启动问题</a>
+            <a class="mdl-navigation__link is-active"><span class="section-number">5.2. </span>冷启动问题</a>
         </nav>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
@@ -107,95 +108,85 @@ Show Source
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.3. 总结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排模型</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">5. 难点及热点研究</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="0.intro.html">5.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.debias.html">5.2. 模型去偏</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.3. 冷启动问题</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.generative.html">5.4. 生成式推荐</a></li>
-<li class="toctree-l2"><a class="reference internal" href="4.summary.html">5.5. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.debias.html">5.1. 模型去偏</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.generative.html">5.3. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.summary.html">5.4. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_5_projects/index.html">6. 项目实践</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/0.intro.html">6.1. 赛题理解</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/1.baseline.html">6.2. Baseline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/2.analysis.html">6.3. 数据分析</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/3.recall.html">6.4. 多路召回</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/4.feature_engineering.html">6.5. 特征工程</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/5.ranking.html">6.6. 排序模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
@@ -240,95 +231,85 @@ Show Source
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/0.intro.html">1.1. 推荐系统是什么？</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.outline.html">1.2. 本书概览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/0.intro.html">2.1.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.3. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.4. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.5. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.6. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/0.intro.html">2.2.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.2. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.3. U2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/0.intro.html">2.3.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.2. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.3. 生成式召回方法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.4. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.3. 总结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/0.intro.html">3.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.2. 记忆与泛化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.3. 特征交叉</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/0.intro.html">3.3.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.3.2. 二阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.3.3. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.3.4. 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.4. 序列建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.5. 多目标建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.intro.html">3.5.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.arch.html">3.5.2. 基础结构演进</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.dependency_modeling.html">3.5.3. 任务依赖建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.multi_loss_optim.html">3.5.4. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/5.summary.html">3.5.5. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.6. 多场景建模</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.intro.html">3.6.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.multi_tower.html">3.6.2. 多塔结构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.dynamic_weight.html">3.6.3. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/4.summary.html">3.6.4. 小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排模型</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.intro.html">4.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.greedy.html">4.2. 基于贪心的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.personalized.html">4.3. 基于个性化的重排</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/4.summary.html">4.4. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">5. 难点及热点研究</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="0.intro.html">5.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.debias.html">5.2. 模型去偏</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.3. 冷启动问题</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.generative.html">5.4. 生成式推荐</a></li>
-<li class="toctree-l2"><a class="reference internal" href="4.summary.html">5.5. 本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.debias.html">5.1. 模型去偏</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.generative.html">5.3. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.summary.html">5.4. 本章小结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_5_projects/index.html">6. 项目实践</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/0.intro.html">6.1. 赛题理解</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/1.baseline.html">6.2. Baseline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/2.analysis.html">6.3. 数据分析</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/3.recall.html">6.4. 多路召回</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/4.feature_engineering.html">6.5. 特征工程</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/5.ranking.html">6.6. 排序模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_interview/index.html">7. 面试经验</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/0.intro.html">7.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.2. 机器学习相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.3. 推荐模型相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.4. 热门技术相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.5. 业务场景相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.6. HR及其他</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">8. Appendix</a><ul>
@@ -349,27 +330,29 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="cold-start">
-<span id="id1"></span><h1><span class="section-number">5.3. </span>冷启动问题<a class="headerlink" href="#cold-start" title="Permalink to this heading">¶</a></h1>
-<div class="section" id="id2">
-<h2><span class="section-number">5.3.1. </span>内容冷启动<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
+  <section id="cold-start">
+<span id="id1"></span><h1><span class="section-number">5.2. </span>冷启动问题<a class="headerlink" href="#cold-start" title="Permalink to this heading">¶</a></h1>
+<section id="id2">
+<h2><span class="section-number">5.2.1. </span>内容冷启动<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>在推荐系统的发展历程中，内容冷启动一直是一个核心挑战。新上线的物品由于缺乏用户交互历史，传统的协同过滤方法难以为其提供有效推荐。而基于内容的方法虽然能够处理新物品，但推荐质量往往不如协同过滤。</p>
 <p>针对这一挑战，研究者们提出了多种创新解决方案。本节将重点介绍两种具有代表性的方法：CB2CF（Content-Based
 to Collaborative
 Filtering）和MetaEmbedding。CB2CF通过学习内容特征到协同过滤表示的映射关系，让新物品能够直接获得协同过滤质量的推荐效果；MetaEmbedding则通过元学习的思想，利用物品的辅助属性信息为新物品生成更好的初始embedding表示。这两种方法从不同角度解决了内容冷启动问题，为推荐系统的实际应用提供了有效的技术支撑。</p>
-<div class="section" id="cb2cf">
-<h3><span class="section-number">5.3.1.1. </span>CB2CF<a class="headerlink" href="#cb2cf" title="Permalink to this heading">¶</a></h3>
+<section id="cb2cf">
+<h3><span class="section-number">5.2.1.1. </span>CB2CF<a class="headerlink" href="#cb2cf" title="Permalink to this heading">¶</a></h3>
 <p>协同过滤依赖用户-物品交互数据学习用户偏好和物品特征，能够发现复杂的隐式关联模式，但面对新物品时束手无策。基于内容的方法利用物品的属性信息进行推荐，可以处理新物品，但往往只能捕捉到表面的相似性。</p>
 <p>这种分离带来了一个根本性问题：如何让新物品能够享受到协同过滤的推荐质量？CB2CF（Content-Based
 to Collaborative Filtering）正是为解决这一问题而提出的创新方案。</p>
 <p>CB2CF的基本理念是学习从物品内容特征到协同过滤表示的映射关系。具体来说，对于那些既有内容描述又有丰富用户交互的物品，我们可以同时获得它们的内容特征向量和协同过滤嵌入向量。通过深度神经网络学习这两种表示之间的映射函数，新物品就能够基于其内容特征直接获得协同过滤表示。</p>
-<div class="section" id="id3">
-<h4><span class="section-number">5.3.1.1.1. </span>CB2CF模型架构<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h4>
+<section id="id3">
+<h4><span class="section-number">5.2.1.1.1. </span>CB2CF模型架构<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h4>
 <p>CB2CF采用多视图深度学习架构，主要包含以下组件：</p>
-<div class="figure align-default" id="id7">
-<img alt="../_images/cb2cf_arch.png" src="../_images/cb2cf_arch.png" />
-<p class="caption"><span class="caption-number">图5.3.1 </span><span class="caption-text">CB2CF架构</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
+<figure class="align-default" id="id7">
+<span id="cb2cf-arch"></span><a class="reference internal image-reference" href="../_images/cb2cf_arch.png"><img alt="../_images/cb2cf_arch.png" src="../_images/cb2cf_arch.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">图5.2.1 </span><span class="caption-text">CB2CF架构</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>从架构图可以看出，CB2CF模型主要由三个核心模块构成：</p>
 <p><strong>内容编码器（Content
 Encoder）</strong>：负责将物品的多模态内容特征（如文本描述、图像、类别等）编码为统一的内容表示向量。对于不同类型的内容特征，模型采用相应的编码器进行处理，例如使用卷积神经网络处理图像特征，使用循环神经网络或Transformer处理文本特征。</p>
@@ -377,61 +360,65 @@ Encoder）</strong>：负责将物品的多模态内容特征（如文本描述�
 Network）</strong>：这是CB2CF的核心组件，由多层全连接神经网络构成，负责学习从内容特征空间到协同过滤嵌入空间的非线性映射关系。映射网络通过深度学习的方式捕捉内容特征与用户偏好之间的复杂关联。</p>
 <p><strong>约束优化模块（Constraint
 Optimization）</strong>：通过余弦相似度约束确保映射后的表示与真实的协同过滤嵌入在语义上保持一致。这个模块是训练过程中的关键，它保证了模型学习到的映射关系的有效性。</p>
-</div>
-<div class="section" id="id4">
-<h4><span class="section-number">5.3.1.1.2. </span>协同过滤向量生成<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h4>
+</section>
+<section id="id4">
+<h4><span class="section-number">5.2.1.1.2. </span>协同过滤向量生成<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h4>
 <p>在CB2CF中，协同过滤向量可以通过多种方法生成。对于有交互历史的物品，模型可以通过不同的协同过滤算法学习得到物品的嵌入向量。常见的协同过滤向量生成方法包括：</p>
 <p><strong>矩阵分解方法</strong>：给定用户-物品交互矩阵<span class="math notranslate nohighlight">\(R \in \mathbb{R}^{m \times n}\)</span>，其中<span class="math notranslate nohighlight">\(m\)</span>为用户数量，<span class="math notranslate nohighlight">\(n\)</span>为物品数量，通过分解<span class="math notranslate nohighlight">\(R \approx UV^T\)</span>来学习用户嵌入矩阵<span class="math notranslate nohighlight">\(U \in \mathbb{R}^{m \times d}\)</span>和物品嵌入矩阵<span class="math notranslate nohighlight">\(V \in \mathbb{R}^{n \times d}\)</span>，其中<span class="math notranslate nohighlight">\(d\)</span>为嵌入维度。物品<span class="math notranslate nohighlight">\(i\)</span>的协同过滤向量即为<span class="math notranslate nohighlight">\(V\)</span>的第<span class="math notranslate nohighlight">\(i\)</span>行<span class="math notranslate nohighlight">\(v_i\)</span>。</p>
 <p><strong>双塔召回模型</strong>：通过构建用户塔和物品塔的深度神经网络架构，分别将用户特征和物品特征编码为低维向量表示。物品塔输出的向量即为物品的协同过滤嵌入，这种方法能够更好地处理稀疏特征和复杂的非线性关系。</p>
 <p><strong>其他深度学习方法</strong>：如神经协同过滤（NCF）、自编码器等方法也能生成高质量的物品嵌入向量，这些方法通过深度神经网络学习用户-物品交互的复杂模式。</p>
 <p>对于新物品，由于缺乏交互数据，无法直接通过上述协同过滤方法获得嵌入向量。CB2CF通过学习映射函数<span class="math notranslate nohighlight">\(f: \mathcal{C} \rightarrow \mathcal{V}\)</span>，将新物品的内容特征<span class="math notranslate nohighlight">\(c_i\)</span>映射到协同过滤空间，得到<span class="math notranslate nohighlight">\(\hat{v}_i = f(c_i)\)</span>，从而实现冷启动推荐。这种映射关系的学习使得新物品能够获得与现有协同过滤方法生成的向量在语义上一致的表示。</p>
-</div>
-</div>
-<div class="section" id="metaembedding">
-<h3><span class="section-number">5.3.1.2. </span>MetaEmbedding<a class="headerlink" href="#metaembedding" title="Permalink to this heading">¶</a></h3>
+</section>
+</section>
+<section id="metaembedding">
+<h3><span class="section-number">5.2.1.2. </span>MetaEmbedding<a class="headerlink" href="#metaembedding" title="Permalink to this heading">¶</a></h3>
 <p>CB2CF通过学习内容特征到协同过滤表示的映射，有效解决了新物品的冷启动问题。然而，在实际应用中，我们还面临着另一个挑战：如何为新物品生成更好的初始embedding表示？传统做法通常采用随机初始化新物品的embedding，但这种简单粗暴的方式往往导致新物品在初期表现不佳，需要大量交互数据才能收敛到有效状态。</p>
 <p>MetaEmbedding正是针对这一问题提出的解决方案。与CB2CF专注于学习内容到协同过滤的映射不同，MetaEmbedding关注的是如何利用物品的辅助属性信息，通过元学习的思想为新物品生成更好的初始embedding。</p>
-<div class="figure align-default" id="id8">
-<img alt="../_images/meta_embedding_alg.png" src="../_images/meta_embedding_alg.png" />
-<p class="caption"><span class="caption-number">图5.3.2 </span><span class="caption-text">MetaEmbedding两阶段训练</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
+<figure class="align-default" id="id8">
+<span id="meta-embedding-alg"></span><a class="reference internal image-reference" href="../_images/meta_embedding_alg.png"><img alt="../_images/meta_embedding_alg.png" src="../_images/meta_embedding_alg.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">图5.2.2 </span><span class="caption-text">MetaEmbedding两阶段训练</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>MetaEmbedding采用基于SGD的元学习训练算法，其核心思想是通过模拟物品从冷启动到预热的完整过程来优化embedding生成器。该算法为每个物品ID学习一个能够快速适应的初始embedding，从而解决新物品的冷启动问题。</p>
 <p>算法的输入包括预训练的基础模型<span class="math notranslate nohighlight">\(f_\theta\)</span>、所有现有物品ID的集合<span class="math notranslate nohighlight">\(\mathcal{I}\)</span>、元损失的权重系数<span class="math notranslate nohighlight">\(\alpha\)</span>，以及梯度更新的步长参数<span class="math notranslate nohighlight">\(a\)</span>和<span class="math notranslate nohighlight">\(b\)</span>。训练过程首先随机初始化Meta-Embedding生成器的参数<span class="math notranslate nohighlight">\(w\)</span>，然后在主循环中重复执行以下操作直到收敛。</p>
 <p>在每次迭代中，算法从物品集合<span class="math notranslate nohighlight">\(\mathcal{I}\)</span>中随机采样<span class="math notranslate nohighlight">\(n\)</span>个物品ID，记为<span class="math notranslate nohighlight">\(\{i_1, i_2, \ldots, i_n\}\)</span>。对于每个采样的物品<span class="math notranslate nohighlight">\(i\)</span>，算法执行双阶段训练过程。</p>
 <p><strong>初始Embedding生成阶段</strong>。算法使用Meta-Embedding生成器为物品<span class="math notranslate nohighlight">\(i\)</span>生成初始embedding：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-0">
-<span class="eqno">(5.3.1)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-0" title="Permalink to this equation">¶</a></span>\[\phi_{[i]}^{\text{init}} = h_w(\mathbf{u}_{[i]})\]</div>
+<span class="eqno">(5.2.1)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-0" title="Permalink to this equation">¶</a></span>\[\phi_{[i]}^{\text{init}} = h_w(\mathbf{u}_{[i]})\]</div>
 <p>其中<span class="math notranslate nohighlight">\(\mathbf{u}_{[i]}\)</span>表示物品<span class="math notranslate nohighlight">\(i\)</span>的特征向量，<span class="math notranslate nohighlight">\(h_w\)</span>是参数为<span class="math notranslate nohighlight">\(w\)</span>的生成器函数。随后，算法为物品<span class="math notranslate nohighlight">\(i\)</span>采样两个mini-batch：第一批标注数据<span class="math notranslate nohighlight">\(\mathcal{D}_{[i]}^a\)</span>和第二批标注数据<span class="math notranslate nohighlight">\(\mathcal{D}_{[i]}^b\)</span>，每批均包含<span class="math notranslate nohighlight">\(K\)</span>个样本。</p>
 <p><strong>梯度适应与评估阶段</strong>。算法首先在第一批数据<span class="math notranslate nohighlight">\(\mathcal{D}_{[i]}^a\)</span>上评估初始embedding的损失<span class="math notranslate nohighlight">\(l_a(\phi_{[i]}^{\text{init}})\)</span>，然后计算适应后的embedding：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-1">
-<span class="eqno">(5.3.2)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-1" title="Permalink to this equation">¶</a></span>\[\phi_{[i]}' = \phi_{[i]}^{\text{init}} - a \cdot \frac{\partial l_a(\phi_{[i]}^{\text{init}})}{\partial \phi_{[i]}^{\text{init}}}\]</div>
+<span class="eqno">(5.2.2)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-1" title="Permalink to this equation">¶</a></span>\[\phi_{[i]}' = \phi_{[i]}^{\text{init}} - a \cdot \frac{\partial l_a(\phi_{[i]}^{\text{init}})}{\partial \phi_{[i]}^{\text{init}}}\]</div>
 <p>这一步骤模拟了物品在获得少量交互数据后的快速适应过程。接着，算法在第二批数据<span class="math notranslate nohighlight">\(\mathcal{D}_{[i]}^b\)</span>上评估适应后embedding的损失<span class="math notranslate nohighlight">\(l_b(\phi_{[i]}')\)</span>。</p>
 <p>算法的关键创新在于其元损失函数的设计。对于每个物品<span class="math notranslate nohighlight">\(i\)</span>，算法计算综合的元损失：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-2">
-<span class="eqno">(5.3.3)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-2" title="Permalink to this equation">¶</a></span>\[l_{\text{meta},i} = \alpha l_a(\phi_{[i]}^{\text{init}}) + (1-\alpha) l_b(\phi_{[i]}')\]</div>
+<span class="eqno">(5.2.3)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-2" title="Permalink to this equation">¶</a></span>\[l_{\text{meta},i} = \alpha l_a(\phi_{[i]}^{\text{init}}) + (1-\alpha) l_b(\phi_{[i]}')\]</div>
 <p>该损失函数巧妙地平衡了初始embedding的直接质量和经过适应后的性能。权重系数<span class="math notranslate nohighlight">\(\alpha\)</span>控制着两个目标的相对重要性：既要保证生成的初始embedding在冷启动时表现良好，又要确保其具备快速适应的能力。</p>
 <p>最后，算法使用所有采样物品的元损失来更新生成器参数：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-3">
-<span class="eqno">(5.3.4)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-3" title="Permalink to this equation">¶</a></span>\[w \leftarrow w - b \sum_{i \in \{i_1, \ldots, i_n\}} \frac{\partial l_{\text{meta},i}}{\partial w}\]</div>
+<span class="eqno">(5.2.4)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-3" title="Permalink to this equation">¶</a></span>\[w \leftarrow w - b \sum_{i \in \{i_1, \ldots, i_n\}} \frac{\partial l_{\text{meta},i}}{\partial w}\]</div>
 <p>这种双阶段机制的深层含义在于优化embedding的“可学习性”而非embedding本身。通过在大量现有物品上重复“初始化→适应→评估”的过程，Meta-Embedding生成器学会了如何为新物品提供一个既有良好初始性能，又具备强适应潜力的embedding起点。当面对真正的新物品时，生成器能够基于其内容特征直接输出一个“聪明”的初始embedding，该embedding经过少量真实交互数据的训练后能够快速收敛到高质量的表示，从而显著改善冷启动性能。</p>
-</div>
-</div>
-<div class="section" id="id5">
-<h2><span class="section-number">5.3.2. </span>用户冷启动<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+<section id="id5">
+<h2><span class="section-number">5.2.2. </span>用户冷启动<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
 <p>除了内容冷启动之外，推荐系统还面临着另一个重要挑战——用户冷启动。与内容冷启动关注新物品的推荐不同，用户冷启动问题聚焦于如何为新用户提供高质量的个性化推荐。当新用户刚加入推荐系统时，由于缺乏历史交互数据，传统的协同过滤方法难以准确捕捉其偏好特征，往往只能提供基于流行度的通用推荐，导致用户体验不佳。</p>
 <p>下面将重点介绍两种用户冷启动解决方案：MeLU（Meta-Learned User preference
 estimator）和POSO。MeLU是基于元学习的方法，通过MAML框架学习用户偏好估计器，能够基于少量交互快速捕捉新用户的个性化偏好；POSO则采用分人群的架构设计思路，通过引入多个用户群体专用的子模块和个性化门控机制来解决用户冷启动问题。这两种方法分别从元学习和模型架构优化的角度展示了解决推荐系统冷启动问题的不同思路。</p>
-<div class="section" id="melu">
-<h3><span class="section-number">5.3.2.1. </span>MELU<a class="headerlink" href="#melu" title="Permalink to this heading">¶</a></h3>
+<section id="melu">
+<h3><span class="section-number">5.2.2.1. </span>MELU<a class="headerlink" href="#melu" title="Permalink to this heading">¶</a></h3>
 <p>正如我们在MetaEmbedding中看到的，元学习为解决冷启动问题提供了一种全新的思路——通过学习如何快速适应新任务来应对数据稀缺的挑战。这一思想同样适用于用户冷启动场景：我们可以将每个新用户的偏好学习视为一个独立的学习任务，通过元学习框架训练一个能够快速适应新用户偏好的模型。</p>
 <p>MeLU的核心思想是将每个用户的偏好学习视为一个独立的学习任务，通过元学习框架训练一个能够快速适应新用户偏好的推荐模型。与传统方法不同，MeLU不仅关注如何基于少量交互数据进行推荐，还创新性地提出了证据候选选择策略，用于确定最能区分用户偏好的物品集合。</p>
 <p>具体而言，MeLU将推荐问题建模为一个评分预测任务。给定用户<span class="math notranslate nohighlight">\(u\)</span>和物品<span class="math notranslate nohighlight">\(i\)</span>，模型需要预测用户对物品的评分<span class="math notranslate nohighlight">\(r_{ui}\)</span>。模型的核心是一个用户偏好估计器，由用户嵌入、物品嵌入以及多层决策网络组成。与传统方法为每个用户学习固定嵌入不同，MeLU学习的是一个能够快速生成个性化用户表示的元模型。</p>
-<div class="section" id="id6">
-<h4><span class="section-number">5.3.2.1.1. </span>双阶段元学习机制<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h4>
-<div class="figure align-default" id="id9">
-<img alt="../_images/melu_arch.png" src="../_images/melu_arch.png" />
-<p class="caption"><span class="caption-number">图5.3.3 </span><span class="caption-text">MeLU双阶段训练</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</div>
+<section id="id6">
+<h4><span class="section-number">5.2.2.1.1. </span>双阶段元学习机制<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h4>
+<figure class="align-default" id="id9">
+<span id="melu-arch"></span><a class="reference internal image-reference" href="../_images/melu_arch.png"><img alt="../_images/melu_arch.png" src="../_images/melu_arch.png" style="width: 450px;" /></a>
+<figcaption>
+<p><span class="caption-number">图5.2.3 </span><span class="caption-text">MeLU双阶段训练</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>MeLU的训练过程严格遵循MAML框架，但针对推荐系统的特点进行了专门的设计。算法采用双层参数结构：
 - <span class="math notranslate nohighlight">\(\theta_1\)</span>控制用户和物品的embedding参数 -
 <span class="math notranslate nohighlight">\(\theta_2\)</span>负责模型的核心决策网络参数。</p>
@@ -445,58 +432,62 @@ estimator）和POSO。MeLU是基于元学习的方法，通过MAML框架学习�
 执行本地参数更新：<span class="math notranslate nohighlight">\(\theta_2^i \leftarrow \theta_2^i - \alpha \nabla_{\theta_2^i} \mathcal{L}_i'(f_{\theta_1, \theta_2^i})\)</span></p>
 <p><strong>外循环元更新阶段</strong>：使用所有用户的适应后参数，同时更新两组全局参数：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-4">
-<span class="eqno">(5.3.5)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-4" title="Permalink to this equation">¶</a></span>\[\theta_1 \leftarrow \theta_1 - \beta \sum_{i \in B} \nabla_{\theta_1} \mathcal{L}_i'(f_{\theta_1, \theta_2^i})\]</div>
+<span class="eqno">(5.2.5)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-4" title="Permalink to this equation">¶</a></span>\[\theta_1 \leftarrow \theta_1 - \beta \sum_{i \in B} \nabla_{\theta_1} \mathcal{L}_i'(f_{\theta_1, \theta_2^i})\]</div>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-5">
-<span class="eqno">(5.3.6)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-5" title="Permalink to this equation">¶</a></span>\[\theta_2 \leftarrow \theta_2 - \beta \sum_{i \in B} \nabla_{\theta_2} \mathcal{L}_i'(f_{\theta_1, \theta_2^i})\]</div>
+<span class="eqno">(5.2.6)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-5" title="Permalink to this equation">¶</a></span>\[\theta_2 \leftarrow \theta_2 - \beta \sum_{i \in B} \nabla_{\theta_2} \mathcal{L}_i'(f_{\theta_1, \theta_2^i})\]</div>
 <p>与标准MAML不同，MeLU的关键创新在于参数分离设计。<span class="math notranslate nohighlight">\(\theta_1\)</span>负责学习用户和物品的通用embedding表示，这些表示在所有用户间共享；而<span class="math notranslate nohighlight">\(\theta_2\)</span>专门负责快速适应个体用户的决策偏好。这种设计使得模型既能保持良好的表示学习能力，又能在面对新用户时实现快速的个性化适应。</p>
-</div>
-</div>
-<div class="section" id="poso">
-<h3><span class="section-number">5.3.2.2. </span>POSO<a class="headerlink" href="#poso" title="Permalink to this heading">¶</a></h3>
+</section>
+</section>
+<section id="poso">
+<h3><span class="section-number">5.2.2.2. </span>POSO<a class="headerlink" href="#poso" title="Permalink to this heading">¶</a></h3>
 <p>与MeLU从元学习角度解决用户冷启动不同，POSO（Personalized COld Start
 MOdules）从模型架构设计的角度提出了一种全新的解决思路。POSO的核心洞察在于：用户冷启动问题的根本原因并非仅仅是数据稀缺，更重要的是新用户与老用户行为分布的巨大差异，以及现有模型在处理这种不平衡分布时的“个性化淹没”现象。</p>
 <p>新用户与老用户在行为模式上存在显著差异。新老用户的行为差异如下图所示：新用户通常表现出更高的点赞率（因为新鲜感）、更高的完播率（产品机制倾向于推送更短的视频）、但更低的观看时长和视频播放量（尚未形成使用粘性）。这种分布差异使得单一模型难以同时服务好两类用户群体。</p>
-<div class="figure align-default" id="id10">
-<img alt="../_images/poso_feature.png" src="../_images/poso_feature.png" />
-<p class="caption"><span class="caption-number">图5.3.4 </span><span class="caption-text">POSO新老用户行为差异</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
-</div>
+<figure class="align-default" id="id10">
+<span id="poso-feature"></span><a class="reference internal image-reference" href="../_images/poso_feature.png"><img alt="../_images/poso_feature.png" src="../_images/poso_feature.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">图5.2.4 </span><span class="caption-text">POSO新老用户行为差异</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>POSO的设计具有很强的通用性，可以灵活地集成到推荐系统的各种神经网络模块中。下面详细介绍POSO在三种典型模块中的具体应用方式，分别为MLP、MAH及MMoE。</p>
-<div class="figure align-default" id="id11">
-<img alt="../_images/poso_arch.png" src="../_images/poso_arch.png" />
-<p class="caption"><span class="caption-number">图5.3.5 </span><span class="caption-text">poso模型结构</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
-</div>
-<div class="section" id="poso-mlp">
-<h4><span class="section-number">5.3.2.2.1. </span>POSO-MLP<a class="headerlink" href="#poso-mlp" title="Permalink to this heading">¶</a></h4>
+<figure class="align-default" id="id11">
+<span id="poso-arch"></span><a class="reference internal image-reference" href="../_images/poso_arch.png"><img alt="../_images/poso_arch.png" src="../_images/poso_arch.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">图5.2.5 </span><span class="caption-text">POSO模型结构</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="poso-mlp">
+<h4><span class="section-number">5.2.2.2.1. </span>POSO-MLP<a class="headerlink" href="#poso-mlp" title="Permalink to this heading">¶</a></h4>
 <p>在传统的多层感知机（MLP）中，所有用户共享相同的权重参数。POSO-MLP通过引入多个并行的MLP子网络来解决这一问题：</p>
 <p><strong>子模块设计</strong>：假设原始MLP层的变换为<span class="math notranslate nohighlight">\(y = \sigma(Wx + b)\)</span>，POSO-MLP引入<span class="math notranslate nohighlight">\(K\)</span>个并行的MLP子模块，每个子模块<span class="math notranslate nohighlight">\(i\)</span>具有独立的权重矩阵<span class="math notranslate nohighlight">\(W_i\)</span>和偏置向量<span class="math notranslate nohighlight">\(b_i\)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-6">
-<span class="eqno">(5.3.7)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-6" title="Permalink to this equation">¶</a></span>\[f_i(x) = \sigma(W_i x + b_i), \quad i = 1, 2, \ldots, K\]</div>
+<span class="eqno">(5.2.7)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-6" title="Permalink to this equation">¶</a></span>\[f_i(x) = \sigma(W_i x + b_i), \quad i = 1, 2, \ldots, K\]</div>
 <p><strong>门控机制</strong>：个性化门控网络接收用户的个性化编码<span class="math notranslate nohighlight">\(x^{pc}\)</span>（如<code class="docutils literal notranslate"><span class="pre">is_new_user</span></code>、用户活跃度等特征），输出各子模块的权重：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-7">
-<span class="eqno">(5.3.8)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-7" title="Permalink to this equation">¶</a></span>\[g_i(x^{pc}) = \text{softmax}(\text{MLP}_{gate}(x^{pc}))_i\]</div>
+<span class="eqno">(5.2.8)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-7" title="Permalink to this equation">¶</a></span>\[g_i(x^{pc}) = \text{softmax}(\text{MLP}_{gate}(x^{pc}))_i\]</div>
 <p><strong>最终输出</strong>：POSO-MLP的输出为所有子模块的加权组合：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-8">
-<span class="eqno">(5.3.9)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-8" title="Permalink to this equation">¶</a></span>\[\hat{y} = \sum_{i=1}^K g_i(x^{pc}) \cdot f_i(x)\]</div>
+<span class="eqno">(5.2.9)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-8" title="Permalink to this equation">¶</a></span>\[\hat{y} = \sum_{i=1}^K g_i(x^{pc}) \cdot f_i(x)\]</div>
 <p>这种设计使得新用户可以主要依赖专门为其优化的子模块，而老用户则使用另一组专门的子模块，有效避免了特征淹没问题。</p>
-</div>
-<div class="section" id="poso-mha">
-<h4><span class="section-number">5.3.2.2.2. </span>POSO-MHA<a class="headerlink" href="#poso-mha" title="Permalink to this heading">¶</a></h4>
+</section>
+<section id="poso-mha">
+<h4><span class="section-number">5.2.2.2.2. </span>POSO-MHA<a class="headerlink" href="#poso-mha" title="Permalink to this heading">¶</a></h4>
 <p>多头注意力机制（Multi-Head Attention,
 MHA）在序列建模中发挥着重要作用。POSO-MHA通过为不同用户群体提供专门的注意力头来实现个性化：</p>
 <p><strong>多组注意力头</strong>：传统MHA包含<span class="math notranslate nohighlight">\(H\)</span>个注意力头，POSO-MHA扩展为<span class="math notranslate nohighlight">\(K\)</span>组注意力头，每组包含<span class="math notranslate nohighlight">\(H\)</span>个头。第<span class="math notranslate nohighlight">\(i\)</span>组的第<span class="math notranslate nohighlight">\(h\)</span>个注意力头定义为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-9">
-<span class="eqno">(5.3.10)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-9" title="Permalink to this equation">¶</a></span>\[\text{head}_{i,h} = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)\]</div>
+<span class="eqno">(5.2.10)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-9" title="Permalink to this equation">¶</a></span>\[\text{head}_{i,h} = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)\]</div>
 <p>其中<span class="math notranslate nohighlight">\(W_i^Q\)</span>、<span class="math notranslate nohighlight">\(W_i^K\)</span>、<span class="math notranslate nohighlight">\(W_i^V\)</span>是第<span class="math notranslate nohighlight">\(i\)</span>组专用的查询、键、值变换矩阵。</p>
 <p><strong>组内聚合</strong>：每组内的多个注意力头通过拼接进行聚合：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-10">
-<span class="eqno">(5.3.11)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-10" title="Permalink to this equation">¶</a></span>\[f_i(x) = \text{Concat}(\text{head}_{i,1}, \ldots, \text{head}_{i,H})W_i^O\]</div>
+<span class="eqno">(5.2.11)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-10" title="Permalink to this equation">¶</a></span>\[f_i(x) = \text{Concat}(\text{head}_{i,1}, \ldots, \text{head}_{i,H})W_i^O\]</div>
 <p><strong>个性化门控</strong>：门控网络根据用户特征决定各组注意力的权重：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-11">
-<span class="eqno">(5.3.12)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-11" title="Permalink to this equation">¶</a></span>\[\hat{y} = \sum_{i=1}^K g_i(x^{pc}) \cdot f_i(x)\]</div>
+<span class="eqno">(5.2.12)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-11" title="Permalink to this equation">¶</a></span>\[\hat{y} = \sum_{i=1}^K g_i(x^{pc}) \cdot f_i(x)\]</div>
 <p>这种设计让新用户和老用户能够关注到不同的序列模式，新用户的注意力机制可能更关注内容的新颖性和多样性，而老用户则更关注与历史偏好的匹配度。</p>
-</div>
-<div class="section" id="poso-mmoe">
-<h4><span class="section-number">5.3.2.2.3. </span>POSO-MMoE<a class="headerlink" href="#poso-mmoe" title="Permalink to this heading">¶</a></h4>
+</section>
+<section id="poso-mmoe">
+<h4><span class="section-number">5.2.2.2.3. </span>POSO-MMoE<a class="headerlink" href="#poso-mmoe" title="Permalink to this heading">¶</a></h4>
 <p>多任务学习中的专家混合模型（Multi-gate Mixture-of-Experts,
 MMoE）本身就具有专家分工的思想，POSO-MMoE在此基础上进一步引入用户群体的个性化：</p>
 <p><strong>分层专家结构</strong>：POSO-MMoE采用两层专家结构： -
@@ -506,21 +497,21 @@ MMoE）本身就具有专家分工的思想，POSO-MMoE在此基础上进一步�
 <p><strong>双重门控机制</strong>： 1.
 <strong>任务门控</strong>：每个任务<span class="math notranslate nohighlight">\(t\)</span>有独立的门控网络，决定底层专家的权重：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-12">
-<span class="eqno">(5.3.13)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-12" title="Permalink to this equation">¶</a></span>\[\alpha_t = \text{softmax}(W_t^{task} \cdot x + b_t^{task})\]</div>
+<span class="eqno">(5.2.13)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-12" title="Permalink to this equation">¶</a></span>\[\alpha_t = \text{softmax}(W_t^{task} \cdot x + b_t^{task})\]</div>
 <ol class="arabic" start="2">
 <li><p><strong>个性化门控</strong>：根据用户特征决定专家组的权重：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-13">
-<span class="eqno">(5.3.14)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-13" title="Permalink to this equation">¶</a></span>\[\beta = \text{softmax}(W^{pc} \cdot x^{pc} + b^{pc})\]</div>
+<span class="eqno">(5.2.14)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-13" title="Permalink to this equation">¶</a></span>\[\beta = \text{softmax}(W^{pc} \cdot x^{pc} + b^{pc})\]</div>
 </li>
 </ol>
 <p><strong>最终输出</strong>：任务<span class="math notranslate nohighlight">\(t\)</span>的输出为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-2-cold-start-14">
-<span class="eqno">(5.3.15)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-14" title="Permalink to this equation">¶</a></span>\[y_t = \sum_{i=1}^K \beta_i \left( \sum_{j=1}^M \alpha_{t,i,j} \cdot s_{i,j}\left(\sum_{k=1}^E \alpha_{t,k} \cdot e_k(x)\right) \right)\]</div>
+<span class="eqno">(5.2.15)<a class="headerlink" href="#equation-chapter-4-trends-2-cold-start-14" title="Permalink to this equation">¶</a></span>\[y_t = \sum_{i=1}^K \beta_i \left( \sum_{j=1}^M \alpha_{t,i,j} \cdot s_{i,j}\left(\sum_{k=1}^E \alpha_{t,k} \cdot e_k(x)\right) \right)\]</div>
 <p>这种设计实现了任务级别和用户群体级别的双重个性化，既保证了多任务学习的效果，又解决了不同用户群体的差异化需求。</p>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
 
         </div>
@@ -531,25 +522,25 @@ MMoE）本身就具有专家分工的思想，POSO-MMoE在此基础上进一步�
       <span class="caption-text">Table Of Contents</span>
     </p>
     <ul>
-<li><a class="reference internal" href="#">5.3. 冷启动问题</a><ul>
-<li><a class="reference internal" href="#id2">5.3.1. 内容冷启动</a><ul>
-<li><a class="reference internal" href="#cb2cf">5.3.1.1. CB2CF</a><ul>
-<li><a class="reference internal" href="#id3">5.3.1.1.1. CB2CF模型架构</a></li>
-<li><a class="reference internal" href="#id4">5.3.1.1.2. 协同过滤向量生成</a></li>
+<li><a class="reference internal" href="#">5.2. 冷启动问题</a><ul>
+<li><a class="reference internal" href="#id2">5.2.1. 内容冷启动</a><ul>
+<li><a class="reference internal" href="#cb2cf">5.2.1.1. CB2CF</a><ul>
+<li><a class="reference internal" href="#id3">5.2.1.1.1. CB2CF模型架构</a></li>
+<li><a class="reference internal" href="#id4">5.2.1.1.2. 协同过滤向量生成</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#metaembedding">5.3.1.2. MetaEmbedding</a></li>
+<li><a class="reference internal" href="#metaembedding">5.2.1.2. MetaEmbedding</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id5">5.3.2. 用户冷启动</a><ul>
-<li><a class="reference internal" href="#melu">5.3.2.1. MELU</a><ul>
-<li><a class="reference internal" href="#id6">5.3.2.1.1. 双阶段元学习机制</a></li>
+<li><a class="reference internal" href="#id5">5.2.2. 用户冷启动</a><ul>
+<li><a class="reference internal" href="#melu">5.2.2.1. MELU</a><ul>
+<li><a class="reference internal" href="#id6">5.2.2.1.1. 双阶段元学习机制</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#poso">5.3.2.2. POSO</a><ul>
-<li><a class="reference internal" href="#poso-mlp">5.3.2.2.1. POSO-MLP</a></li>
-<li><a class="reference internal" href="#poso-mha">5.3.2.2.2. POSO-MHA</a></li>
-<li><a class="reference internal" href="#poso-mmoe">5.3.2.2.3. POSO-MMoE</a></li>
+<li><a class="reference internal" href="#poso">5.2.2.2. POSO</a><ul>
+<li><a class="reference internal" href="#poso-mlp">5.2.2.2.1. POSO-MLP</a></li>
+<li><a class="reference internal" href="#poso-mha">5.2.2.2.2. POSO-MHA</a></li>
+<li><a class="reference internal" href="#poso-mmoe">5.2.2.2.3. POSO-MMoE</a></li>
 </ul>
 </li>
 </ul>
@@ -568,14 +559,14 @@ MMoE）本身就具有专家分工的思想，POSO-MMoE在此基础上进一步�
          <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
          <div class="pagenation-text">
             <span class="pagenation-direction">Previous</span>
-            <div>5.2. 模型去偏</div>
+            <div>5.1. 模型去偏</div>
          </div>
      </a>
      <a id="button-next" href="3.generative.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
          <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
         <div class="pagenation-text">
             <span class="pagenation-direction">Next</span>
-            <div>5.4. 生成式推荐</div>
+            <div>5.3. 生成式推荐</div>
         </div>
      </a>
   </div>
