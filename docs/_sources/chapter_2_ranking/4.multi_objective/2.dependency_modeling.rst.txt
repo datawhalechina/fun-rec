@@ -9,14 +9,19 @@
 
 传统方法在处理这种依赖时面临两个核心问题：样本选择偏差（CVR模型在点击样本上训练，却要在全量样本上预测）和数据稀疏性（转化事件极其稀少）。
 
-本节介绍两个全空间建模方法：ESSM解决经典的CTR-CVR联合建模问题，ESM2将思想扩展到更复杂的多阶段行为链路。
+本节介绍两个全空间建模方法：ESMM解决经典的CTR-CVR联合建模问题，ESM2将思想扩展到更复杂的多阶段行为链路。
 
-ESSM
+ESMM
 ----
 
-.. figure:: ../../img/essm_sample_bias.png
+.. _esmm_sample_bias:
+
+.. figure:: ../../img/esmm_sample_bias.png
+   :width: 300px
 
    点击率和转化率预估的样本空间
+
+
 
 在推荐系统的用户行为链中，存在严格的时序依赖关系。以电商场景为例：
 
@@ -34,11 +39,16 @@ ESSM
    CVR，典型场景：CTR≈2%, CVR≈0.5% →
    转化样本仅为曝光的万分之一，稀疏样本难以支撑复杂模型学习
 
-ESSM (Entire Space Multi-task Model) 通过概率图约束重建任务关系：
+ESMM (Entire Space Multi-task Model) 通过概率图约束重建任务关系：
 
-.. figure:: ../../img/essm.png
+.. _esmm_model_structure:
 
-   ESSM模型结构
+.. figure:: ../../img/esmm.png
+   :width: 400px
+
+   ESMM模型结构
+
+
 
 -  输入层：全量曝光样本特征 :math:`\mathbf{x}`
 
@@ -80,7 +90,7 @@ ESSM (Entire Space Multi-task Model) 通过概率图约束重建任务关系：
 
       \mathcal{L}_{CTCVR} = - \frac{1}{N} \sum_{i=1}^N \left[ y_i^{click} \cdot y_i^{conv} \log(pCTCVR_i) + (1 - y_i^{click} \cdot y_i^{conv}) \log(1 - pCTCVR_i) \right]
 
-ESSM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
+ESMM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
 
 .. math::
 
@@ -95,7 +105,7 @@ ESSM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
 
 .. code:: python
 
-   def build_essm_model(
+   def build_esmm_model(
            feature_columns,
            task_tower_dnn_units=[128, 64],
            ):
@@ -139,7 +149,7 @@ ESSM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
 
 .. code:: python
 
-    config = funrec.load_config('essm')
+    config = funrec.load_config('esmm')
     train_data, test_data = funrec.load_data(config.data)
     feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
 
@@ -175,26 +185,36 @@ ESSM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
     +----------------+---------------+-------------+-----------------+----------------+--------------+------------------------+-----------------------+
     |   auc_is_click |   auc_is_like |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_macro |   valid_users_is_click |   valid_users_is_like |
     +================+===============+=============+=================+================+==============+========================+=======================+
-    |         0.6027 |        0.6566 |      0.6297 |          0.5734 |         0.5835 |       0.5785 |                    928 |                   530 |
+    |         0.6051 |        0.6818 |      0.6435 |          0.5728 |         0.5857 |       0.5792 |                    928 |                   530 |
     +----------------+---------------+-------------+-----------------+----------------+--------------+------------------------+-----------------------+
 
 
 ESM2
 ----
 
-ESSM成功解决了曝光→点击→转化这一两阶段行为链路的样本偏差问题，但在真实工业场景中，用户行为链路往往更长更复杂。
+ESMM成功解决了曝光→点击→转化这一两阶段行为链路的样本偏差问题，但在真实工业场景中，用户行为链路往往更长更复杂。
+
+.. _esm2_seq:
 
 .. figure:: ../../img/esm2_seq.png
+   :width: 250px
 
    用户下单链路图
+
+
 
 如图所示，用户从曝光到转化可能会有非常多条的路径，例如
 ``曝光->点击->加入购物车->购买``\ 、\ ``曝光->点击->加入许愿池->加入购物车->购买``\ 等。为了方便后续建模，对点击后的行为分解做了进一步的简化，将加入购物车、加入心愿单归并为决定行为（Deterministic
 Action，DAction），将其余行为归并为其他行为（Other Action，OAction）
 
+.. _esm2_seq_2:
+
 .. figure:: ../../img/esm2_seq_2.png
+   :width: 300px
 
    简化后的用户下单链路图
+
+
 
 为了更好理解后续建模时的数学表达，先对简化后图中的过程，做进一步的数学表示。
 
@@ -205,11 +225,16 @@ Action，DAction），将其余行为归并为其他行为（Other Action，OAct
 
 根据上述定义，更便于理解ESM2模型的结构图：
 
+.. _esm2_model_structure:
+
 .. figure:: ../../img/esm2.png
+   :width: 500px
 
    ESM2模型结构图
 
-ESM2模型有四个塔，分别用来预测上述的\ :math:`y_1,y_2,y_3`\ 和\ :math:`y_4`\ ，对于这四个塔的输出并不是算4个Loss，而是分别计算\ ``曝光->点击``\ 、\ ``曝光->决定行为``\ 和\ ``曝光->购买``\ 这三个Loss。可以很明显的看出，这三个Loss都是在曝光空间上计算的，和ESSM在曝光空间优化CVR有着异曲同工之处。下面对于上述的三个Loss做简单的介绍，下面的\ :math:`BCE_{Loss}`\ 表示的是二元交叉熵损失。
+
+
+ESM2模型有四个塔，分别用来预测上述的\ :math:`y_1,y_2,y_3`\ 和\ :math:`y_4`\ ，对于这四个塔的输出并不是算4个Loss，而是分别计算\ ``曝光->点击``\ 、\ ``曝光->决定行为``\ 和\ ``曝光->购买``\ 这三个Loss。可以很明显的看出，这三个Loss都是在曝光空间上计算的，和ESMM在曝光空间优化CVR有着异曲同工之处。下面对于上述的三个Loss做简单的介绍，下面的\ :math:`BCE_{Loss}`\ 表示的是二元交叉熵损失。
 
 :math:`L_{ctr}`\ 点击率预估损失：
 

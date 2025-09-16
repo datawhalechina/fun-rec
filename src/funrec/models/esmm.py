@@ -8,9 +8,9 @@ from .utils import (
 from .layers import DNNs, PredictLayer
 
 
-def build_essm_model(feature_columns, model_config):
+def build_esmm_model(feature_columns, model_config):
     """
-    构建ESSM（全空间多任务模型）排序模型。
+    构建ESMM（全空间多任务模型）排序模型。
 
     参数:
         feature_columns: FeatureColumn列表
@@ -51,7 +51,7 @@ def build_essm_model(feature_columns, model_config):
     ctr_output_prob = PredictLayer(name="ctr_output")(ctr_output_logits)
     cvr_output_prob = PredictLayer(name="cvr_output")(cvr_output_logits)
 
-    # CTCVR = CTR * CVR（ESSM核心思想）
+    # CTCVR = CTR * CVR（ESMM核心思想）
     ctcvr_output_prob = tf.keras.layers.Lambda(lambda x: tf.multiply(x[0], x[1]))(
         [ctr_output_prob, cvr_output_prob]
     )

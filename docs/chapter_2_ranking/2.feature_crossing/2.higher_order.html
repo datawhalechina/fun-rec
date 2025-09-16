@@ -340,7 +340,7 @@ Show Source
 通过一个创新的Cross Network来替代Wide &amp;
 Deep模型中的Wide部分。该网络的核心思想是在每一层都与原始的输入特征进行交叉，从而以一种显式且可控的方式，自动构建更高阶的特征交互，而无需繁琐的人工特征工程。</p>
 <figure class="align-default" id="id6">
-<img alt="../../_images/deepcross.png" src="../../_images/deepcross.png" />
+<span id="dcn-model-structure"></span><a class="reference internal image-reference" href="../../_images/deepcross.png"><img alt="../../_images/deepcross.png" src="../../_images/deepcross.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.2.7 </span><span class="caption-text">DCN模型结构</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -363,7 +363,7 @@ Network是DCN的核心创新。它由多个交叉层堆叠而成，其精妙之�
 Network的初始输入向量，<span class="math notranslate nohighlight">\(\mathbf{w}_l, \mathbf{b}_l \in \mathbb{R}^d\)</span>
 分别是第 <span class="math notranslate nohighlight">\(l\)</span> 层的权重和偏置列向量。</p>
 <figure class="align-default" id="id7">
-<img alt="../../_images/cross_network.png" src="../../_images/cross_network.png" />
+<span id="cross-network-structure"></span><a class="reference internal image-reference" href="../../_images/cross_network.png"><img alt="../../_images/cross_network.png" src="../../_images/cross_network.png" style="width: 300px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.2.8 </span><span class="caption-text">Cross Network</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -398,9 +398,9 @@ Interaction Network, CIN） <span id="id3">(<a class="reference internal" href="
 的方式进行特征交互，这更符合我们进行特征工程时的直觉。</p>
 <p>xDeepFM的整体架构同样由三部分组成：一个传统的线性部分、一个用于隐式高阶交叉的DNN，以及创新的CIN网络用于显式高阶交叉。这三部分的输出最终被结合起来进行预测。</p>
 <figure class="align-default" id="id8">
-<img alt="../../_images/xdeepfm.png" src="../../_images/xdeepfm.png" />
+<span id="xdeepfm-architecture"></span><a class="reference internal image-reference" href="../../_images/xdeepfm.png"><img alt="../../_images/xdeepfm.png" src="../../_images/xdeepfm.png" style="width: 400px;" /></a>
 <figcaption>
-<p><span class="caption-number">图3.2.9 </span><span class="caption-text">xdeepfm模型架构</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图3.2.9 </span><span class="caption-text">xdDeepFM模型架构</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>CIN的设计目标是实现向量级别的显式高阶交互，同时控制网络复杂度。它的输入是一个<span class="math notranslate nohighlight">\(m \times D\)</span>的矩阵
@@ -466,7 +466,7 @@ Pooling），得到一个池化后的向量
 架构的核心思想，<strong>通过多头自注意力机制来自动、自适应地学习任意阶数的特征交互</strong>。与前面介绍的方法不同，AutoInt
 不依赖于固定的交互模式，而是让模型在训练过程中学习出最有效的特征交互组合。</p>
 <figure class="align-default" id="id9">
-<img alt="../../_images/autoint_overview.png" src="../../_images/autoint_overview.png" />
+<span id="autoint-overview"></span><a class="reference internal image-reference" href="../../_images/autoint_overview.png"><img alt="../../_images/autoint_overview.png" src="../../_images/autoint_overview.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.2.10 </span><span class="caption-text">AutoInt模型原理示意图</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -507,7 +507,7 @@ token embeddings。</p>
 <span class="math notranslate nohighlight">\(\mathbf{\tilde{e}}_m^{(h)}\)</span>
 本质上就是一个通过自适应学习得到的新组合特征。</p>
 <figure class="align-default" id="id10">
-<img alt="../../_images/autoint_attention.png" src="../../_images/autoint_attention.png" />
+<span id="autoint-attention"></span><a class="reference internal image-reference" href="../../_images/autoint_attention.png"><img alt="../../_images/autoint_attention.png" src="../../_images/autoint_attention.png" style="width: 350px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.2.11 </span><span class="caption-text">自注意力机制示意图</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -550,11 +550,11 @@ DCN 和 xDeepFM 不同，AutoInt
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------+--------+--------+---------------+</span>
 <span class="o">|</span> <span class="n">模型</span>    <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
 <span class="o">+=========+========+========+===============+</span>
-<span class="o">|</span> <span class="n">dcn</span>     <span class="o">|</span> <span class="mf">0.6078</span> <span class="o">|</span> <span class="mf">0.572</span>  <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">dcn</span>     <span class="o">|</span> <span class="mf">0.6039</span> <span class="o">|</span> <span class="mf">0.5744</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">xdeepfm</span> <span class="o">|</span> <span class="mf">0.6</span>    <span class="o">|</span> <span class="mf">0.574</span>  <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">xdeepfm</span> <span class="o">|</span> <span class="mf">0.6038</span> <span class="o">|</span> <span class="mf">0.5736</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">autoint</span> <span class="o">|</span> <span class="mf">0.5919</span> <span class="o">|</span> <span class="mf">0.5695</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">autoint</span> <span class="o">|</span> <span class="mf">0.5986</span> <span class="o">|</span> <span class="mf">0.5725</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
 </pre></div>
 </div>

@@ -343,7 +343,7 @@ Show Source
 <strong>联合训练（Joint Training）</strong> 机制，将两种能力无缝融合。</p>
 <p>这个架构的核心思想是将模型结构拆分为两个部分，分别承担不同的职责，如下图所示：</p>
 <figure class="align-default" id="id7">
-<img alt="../_images/wide_and_deep.png" src="../_images/wide_and_deep.png" />
+<span id="wide-and-deep-model-structure"></span><a class="reference internal image-reference" href="../_images/wide_and_deep.png"><img alt="../_images/wide_and_deep.png" src="../_images/wide_and_deep.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.1.1 </span><span class="caption-text">Wide &amp; Deep 模型结构图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -403,11 +403,11 @@ Deep不仅是一个具体的模型，更是一种重要的设计哲学，它为�
 <span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+-------+--------+---------------+</span>
-<span class="o">|</span>   <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
-<span class="o">+=======+========+===============+</span>
-<span class="o">|</span> <span class="mf">0.604</span> <span class="o">|</span> <span class="mf">0.5764</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
-<span class="o">+-------+--------+---------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+---------------+</span>
+<span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
+<span class="o">+========+========+===============+</span>
+<span class="o">|</span> <span class="mf">0.5958</span> <span class="o">|</span> <span class="mf">0.5745</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">+--------+--------+---------------+</span>
 </pre></div>
 </div>
 </section>

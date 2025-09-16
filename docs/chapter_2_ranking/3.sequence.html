@@ -346,7 +346,7 @@ bag of items），如同用户的兴趣是一个静态的表示。</p>
 <p>基于此，DIN提出了一个观点：<strong>用户的兴趣表示不应该是固定的，而应是根据当前的候选广告（Target
 Ad）不同而动态变化的。</strong></p>
 <figure class="align-default" id="id9">
-<span id="din-architecture"></span><img alt="../_images/din_architecture.png" src="../_images/din_architecture.png" />
+<span id="din-architecture"></span><a class="reference internal image-reference" href="../_images/din_architecture.png"><img alt="../_images/din_architecture.png" src="../_images/din_architecture.png" style="width: 800px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.3.1 </span><span class="caption-text">DIN模型架构图（右）及其与基准模型（左）的对比</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -377,7 +377,7 @@ Unit）</strong>，其本质就是<strong>注意力机制</strong>。如上图�
 DIEN） <span id="id5">(<a class="reference internal" href="../chapter_references/references.html#id53" title="Zhou, G., Mou, N., Fan, Y., Pi, Q., Bian, W., Zhou, C., … Gai, K. (2019). Deep interest evolution network for click-through rate prediction. Proceedings of the AAAI conference on artificial intelligence (pp. 5941–5948).">Zhou <em>et al.</em>, 2019</a>)</span>
 被提出。DIEN认为，我们不仅要关注哪些历史兴趣是相关的，更要理解这些兴趣是如何一步步演化至今的。</p>
 <figure class="align-default" id="id10">
-<span id="dien-architecture"></span><img alt="../_images/dien.png" src="../_images/dien.png" />
+<span id="dien-architecture"></span><a class="reference internal image-reference" href="../_images/dien.png"><img alt="../_images/dien.png" src="../_images/dien.png" style="width: 800px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.3.2 </span><span class="caption-text">DIEN模型架构图</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -427,7 +427,7 @@ Gate）上融入了注意力机制。注意力得分<span class="math notranslat
 <p>从DIN到DIEN，我们看到了模型对用户兴趣的理解从“静态相关”走向了“动态演化”。然而，它们都将用户的行为看作一条连续的序列。但现实中，用户的行为模式更多是间断性的。用户通常在<strong>一个会话（Session）</strong>
 内拥有一个明确且集中的意图，而在<strong>不同会话</strong>之间，兴趣点可能发生巨大转变。</p>
 <figure class="align-default" id="id11">
-<img alt="../_images/dsin_session.png" src="../_images/dsin_session.png" />
+<span id="dsin-session-structure"></span><a class="reference internal image-reference" href="../_images/dsin_session.png"><img alt="../_images/dsin_session.png" src="../_images/dsin_session.png" style="width: 350px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.3.3 </span><span class="caption-text">用户行为的会话结构示例</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -437,7 +437,7 @@ Gate）上融入了注意力机制。注意力得分<span class="math notranslat
 <span id="id7">(<a class="reference internal" href="../chapter_references/references.html#id54" title="Feng, Y., Lv, F., Shen, W., Wang, M., Sun, F., Zhu, Y., &amp; Yang, K. (2019). Deep session interest network for click-through rate prediction. arXiv preprint arXiv:1905.06482.">Feng <em>et al.</em>, 2019</a>)</span>
 基于这一观察，提出我们应该将“会话”作为分析用户行为的基本单元，并采用一种<strong>分层</strong>的思想来建模。</p>
 <figure class="align-default" id="id12">
-<img alt="../_images/dsin_architecture.png" src="../_images/dsin_architecture.png" />
+<span id="dsin-architecture"></span><a class="reference internal image-reference" href="../_images/dsin_architecture.png"><img alt="../_images/dsin_architecture.png" src="../_images/dsin_architecture.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.3.4 </span><span class="caption-text">DSIN模型架构图</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -478,11 +478,11 @@ Layer)</strong>：最后一步与DIN的思想一脉相承。模型会根据当�
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+--------+---------------+</span>
 <span class="o">|</span> <span class="n">模型</span>   <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
 <span class="o">+========+========+========+===============+</span>
-<span class="o">|</span> <span class="n">din</span>    <span class="o">|</span> <span class="mf">0.5783</span> <span class="o">|</span> <span class="mf">0.5557</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">din</span>    <span class="o">|</span> <span class="mf">0.579</span>  <span class="o">|</span> <span class="mf">0.5563</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+--------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">dien</span>   <span class="o">|</span> <span class="mf">0.5719</span> <span class="o">|</span> <span class="mf">0.5482</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">dien</span>   <span class="o">|</span> <span class="mf">0.5832</span> <span class="o">|</span> <span class="mf">0.5476</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+--------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">dsin</span>   <span class="o">|</span> <span class="mf">0.4343</span> <span class="o">|</span> <span class="mf">0.5342</span> <span class="o">|</span>            <span class="mi">99</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">dsin</span>   <span class="o">|</span> <span class="mf">0.5527</span> <span class="o">|</span> <span class="mf">0.5545</span> <span class="o">|</span>            <span class="mi">99</span> <span class="o">|</span>
 <span class="o">+--------+--------+--------+---------------+</span>
 </pre></div>
 </div>

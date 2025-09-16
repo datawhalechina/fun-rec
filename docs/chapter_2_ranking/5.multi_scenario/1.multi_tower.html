@@ -339,7 +339,7 @@ Show Source
 构成的架构，与生俱来地具备处理共性（共享专家所提取的通用特征）与特性（门控网络赋予的特定权重）的卓越能力。</p>
 <p>多场景建模与多任务学习类似但关注点不同：多任务学习处理相同场景/分布下的不同任务（如单样本同时预估CTR、CVR），而多场景建模处理不同场景/分布下的相同任务（如不同场景预估相同CTR）。前者是对于一条样本预估多个不同的目标值，后者是对于不同的样本预估相同的目标值。多场景建模若采用独立模型，会忽视场景共性，导致小场景效果差且资源消耗剧增；若混合样本训练单一模型，则会忽视场景差异，降低预测精度。</p>
 <figure class="align-default" id="id2">
-<img alt="../../_images/star_1.png" src="../../_images/star_1.png" />
+<span id="multi-tower-diff"></span><a class="reference internal image-reference" href="../../_images/star_1.png"><img alt="../../_images/star_1.png" src="../../_images/star_1.png" style="width: 500px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.5.1 </span><span class="caption-text">多目标与多场景建模的差异(图片来自阿里妈妈博客)</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -349,7 +349,7 @@ Show Source
 <h2><span class="section-number">3.5.1.1. </span>HMoE<a class="headerlink" href="#hmoe" title="Permalink to this heading">¶</a></h2>
 <p>在多任务建模小节中，介绍了MMoE（Mixture-of-Experts）底层通过多专家网络作为多任务的共享特征，顶层对于不同的任务使用门控机制融合专家特征实现不同任务差异化的学习。在多场景建模中HMoE借鉴了MMoE的思路，底层同样适用多专家网络提取提取多个场景的特征作为共享特征，只不过顶层的多个塔不再是多个任务的输出，而是多个场景的输出，HMoE模型结构如下：</p>
 <figure class="align-default" id="id3">
-<img alt="../../_images/hmoe.png" src="../../_images/hmoe.png" />
+<span id="hmoe-model-structure"></span><a class="reference internal image-reference" href="../../_images/hmoe.png"><img alt="../../_images/hmoe.png" src="../../_images/hmoe.png" style="width: 300px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.5.2 </span><span class="caption-text">HMoE模型结构</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -494,7 +494,7 @@ Show Source
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+---------------+</span>
 <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
 <span class="o">+========+========+===============+</span>
-<span class="o">|</span> <span class="mf">0.5865</span> <span class="o">|</span> <span class="mf">0.5491</span> <span class="o">|</span>           <span class="mi">217</span> <span class="o">|</span>
+<span class="o">|</span> <span class="mf">0.5591</span> <span class="o">|</span> <span class="mf">0.5397</span> <span class="o">|</span>           <span class="mi">217</span> <span class="o">|</span>
 <span class="o">+--------+--------+---------------+</span>
 </pre></div>
 </div>
@@ -504,7 +504,7 @@ Show Source
 <p>STAR（Star Topology Adaptive
 Recommender）模型采用星型拓扑结构，实现场景私有参数和场景共享参数同时建模场景差异性和共性。场景私有参数以及场景共享参数最终聚合得到每个场景的模型。STAR结构如下图所示。</p>
 <figure class="align-default" id="id4">
-<img alt="../../_images/star_2.png" src="../../_images/star_2.png" />
+<span id="star-model-structure"></span><a class="reference internal image-reference" href="../../_images/star_2.png"><img alt="../../_images/star_2.png" src="../../_images/star_2.png" style="width: 500px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.5.3 </span><span class="caption-text">STAR模型结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -516,7 +516,7 @@ Topology Fully-Connected Network），Partitioned Normalization
 <p>星形拓扑全连接结构的核心思想是对于每一个全连接网络（FCN）都有场景共享和场景独占的部分，每个场景最终的参数由共享和独占参数通过element-wise
 product融合计算得到。</p>
 <figure class="align-default" id="id5">
-<img alt="../../_images/star_fcn.png" src="../../_images/star_fcn.png" />
+<span id="star-fcn-structure"></span><a class="reference internal image-reference" href="../../_images/star_fcn.png"><img alt="../../_images/star_fcn.png" src="../../_images/star_fcn.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.5.4 </span><span class="caption-text">STAR FCN结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -759,7 +759,7 @@ Network)，辅助网络将场景特征和其他特征共同输入到浅层网络
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+---------------+</span>
 <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
 <span class="o">+========+========+===============+</span>
-<span class="o">|</span> <span class="mf">0.6391</span> <span class="o">|</span> <span class="mf">0.6144</span> <span class="o">|</span>           <span class="mi">693</span> <span class="o">|</span>
+<span class="o">|</span> <span class="mf">0.6662</span> <span class="o">|</span> <span class="mf">0.6252</span> <span class="o">|</span>           <span class="mi">693</span> <span class="o">|</span>
 <span class="o">+--------+--------+---------------+</span>
 </pre></div>
 </div>

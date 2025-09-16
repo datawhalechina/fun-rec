@@ -342,7 +342,7 @@ Show Source
 <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id12" title="Rendle, S. (2010). Factorization machines. 2010 IEEE International conference on data mining (pp. 995–1000).">Rendle, 2010</a>)</span>
 ，并见证了它如何作为双塔模型的雏形，通过向量匹配实现召回。在精排阶段，FM的价值得到了更核心的体现。它作为解决特征交叉自动化问题的开创性模型，其核心思想——<strong>为每个特征学习一个低维隐向量，并用向量内积来参数化所有二阶交叉项的权重</strong>——不仅有效解决了参数数量过多和数据稀疏性两大难题，也为这一小节后续模型奠定了方法论的基础。</p>
 <figure class="align-default" id="id11">
-<img alt="../../_images/fm_model.png" src="../../_images/fm_model.png" />
+<span id="fm-model-structure"></span><a class="reference internal image-reference" href="../../_images/fm_model.png"><img alt="../../_images/fm_model.png" src="../../_images/fm_model.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.2.1 </span><span class="caption-text">FM模型结构</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -388,7 +388,7 @@ Show Source
 <span id="id3">(<a class="reference internal" href="../../chapter_references/references.html#id48" title="Xiao, J., Ye, H., He, X., Zhang, H., Wu, F., &amp; Chua, T.-S. (2017). Attentional factorization machines: learning the weight of feature interactions via attention networks. arXiv preprint arXiv:1708.04617.">Xiao <em>et al.</em>, 2017</a>)</span>
 在此基础上引入注意力机制，为不同的特征交叉分配权重，使模型能关注到更重要的交互。例如，在预测一位用户是否会点击一条体育新闻时，“用户年龄=18-24岁”与“新闻类别=体育”的交叉，其重要性显然要高于“用户年龄=18-24岁”与“新闻发布时间=周三”的交叉。</p>
 <figure class="align-default" id="id12">
-<img alt="../../_images/afm_architecture.png" src="../../_images/afm_architecture.png" />
+<span id="afm-model-structure"></span><a class="reference internal image-reference" href="../../_images/afm_architecture.png"><img alt="../../_images/afm_architecture.png" src="../../_images/afm_architecture.png" style="width: 500px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.2.2 </span><span class="caption-text">AFM模型结构</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -466,7 +466,7 @@ Product）作为补充，尝试从更丰富的角度来表示特征间的交互<
 的核心创新在于其“乘积层”（Product Layer），该层专门用于对特征 Embedding
 进行显式的交叉操作，其输出再送入后续的全连接网络。</p>
 <figure class="align-default" id="id13">
-<img alt="../../_images/pnn.png" src="../../_images/pnn.png" />
+<span id="pnn-model-structure"></span><a class="reference internal image-reference" href="../../_images/pnn.png"><img alt="../../_images/pnn.png" src="../../_images/pnn.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.2.3 </span><span class="caption-text">PNN模型结构</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -535,7 +535,7 @@ DNN 中简单的“加法”操作更能有效地捕捉类别型特征之间的�
 <span id="id6">(<a class="reference internal" href="../../chapter_references/references.html#id22" title="Huang, T., Zhang, Z., &amp; Zhang, J. (2019). Fibinet: combining feature importance and bilinear feature interaction for click-through rate prediction. Proceedings of the 13th ACM conference on recommender systems (pp. 169–177).">Huang <em>et al.</em>, 2019</a>)</span>
 模型认识到了这个问题，<strong>它在进行二阶特征交叉之前，先动态地学习每个特征的重要性权重，然后再通过双线性交互来捕捉更精细的特征关系</strong>。这种设计使得模型能够有选择性地进行特征交互，从而提升二阶特征交叉的质量。</p>
 <figure class="align-default" id="id14">
-<img alt="../../_images/fibinet_architecture.png" src="../../_images/fibinet_architecture.png" />
+<span id="fibinet-architecture"></span><a class="reference internal image-reference" href="../../_images/fibinet_architecture.png"><img alt="../../_images/fibinet_architecture.png" src="../../_images/fibinet_architecture.png" style="width: 500px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.2.4 </span><span class="caption-text">FiBiNET架构图</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -548,7 +548,7 @@ Network)</strong> <span id="id7">(<a class="reference internal" href="../../chap
 机制，用于动态学习每个特征的重要性权重。与传统方法对所有特征一视同仁不同，SENET
 能够自适应地为不同特征分配不同的权重，让模型更加关注那些对预测任务更重要的特征。</p>
 <figure class="align-default" id="id15">
-<img alt="../../_images/fibinet_senet.png" src="../../_images/fibinet_senet.png" />
+<span id="fibinet-senet-structure"></span><a class="reference internal image-reference" href="../../_images/fibinet_senet.png"><img alt="../../_images/fibinet_senet.png" src="../../_images/fibinet_senet.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.2.5 </span><span class="caption-text">SENET层结构详解</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -599,7 +599,7 @@ Network)</strong> <span id="id7">(<a class="reference internal" href="../../chap
 组件共享同一份特征嵌入（Embedding）</strong>，这带来了两大好处：首先，模型可以同时从原始特征中学习低阶和高阶的特征交互；其次，共享
 Embedding 的方式使得模型训练更加高效。</p>
 <figure class="align-default" id="id16">
-<img alt="../../_images/deepfm_architecture.png" src="../../_images/deepfm_architecture.png" />
+<span id="deepfm-architecture"></span><a class="reference internal image-reference" href="../../_images/deepfm_architecture.png"><img alt="../../_images/deepfm_architecture.png" src="../../_images/deepfm_architecture.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.2.6 </span><span class="caption-text">DeepFM模型结构</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -654,17 +654,17 @@ Deep那样依赖专家的特征工程。这种设计使得DeepFM成为一个端�
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------+--------+--------+---------------+</span>
 <span class="o">|</span> <span class="n">模型</span>    <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
 <span class="o">+=========+========+========+===============+</span>
-<span class="o">|</span> <span class="n">fm</span>      <span class="o">|</span> <span class="mf">0.5977</span> <span class="o">|</span> <span class="mf">0.5701</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fm</span>      <span class="o">|</span> <span class="mf">0.5909</span> <span class="o">|</span> <span class="mf">0.5711</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">afm</span>     <span class="o">|</span> <span class="mf">0.5875</span> <span class="o">|</span> <span class="mf">0.5655</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">afm</span>     <span class="o">|</span> <span class="mf">0.5821</span> <span class="o">|</span> <span class="mf">0.5646</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">nfm</span>     <span class="o">|</span> <span class="mf">0.5721</span> <span class="o">|</span> <span class="mf">0.5497</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">nfm</span>     <span class="o">|</span> <span class="mf">0.5966</span> <span class="o">|</span> <span class="mf">0.5628</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">pnn</span>     <span class="o">|</span> <span class="mf">0.5918</span> <span class="o">|</span> <span class="mf">0.5733</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">pnn</span>     <span class="o">|</span> <span class="mf">0.5967</span> <span class="o">|</span> <span class="mf">0.5713</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">fibinet</span> <span class="o">|</span> <span class="mf">0.5982</span> <span class="o">|</span> <span class="mf">0.5686</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fibinet</span> <span class="o">|</span> <span class="mf">0.5995</span> <span class="o">|</span> <span class="mf">0.5745</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">deepfm</span>  <span class="o">|</span> <span class="mf">0.5917</span> <span class="o">|</span> <span class="mf">0.5725</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">deepfm</span>  <span class="o">|</span> <span class="mf">0.6069</span> <span class="o">|</span> <span class="mf">0.5743</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
 </pre></div>
 </div>

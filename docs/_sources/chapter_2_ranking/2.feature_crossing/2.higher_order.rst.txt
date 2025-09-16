@@ -14,9 +14,14 @@ DCN: 残差连接的高阶交叉
 通过一个创新的Cross Network来替代Wide &
 Deep模型中的Wide部分。该网络的核心思想是在每一层都与原始的输入特征进行交叉，从而以一种显式且可控的方式，自动构建更高阶的特征交互，而无需繁琐的人工特征工程。
 
+.. _dcn_model_structure:
+
 .. figure:: ../../img/deepcross.png
+   :width: 400px
 
    DCN模型结构
+
+
 
 DCN的整体结构由并行的Cross Network和Deep
 Network两部分组成，它们共享相同的Embedding层输入。首先，模型将稀疏的类别特征转换为低维稠密的Embedding向量，并与数值型特征拼接在一起，形成统一的输入向量
@@ -39,9 +44,14 @@ Network是DCN的核心创新。它由多个交叉层堆叠而成，其精妙之�
 Network的初始输入向量，\ :math:`\mathbf{w}_l, \mathbf{b}_l \in \mathbb{R}^d`
 分别是第 :math:`l` 层的权重和偏置列向量。
 
+.. _cross_network_structure:
+
 .. figure:: ../../img/cross_network.png
+   :width: 300px
 
    Cross Network
+
+
 
 我们可以观察到，这个结构本质上是一个残差网络。每一层都在上一层输出
 :math:`\mathbf{x}_l` 的基础上，增加了一个交叉项
@@ -77,9 +87,14 @@ Interaction Network, CIN） :cite:`lian2018xdeepfm` ，以
 
 xDeepFM的整体架构同样由三部分组成：一个传统的线性部分、一个用于隐式高阶交叉的DNN，以及创新的CIN网络用于显式高阶交叉。这三部分的输出最终被结合起来进行预测。
 
-.. figure:: ../../img/xdeepfm.png
+.. _xdeepfm_architecture:
 
-   xdeepfm模型架构
+.. figure:: ../../img/xdeepfm.png
+   :width: 400px
+
+   xdDeepFM模型架构
+
+
 
 CIN的设计目标是实现向量级别的显式高阶交互，同时控制网络复杂度。它的输入是一个\ :math:`m \times D`\ 的矩阵
 :math:`\mathbf{X}_0`\ ，其中 :math:`m`
@@ -159,9 +174,14 @@ AutoInt (Automatic Feature Interaction) :cite:`song2019autoint`
 架构的核心思想，\ **通过多头自注意力机制来自动、自适应地学习任意阶数的特征交互**\ 。与前面介绍的方法不同，AutoInt
 不依赖于固定的交互模式，而是让模型在训练过程中学习出最有效的特征交互组合。
 
+.. _autoint_overview:
+
 .. figure:: ../../img/autoint_overview.png
+   :width: 400px
 
    AutoInt模型原理示意图
+
+
 
 AutoInt
 的整体架构相对简洁，它将所有输入特征（无论是类别型还是数值型）都转换为相同维度的嵌入向量
@@ -208,9 +228,14 @@ AutoInt
 :math:`\mathbf{\tilde{e}}_m^{(h)}`
 本质上就是一个通过自适应学习得到的新组合特征。
 
+.. _autoint_attention:
+
 .. figure:: ../../img/autoint_attention.png
+   :width: 350px
 
    自注意力机制示意图
+
+
 
 **多层交互与高阶特征学习**
 
@@ -273,10 +298,10 @@ AutoInt 的一个巨大优势是其可解释性，通过可视化注意力权重
     +---------+--------+--------+---------------+
     | 模型    |    auc |   gauc |   valid_users |
     +=========+========+========+===============+
-    | dcn     | 0.6078 | 0.572  |           928 |
+    | dcn     | 0.6039 | 0.5744 |           928 |
     +---------+--------+--------+---------------+
-    | xdeepfm | 0.6    | 0.574  |           928 |
+    | xdeepfm | 0.6038 | 0.5736 |           928 |
     +---------+--------+--------+---------------+
-    | autoint | 0.5919 | 0.5695 |           928 |
+    | autoint | 0.5986 | 0.5725 |           928 |
     +---------+--------+--------+---------------+
 

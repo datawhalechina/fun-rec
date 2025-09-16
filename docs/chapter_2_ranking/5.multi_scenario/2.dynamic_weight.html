@@ -352,7 +352,7 @@ Seesaw）：多任务间稀疏性与依赖关系失衡导致目标相互抑制�
 <p>PEPNet通过两大模块实现动态权重调控，形成“底层场景适配 +
 顶层任务适配”的分层个性化，这也是PEPNet实现参数个性化的核心思路，PEPNet模型结构如下：</p>
 <figure class="align-default" id="id4">
-<img alt="../../_images/pepnet.png" src="../../_images/pepnet.png" />
+<span id="pepnet-model-structure"></span><a class="reference internal image-reference" href="../../_images/pepnet.png"><img alt="../../_images/pepnet.png" src="../../_images/pepnet.png" style="width: 600px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.5.5 </span><span class="caption-text">PEPNet模型结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -511,7 +511,7 @@ Gredient。</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 <span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">valid_users_is_click</span> <span class="o">|</span>   <span class="n">valid_users_is_like</span> <span class="o">|</span>   <span class="n">valid_users_long_view</span> <span class="o">|</span>
 <span class="o">+================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+</span>
-<span class="o">|</span>         <span class="mf">0.6051</span> <span class="o">|</span>        <span class="mf">0.4249</span> <span class="o">|</span>           <span class="mf">0.448</span> <span class="o">|</span>      <span class="mf">0.4927</span> <span class="o">|</span>          <span class="mf">0.5742</span> <span class="o">|</span>         <span class="mf">0.4442</span> <span class="o">|</span>           <span class="mf">0.4574</span> <span class="o">|</span>        <span class="mf">0.492</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.5935</span> <span class="o">|</span>        <span class="mf">0.4328</span> <span class="o">|</span>          <span class="mf">0.4385</span> <span class="o">|</span>      <span class="mf">0.4883</span> <span class="o">|</span>          <span class="mf">0.5743</span> <span class="o">|</span>         <span class="mf">0.4471</span> <span class="o">|</span>           <span class="mf">0.4471</span> <span class="o">|</span>       <span class="mf">0.4895</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
 <span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 </pre></div>
 </div>
@@ -539,7 +539,7 @@ Models的隐层输出作为参数生成的输入。</p></li>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-7">
 <span class="eqno">(3.5.16)<a class="headerlink" href="#equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-7" title="Permalink to this equation">¶</a></span>\[\mathbf{U}_i, \mathbf{S}_i, \mathbf{V}_i = \text{reshape}(\text{MLP}( \mathbf{z}_i ))\]</div>
 <figure class="align-default" id="id5">
-<img alt="../../_images/apg_1.png" src="../../_images/apg_1.png" />
+<span id="apg-parameter-decomposition"></span><a class="reference internal image-reference" href="../../_images/apg_1.png"><img alt="../../_images/apg_1.png" src="../../_images/apg_1.png" style="width: 300px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.5.6 </span><span class="caption-text">参数分解</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -548,7 +548,7 @@ Models的隐层输出作为参数生成的输入。</p></li>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-8">
 <span class="eqno">(3.5.17)<a class="headerlink" href="#equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-8" title="Permalink to this equation">¶</a></span>\[y_i = \sigma(\mathbf{W}_i \mathbf{x}_i) = \sigma((\mathbf{U}_i \mathbf{S}_i \mathbf{V}_i) \mathbf{x}_i) = \sigma(\mathbf{U}_i (\mathbf{S}_i (\mathbf{V}_i \mathbf{x}_i)))\]</div>
 <figure class="align-default" id="id6">
-<img alt="../../_images/apg_2.png" src="../../_images/apg_2.png" />
+<span id="apg-forward-computation-optimization"></span><a class="reference internal image-reference" href="../../_images/apg_2.png"><img alt="../../_images/apg_2.png" src="../../_images/apg_2.png" style="width: 300px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.5.7 </span><span class="caption-text">前向计算优化</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -560,7 +560,7 @@ Models的隐层输出作为参数生成的输入。</p></li>
 \mathbf{U} = \mathbf{U}^l \mathbf{U}^r, \mathbf{V} = \mathbf{V}^l \mathbf{V}^r \\
 y_{i}=\sigma(\mathbf{U}(\mathbf{S}_{i}\mathbf{V}\mathbf{x}_{i}))\end{split}\]</div>
 <figure class="align-default" id="id7">
-<img alt="../../_images/apg_3.png" src="../../_images/apg_3.png" />
+<span id="apg-parameter-sharing-and-overparameterization"></span><a class="reference internal image-reference" href="../../_images/apg_3.png"><img alt="../../_images/apg_3.png" src="../../_images/apg_3.png" style="width: 300px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.5.8 </span><span class="caption-text">参数共享及过参数化</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -731,11 +731,11 @@ y_{i}=\sigma(\mathbf{U}(\mathbf{S}_{i}\mathbf{V}\mathbf{x}_{i}))\end{split}\]</d
 <span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+-------+--------+---------------+</span>
-<span class="o">|</span>   <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
-<span class="o">+=======+========+===============+</span>
-<span class="o">|</span>  <span class="mf">0.68</span> <span class="o">|</span> <span class="mf">0.6357</span> <span class="o">|</span>           <span class="mi">217</span> <span class="o">|</span>
-<span class="o">+-------+--------+---------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+---------------+</span>
+<span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
+<span class="o">+========+========+===============+</span>
+<span class="o">|</span> <span class="mf">0.6571</span> <span class="o">|</span> <span class="mf">0.6292</span> <span class="o">|</span>           <span class="mi">217</span> <span class="o">|</span>
+<span class="o">+--------+--------+---------------+</span>
 </pre></div>
 </div>
 </section>
@@ -744,7 +744,7 @@ y_{i}=\sigma(\mathbf{U}(\mathbf{S}_{i}\mathbf{V}\mathbf{x}_{i}))\end{split}\]</d
 <p>在推荐系统的多场景建模中，动态参数生成技术展现出了巨大的潜力。除了 APG
 模型外，基于元学习的多场景多任务商家建模（M2M）是另一个在该领域具有重要影响的模型。M2M模型结构中主要包含底层的主干网络和顶层的元学习网络，下面将分别展开详细的介绍。</p>
 <figure class="align-default" id="id8">
-<img alt="../../_images/m2m.png" src="../../_images/m2m.png" />
+<span id="m2m-model-structure"></span><a class="reference internal image-reference" href="../../_images/m2m.png"><img alt="../../_images/m2m.png" src="../../_images/m2m.png" style="width: 500px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.5.9 </span><span class="caption-text">M2M模型结构</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -771,7 +771,7 @@ y_{i}=\sigma(\mathbf{U}(\mathbf{S}_{i}\mathbf{V}\mathbf{x}_{i}))\end{split}\]</d
 <h3><span class="section-number">3.5.2.3.2. </span>元学习网络<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
 <p>在传统的机器学习中，权重<span class="math notranslate nohighlight">\((W, b)\)</span>通过反向传播在固定数据集上优化，学习目标是任务本身的表示。在M2M模型的元学习网络中，用一个MLP（元学习器）根据输入特征动态生成另一个网络（任务模型）的权重<span class="math notranslate nohighlight">\((W, b)\)</span>。这相当于让MLP学会“如何针对不同输入特征生成合适的任务模型参数”，而非直接学习任务本身，使任务模型动态适应不同任务/输入分布，这正是元学习的核心目标。</p>
 <figure class="align-default" id="id9">
-<img alt="../../_images/m2m_meta_unit.png" src="../../_images/m2m_meta_unit.png" />
+<span id="m2m-meta-unit-structure"></span><a class="reference internal image-reference" href="../../_images/m2m_meta_unit.png"><img alt="../../_images/m2m_meta_unit.png" src="../../_images/m2m_meta_unit.png" style="width: 800px;" /></a>
 <figcaption>
 <p><span class="caption-number">图3.5.10 </span><span class="caption-text">Meta Unit网络结构</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -825,7 +825,7 @@ y_{i}=\sigma(\mathbf{U}(\mathbf{S}_{i}\mathbf{V}\mathbf{x}_{i}))\end{split}\]</d
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 <span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">valid_users_is_click</span> <span class="o">|</span>   <span class="n">valid_users_is_like</span> <span class="o">|</span>   <span class="n">valid_users_long_view</span> <span class="o">|</span>
 <span class="o">+================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+</span>
-<span class="o">|</span>         <span class="mf">0.6482</span> <span class="o">|</span>        <span class="mf">0.6092</span> <span class="o">|</span>          <span class="mf">0.6648</span> <span class="o">|</span>      <span class="mf">0.6407</span> <span class="o">|</span>           <span class="mf">0.593</span> <span class="o">|</span>         <span class="mf">0.6246</span> <span class="o">|</span>           <span class="mf">0.6123</span> <span class="o">|</span>         <span class="mf">0.61</span> <span class="o">|</span>                    <span class="mi">217</span> <span class="o">|</span>                   <span class="mi">131</span> <span class="o">|</span>                     <span class="mi">217</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.6382</span> <span class="o">|</span>        <span class="mf">0.6462</span> <span class="o">|</span>          <span class="mf">0.6598</span> <span class="o">|</span>      <span class="mf">0.6481</span> <span class="o">|</span>          <span class="mf">0.6041</span> <span class="o">|</span>         <span class="mf">0.6426</span> <span class="o">|</span>            <span class="mf">0.626</span> <span class="o">|</span>       <span class="mf">0.6242</span> <span class="o">|</span>                    <span class="mi">217</span> <span class="o">|</span>                   <span class="mi">131</span> <span class="o">|</span>                     <span class="mi">217</span> <span class="o">|</span>
 <span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 </pre></div>
 </div>

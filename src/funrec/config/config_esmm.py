@@ -1,15 +1,15 @@
 """
-配置文件: ESSM_CONFIG
+配置文件: ESMM_CONFIG
 
 使用方式:
-    from funrec.config.config_essm import CONFIG
+    from funrec.config.config_esmm import CONFIG
     config = CONFIG
 """
 
 from typing import Dict, Any
 
 
-# 配置来源: config_essm.yaml
+# 配置来源: config_esmm.yaml
 CONFIG: Dict[str, Any] = {
     "data": {
         "dataset_name": "kuairand_data",
@@ -137,7 +137,7 @@ CONFIG: Dict[str, Any] = {
         ],
     },
     "training": {
-        "build_function": "funrec.models.essm.build_essm_model",
+        "build_function": "funrec.models.esmm.build_esmm_model",
         "model_params": {
             "task_names": [
                 "is_click",
@@ -178,7 +178,7 @@ CONFIG: Dict[str, Any] = {
 
 
 # 为了向后兼容，也提供原始变量名
-ESSM_CONFIG = CONFIG
+ESMM_CONFIG = CONFIG
 
 
-__all__ = ["CONFIG", "ESSM_CONFIG"]
+__all__ = ["CONFIG", "ESMM_CONFIG"]
