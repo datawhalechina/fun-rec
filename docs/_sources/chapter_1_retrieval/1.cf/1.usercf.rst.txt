@@ -15,8 +15,10 @@ UserCF是最早提出的协同过滤方法
 .. _usercf_illustration:
 
 .. figure:: ../../img/usercf_illustration.svg
+   :width: 400px
 
    UserCF 原理示意图
+
 
 
 UserCF的实现过程可以分解为两个核心步骤：首先计算用户之间的相似度，找出与目标用户偏好最接近的邻居用户；然后基于这些邻居用户的历史行为，预测目标用户对未购买商品的兴趣程度。接下来我们详细看看每个步骤是如何实现的。

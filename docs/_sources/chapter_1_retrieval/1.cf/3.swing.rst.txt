@@ -10,8 +10,10 @@ Swing 算法
 .. _swing_illustration:
 
 .. figure:: ../../img/swing_illustration.svg
+   :width: 400px
 
    产品之间的替代性和互补性关系
+
 
 
 Swing Score :cite:`yang2020large`
@@ -57,8 +59,10 @@ Swing score 的基础计算公式为：
 .. _swing_score:
 
 .. figure:: ../../img/swing_score.svg
+   :width: 250px
 
    Swing Score 计算示意图
+
 
 
 假设 :math:`\alpha = 1`\ ，那么：

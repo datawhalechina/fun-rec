@@ -12,8 +12,7 @@ from typing import Dict, Any
 # 配置来源: config_item_cf.yaml
 CONFIG: Dict[str, Any] = {
     "data": {
-        "dataset_name": "ml_latest_small_classical",
-        "data_dir": "../../tmp/",
+        "dataset_name": "ml_latest_small_classical",        
         "rating_threshold": 4.0,
         "batch_size": 1000,
     },

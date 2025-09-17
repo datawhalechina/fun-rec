@@ -334,7 +334,7 @@ Show Source
   <section id="generateive-recall">
 <span id="id1"></span><h1><span class="section-number">2.3.2. </span>生成式召回方法<a class="headerlink" href="#generateive-recall" title="Permalink to this heading">¶</a></h1>
 <p>上一小节，我们探讨了如MIND和SDM等序列召回方法，它们的核心目标是分析用户的历史行为，并将其“总结”成一个或多个能够代表用户兴趣的向量。这种方法好比是为用户拍摄一张静态的“兴趣快照”，用以在海量物品中进行检索。</p>
-<p>本章将介绍一种截然不同的思路：<strong>生成式召回</strong>。它不再试图去“总结”用户，而是直接“预测”用户的下一个行为。其核心是直接对序列中物品与物品之间的动态依赖关系进行建模，关注“用户接下来会做什么”而非“用户是怎样的人”。</p>
+<p>本节将介绍一种截然不同的思路：<strong>生成式召回</strong>。它不再试图去“总结”用户，而是直接“预测”用户的下一个行为。其核心是直接对序列中物品与物品之间的动态依赖关系进行建模，关注“用户接下来会做什么”而非“用户是怎样的人”。</p>
 <p>依循这条思路，我们将探讨三种代表性的生成式召回模型，它们清晰地展示了该领域的一条核心演进脉络。首先是<strong>SASRec</strong>，它开创性地将自然语言处理领域的Transformer模型直接应用于推荐序列预测，奠定了“预测下一个物品ID”这一基础范式。</p>
 <p>在SASRec验证了该范式的巨大潜力之后，后续的探索主要沿着两个方向继续深化：</p>
 <ol class="arabic simple">
@@ -356,7 +356,7 @@ Show Source
 <span id="id5">(<a class="reference internal" href="../../chapter_references/references.html#id40" title="Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.">Vaswani <em>et al.</em>, 2017</a>)</span> 。</p>
 <p>SASRec的核心思想是将用户的行为序列视为一个句子来处理。对于序列中的每个商品，模型会自动学习它与序列中其他所有商品的相关性，然后基于这些相关性来预测下一个用户可能交互的商品。这样既保留了对长期行为的建模能力，又能根据数据特性灵活地调整对不同历史行为的关注度。</p>
 <figure class="align-default" id="id12">
-<span id="id6"></span><img alt="../../_images/generateive_recall.png" src="../../_images/generateive_recall.png" />
+<span id="id6"></span><a class="reference internal image-reference" href="../../_images/generateive_recall.svg"><img alt="../../_images/generateive_recall.svg" src="../../_images/generateive_recall.svg" width="450px" /></a>
 <figcaption>
 <p><span class="caption-number">图2.3.3 </span><span class="caption-text">生成式召回模型的基本架构</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -446,7 +446,7 @@ s_{t+1} &amp; 1\leq t&lt;n\\
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+</span>
-<span class="o">|</span>        <span class="mf">0.0192</span> <span class="o">|</span>       <span class="mf">0.0076</span> <span class="o">|</span>    <span class="mf">0.0081</span> <span class="o">|</span>   <span class="mf">0.0044</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0192</span> <span class="o">|</span>       <span class="mf">0.0119</span> <span class="o">|</span>    <span class="mf">0.0094</span> <span class="o">|</span>    <span class="mf">0.007</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+</span>
 </pre></div>
 </div>
@@ -523,7 +523,7 @@ Normalization（层归一化），<span class="math notranslate nohighlight">\(\
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+</span>
-<span class="o">|</span>        <span class="mf">0.0197</span> <span class="o">|</span>       <span class="mf">0.0086</span> <span class="o">|</span>    <span class="mf">0.0083</span> <span class="o">|</span>   <span class="mf">0.0047</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0182</span> <span class="o">|</span>       <span class="mf">0.0094</span> <span class="o">|</span>    <span class="mf">0.0084</span> <span class="o">|</span>   <span class="mf">0.0056</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+</span>
 </pre></div>
 </div>
@@ -548,7 +548,7 @@ Normalization（层归一化），<span class="math notranslate nohighlight">\(\
 <span id="id11">(<a class="reference internal" href="../../chapter_references/references.html#id59" title="Zeghidour, N., Luebs, A., Omran, A., Skoglund, J., &amp; Tagliasacchi, M. (2021). Soundstream: an end-to-end neural audio codec. IEEE/ACM Transactions on Audio, Speech, and Language Processing, 30, 495–507.">Zeghidour <em>et al.</em>, 2021</a>)</span>
 来实现这一目标。RQ-VAE是一种多层向量量化器，它通过对残差进行迭代量化来生成代码字元组。</p>
 <figure class="align-default" id="id13">
-<img alt="../../_images/tiger_rqvae.png" src="../../_images/tiger_rqvae.png" />
+<span id="tiger-rqvae"></span><a class="reference internal image-reference" href="../../_images/tiger_rqvae.png"><img alt="../../_images/tiger_rqvae.png" src="../../_images/tiger_rqvae.png" style="width: 550px;" /></a>
 <figcaption>
 <p><span class="caption-number">图2.3.4 </span><span class="caption-text">RQ-VAE量化方法</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -581,7 +581,7 @@ Normalization（层归一化），<span class="math notranslate nohighlight">\(\
 <p><strong>基于语义ID的生成式检索</strong></p>
 <p>拥有了每个物品的语义ID后，推荐任务就转变为一个标准的序列到序列生成问题。</p>
 <figure class="align-default" id="id14">
-<img alt="../../_images/tiger_transformer.png" src="../../_images/tiger_transformer.png" />
+<span id="tiger-transformer"></span><a class="reference internal image-reference" href="../../_images/tiger_transformer.png"><img alt="../../_images/tiger_transformer.png" src="../../_images/tiger_transformer.png" style="width: 500px;" /></a>
 <figcaption>
 <p><span class="caption-number">图2.3.5 </span><span class="caption-text">基于语义ID的生成式检索</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
 </figcaption>

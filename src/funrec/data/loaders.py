@@ -35,8 +35,7 @@ def load_data(data_config: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, An
 
     Args:
         data_config:
-            - dataset_name: 数据集名称
-            - data_dir: 数据目录
+            - dataset_name: 数据集名称            
             - rating_threshold: 评分阈值(经典模型)
 
     Returns:

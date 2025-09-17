@@ -633,9 +633,6 @@ def preprocess(input_path: Path, output_path: Path) -> dict:
     del test_df["time_ms"]
 
     print("保存训练和测试集...")
-    # # 保存一份csv
-    # train_df.to_csv("../src/tmp/train_eval_sample_raw/kuairand_1k_train.csv", index=False, header=True)
-    # test_df.to_csv("../src/tmp/train_eval_sample_raw/kuairand_1k_test.csv", index=False, header=True)
 
     # 将csv转成字典的形式
     train_eval_dict = {}

@@ -171,8 +171,7 @@ def build_eges_model(feature_columns, model_config):
     参数:
         feature_columns: 未使用（EGES使用自定义输入）
         model_config: 包含以下字段：
-            - dataset_name: 数据集名称，用于解析字典大小
-            - data_dir: 数据目录（用于覆盖默认tmp路径）
+            - dataset_name: 数据集名称，用于解析字典大小            
             - item_feature_list: 物品侧特征列表（例如 ['movie_id', 'genre_id']）
             - emb_dim: 嵌入维度
             - l2_reg: L2正则
@@ -187,8 +186,7 @@ def build_eges_model(feature_columns, model_config):
     emb_dim = int(model_config.get("emb_dim", 16))
     l2_reg = float(model_config.get("l2_reg", 1e-5))
     use_attention = model_config.get("use_attention", True)
-    dataset_name = model_config.get("dataset_name")
-    data_dir = model_config.get("data_dir")
+    dataset_name = model_config.get("dataset_name")    
 
     if dataset_name is None:
         raise ValueError("EGES requires 'dataset_name' in model_config")

@@ -421,7 +421,7 @@ pooling（对应用户-物品交互）。</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>         <span class="mf">0.052</span> <span class="o">|</span>       <span class="mf">0.0267</span> <span class="o">|</span>     <span class="mf">0.023</span> <span class="o">|</span>   <span class="mf">0.0148</span> <span class="o">|</span>         <span class="mf">0.0052</span> <span class="o">|</span>        <span class="mf">0.0053</span> <span class="o">|</span>
+<span class="o">|</span>             <span class="mi">0</span> <span class="o">|</span>            <span class="mi">0</span> <span class="o">|</span>         <span class="mi">0</span> <span class="o">|</span>        <span class="mi">0</span> <span class="o">|</span>              <span class="mi">0</span> <span class="o">|</span>             <span class="mi">0</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -434,7 +434,8 @@ Structured Semantic Model, DSSM） <span id="id6">(<a class="reference internal"
 的出现，将双塔模型的表达能力推向了新的高度——通过深度神经网络替代线性变换，实现了更强的特征学习和表示能力。
 DSSM最初在自然语言处理领域用于文本语义匹配，后来被成功迁移到推荐系统中。其核心思想是通过深度神经网络将用户和物品映射到共同的语义空间中，通过向量间的相似度计算来衡量匹配程度。</p>
 <figure class="align-default" id="id16">
-<img alt="../../_images/dssm_architecture.svg" src="../../_images/dssm_architecture.svg" /><figcaption>
+<span id="dssm-architecture"></span><a class="reference internal image-reference" href="../../_images/dssm_architecture.svg"><img alt="../../_images/dssm_architecture.svg" src="../../_images/dssm_architecture.svg" width="300px" /></a>
+<figcaption>
 <p><span class="caption-number">图2.2.5 </span><span class="caption-text">DSSM双塔架构</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
@@ -496,7 +497,7 @@ DSSM最初在自然语言处理领域用于文本语义匹配，后来被成功�
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0397</span> <span class="o">|</span>       <span class="mf">0.0368</span> <span class="o">|</span>    <span class="mf">0.0171</span> <span class="o">|</span>   <span class="mf">0.0161</span> <span class="o">|</span>          <span class="mf">0.004</span> <span class="o">|</span>        <span class="mf">0.0074</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0455</span> <span class="o">|</span>       <span class="mf">0.0368</span> <span class="o">|</span>    <span class="mf">0.0179</span> <span class="o">|</span>   <span class="mf">0.0149</span> <span class="o">|</span>         <span class="mf">0.0046</span> <span class="o">|</span>        <span class="mf">0.0074</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -507,7 +508,7 @@ DSSM最初在自然语言处理领域用于文本语义匹配，后来被成功�
 <p>YouTube深度神经网络推荐系统 <span id="id13">(<a class="reference internal" href="../../chapter_references/references.html#id28" title="Covington, P., Adams, J., &amp; Sargin, E. (2016). Deep neural networks for youtube recommendations. Proceedings of the 10th ACM conference on recommender systems (pp. 191–198).">Covington <em>et al.</em>, 2016</a>)</span>
 代表了双塔模型演进的一个重要里程碑。YouTubeDNN在架构上延续了双塔设计，但引入了一个关键的思想转变：将召回任务重新定义为“预测用户下一个会观看的视频”。</p>
 <figure class="align-default" id="id17">
-<img alt="../../_images/youtubednn_candidate.png" src="../../_images/youtubednn_candidate.png" />
+<span id="youtubednn-candidate"></span><a class="reference internal image-reference" href="../../_images/youtubednn_candidate.png"><img alt="../../_images/youtubednn_candidate.png" src="../../_images/youtubednn_candidate.png" style="width: 500px;" /></a>
 <figcaption>
 <p><span class="caption-number">图2.2.6 </span><span class="caption-text">YouTubeDNN候选生成模型架构</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -525,7 +526,7 @@ softmax进行高效训练。</p>
 <p>YouTubeDNN的成功不仅来自于模型设计，更来自于一系列精心设计的工程技巧：</p>
 <p><strong>非对称的时序分割</strong>：传统协同过滤通常随机保留验证项目，但这种做法存在未来信息泄露问题。视频消费具有明显的不对称模式——剧集通常按顺序观看，用户往往从热门内容开始逐步深入小众领域。因此，YouTubeDNN采用时序分割策略：对于作为预测目标的用户观看记录，只使用该目标之前的历史行为作为输入特征。这种“回滚”机制更符合真实的推荐场景。</p>
 <figure class="align-default" id="id18">
-<img alt="../../_images/youtubednn_temporal_split.png" src="../../_images/youtubednn_temporal_split.png" />
+<span id="youtubednn-temporal-split"></span><a class="reference internal image-reference" href="../../_images/youtubednn_temporal_split.png"><img alt="../../_images/youtubednn_temporal_split.png" src="../../_images/youtubednn_temporal_split.png" style="width: 600px;" /></a>
 <figcaption>
 <p><span class="caption-number">图2.2.7 </span><span class="caption-text">非对称共同观看模式</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -558,7 +559,7 @@ softmax进行高效训练。</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0086</span> <span class="o">|</span>       <span class="mf">0.0033</span> <span class="o">|</span>    <span class="mf">0.0038</span> <span class="o">|</span>   <span class="mf">0.0021</span> <span class="o">|</span>         <span class="mf">0.0009</span> <span class="o">|</span>        <span class="mf">0.0007</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0035</span> <span class="o">|</span>       <span class="mf">0.0008</span> <span class="o">|</span>    <span class="mf">0.0012</span> <span class="o">|</span>   <span class="mf">0.0003</span> <span class="o">|</span>         <span class="mf">0.0003</span> <span class="o">|</span>        <span class="mf">0.0002</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>

@@ -349,7 +349,8 @@ Words）。Skip-Gram模型通过给定的中心词来预测其周围的上下文
 <section id="skip-gram">
 <h3><span class="section-number">2.2.1.1.1. </span>Skip-Gram模型详解<a class="headerlink" href="#skip-gram" title="Permalink to this heading">¶</a></h3>
 <figure class="align-default" id="id18">
-<img alt="../../_images/w2v_skip_gram.svg" src="../../_images/w2v_skip_gram.svg" /><figcaption>
+<span id="w2v-skip-gram"></span><a class="reference internal image-reference" href="../../_images/w2v_skip_gram.svg"><img alt="../../_images/w2v_skip_gram.svg" src="../../_images/w2v_skip_gram.svg" width="300px" /></a>
+<figcaption>
 <p><span class="caption-number">图2.2.1 </span><span class="caption-text">Word2Vec Skip-Gram模型示意图</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
@@ -419,7 +420,7 @@ Sampling）技术。这种方法将原本的多分类问题转化为多个二分
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0098</span> <span class="o">|</span>       <span class="mf">0.0033</span> <span class="o">|</span>    <span class="mf">0.0035</span> <span class="o">|</span>   <span class="mf">0.0015</span> <span class="o">|</span>          <span class="mf">0.001</span> <span class="o">|</span>        <span class="mf">0.0007</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0098</span> <span class="o">|</span>       <span class="mf">0.0049</span> <span class="o">|</span>    <span class="mf">0.0036</span> <span class="o">|</span>   <span class="mf">0.0021</span> <span class="o">|</span>          <span class="mf">0.001</span> <span class="o">|</span>         <span class="mf">0.001</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -434,13 +435,13 @@ Information）:cite:wang2018billion
 <section id="id9">
 <h3><span class="section-number">2.2.1.3.1. </span>构建商品关系图<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
 <p>EGES的第一个创新是将物品序列的概念从简单的用户交互扩展为更精细的会话级序列。考虑到用户行为的复杂性和计算效率，研究者设置了一小时的时间窗口，只选择窗口内的用户行为构建商品关系图。</p>
+<p>如图所示，如果两个商品在用户行为序列中连续出现，则在它们之间建立一条有向边，边的权重等于商品转移在所有用户行为历史中的频率。这种基于会话的图构建方法比简单的用户交互序列更能捕捉用户的短期兴趣模式。</p>
 <figure class="align-default" id="id19">
-<img alt="../../_images/eges_item_graph.png" src="../../_images/eges_item_graph.png" />
+<span id="eges-item-graph"></span><a class="reference internal image-reference" href="../../_images/eges_item_graph.png"><img alt="../../_images/eges_item_graph.png" src="../../_images/eges_item_graph.png" style="width: 500px;" /></a>
 <figcaption>
 <p><span class="caption-number">图2.2.2 </span><span class="caption-text">商品图构建过程</span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>如图所示，如果两个商品在用户行为序列中连续出现，则在它们之间建立一条有向边，边的权重等于商品转移在所有用户行为历史中的频率。这种基于会话的图构建方法比简单的用户交互序列更能捕捉用户的短期兴趣模式。</p>
 <p>在构建好的商品图上，EGES采用带权随机游走策略生成训练序列。从一个节点出发，转移概率由边权重决定：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-1-i2i-3">
 <span class="eqno">(2.2.4)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-1-i2i-3" title="Permalink to this equation">¶</a></span>\[\begin{split}P(v_j|v_i) = \begin{cases}
@@ -460,7 +461,7 @@ Embedding with Side Information）</strong>
 <p>其中<span class="math notranslate nohighlight">\(W_v^s\)</span>表示商品<span class="math notranslate nohighlight">\(v\)</span>的第<span class="math notranslate nohighlight">\(s\)</span>种属性的向量表示，<span class="math notranslate nohighlight">\(W_v^0\)</span>表示商品ID的向量表示。这种方法虽然有效缓解了冷启动问题，但存在一个明显的局限：它假设所有类型的辅助信息对商品表示的贡献是相等的，这显然不符合实际情况。</p>
 <p><strong>EGES的核心创新</strong>在于认识到不同类型的辅助信息应该有不同的重要性。对于手机，品牌可能比价格更重要；对于日用品，价格可能比品牌更关键。</p>
 <figure class="align-default" id="id20">
-<img alt="../../_images/eges_model.png" src="../../_images/eges_model.png" />
+<span id="eges-model"></span><a class="reference internal image-reference" href="../../_images/eges_model.png"><img alt="../../_images/eges_model.png" src="../../_images/eges_model.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-number">图2.2.3 </span><span class="caption-text">EGES模型架构</span><a class="headerlink" href="#id20" title="Permalink to this image">¶</a></p>
 </figcaption>
@@ -508,7 +509,7 @@ Embedding with Side Information）</strong>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0089</span> <span class="o">|</span>       <span class="mf">0.0051</span> <span class="o">|</span>     <span class="mf">0.004</span> <span class="o">|</span>   <span class="mf">0.0028</span> <span class="o">|</span>         <span class="mf">0.0009</span> <span class="o">|</span>         <span class="mf">0.001</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0142</span> <span class="o">|</span>       <span class="mf">0.0089</span> <span class="o">|</span>    <span class="mf">0.0067</span> <span class="o">|</span>   <span class="mf">0.0049</span> <span class="o">|</span>         <span class="mf">0.0014</span> <span class="o">|</span>        <span class="mf">0.0018</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -528,7 +529,7 @@ Sessions）构建序列。当用户连续点击间隔超过30分钟时，就会�
 <p>为了强化模型对最终转化行为的学习，Airbnb设计了全局上下文机制。在传统的Skip-Gram模型中，只有在滑动窗口内的物品才被视为上下文，但这种局部窗口无法充分利用最终预订这一强烈的正向信号。因此，Airbnb让用户最终预订的房源（booked
 listing）与序列中的每一个浏览房源都形成正样本对进行训练，无论它们在序列中的距离有多远。</p>
 <figure class="align-default" id="id21">
-<img alt="../../_images/airbnb_global_context.png" src="../../_images/airbnb_global_context.png" />
+<span id="airbnb-global-context"></span><a class="reference internal image-reference" href="../../_images/airbnb_global_context.png"><img alt="../../_images/airbnb_global_context.png" src="../../_images/airbnb_global_context.png" style="width: 500px;" /></a>
 <figcaption>
 <p><span class="caption-number">图2.2.4 </span><span class="caption-text">Airbnb预订房源全局上下文</span><a class="headerlink" href="#id21" title="Permalink to this image">¶</a></p>
 </figcaption>
