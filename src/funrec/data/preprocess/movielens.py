@@ -650,19 +650,19 @@ def movielens_recall_pos_neg_preprocess(input_path: Path, output_path: Path) -> 
         raise FileNotFoundError(f"Folder {input_path} not found")
 
     ratings_df = pd.read_csv(
-        "../../dataset/ml-1m/ratings.dat",
+        input_path / "ratings.dat",
         sep="::",
         names=["user_id", "movie_id", "rating", "unix_timestamp"],
         encoding="ISO-8859-1",
     )
     user_df = pd.read_csv(
-        "../../dataset/ml-1m/users.dat",
+        input_path / "users.dat",
         sep="::",
         names=["user_id", "gender", "age", "occupation", "zip"],
         encoding="ISO-8859-1",
     )
     movie_df = pd.read_csv(
-        "../../dataset/ml-1m/movies.dat",
+        input_path / "movies.dat",
         sep="::",
         names=["movie_id", "title", "genres"],
         encoding="ISO-8859-1",
