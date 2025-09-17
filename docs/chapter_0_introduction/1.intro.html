@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -329,7 +328,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="id1">
+  <div class="section" id="id1">
 <h1><span class="section-number">1.1. </span>推荐系统是什么？<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>当你早晨打开手机，浏览今日头条的新闻推送，或者在淘宝上寻找心仪的商品时，你可能并未意识到，背后有一套复杂而精密的系统正在为你工作。这套系统在毫秒之间做出了成千上万个判断，决定着你将看到哪些内容，错过哪些信息。这就是推荐系统——现代互联网世界中最核心的基础设施之一。</p>
 <p>要真正理解推荐系统，我们不能停留在“它能帮用户找到感兴趣内容”这样的表面描述上。推荐系统的本质，需要我们从三个不同的层次来观察和理解：从最微观的单个预测开始，到工业化的规模流程，再到宏观的生态平衡。只有通过这样的层次递进，我们才能真正把握推荐系统的核心逻辑。</p>
@@ -342,13 +341,11 @@ Show Source
 <p>综合这三个要素，我们可以将推荐系统的核心抽象为一个数学函数：<strong>Score =
 f(User, Item,
 Context)</strong>。这个函数接收对用户、物品和场景的理解作为输入，输出一个代表连接可能性的分数。分数越高，系统越确信这个用户会对这个物品产生正面的行为反应。</p>
-<figure class="align-default" id="id2">
+<div class="figure align-default" id="id2">
 <span id="score-function"></span><a class="reference internal image-reference" href="../_images/score_function.svg"><img alt="../_images/score_function.svg" src="../_images/score_function.svg" width="350px" /></a>
-<figcaption>
-<p><span class="caption-number">图1.1.1 </span><span class="caption-text">推荐系统的核心预测函数
+<p class="caption"><span class="caption-number">图1.1.1 </span><span class="caption-text">推荐系统的核心预测函数
 推荐系统通过整合用户特征(U)、物品特征(I)和场景特征(C)，计算用户与物品产生有价值连接的可能性分数。</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+</div>
 <p>从某种意义上说，整个推荐算法领域的发展历程，就是不断寻找更强大、更精准的函数f的过程。从早期的协同过滤算法，到现在的深度学习模型，本质上都是在优化这个预测函数。</p>
 <p><strong>工业视角：规模化带来的挑战与解决方案</strong></p>
 <p>理解了推荐的基本原理后，我们面临一个巨大的现实挑战：规模。在理想情况下，我们可以为每个用户计算他与所有物品的匹配分数，然后简单地选择分数最高的几个进行推荐。但在真实的工业环境中，这种做法完全不可行。</p>
@@ -360,13 +357,11 @@ Context)</strong>。这个函数接收对用户、物品和场景的理解作为
 <p>第一阶段是<strong>召回</strong>，其目标是快速从全量物品库中筛选出几千个可能相关的候选。召回阶段奉行“宁可错杀一千，不可放过一个”的策略，它不追求精准，但求全面。为了达到极致的速度，召回模型通常比较简单，使用的特征也相对有限。比如，系统可能使用协同过滤方法快速找到与你品味相似的其他用户，然后推荐他们喜欢的内容；或者基于内容相似性，为你召回与你最近观看内容类似的其他视频。</p>
 <p>经过召回阶段的快速筛选，候选集从上亿缩减到了几千个。这时进入第二阶段——<strong>排序</strong>。排序阶段是预测函数<strong>f</strong>真正发挥威力的地方。系统会动用最复杂的模型（往往是深度学习模型），融合用户、物品、场景的所有可用特征，为每个候选物品计算精确的预测分数。这个阶段追求的是预测精度的最大化，计算成本相对较高，但由于候选集已经大幅缩小，整体耗时仍在可接受范围内。</p>
 <p>最后一个阶段是<strong>重排</strong>，其目标是对排序后的结果进行最终优化。重排阶段解决的一个关键问题是：预测分数最高的列表，不一定等于用户体验最佳的列表。系统在这个阶段会考虑多样性、新颖性、公平性等因素。比如，如果排序后的前十个推荐都是同一类型的内容，重排阶段会适当调整，引入一些其他类型的优质内容，避免用户产生审美疲劳。同时，这个阶段也会处理一些业务规则，比如插入必要的广告内容或运营推广的物品。</p>
-<figure class="align-default" id="id3">
+<div class="figure align-default" id="id3">
 <span id="recommendation-pipeline"></span><a class="reference internal image-reference" href="../_images/recommendation_pipeline.svg"><img alt="../_images/recommendation_pipeline.svg" src="../_images/recommendation_pipeline.svg" width="400px" /></a>
-<figcaption>
-<p><span class="caption-number">图1.1.2 </span><span class="caption-text">工业级推荐系统的三阶段流水线架构
+<p class="caption"><span class="caption-number">图1.1.2 </span><span class="caption-text">工业级推荐系统的三阶段流水线架构
 通过召回、排序、重排三个阶段，推荐系统将亿级候选逐步筛选为最终推荐列表，在效率与效果之间实现平衡。</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+</div>
 <p>这套三阶段流水线看似复杂，但其核心逻辑很简单：<strong>在不同阶段采用不同的策略，逐步从“可能相关”筛选到“最优匹配”</strong>。召回追求速度和覆盖度，排序追求精度，重排追求体验。每个阶段都有其不可替代的价值，共同构成了工业级推荐系统的技术骨架。</p>
 <p><strong>宏观视角：构建多方共赢的生态系统</strong></p>
 <p>当我们把推荐系统放在更大的视野中观察时，会发现一个更深层的问题：一个技术上完美的推荐系统，是否就是一个真正优秀的推荐系统？</p>
@@ -384,18 +379,16 @@ Content）</strong>：由人工智能辅助或自动生成的内容，正在快�
 <p>推荐系统的责任之一，是在不同类型的内容供给之间找到合理的平衡，既要保证新兴创作者和长尾内容的机会，也要避免低质量内容过度充斥。</p>
 <p>对于<strong>内容</strong>而言，它是连接用户与创作者的媒介，是推荐系统真正分发的“原子单位”。推荐系统需要在理解内容属性的基础上，建立更丰富的匹配机制，让优质内容能够高效找到合适的受众。一个健康的推荐系统，不仅要分发受欢迎的内容，还要持续发掘潜力内容，避免整个生态滑向“头部集中、长尾沉没”的局面。</p>
 <p>对于<strong>平台</strong>而言，它承担着生态协调者的角色。一方面，平台需要优化推荐效果，提升用户满意度和使用时长；另一方面，它还要关注生态的长期健康，比如维护内容多样性、抑制低质内容泛滥、保护创作者积极性。有时平台甚至需要牺牲部分短期指标来换取长期信任，例如降低对标题党内容的推荐权重，以维护整体体验。</p>
-<figure class="align-default" id="id4">
+<div class="figure align-default" id="id4">
 <span id="ecosystem-balance"></span><a class="reference internal image-reference" href="../_images/ecosystem_balance.svg"><img alt="../_images/ecosystem_balance.svg" src="../_images/ecosystem_balance.svg" width="250px" /></a>
-<figcaption>
-<p><span class="caption-number">图1.1.3 </span><span class="caption-text">推荐系统生态中的三角关系：用户与创作者、内容、平台。用户既是内容的消费者，也是潜在的生产者；内容是价值的核心媒介；平台负责连接与分配。推荐系统需要在三者之间保持动态平衡。</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图1.1.3 </span><span class="caption-text">推荐系统生态中的三角关系：用户与创作者、内容、平台。用户既是内容的消费者，也是潜在的生产者；内容是价值的核心媒介；平台负责连接与分配。推荐系统需要在三者之间保持动态平衡。</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>真正优秀的推荐系统，是一个精巧的平衡器</strong>。它需要在用户与创作者、内容质量、平台发展之间找到动态平衡点，确保生态系统的长期健康。这要求推荐系统设计者不仅是技术专家，更需要具备生态思维，能够从多方利益的角度思考问题。</p>
 <p><strong>从认知到实践：本书的技术地图</strong></p>
 <p>通过这三个层次的分析，我们已经对推荐系统有了一个立体的认知。从微观的关系预测，到工业的规模化流程，再到宏观的生态平衡，每一个层次都揭示了推荐系统的不同侧面，也对应着不同的技术挑战和解决方案。</p>
 <p>但认知只是开始，真正的挑战在于如何将这些理解转化为可操作的技术方案。在推荐系统的发展历程中，研究者和工程师们提出了数百种不同的算法和模型，每一种都试图在特定场景下优化推荐效果。面对如此丰富的技术选择，初学者往往会感到迷茫：这些模型之间有什么关系？在什么情况下应该选择哪种方法？如何构建一个完整的推荐系统？</p>
 <p>接下来，我们将为你绘制一幅完整的推荐系统技术地图。我们会梳理从经典协同过滤到最新深度学习模型的发展脉络，分析不同技术方案的适用场景和优劣势，帮你建立对整个推荐系统技术体系的清晰认知。同时，我们还会介绍本书后续章节的安排，让你了解我们将如何一步步深入这个精彩的技术领域。</p>
-</section>
+</div>
 
 
         </div>

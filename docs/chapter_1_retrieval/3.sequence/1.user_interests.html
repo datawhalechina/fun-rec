@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -331,22 +330,20 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="user-interests">
+  <div class="section" id="user-interests">
 <span id="id1"></span><h1><span class="section-number">2.3.1. </span>深化用户兴趣表示<a class="headerlink" href="#user-interests" title="Permalink to this heading">¶</a></h1>
 <p>传统的向量召回方法，如双塔模型，倾向于将用户所有的历史行为“压扁”成一个单一的静态向量。这种“平均化”的处理方式虽然高效，但在两个关键方面存在明显局限：首先，它无法表达用户兴趣的多样性，例如一个用户可能既是需要购买专业书籍的程序员，又是一位需要选购婴儿用品的新手父亲，单一向量很难同时兼顾这两种截然不同的需求；其次，它忽略了兴趣的时效性，无法区分用户长期稳定的爱好（如对摄影的持续关注）和临时的即时需求（如今天突然搜索“感冒药”），而后者往往更能预示下一次的交互行为。</p>
 <p>为了构建一个更丰富、更立体的用户画像以实现更精准的召回，研究者们沿着“深化用户兴趣表示”的路径进行了持续探索。本章将介绍其中的两个代表性模型：MIND
 和
 SDM。我们将首先探讨如何使用多个向量来表示用户的多元兴趣，然后在此基础上，进一步融入时间维度，学习如何动态地捕捉用户兴趣的演化。</p>
-<section id="mind">
+<div class="section" id="mind">
 <h2><span class="section-number">2.3.1.1. </span>MIND：用多个向量捕捉用户的多元兴趣<a class="headerlink" href="#mind" title="Permalink to this heading">¶</a></h2>
 <p>MIND (Multi-Interest Network with Dynamic Routing) <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id36" title="Li, C., Liu, Z., Wu, M., Xu, Y., Zhao, H., Huang, P., … Lee, D. L. (2019). Multi-interest network with dynamic routing for recommendation at tmall. Proceedings of the 28th ACM international conference on information and knowledge management (pp. 2615–2623).">Li <em>et al.</em>, 2019</a>)</span>
 模型直接应对了用户兴趣多样性的挑战。其核心思想非常直观：不应该用一个向量来概括用户的复杂性，而应该用一组向量，其中每个向量代表一个独立的兴趣维度。MIND的核心创新在于引入胶囊网络的动态路由机制，自动将用户行为聚类到不同的兴趣簇中，每个簇生成一个专门的兴趣向量。这种多向量表示不仅提高了用户兴趣建模的精度，还为个性化推荐提供了更细粒度的控制能力。</p>
-<figure class="align-default" id="id5">
+<div class="figure align-default" id="id5">
 <span id="mind-model-architecture"></span><a class="reference internal image-reference" href="../../_images/mind_model_architecture.png"><img alt="../../_images/mind_model_architecture.png" src="../../_images/mind_model_architecture.png" style="width: 600px;" /></a>
-<figcaption>
-<p><span class="caption-number">图2.3.1 </span><span class="caption-text">MIND模型整体结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图2.3.1 </span><span class="caption-text">MIND模型整体结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
 <p>从整体架构来看，除了常规的Embedding层，MIND模型还包含了两个重要的组件：多兴趣提取层和Label-aware注意力层。</p>
 <p><strong>多兴趣提取</strong></p>
 <p>MIND模型的多兴趣提取技术源于对胶囊网络动态路由机制的创新性改进。胶囊网络
@@ -450,23 +447,21 @@ softmax损失函数，通过负采样技术来近似计算归一化项。</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0677</span> <span class="o">|</span>       <span class="mf">0.0078</span> <span class="o">|</span>    <span class="mf">0.0234</span> <span class="o">|</span>    <span class="mf">0.004</span> <span class="o">|</span>         <span class="mf">0.0068</span> <span class="o">|</span>        <span class="mf">0.0016</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0803</span> <span class="o">|</span>       <span class="mf">0.0477</span> <span class="o">|</span>    <span class="mf">0.0469</span> <span class="o">|</span>   <span class="mf">0.0364</span> <span class="o">|</span>          <span class="mf">0.008</span> <span class="o">|</span>        <span class="mf">0.0095</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
-</section>
-<section id="sdm">
+</div>
+<div class="section" id="sdm">
 <h2><span class="section-number">2.3.1.2. </span>SDM：融合长短期兴趣，捕捉动态变化<a class="headerlink" href="#sdm" title="Permalink to this heading">¶</a></h2>
 <p>MIND解决了兴趣“广度”的问题，但新的问题随之而来：时间。
 用户兴趣不仅是多元的，还是动态演化的。一个用户在一次购物会话（Session）中的行为，往往比他一个月前的行为更能预示他下一刻的需求。MIND虽然能捕捉多个兴趣，但并未在结构上显式地区分它们的时效性。序列深度匹配模型（SDM）
 <span id="id4">(<a class="reference internal" href="../../chapter_references/references.html#id38" title="Lv, F., Jin, T., Yu, C., Sun, F., Lin, Q., Yang, K., &amp; Ng, W. (2019). Sdm: sequential deep matching model for online large-scale recommender system. Proceedings of the 28th ACM international conference on information and knowledge management (pp. 2635–2643).">Lv <em>et al.</em>, 2019</a>)</span> 正是为了解决这一问题而提出的。SDM模型
 的核心思想是分别建模用户的短期即时兴趣和长期稳定偏好，然后智能地融合它们。</p>
-<figure class="align-default" id="id6">
+<div class="figure align-default" id="id6">
 <span id="sdm-model-architecture"></span><a class="reference internal image-reference" href="../../_images/sdm_model_architecture.png"><img alt="../../_images/sdm_model_architecture.png" src="../../_images/sdm_model_architecture.png" style="width: 600px;" /></a>
-<figcaption>
-<p><span class="caption-number">图2.3.2 </span><span class="caption-text">SDM模型结构</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图2.3.2 </span><span class="caption-text">SDM模型结构</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>捕捉短期兴趣</strong></p>
 <p>为了精准捕捉短期兴趣，SDM设计了一个三层结构来处理用户的当前会话序列(<a class="reference internal" href="#sdm-model-architecture"><span class="std std-numref">图2.3.2</span></a>
 左下角) 。</p>
@@ -560,12 +555,12 @@ softmax损失函数，通过负采样技术来近似计算归一化项。</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0127</span> <span class="o">|</span>       <span class="mf">0.0073</span> <span class="o">|</span>    <span class="mf">0.0063</span> <span class="o">|</span>   <span class="mf">0.0047</span> <span class="o">|</span>         <span class="mf">0.0013</span> <span class="o">|</span>        <span class="mf">0.0015</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0111</span> <span class="o">|</span>       <span class="mf">0.0086</span> <span class="o">|</span>    <span class="mf">0.0046</span> <span class="o">|</span>   <span class="mf">0.0038</span> <span class="o">|</span>         <span class="mf">0.0011</span> <span class="o">|</span>        <span class="mf">0.0017</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
         </div>

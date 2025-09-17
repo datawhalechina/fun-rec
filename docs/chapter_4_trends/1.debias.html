@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -330,20 +329,18 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="debias">
+  <div class="section" id="debias">
 <span id="id1"></span><h1><span class="section-number">5.1. </span>模型去偏<a class="headerlink" href="#debias" title="Permalink to this heading">¶</a></h1>
 <p>推荐系统在为用户提供个性化服务的过程中，面临着一个容易被忽视但极其重要的问题：我们用来训练模型的数据本身可靠吗？与严格控制的实验室环境不同，推荐系统的数据来源于用户在真实场景中的交互行为。这些观测数据不可避免地受到系统策略、用户习惯、物品流行度等多种因素的影响，导致数据中存在各种偏差。</p>
 <p>更值得关注的是，推荐系统存在一个天然的反馈闭环：模型的推荐结果会影响用户的未来行为，而这些行为又会成为新的训练数据来更新模型。这种闭环机制会像滚雪球一样不断放大初始数据中的偏差，最终可能导致推荐结果的单一化和不公平性。</p>
-<section id="id2">
+<div class="section" id="id2">
 <h2><span class="section-number">5.1.1. </span>偏差的类型与影响<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>推荐系统中的偏差可以按照产生阶段分为两大类 <span id="id3">(<a class="reference internal" href="../chapter_references/references.html#id73" title="Chen, J., Dong, H., Wang, X., Feng, F., Wang, M., &amp; He, X. (2023). Bias and debias in recommender system: a survey and future directions. ACM Transactions on Information Systems, 41(3), 1–39.">Chen <em>et al.</em>, 2023</a>)</span>
 ：数据偏差和结果偏差。数据偏差发生在数据收集阶段，是后续问题的根源；结果偏差则体现在推荐结果中，是数据偏差经过模型处理后的表现。</p>
-<figure class="align-default" id="id17">
+<div class="figure align-default" id="id17">
 <span id="bias-in-recommendation"></span><a class="reference internal image-reference" href="../_images/bias_in_recommendation.svg"><img alt="../_images/bias_in_recommendation.svg" src="../_images/bias_in_recommendation.svg" width="400px" /></a>
-<figcaption>
-<p><span class="caption-number">图5.1.1 </span><span class="caption-text">推荐系统中的反馈回路对各种偏差的放大作用</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图5.1.1 </span><span class="caption-text">推荐系统中的反馈回路对各种偏差的放大作用</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>数据偏差</strong>的核心问题在于训练数据的分布与理想测试数据的分布存在差异。在推荐系统中，这种差异主要体现在以下几个方面：</p>
 <ul class="simple">
 <li><p><strong>选择偏差</strong>是显式反馈场景中的典型问题。用户倾向于只对自己感兴趣的内容进行评分，这导致我们观测到的评分数据并非所有可能评分的随机样本。研究表明，用户主动评分的物品通常获得更高的评分，而大量中性或负面的潜在评分则缺失在数据中。这种现象被称为“非随机缺失”
@@ -367,8 +364,8 @@ Show Source
 <p>这些偏差之间并非孤立存在，而是通过推荐系统的<strong>反馈闭环</strong>相互强化。热门物品由于获得更多推荐机会，会产生更多的用户交互，从而在新的训练数据中占据更大比重，进一步加剧流行度偏差。这种“富者愈富”的马太效应会持续恶化，最终可能导致推荐结果的极度单一化
 <span id="id10">(<a class="reference internal" href="../chapter_references/references.html#id81" title="Jiang, R., Chiappa, S., Lattimore, T., György, A., &amp; Kohli, P. (2019). Degenerate feedback loops in recommender systems. Proceedings of the 2019 AAAI/ACM Conference on AI, Ethics, and Society (pp. 383–390).">Jiang <em>et al.</em>, 2019</a>)</span> 。</p>
 <p>要解决这些偏差问题，我们需要在模型设计和训练过程中引入纠偏机制。接下来我们将介绍两种经典的纠偏方法：逆倾向得分（IPS）和位置感知学习（PAL），它们分别从不同角度为我们提供了有效的解决方案。</p>
-</section>
-<section id="ips">
+</div>
+<div class="section" id="ips">
 <h2><span class="section-number">5.1.2. </span>用逆倾向得分（IPS）纠正选择偏差<a class="headerlink" href="#ips" title="Permalink to this heading">¶</a></h2>
 <p>逆倾向得分（Inverse Propensity Score, IPS）
 <span id="id11">(<a class="reference internal" href="../chapter_references/references.html#id74" title="Schnabel, T., Swaminathan, A., Singh, A., Chandak, N., &amp; Joachims, T. (2016). Recommendations as treatments: debiasing learning and evaluation. international conference on machine learning (pp. 1670–1679).">Schnabel <em>et al.</em>, 2016</a>)</span>
@@ -414,8 +411,8 @@ truth”。</p>
 <p>实验结果的显示，
 当<span class="math notranslate nohighlight">\(\alpha=0.25\)</span>时，IPS估计器的误差比朴素估计器小2-3个数量级。这种量化的对比清楚地证明了纠偏方法的有效性。更重要的是，这个实验框架可以复制到任何数据集上，成为验证纠偏方法的标准做法。它不仅为研究者提供了一个客观的评估工具，也为实际应用中选择合适的纠偏方法提供了科学依据。这种实验设计的关键在于创造了一个“已知答案”的测试环境，让我们能够精确量化不同方法的效果。</p>
 <p>IPS为推荐系统的纠偏提供了一个理论坚实且实用的框架。它的优势在于简洁性和可扩展性，可以方便地应用到各种推荐模型中。接下来我们将介绍另一种针对特定偏差类型的纠偏方法——PAL框架。</p>
-</section>
-<section id="id13">
+</div>
+<div class="section" id="id13">
 <h2><span class="section-number">5.1.3. </span>解耦位置偏差与用户偏好<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h2>
 <p>当我们在手机上浏览推荐列表时，是否会更容易点击排在前面的内容？答案是肯定的。无论是在搜索引擎、购物应用还是视频平台，用户都有着明显的“位置偏好”——即使内容质量相同，位置靠前的物品往往获得更多点击
 <span id="id14">(<a class="reference internal" href="../chapter_references/references.html#id83" title="Richardson, M., Dominowska, E., &amp; Ragno, R. (2007). Predicting clicks: estimating the click-through rate for new ads. Proceedings of the 16th international conference on World Wide Web (pp. 521–530).">Richardson <em>et al.</em>, 2007</a>)</span>
@@ -430,12 +427,10 @@ truth”。</p>
 <p>更重要的是，这种分解基于两个合理的假设：首先，用户看到物品的概率主要由位置决定，与物品内容关系不大；其次，当用户已经看到物品时，是否点击主要由用户偏好决定，与位置关系不大。这两个假设在直觉上是合理的，也得到了实验数据的支持。</p>
 <p><strong>双模块架构</strong></p>
 <p>基于上述分解，PAL设计了一个双模块的模型架构。这种设计的巧妙之处在于，它不仅实现了数学上的分解，更在架构层面强制了这种分解的逻辑。</p>
-<figure class="align-default" id="id18">
+<div class="figure align-default" id="id18">
 <span id="pal-framework"></span><a class="reference internal image-reference" href="../_images/pal_framework.png"><img alt="../_images/pal_framework.png" src="../_images/pal_framework.png" style="width: 400px;" /></a>
-<figcaption>
-<p><span class="caption-number">图5.1.2 </span><span class="caption-text">PAL框架与传统方法的对比</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图5.1.2 </span><span class="caption-text">PAL框架与传统方法的对比</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
+</div>
 <p>ProbSeen模块专门负责建模位置效应。它的输入只有位置信息，输出是该位置被用户看到的概率。这个模块的设计相对简单，通常可以是一个浅层的神经网络，甚至可以是一个简单的查找表。它的作用是学习不同位置的“可见性”，比如第一个位置的可见性是<span class="math notranslate nohighlight">\(0.9\)</span>，第二个位置是<span class="math notranslate nohighlight">\(0.7\)</span>，第三个位置是<span class="math notranslate nohighlight">\(0.5\)</span>，等等。ProbSeen模块可以用简单的线性模型来实现，也可以用复杂的深度学习模型来实现
 <span id="id16">(<a class="reference internal" href="../chapter_references/references.html#id64" title="Guo, H., Yu, J., Liu, Q., Tang, R., &amp; Zhang, Y. (2019). Pal: a position-bias aware learning framework for ctr prediction in live recommender systems. Proceedings of the 13th ACM Conference on Recommender Systems (pp. 452–456).">Guo <em>et al.</em>, 2019</a>)</span> 。</p>
 <p>pCTR模块则负责建模用户的真实偏好。它的输入包括用户特征、物品特征和上下文信息，但关键的是，它完全不包含位置信息。这个模块通常是一个复杂的深度学习模型，比如DeepFM
@@ -450,8 +445,8 @@ truth”。</p>
 <p>在推理时，系统只使用pCTR模块进行预测。由于这个模块在训练时就被设计为不依赖位置信息，所以它能够直接给出消除位置偏差的点击率预测。这样就解决了位置信息在推理时不可用的根本问题——我们不再需要为位置特征假设一个值，pCTR模块的预测结果直接反映了用户对物品的真实偏好。</p>
 <p>这种设计的本质是实现了信息的有效分离：位置相关的信息被ProbSeen模块处理，内容相关的信息被pCTR模块保留。推理时只使用保留的信息，从而获得更准确的偏好预测。</p>
 <p>IPS和PAL分别代表了通用数据加权和专门结构设计两种纠偏思路，它们的成功说明了理解偏差产生机制比简单拟合数据更重要。无论技术如何演进，深入理解数据背后的偏差机制都将是构建公平、有效推荐系统的关键。</p>
-</section>
-</section>
+</div>
+</div>
 
 
         </div>

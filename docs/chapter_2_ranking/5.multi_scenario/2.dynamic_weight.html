@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -331,14 +330,14 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="dynamic-weight">
+  <div class="section" id="dynamic-weight">
 <span id="id1"></span><h1><span class="section-number">3.5.2. </span>动态权重建模<a class="headerlink" href="#dynamic-weight" title="Permalink to this heading">¶</a></h1>
 <p>在前一小节，我们探讨了 HMoE 和 STAR
 这类基于多塔结构的多场景建模方案。它们通过为不同场景构建独立的“专家”网络或塔底参数，有效地捕获了场景间的特异性信息，解决了模型在跨场景迁移时因参数冲突导致的性能下降问题。这类模型的核心思想是“分而治之”，通过物理隔离的参数空间来保障场景的独特性。</p>
 <p>为了在保持模型参数高效共享的同时，实现更细粒度、更灵活的场景感知能力，研究者们提出了“动态权重建模”的新范式。
 这类方法的核心理念不再是构建物理隔离的参数塔，而是让模型的核心网络参数在不同场景下共享一个基础，但通过动态生成的、与场景/样本高度相关的“权重”来调制（Modulate）这些共享参数的行为。这相当于为共享网络“注入”了场景和样本的上下文信息，使其能够根据当前上下文动态调整其计算逻辑。</p>
 <p>本节将重点介绍几种具有代表性的动态权重建模方案，它们展示了如何巧妙地设计“权重生成器”来调制共享网络。它们通过引入动态性，在参数效率、灵活性和性能之间取得了更优的平衡，为构建更加智能、自适应的多场景推荐系统提供了有力工具。</p>
-<section id="pepnet">
+<div class="section" id="pepnet">
 <h2><span class="section-number">3.5.2.1. </span>PEPNET<a class="headerlink" href="#pepnet" title="Permalink to this heading">¶</a></h2>
 <p>PEPNet（Parameter and Embedding Personalized
 Network）核心目标是解决多场景多任务中的双重跷跷板效应（Double Seesaw
@@ -351,12 +350,10 @@ Seesaw）：多任务间稀疏性与依赖关系失衡导致目标相互抑制�
 </ul>
 <p>PEPNet通过两大模块实现动态权重调控，形成“底层场景适配 +
 顶层任务适配”的分层个性化，这也是PEPNet实现参数个性化的核心思路，PEPNet模型结构如下：</p>
-<figure class="align-default" id="id4">
+<div class="figure align-default" id="id4">
 <span id="pepnet-model-structure"></span><a class="reference internal image-reference" href="../../_images/pepnet.png"><img alt="../../_images/pepnet.png" src="../../_images/pepnet.png" style="width: 600px;" /></a>
-<figcaption>
-<p><span class="caption-number">图3.5.5 </span><span class="caption-text">PEPNet模型结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.5 </span><span class="caption-text">PEPNet模型结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
 <p>在介绍PEPNet的量大核心组件之前，需要先简单介绍一个通过模块Gate
 NU，EPNet与PPNet均基于轻量级门控单元Gate
 NU构建，以极低参数量实现参数个性化，Gate
@@ -387,7 +384,7 @@ NU的代码实现如下：</p>
         <span class="k">return</span> <span class="n">output</span>
 </pre></div>
 </div>
-<section id="epnet">
+<div class="section" id="epnet">
 <h3><span class="section-number">3.5.2.1.1. </span>EPNet：场景感知的嵌入个性化<a class="headerlink" href="#epnet" title="Permalink to this heading">¶</a></h3>
 <p>在实际的推荐模型中，特征Embedding层的参数量往往是最大的，共享底层Embedding也成为了业界标准的做法。但在多场景建模中，这种底层共享的机制更多的强调的是不同场景之间的共性，忽略了不同场景下Embedding的差异性。为此EPNet在Embedding层的基础上，将场景先验信息通过门控机制的方式以较低的参数量实现Embedding层的场景个性化。</p>
 <p>EPNet 中Embedding层的门控单元<span class="math notranslate nohighlight">\(U_{ep}\)</span>，以场景共享Embedding
@@ -421,8 +418,8 @@ Gredient。</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gate_nu</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">domain</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">stop_gradient</span><span class="p">(</span><span class="n">emb</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">emb</span>
 </pre></div>
 </div>
-</section>
-<section id="ppnet">
+</div>
+<div class="section" id="ppnet">
 <h3><span class="section-number">3.5.2.1.2. </span>PPNet：用户感知的参数个性化<a class="headerlink" href="#ppnet" title="Permalink to this heading">¶</a></h3>
 <p>EPNet解决的是多场景跷跷板问题，PPNet则更多考虑的是多任务之间的跷跷板。相比MMOE，PLE等其他多任务模型是任务级的个性化而言，PPNet则可以看成是样本粒度的个性化。PEPNet将用户ID、内容ID及作者ID作为个性化的先验特征，同时拼接上述EPNet得到的场景个性化的Embedding
 <span class="math notranslate nohighlight">\(O_{ep}\)</span>作为所有任务塔DNN参数个性化门控<span class="math notranslate nohighlight">\(U_{pp}\)</span>的输入。</p>
@@ -511,13 +508,13 @@ Gredient。</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 <span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">valid_users_is_click</span> <span class="o">|</span>   <span class="n">valid_users_is_like</span> <span class="o">|</span>   <span class="n">valid_users_long_view</span> <span class="o">|</span>
 <span class="o">+================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+</span>
-<span class="o">|</span>         <span class="mf">0.5935</span> <span class="o">|</span>        <span class="mf">0.4328</span> <span class="o">|</span>          <span class="mf">0.4385</span> <span class="o">|</span>      <span class="mf">0.4883</span> <span class="o">|</span>          <span class="mf">0.5743</span> <span class="o">|</span>         <span class="mf">0.4471</span> <span class="o">|</span>           <span class="mf">0.4471</span> <span class="o">|</span>       <span class="mf">0.4895</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.6043</span> <span class="o">|</span>        <span class="mf">0.4327</span> <span class="o">|</span>          <span class="mf">0.4394</span> <span class="o">|</span>      <span class="mf">0.4921</span> <span class="o">|</span>          <span class="mf">0.5737</span> <span class="o">|</span>         <span class="mf">0.4478</span> <span class="o">|</span>           <span class="mf">0.4466</span> <span class="o">|</span>       <span class="mf">0.4894</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
 <span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="apg">
+</div>
+</div>
+<div class="section" id="apg">
 <h2><span class="section-number">3.5.2.2. </span>APG<a class="headerlink" href="#apg" title="Permalink to this heading">¶</a></h2>
 <p>在上一小节中，介绍了PEPNet通过场景/个性化的先验信号作为门控网络的输入，然后将门控网络的输出作用在底层Embedding和多目标塔的DNN层上，分别实现了基于门控的场景和多任务塔参数的个性化。本节将要介绍的APG模型同样希望实现样本粒度的个性化，但是做法却与PEPNet不太相同。APG的核心思想是为不同的样本动态生成模型参数，根据样本的不同生成相应的参数，从而提升模型的容量和表达能力。</p>
 <p>APG通过<strong>样本感知的输入</strong>来生成自适应参数，这种方式可以应用在大多数的混合样本分布建模的问题中，多场景建模也不例外。具体来说，它提出了三种策略来生成样本的条件表示</p>
@@ -538,33 +535,27 @@ Models的隐层输出作为参数生成的输入。</p></li>
 <p><strong>低质参数优化</strong>：借鉴低秩相关方法，APG假设自适应参数存在低秩关系，将参数矩阵分解成三个子矩阵相乘的形式。通过设置较小的秩值，可以有效控制计算和存储开销，同时在需要时也可以通过增大秩值来增加参数空间，参数分解表达式如下：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-7">
 <span class="eqno">(3.5.16)<a class="headerlink" href="#equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-7" title="Permalink to this equation">¶</a></span>\[\mathbf{U}_i, \mathbf{S}_i, \mathbf{V}_i = \text{reshape}(\text{MLP}( \mathbf{z}_i ))\]</div>
-<figure class="align-default" id="id5">
+<div class="figure align-default" id="id5">
 <span id="apg-parameter-decomposition"></span><a class="reference internal image-reference" href="../../_images/apg_1.png"><img alt="../../_images/apg_1.png" src="../../_images/apg_1.png" style="width: 300px;" /></a>
-<figcaption>
-<p><span class="caption-number">图3.5.6 </span><span class="caption-text">参数分解</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.6 </span><span class="caption-text">参数分解</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>分解前向计算</strong>：在低秩参数化的基础上，APG设计了一种分解前向计算的方式，让输入依次乘以各个子矩阵。这种方式避免了计算开销较大的子矩阵乘操作，降低了整体的计算复杂度，</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-8">
 <span class="eqno">(3.5.17)<a class="headerlink" href="#equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-8" title="Permalink to this equation">¶</a></span>\[y_i = \sigma(\mathbf{W}_i \mathbf{x}_i) = \sigma((\mathbf{U}_i \mathbf{S}_i \mathbf{V}_i) \mathbf{x}_i) = \sigma(\mathbf{U}_i (\mathbf{S}_i (\mathbf{V}_i \mathbf{x}_i)))\]</div>
-<figure class="align-default" id="id6">
+<div class="figure align-default" id="id6">
 <span id="apg-forward-computation-optimization"></span><a class="reference internal image-reference" href="../../_images/apg_2.png"><img alt="../../_images/apg_2.png" src="../../_images/apg_2.png" style="width: 300px;" /></a>
-<figcaption>
-<p><span class="caption-number">图3.5.7 </span><span class="caption-text">前向计算优化</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.7 </span><span class="caption-text">前向计算优化</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>参数共享和过参数化</strong>：得益于矩阵分解带来的灵活性，APG将参数矩阵分为私有参数和共享参数两类。私有参数用于刻画不同样本的特性，共享参数则用于刻画样本共性。通过这种划分，APG在生成自适应参数的同时，也保留了对样本共性的表达，丰富了模型的表达能力。而且，由于私有参数规模的缩减，整体的计算和存储开销也得到了降低。此外，APG
 将共享参数替代为两个大矩阵，这种设计不仅可以增加参数数量来提升模型容量，还具有隐含的正则效果，有助于防止过拟合。</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-9">
 <span class="eqno">(3.5.18)<a class="headerlink" href="#equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-9" title="Permalink to this equation">¶</a></span>\[\begin{split}\mathbf{S}_{i}=\text{reshape}(\text{MLP}(\mathbf{z}_{i})) \\
 \mathbf{U} = \mathbf{U}^l \mathbf{U}^r, \mathbf{V} = \mathbf{V}^l \mathbf{V}^r \\
 y_{i}=\sigma(\mathbf{U}(\mathbf{S}_{i}\mathbf{V}\mathbf{x}_{i}))\end{split}\]</div>
-<figure class="align-default" id="id7">
+<div class="figure align-default" id="id7">
 <span id="apg-parameter-sharing-and-overparameterization"></span><a class="reference internal image-reference" href="../../_images/apg_3.png"><img alt="../../_images/apg_3.png" src="../../_images/apg_3.png" style="width: 300px;" /></a>
-<figcaption>
-<p><span class="caption-number">图3.5.8 </span><span class="caption-text">参数共享及过参数化</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.8 </span><span class="caption-text">参数共享及过参数化</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
 <p>APG Layer核心代码：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">APGLayer</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;注意力个性化门控层 (Attention Personalized Gating Layer)</span>
@@ -734,22 +725,20 @@ y_{i}=\sigma(\mathbf{U}(\mathbf{S}_{i}\mathbf{V}\mathbf{x}_{i}))\end{split}\]</d
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+---------------+</span>
 <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
 <span class="o">+========+========+===============+</span>
-<span class="o">|</span> <span class="mf">0.6571</span> <span class="o">|</span> <span class="mf">0.6292</span> <span class="o">|</span>           <span class="mi">217</span> <span class="o">|</span>
+<span class="o">|</span> <span class="mf">0.6768</span> <span class="o">|</span> <span class="mf">0.6284</span> <span class="o">|</span>           <span class="mi">217</span> <span class="o">|</span>
 <span class="o">+--------+--------+---------------+</span>
 </pre></div>
 </div>
-</section>
-<section id="m2m">
+</div>
+<div class="section" id="m2m">
 <h2><span class="section-number">3.5.2.3. </span>M2M<a class="headerlink" href="#m2m" title="Permalink to this heading">¶</a></h2>
 <p>在推荐系统的多场景建模中，动态参数生成技术展现出了巨大的潜力。除了 APG
 模型外，基于元学习的多场景多任务商家建模（M2M）是另一个在该领域具有重要影响的模型。M2M模型结构中主要包含底层的主干网络和顶层的元学习网络，下面将分别展开详细的介绍。</p>
-<figure class="align-default" id="id8">
+<div class="figure align-default" id="id8">
 <span id="m2m-model-structure"></span><a class="reference internal image-reference" href="../../_images/m2m.png"><img alt="../../_images/m2m.png" src="../../_images/m2m.png" style="width: 500px;" /></a>
-<figcaption>
-<p><span class="caption-number">图3.5.9 </span><span class="caption-text">M2M模型结构</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<section id="id2">
+<p class="caption"><span class="caption-number">图3.5.9 </span><span class="caption-text">M2M模型结构</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="id2">
 <h3><span class="section-number">3.5.2.3.1. </span>主干网络<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
 <p>主干网络中包括三部分内容：专家信息表征<span class="math notranslate nohighlight">\(E_i\)</span>，任务信息表征<span class="math notranslate nohighlight">\(T_t\)</span>，场景信息表征<span class="math notranslate nohighlight">\(\tilde{\mathbf{S}}\)</span></p>
 <p><strong>专家信息表征</strong>：主干网络中有一个多专家的网络结构，每个专家输入的特征是将序列特征和其他特征拼接后的结果，而序列特征都由多头注意力机制进行聚合，第<span class="math notranslate nohighlight">\(i\)</span>个专家的数学表示为：</p>
@@ -766,16 +755,14 @@ y_{i}=\sigma(\mathbf{U}(\mathbf{S}_{i}\mathbf{V}\mathbf{x}_{i}))\end{split}\]</d
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-12">
 <span class="eqno">(3.5.21)<a class="headerlink" href="#equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-12" title="Permalink to this equation">¶</a></span>\[\tilde{\mathbf{S}}  = f_{MLP}(\mathbf{S}, \mathbf{A})\]</div>
 <p>与任务信息表征不同的是，每条样本都有所属的场景，所以场景表达并不是全局的，此外由于该方法最早提出来是为了解决广告业务的，在实际的应用场景中，我们也可以将广告主相关的特征替换成我们业务中更合适的特征。</p>
-</section>
-<section id="id3">
+</div>
+<div class="section" id="id3">
 <h3><span class="section-number">3.5.2.3.2. </span>元学习网络<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
 <p>在传统的机器学习中，权重<span class="math notranslate nohighlight">\((W, b)\)</span>通过反向传播在固定数据集上优化，学习目标是任务本身的表示。在M2M模型的元学习网络中，用一个MLP（元学习器）根据输入特征动态生成另一个网络（任务模型）的权重<span class="math notranslate nohighlight">\((W, b)\)</span>。这相当于让MLP学会“如何针对不同输入特征生成合适的任务模型参数”，而非直接学习任务本身，使任务模型动态适应不同任务/输入分布，这正是元学习的核心目标。</p>
-<figure class="align-default" id="id9">
+<div class="figure align-default" id="id9">
 <span id="m2m-meta-unit-structure"></span><a class="reference internal image-reference" href="../../_images/m2m_meta_unit.png"><img alt="../../_images/m2m_meta_unit.png" src="../../_images/m2m_meta_unit.png" style="width: 800px;" /></a>
-<figcaption>
-<p><span class="caption-number">图3.5.10 </span><span class="caption-text">Meta Unit网络结构</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图3.5.10 </span><span class="caption-text">Meta Unit网络结构</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>元学习单元原理</strong>
 在M2M中元学习单元用来显式建模场景信息，为了更好的捕捉动态的场景相关信息，元学习单元将上述主干网络中得到的场景信息表征<span class="math notranslate nohighlight">\(\tilde{\mathbf{S}}\)</span>作为元学习单元的输入，元学习单元通过通过MLP网络将<span class="math notranslate nohighlight">\(\tilde{\mathbf{S}}\)</span>转换成每个场景动态的网络参数<span class="math notranslate nohighlight">\((W,b)\)</span>，然后再将生成的参数作用于输入的特征上，下面<span class="math notranslate nohighlight">\(Meta\)</span>函数中包含了完整的元学习处理过程。</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-5-multi-scenario-2-dynamic-weight-13">
@@ -825,13 +812,13 @@ y_{i}=\sigma(\mathbf{U}(\mathbf{S}_{i}\mathbf{V}\mathbf{x}_{i}))\end{split}\]</d
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 <span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">valid_users_is_click</span> <span class="o">|</span>   <span class="n">valid_users_is_like</span> <span class="o">|</span>   <span class="n">valid_users_long_view</span> <span class="o">|</span>
 <span class="o">+================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+</span>
-<span class="o">|</span>         <span class="mf">0.6382</span> <span class="o">|</span>        <span class="mf">0.6462</span> <span class="o">|</span>          <span class="mf">0.6598</span> <span class="o">|</span>      <span class="mf">0.6481</span> <span class="o">|</span>          <span class="mf">0.6041</span> <span class="o">|</span>         <span class="mf">0.6426</span> <span class="o">|</span>            <span class="mf">0.626</span> <span class="o">|</span>       <span class="mf">0.6242</span> <span class="o">|</span>                    <span class="mi">217</span> <span class="o">|</span>                   <span class="mi">131</span> <span class="o">|</span>                     <span class="mi">217</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.6696</span> <span class="o">|</span>        <span class="mf">0.6029</span> <span class="o">|</span>          <span class="mf">0.6899</span> <span class="o">|</span>      <span class="mf">0.6541</span> <span class="o">|</span>          <span class="mf">0.6179</span> <span class="o">|</span>         <span class="mf">0.6538</span> <span class="o">|</span>           <span class="mf">0.6482</span> <span class="o">|</span>         <span class="mf">0.64</span> <span class="o">|</span>                    <span class="mi">217</span> <span class="o">|</span>                   <span class="mi">131</span> <span class="o">|</span>                     <span class="mi">217</span> <span class="o">|</span>
 <span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
         </div>

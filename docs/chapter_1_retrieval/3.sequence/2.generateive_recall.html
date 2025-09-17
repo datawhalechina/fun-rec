@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -331,7 +330,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="generateive-recall">
+  <div class="section" id="generateive-recall">
 <span id="id1"></span><h1><span class="section-number">2.3.2. </span>生成式召回方法<a class="headerlink" href="#generateive-recall" title="Permalink to this heading">¶</a></h1>
 <p>上一小节，我们探讨了如MIND和SDM等序列召回方法，它们的核心目标是分析用户的历史行为，并将其“总结”成一个或多个能够代表用户兴趣的向量。这种方法好比是为用户拍摄一张静态的“兴趣快照”，用以在海量物品中进行检索。</p>
 <p>本节将介绍一种截然不同的思路：<strong>生成式召回</strong>。它不再试图去“总结”用户，而是直接“预测”用户的下一个行为。其核心是直接对序列中物品与物品之间的动态依赖关系进行建模，关注“用户接下来会做什么”而非“用户是怎样的人”。</p>
@@ -344,7 +343,7 @@ Show Source
 </ol>
 <p>本节中，我们将沿着 <strong>SASRec (奠基) -&gt; HSTU (深化输入) -&gt; TIGER
 (重塑输出)</strong> 这条清晰的脉络，深入理解生成式召回技术的演进与核心思想。</p>
-<section id="sasrec">
+<div class="section" id="sasrec">
 <h2><span class="section-number">2.3.2.1. </span>SASRec：基于自注意力的序列推荐<a class="headerlink" href="#sasrec" title="Permalink to this heading">¶</a></h2>
 <p>在SASRec出现之前，主流的序列模型，如基于马尔可夫链或RNN的方法，存在各自的局限。马尔可夫链
 <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id69" title="Rendle, S., Freudenthaler, C., &amp; Schmidt-Thieme, L. (2010). Factorizing personalized markov chains for next-basket recommendation. Proceedings of the 19th international conference on World wide web (pp. 811–820).">Rendle <em>et al.</em>, 2010</a>)</span>
@@ -355,12 +354,10 @@ Show Source
 的出发点便是：能否找到一种方法，既能像RNN一样看到完整的历史序列，又能高效地捕捉其中最重要的依赖关系？答案是借用在自然语言处理（NLP）领域大获成功的Transformer模型
 <span id="id5">(<a class="reference internal" href="../../chapter_references/references.html#id40" title="Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.">Vaswani <em>et al.</em>, 2017</a>)</span> 。</p>
 <p>SASRec的核心思想是将用户的行为序列视为一个句子来处理。对于序列中的每个商品，模型会自动学习它与序列中其他所有商品的相关性，然后基于这些相关性来预测下一个用户可能交互的商品。这样既保留了对长期行为的建模能力，又能根据数据特性灵活地调整对不同历史行为的关注度。</p>
-<figure class="align-default" id="id12">
+<div class="figure align-default" id="id12">
 <span id="id6"></span><a class="reference internal image-reference" href="../../_images/generateive_recall.svg"><img alt="../../_images/generateive_recall.svg" src="../../_images/generateive_recall.svg" width="450px" /></a>
-<figcaption>
-<p><span class="caption-number">图2.3.3 </span><span class="caption-text">生成式召回模型的基本架构</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图2.3.3 </span><span class="caption-text">生成式召回模型的基本架构</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
 <p>类似于Transformer，SASRec的基本模块如 <a class="reference internal" href="#id6"><span class="std std-numref">图2.3.3</span></a> 左
 所示，主要包含自注意力层和前馈网络层两个组件。</p>
 <p><strong>自注意力层</strong></p>
@@ -421,7 +418,7 @@ s_{t+1} &amp; 1\leq t&lt;n\\
 <span class="eqno">(2.3.23)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-6" title="Permalink to this equation">¶</a></span>\[-\sum_{\mathcal{S}^{u}\in\mathcal{S}}\sum_{t\in[1,2,\dots,n]}\left[\log(\sigma(r_{o_t,t}))+\sum_{j\not\in \mathcal{S}^{u}}\log(1-\sigma(r_{j,t}))\right]\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\sigma\)</span> 是sigmoid函数，<span class="math notranslate nohighlight">\(r_{o_t,t}\)</span>
 是正样本分数，<span class="math notranslate nohighlight">\(r_{j,t}\)</span> 是负样本分数。</p>
-<section id="id7">
+<div class="section" id="id7">
 <h3><span class="section-number">2.3.2.1.1. </span>代码实践<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
@@ -446,13 +443,13 @@ s_{t+1} &amp; 1\leq t&lt;n\\
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+</span>
-<span class="o">|</span>        <span class="mf">0.0192</span> <span class="o">|</span>       <span class="mf">0.0119</span> <span class="o">|</span>    <span class="mf">0.0094</span> <span class="o">|</span>    <span class="mf">0.007</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0197</span> <span class="o">|</span>       <span class="mf">0.0121</span> <span class="o">|</span>    <span class="mf">0.0096</span> <span class="o">|</span>   <span class="mf">0.0072</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="hstu">
+</div>
+</div>
+<div class="section" id="hstu">
 <h2><span class="section-number">2.3.2.2. </span>HSTU：为复杂的“事件流”输入定制生成式架构<a class="headerlink" href="#hstu" title="Permalink to this heading">¶</a></h2>
 <p>SASRec成功地验证了将推荐问题视为序列预测的可行性，但它将视线聚焦于一个相对简化的世界：一个仅由物品ID构成的序列。一个自然而然的问题是：用户的行为序列远比这丰富，能否将用户的属性、行为类型（点击、加购、购买）、上下文时间等所有信息都融入这个序列，让模型拥有一个更全面的“上帝视角”？</p>
 <p>HSTU <span id="id8">(<a class="reference internal" href="../../chapter_references/references.html#id60" title="Zhai, J., Liao, L., Liu, X., Wang, Y., Li, R., Cao, X., … others. (2024). Actions speak louder than words: trillion-parameter sequential transducers for generative recommendations. arXiv preprint arXiv:2402.17152.">Zhai <em>et al.</em>, 2024</a>)</span>
@@ -502,7 +499,7 @@ Normalization（层归一化），<span class="math notranslate nohighlight">\(\
 <p><strong>训练与召回</strong></p>
 <p>HSTU的完整工作流程包含训练和召回两个阶段。在训练阶段，模型基于前面描述的输入输出格式进行标准的Transformer训练——通过预测用户行为序列中的下一个正向交互物品来学习用户偏好模式和物品间的依赖关系。在召回阶段，经过多层HSTU编码器处理后，模型将用户的完整行为事件序列转换为能够概括用户历史、捕捉当前兴趣的实时动态表示<span class="math notranslate nohighlight">\(u_i\)</span>。拥有了用户表示向量<span class="math notranslate nohighlight">\(u_i\)</span>后，召回过程就转变为一个标准的向量检索问题——将<span class="math notranslate nohighlight">\(u_i\)</span>与物品语料库中所有物品的嵌入向量进行高效的相似度计算，通过近似最近邻（ANN）搜索从海量物品池中快速检索出与用户当前兴趣最匹配的Top-K个物品，形成召回列表。</p>
 <p>总而言之，如果说SASRec是将推荐序列视为一句由‘单词’（物品ID）组成的句子，那么HSTU则是将推荐场景中的所有信息（用户属性、行为、物品、上下文）都看作一种更复杂的‘语言’，并为此设计了一套全新的‘语法规则’（HSTU单元）来理解和生成这种语言。它的核心创新在于<strong>丰富了模型的输入</strong>，从而实现了对用户行为更深层次的理解。</p>
-<section id="id9">
+<div class="section" id="id9">
 <h3><span class="section-number">2.3.2.2.1. </span>代码实践<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;hstu&#39;</span><span class="p">)</span>
 
@@ -523,13 +520,13 @@ Normalization（层归一化），<span class="math notranslate nohighlight">\(\
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+</span>
-<span class="o">|</span>        <span class="mf">0.0182</span> <span class="o">|</span>       <span class="mf">0.0094</span> <span class="o">|</span>    <span class="mf">0.0084</span> <span class="o">|</span>   <span class="mf">0.0056</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0141</span> <span class="o">|</span>       <span class="mf">0.0098</span> <span class="o">|</span>    <span class="mf">0.0079</span> <span class="o">|</span>   <span class="mf">0.0065</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="tiger-id">
+</div>
+</div>
+<div class="section" id="tiger-id">
 <h2><span class="section-number">2.3.2.3. </span>TIGER：通过生成语义ID重塑推荐“输出”<a class="headerlink" href="#tiger-id" title="Permalink to this heading">¶</a></h2>
 <p>HSTU通过极大地丰富输入信息，提升了模型对用户行为上下文的理解能力。然而，生成式召回的演进还有另一条同样重要的路径。这条路径将目光从输入侧转向了输出侧，它反思了一个根本问题：即使我们拥有了完美的输入，但我们预测的目标——一个孤立的、无语义的原子ID
 —— 本身是否就是最佳选择？</p>
@@ -547,12 +544,10 @@ Normalization（层归一化），<span class="math notranslate nohighlight">\(\
 <p>TIGER采用残差量化变分自编码器 (RQ-VAE)
 <span id="id11">(<a class="reference internal" href="../../chapter_references/references.html#id59" title="Zeghidour, N., Luebs, A., Omran, A., Skoglund, J., &amp; Tagliasacchi, M. (2021). Soundstream: an end-to-end neural audio codec. IEEE/ACM Transactions on Audio, Speech, and Language Processing, 30, 495–507.">Zeghidour <em>et al.</em>, 2021</a>)</span>
 来实现这一目标。RQ-VAE是一种多层向量量化器，它通过对残差进行迭代量化来生成代码字元组。</p>
-<figure class="align-default" id="id13">
+<div class="figure align-default" id="id13">
 <span id="tiger-rqvae"></span><a class="reference internal image-reference" href="../../_images/tiger_rqvae.png"><img alt="../../_images/tiger_rqvae.png" src="../../_images/tiger_rqvae.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图2.3.4 </span><span class="caption-text">RQ-VAE量化方法</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图2.3.4 </span><span class="caption-text">RQ-VAE量化方法</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</div>
 <p>具体过程如下：</p>
 <ol class="arabic">
 <li><p>一个预训练的内容编码器（如Sentence-T5）先将物品内容特征（如标题、描述）处理成语义嵌入向量
@@ -580,12 +575,10 @@ Normalization（层归一化），<span class="math notranslate nohighlight">\(\
 <code class="docutils literal notranslate"><span class="pre">(12,</span> <span class="pre">24,</span> <span class="pre">52,</span> <span class="pre">0)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">(12,</span> <span class="pre">24,</span> <span class="pre">52,</span> <span class="pre">1)</span></code>。</p>
 <p><strong>基于语义ID的生成式检索</strong></p>
 <p>拥有了每个物品的语义ID后，推荐任务就转变为一个标准的序列到序列生成问题。</p>
-<figure class="align-default" id="id14">
+<div class="figure align-default" id="id14">
 <span id="tiger-transformer"></span><a class="reference internal image-reference" href="../../_images/tiger_transformer.png"><img alt="../../_images/tiger_transformer.png" src="../../_images/tiger_transformer.png" style="width: 500px;" /></a>
-<figcaption>
-<p><span class="caption-number">图2.3.5 </span><span class="caption-text">基于语义ID的生成式检索</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图2.3.5 </span><span class="caption-text">基于语义ID的生成式检索</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</div>
 <ol class="arabic">
 <li><p>将用户的历史交互序列
 <span class="math notranslate nohighlight">\((\text{item}_1, \text{item}_2, ..., \text{item}_n)\)</span>
@@ -604,8 +597,8 @@ Transformer模型。Encoder负责理解用户历史序列的上下文，Decoder�
 <span class="math notranslate nohighlight">\((c_{n+1,0}, ..., c_{n+1,m-1})\)</span>。</p></li>
 <li><p>在推理阶段，一旦生成了完整的预测语义ID，就可以通过查找表将其映射回具体的物品，完成推荐。</p></li>
 </ol>
-</section>
-</section>
+</div>
+</div>
 
 
         </div>

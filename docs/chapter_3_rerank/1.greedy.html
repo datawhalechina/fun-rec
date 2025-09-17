@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -330,12 +329,12 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="greedy-rerank">
+  <div class="section" id="greedy-rerank">
 <span id="id1"></span><h1><span class="section-number">4.1. </span>基于贪心的重排<a class="headerlink" href="#greedy-rerank" title="Permalink to this heading">¶</a></h1>
 <p>贪心算法以其思路直观、计算高效、易于实现的特点，成为重排阶段解决多样性、新颖性等问题的首选策略之一。它们通常不依赖复杂的模型训练，而是基于预先定义的规则或目标函数，通过逐步选择当前最优解（贪心选择）的方式来构建或调整最终推荐列表。本节将深入剖析两种经典的、基于贪心的重排算法：最大边际相关（Maximal
 Marginal Relevance, MMR） 和 行列式点过程（Determinantal Point Process,
 DPP）。</p>
-<section id="mmr">
+<div class="section" id="mmr">
 <h2><span class="section-number">4.1.1. </span>MMR：最大边际相关<a class="headerlink" href="#mmr" title="Permalink to this heading">¶</a></h2>
 <p>在精排输出的按CTR降序排列的列表中，头部物品往往具有高度相似性（如连续推荐同品类商品或同风格视频）。这种同质化现象直接导致两大问题：</p>
 <ol class="arabic simple">
@@ -492,6 +491,15 @@ DPP）。</p>
 <p>假如有5个待重排的物品，已知精排打分和item之间的两两相似度，重排需要从5个物品中筛选出top3条内容的详细计算流程如下：
 1. 假设候选集包含5个商品及其精排分（Rel），相似度矩阵如下：</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>商品</p></th>
 <th class="head"><p>Rel</p></th>
@@ -576,10 +584,10 @@ DPP）。</p>
 </ol>
 </li>
 </ol>
-</section>
-<section id="dpp">
+</div>
+<div class="section" id="dpp">
 <h2><span class="section-number">4.1.2. </span>DPP：行列式点过程<a class="headerlink" href="#dpp" title="Permalink to this heading">¶</a></h2>
-<section id="id3">
+<div class="section" id="id3">
 <h3><span class="section-number">4.1.2.1. </span>行列式如何度量多样性<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
 <p>上述MMR原理中可以看出，MMR通过候选内容和已选内容计算两两相似度，贪心的选择一个和已选所有内容相似度最低的内容。这种方式无法捕捉多个物品间的复杂排斥关系（如三个相似物品的冗余效应），而行列式可以实现这一点。为了解释清楚行列式如何度量多样性，下面会花一定的篇幅做详细的介绍。</p>
 <p>假设我们通过余弦相似度的方式来计算物品之间的相似度，对于每一个物品都有一个向量表示<span class="math notranslate nohighlight">\(x_i\)</span>，那么对于待排序的所有物品<span class="math notranslate nohighlight">\(X\)</span>，很容易得到所有物品两两之间的相似度矩阵<span class="math notranslate nohighlight">\(S=X^TX\)</span>。</p>
@@ -610,8 +618,8 @@ DPP）。</p>
 <li><p><span class="math notranslate nohighlight">\(|S_{b,d}|=1*1-0.1*0.1=0.81\)</span></p></li>
 </ul>
 <p>从行列式的结果可以看出，当相似度矩阵的行列式值较大时，对应物品的多样性越高，反之行列式的值越低，多样性越低。</p>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h3><span class="section-number">4.1.2.2. </span>相关性与多样性融合<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
 <p>在推荐中，相关性和多样性是两个重要的指标。相关性指的是物品之间的相似性，即物品的相关性越高，推荐的结果越相似。在DPP中，通过引入一个半正定的核矩阵<span class="math notranslate nohighlight">\(L\)</span>来同时优化物品的相关性和多样性。该半正定核矩阵可以分解为<span class="math notranslate nohighlight">\(L=B^TB\)</span>，其中<span class="math notranslate nohighlight">\(B\)</span>的每一列表示重排候选集中物品的表示向量。具体来说，<span class="math notranslate nohighlight">\(B\)</span>的向量是通过相关性得分<span class="math notranslate nohighlight">\(r_i\)</span>和归一化后的物品向量的乘积计算得来。因此核矩阵中的元素<span class="math notranslate nohighlight">\(L_{i,j}\)</span>可以表示为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-3-rerank-1-greedy-5">
@@ -701,8 +709,8 @@ DPP）。</p>
 <p>经过上述的简单推到，我们会发现DPP最终优化的目标也变成了类似MMR的相关性和多样性的线形组合。所以在实际应用时会通过一个超参<span class="math notranslate nohighlight">\(\theta\)</span>来平衡相关性和多样性的权重。</p>
 <div class="math notranslate nohighlight" id="equation-chapter-3-rerank-1-greedy-15">
 <span class="eqno">(4.1.16)<a class="headerlink" href="#equation-chapter-3-rerank-1-greedy-15" title="Permalink to this equation">¶</a></span>\[\log |L_{R_u}| = \theta \sum_{i \in R_u} \log r_{u,i}^2 + (1-\theta) \log |S|\]</div>
-</section>
-<section id="id5">
+</div>
+<div class="section" id="id5">
 <h3><span class="section-number">4.1.2.3. </span>贪心求解过程<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <p>上述介绍了相似矩阵的行列式可以度量多样性，通过核矩阵可以融合相关性和多样性，下面继续来看一下贪心求解的过程。重排从物品候选列表中选择一个子集，使得<span class="math notranslate nohighlight">\(\log |L_{R_u}|\)</span>的值最大需要通过DPP（行列式点过程）来实现。</p>
 <p>DPP是一种性能较高的概率模型，能将复杂的概率计算转换成简单的行列式计算，通过核矩阵的行列式计算每一个子集的概率，这一筛选过程就是行列式点过程的最大后验概率推断MAP（maximum
@@ -998,13 +1006,13 @@ c_i^T = \mathbf{L}_{Y_g \cup \{j\}, i} = \begin{bmatrix}
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>开始构建核矩阵...
 核矩阵生成完成！
-算法运行时间:     2.4055e-02
+算法运行时间:     2.7776e-02
 选择了 50 个物品
 </pre></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
         </div>

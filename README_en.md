@@ -7,6 +7,9 @@ English | [中文](./README.md)
 
 </div>
 
+> **Note: This project is still under development and is being updated frequently. Pull Requests are not accepted at this time.**
+> If you have any suggestions or encounter any issues, please feel free to provide feedback via [Issue](https://github.com/datawhalechina/fun-rec/issues).
+
 This tutorial is a comprehensive guide to recommendation systems, primarily aimed at students with basic knowledge of machine learning who want to deepen their understanding of recommendation algorithms. The tutorial covers four perspectives: theoretical foundation, core algorithms, engineering practice, and interview preparation, providing a complete learning loop from theory to practice to job hunting.
 
 ## 📚 Tutorial Content Overview

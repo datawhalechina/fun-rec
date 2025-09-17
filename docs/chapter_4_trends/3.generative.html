@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -330,11 +329,11 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="generative-recommendation">
+  <div class="section" id="generative-recommendation">
 <span id="id1"></span><h1><span class="section-number">5.3. </span>生成式推荐<a class="headerlink" href="#generative-recommendation" title="Permalink to this heading">¶</a></h1>
 <p>在前面的召回章节中，我们探讨了以SASRec为代表的生成式召回方法，它们将推荐问题重新定义为序列预测任务，通过自回归的方式预测用户下一个可能交互的物品。这种范式的成功验证了一个重要观点：<strong>推荐系统可以从传统的“判别式打分”转向“自回归生成”</strong>，借鉴自然语言处理领域的成功经验，将用户行为序列视为一种特殊的“语言”来理解和生成。</p>
 <p>生成式推荐的核心在于三个关键要素的重新设计：<strong>输入如何组织</strong>（从简单的物品ID序列到复杂的事件流）、<strong>输出生成什么</strong>（从原子ID到语义化表示）、以及<strong>目标与架构如何取舍</strong>（在表达能力与计算效率间寻求平衡）。围绕这三个维度，生成式推荐沿着三条清晰的演进路径不断发展：一是<strong>生成式召回</strong>，延续SASRec的思路但在输入和输出上进行深度创新；二是<strong>生成式排序</strong>，将生成范式引入传统的排序阶段；三是<strong>端到端统一生成</strong>，试图用单一模型完成从召回到排序的全流程。</p>
-<section id="id2">
+<div class="section" id="id2">
 <h2><span class="section-number">5.3.1. </span>生成式召回的深化演进<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>生成式召回在SASRec奠定的基础上，主要沿着两个方向进行深化探索。<strong>HSTU模型</strong>
 <span id="id3">(<a class="reference internal" href="../chapter_references/references.html#id60" title="Zhai, J., Liao, L., Liu, X., Wang, Y., Li, R., Cao, X., … others. (2024). Actions speak louder than words: trillion-parameter sequential transducers for generative recommendations. arXiv preprint arXiv:2402.17152.">Zhai <em>et al.</em>, 2024</a>)</span>
@@ -344,46 +343,40 @@ Show Source
 则代表了对“输出”定义的根本性重塑。它认为预测一个无语义的原子ID效率低下且存在泛化问题，转而提出生成结构化的“语义ID”来代表物品。TIGER的工作流程分为两个阶段：首先利用残差量化变分自编码器（RQ-VAE）为每个物品生成语义ID。具体而言，对于物品的内容特征向量<span class="math notranslate nohighlight">\(\mathbf{x}\)</span>，编码器将其映射为潜在表示<span class="math notranslate nohighlight">\(\mathbf{z} := \mathcal{E}(\mathbf{x})\)</span>，然后通过<span class="math notranslate nohighlight">\(m\)</span>层量化过程，在每层<span class="math notranslate nohighlight">\(d\)</span>中寻找最接近当前残差<span class="math notranslate nohighlight">\(\mathbf{r}_d\)</span>的码字：<span class="math notranslate nohighlight">\(c_d = \arg\min_{k} \|\mathbf{r}_d - \mathbf{e}_k\|^2\)</span>，并更新残差<span class="math notranslate nohighlight">\(\mathbf{r}_{d+1} := \mathbf{r}_d - \mathbf{e}_{c_d}\)</span>，最终得到语义ID元组<span class="math notranslate nohighlight">\((c_0, c_1, ..., c_{m-1})\)</span>。</p>
 <p>在第二阶段，TIGER将推荐任务转化为标准的序列到序列生成问题。用户历史交互序列被转换为对应的语义ID序列，然后训练Encoder-Decoder
 Transformer模型自回归地生成下一个物品的语义ID。这种设计的优势在于：<strong>语义共享</strong>使得内容相似的物品拥有相似的语义ID，从而实现知识共享；<strong>冷启动优势</strong>允许为新物品生成语义ID并进行推荐；<strong>结构化表示</strong>通过多层码字高效表示大规模物品库。然而，这种方法也面临生成无效ID和推理代价较高的挑战，需要在表达能力和计算效率间进行权衡。</p>
-</section>
-<section id="id5">
+</div>
+<div class="section" id="id5">
 <h2><span class="section-number">5.3.2. </span>生成式排序的架构创新<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
 <p>生成式排序将自回归生成的思想引入传统排序阶段，主要通过两种不同的技术路径实现。<strong>GenRank模型</strong>
 <span id="id6">(<a class="reference internal" href="../chapter_references/references.html#id84" title="Huang, Y., Chen, Y., Cao, X., Yang, R., Qi, M., Zhu, Y., … others. (2025). Towards large-scale generative ranking. arXiv preprint arXiv:2505.04180.">Huang <em>et al.</em>, 2025</a>)</span>
 采用“动作导向”的设计思路，将排序问题重新定义为预测用户对给定候选物品的动作概率<span class="math notranslate nohighlight">\(p(a_{i+1} | \text{历史}, \Phi_{i+1})\)</span>。这种设计的核心洞察是：相比于预测下一个物品ID，预测用户的行为动作（如点击、喜欢）在计算上更加高效，因为动作空间远小于物品空间。</p>
 <p>GenRank的架构创新主要体现在<strong>动作导向的序列组织</strong>上。不同于HSTU将物品和动作交替排列导致序列长度翻倍，GenRank将物品视为已知的位置上下文，专注于预测每个位置上的动作。输入序列的最终表示是五种嵌入的和：物品嵌入、动作嵌入（候选物品使用特殊的<code class="docutils literal notranslate"><span class="pre">[MASK]</span></code>嵌入）、位置嵌入、请求索引嵌入和时间嵌入。同时，GenRank采用ALiBi（线性偏置注意力）替代可学习的相对注意力偏置，这是一种无参数的静态惩罚机制，能够有效降低计算开销。实验表明，这种设计实现了约75%的注意力计算成本降低和94.8%的训练速度提升。</p>
-<figure class="align-default" id="id11">
+<div class="figure align-default" id="id11">
 <span id="genrank-architecture"></span><a class="reference internal image-reference" href="../_images/genrank.png"><img alt="../_images/genrank.png" src="../_images/genrank.png" style="width: 300px;" /></a>
-<figcaption>
-<p><span class="caption-number">图5.3.1 </span><span class="caption-text">GenRank 动作为导向的序列</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图5.3.1 </span><span class="caption-text">GenRank 动作为导向的序列</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>MTGR模型</strong> <span id="id7">(<a class="reference internal" href="../chapter_references/references.html#id85" title="Han, R., Yin, B., Chen, S., Jiang, H., Jiang, F., Li, X., … others. (2025). Mtgr: industrial-scale generative recommendation framework in meituan. arXiv preprint arXiv:2505.18654.">Han <em>et al.</em>, 2025</a>)</span>
 则提供了另一种技术路径，它试图在保留传统深度学习推荐模型（DLRM）丰富特征的同时，获得生成式架构的可扩展性优势。MTGR的核心创新是<strong>用户样本聚合</strong>：将用户的所有<span class="math notranslate nohighlight">\(K\)</span>个候选物品聚合为单个样本<code class="docutils literal notranslate"><span class="pre">[用户特征,</span> <span class="pre">[候选1特征,</span> <span class="pre">...,</span> <span class="pre">候选K特征]]</span></code>，使得用户相关特征只需计算一次并在所有候选间共享。</p>
-<figure class="align-default" id="id12">
+<div class="figure align-default" id="id12">
 <span id="mtgr-architecture"></span><a class="reference internal image-reference" href="../_images/mtgr.png"><img alt="../_images/mtgr.png" src="../_images/mtgr.png" style="width: 400px;" /></a>
-<figcaption>
-<p><span class="caption-number">图5.3.2 </span><span class="caption-text">MTGR 用户样本聚合</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图5.3.2 </span><span class="caption-text">MTGR 用户样本聚合</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
 <p>为了有效处理这种异构序列，MTGR引入了两个关键技术组件。<strong>组层归一化（GLN）</strong>针对不同语义空间的token（如用户画像、物品特征）分别进行归一化，而非传统层归一化的统一处理。<strong>动态掩码策略</strong>精确控制信息流：静态用户特征对所有token可见；动态用户特征遵循因果关系；候选token之间相互不可见，防止信息泄露。需要强调的是，尽管MTGR被称为“生成式”模型，但它本质上是一个<strong>排序模型</strong>，其“生成式”特征主要体现在架构风格上——采用Transformer处理token序列，而最终目标仍是判别式的打分排序。</p>
 <p>HSTU在排序任务中的应用相对直接：通过将预测目标从“生成下一内容”切换为“预测对给定候选的动作/评分”，并调整相应的掩码机制，即可从召回模式转换为排序模式，展现了统一架构的灵活性。</p>
-</section>
-<section id="id8">
+</div>
+<div class="section" id="id8">
 <h2><span class="section-number">5.3.3. </span>端到端统一生成<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h2>
 <p><strong>OneRec模型</strong> <span id="id9">(<a class="reference internal" href="../chapter_references/references.html#id86" title="Deng, J., Wang, S., Cai, K., Ren, L., Hu, Q., Ding, W., … Zhou, G. (2025). Onerec: unifying retrieve and rank with generative recommender and iterative preference alignment. arXiv preprint arXiv:2502.18965.">Deng <em>et al.</em>, 2025</a>)</span>
 代表了生成式推荐的最高形态——端到端统一生成，它试图用单一模型完成从召回到排序的全流程。OneRec的核心创新是<strong>会话级生成</strong>：不再预测单一的下一个物品，而是直接生成一组有序的推荐列表（通常5-10个物品），这个列表被定义为一个“会话”。</p>
-<figure class="align-default" id="id13">
+<div class="figure align-default" id="id13">
 <span id="onerec-architecture"></span><a class="reference internal image-reference" href="../_images/onerec.png"><img alt="../_images/onerec.png" src="../_images/onerec.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图5.3.3 </span><span class="caption-text">OneRec 端到端统一生成</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图5.3.3 </span><span class="caption-text">OneRec 端到端统一生成</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</div>
 <p>OneRec采用标准的Encoder-Decoder架构，但在三个方面进行了重要扩展。首先是<strong>语义化物品表示</strong>：使用多级向量量化技术将每个物品转换为语义token序列，使模型能够理解物品的内容和含义而非仅仅是ID。其次是<strong>稀疏专家混合（MoE）</strong>：在解码器的前馈网络中引入MoE层，通过激活少数专家子网络来显著增加模型容量而不成比例增加计算成本。最后是<strong>迭代偏好对齐（IPA）</strong>：这是OneRec最具创新性的组件，它解决了推荐场景中难以获得显式偏好对比数据的问题。</p>
 <p>IPA的工作机制如下：首先训练一个奖励模型来预测会话质量（如观看时长、点赞数等）；然后使用当前OneRec模型为训练样本生成多个候选会话（通常128个）；奖励模型对所有候选进行评分，选择最高分的作为“选择”响应<span class="math notranslate nohighlight">\(S_w\)</span>，最低分的作为“拒绝”响应<span class="math notranslate nohighlight">\(S_l\)</span>；最后使用直接偏好优化（DPO）
 <span id="id10">(<a class="reference internal" href="../chapter_references/references.html#id87" title="Rafailov, R., Sharma, A., Mitchell, E., Manning, C. D., Ermon, S., &amp; Finn, C. (2023). Direct preference optimization: your language model is secretly a reward model. Advances in neural information processing systems, 36, 53728–53741.">Rafailov <em>et al.</em>, 2023</a>)</span> 损失函数更新模型。</p>
 <p>OneRec在线上推荐场景的部署取得了1.68%的用户总观看时长提升，证明了端到端统一生成的实用价值。然而，这种方法也带来了训练流程的复杂性：需要依次训练量化模型、基础生成模型、奖励模型，然后进行迭代的IPA-DPO循环，对工程实现提出了较高要求。</p>
-</section>
-</section>
+</div>
+</div>
 
 
         </div>
