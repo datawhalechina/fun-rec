@@ -525,7 +525,6 @@
 
 .. code:: python
 
-    plt.figure()
     plt.figure(figsize=(15, 20))
     i = 1
     for col in ['click_article_id', 'click_timestamp', 'click_environment', 'click_deviceGroup', 'click_os', 'click_country',
@@ -543,18 +542,7 @@
 
 
 
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    <Figure size 640x480 with 0 Axes>
-
-
-
-.. figure:: output_3.analysis_183fda_15_1.png
+.. figure:: output_3.analysis_183fda_15_0.png
 
 
 从点击时间clik_timestamp来看，分布较为平均，可不做特殊处理。由于时间戳是13位的，后续将时间格式转换成10位方便计算。
@@ -1066,7 +1054,7 @@
 .. code:: python
 
     print(item_df['category_id'].nunique())     # 461个文章主题
-    item_df['category_id'].hist()
+    _ = item_df['category_id'].hist(figsize=(5, 4), grid=False)
 
 
 .. raw:: latex
@@ -1080,20 +1068,7 @@
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    <Axes: >
-
-
-
-
-.. figure:: output_3.analysis_183fda_25_2.png
+.. figure:: output_3.analysis_183fda_25_1.png
 
 
 .. raw:: latex
@@ -1549,9 +1524,8 @@
 
 .. code:: python
 
-    def plot_envs(df, cols, r, c):
-        plt.figure()
-        plt.figure(figsize=(10, 5))
+    def plot_envs(df, cols, r, c, figsize=(8, 4)):
+        plt.figure(figsize=figsize)
         i = 1
         for col in cols:
             plt.subplot(r, c, i)
@@ -1575,18 +1549,11 @@
     sample_users = user_click_merge[user_click_merge['user_id'].isin(sample_user_ids)]
     cols = ['click_environment','click_deviceGroup', 'click_os', 'click_country', 'click_region','click_referrer_type']
     for _, user_df in sample_users.groupby('user_id'):
-        plot_envs(user_df, cols, 2, 3)
+        plot_envs(user_df, cols, 2, 3, figsize=(8, 4))
 
 
 
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    <Figure size 640x480 with 0 Axes>
+.. figure:: output_3.analysis_183fda_37_0.png
 
 
 
@@ -1594,14 +1561,7 @@
 
 
 
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    <Figure size 640x480 with 0 Axes>
+.. figure:: output_3.analysis_183fda_37_2.png
 
 
 
@@ -1609,48 +1569,7 @@
 
 
 
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    <Figure size 640x480 with 0 Axes>
-
-
-
-.. figure:: output_3.analysis_183fda_37_5.png
-
-
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    <Figure size 640x480 with 0 Axes>
-
-
-
-.. figure:: output_3.analysis_183fda_37_7.png
-
-
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    <Figure size 640x480 with 0 Axes>
-
-
-
-.. figure:: output_3.analysis_183fda_37_9.png
+.. figure:: output_3.analysis_183fda_37_4.png
 
 
 可以看出绝大多数数的用户的点击环境是比较固定的。思路：可以基于这些环境的统计特征来代表该用户本身的属性
@@ -1664,24 +1583,12 @@
 .. code:: python
 
     user_click_item_count = sorted(user_click_merge.groupby('user_id')['click_article_id'].count().values, reverse=True)
-    plt.plot(user_click_item_count)
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(user_click_item_count)
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x2d282f220>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_39_1.png
+.. figure:: output_3.analysis_183fda_39_0.png
 
 
 可以根据用户的点击文章次数看出用户的活跃度
@@ -1693,24 +1600,12 @@
 .. code:: python
 
     #点击次数在前50的用户
-    plt.plot(user_click_item_count[:50])
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(user_click_item_count[:50])
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x28a849c70>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_41_1.png
+.. figure:: output_3.analysis_183fda_41_0.png
 
 
 点击次数排前50的用户的点击次数都在100次以上。思路：我们可以定义点击次数大于等于100次的用户为活跃用户，这是一种简单的处理思路，
@@ -1723,24 +1618,12 @@
 .. code:: python
 
     #点击次数排名在[25000:50000]之间
-    plt.plot(user_click_item_count[25000:50000])
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(user_click_item_count[25000:50000])
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x2d2916820>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_43_1.png
+.. figure:: output_3.analysis_183fda_43_0.png
 
 
 可以看出点击次数小于等于两次的用户非常的多，这些用户可以认为是非活跃用户
@@ -1761,24 +1644,12 @@
 
 .. code:: python
 
-    plt.plot(item_click_count)
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(item_click_count)
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x2d2997790>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_46_1.png
+.. figure:: output_3.analysis_183fda_46_0.png
 
 
 .. raw:: latex
@@ -1787,24 +1658,12 @@
 
 .. code:: python
 
-    plt.plot(item_click_count[:100])
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(item_click_count[:100])
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x2d2a2c070>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_47_1.png
+.. figure:: output_3.analysis_183fda_47_0.png
 
 
 可以看出点击次数最多的前100篇新闻，点击次数大于1000次
@@ -1815,24 +1674,12 @@
 
 .. code:: python
 
-    plt.plot(item_click_count[:20])
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(item_click_count[:20])
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x2d2a9ab50>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_49_1.png
+.. figure:: output_3.analysis_183fda_49_0.png
 
 
 可以看出点击次数最多的前20篇新闻，点击次数大于2500。思路：可以定义这些新闻为热门新闻，
@@ -1844,24 +1691,12 @@
 
 .. code:: python
 
-    plt.plot(item_click_count[3500:])
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(item_click_count[3500:])
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x2d2ac4d60>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_51_1.png
+.. figure:: output_3.analysis_183fda_51_0.png
 
 
 可以发现很多新闻只被点击过一两次。思路：可以定义这些新闻是冷门新闻。
@@ -1957,24 +1792,12 @@
     #画个图直观地看一看
     x = union_item['click_article_id']
     y = union_item['count']
-    plt.scatter(x, y)
+    plt.figure(figsize=(5, 3))
+    _ = plt.scatter(x, y)
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    <matplotlib.collections.PathCollection at 0x2d2b40520>
-
-
-
-
-.. figure:: output_3.analysis_183fda_55_1.png
+.. figure:: output_3.analysis_183fda_55_0.png
 
 
 .. raw:: latex
@@ -1983,24 +1806,12 @@
 
 .. code:: python
 
-    plt.plot(union_item['count'].values[40000:])
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(union_item['count'].values[40000:])
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x2d29876d0>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_56_1.png
+.. figure:: output_3.analysis_183fda_56_0.png
 
 
 大概有70000个pair至少共现一次
@@ -2014,24 +1825,12 @@
 .. code:: python
 
     #不同类型的新闻出现的次数
-    plt.plot(user_click_merge['category_id'].value_counts().values)
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(user_click_merge['category_id'].value_counts().values)
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x289be2550>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_58_1.png
+.. figure:: output_3.analysis_183fda_58_0.png
 
 
 .. raw:: latex
@@ -2041,24 +1840,12 @@
 .. code:: python
 
     #出现次数比较少的新闻类型, 有些新闻类型，基本上就出现过几次
-    plt.plot(user_click_merge['category_id'].value_counts().values[150:])
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(user_click_merge['category_id'].value_counts().values[150:])
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x28a591c70>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_59_1.png
+.. figure:: output_3.analysis_183fda_59_0.png
 
 
 .. raw:: latex
@@ -2098,24 +1885,12 @@
 
 .. code:: python
 
-    plt.plot(user_click_merge['words_count'].values)
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(user_click_merge['words_count'].values)
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x28998bdf0>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_61_1.png
+.. figure:: output_3.analysis_183fda_61_0.png
 
 
 **用户点击的新闻类型的偏好**
@@ -2128,24 +1903,12 @@
 
 .. code:: python
 
-    plt.plot(sorted(user_click_merge.groupby('user_id')['category_id'].nunique(), reverse=True))
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(sorted(user_click_merge.groupby('user_id')['category_id'].nunique(), reverse=True))
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x28a3199d0>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_63_1.png
+.. figure:: output_3.analysis_183fda_63_0.png
 
 
 从上图中可以看出有一小部分用户阅读类型是极其广泛的，大部分人都处在20个新闻类型以下。
@@ -2242,24 +2005,12 @@
 
 .. code:: python
 
-    plt.plot(sorted(user_click_merge.groupby('user_id')['words_count'].mean(), reverse=True))
+    plt.figure(figsize=(5, 3))
+    _ =plt.plot(sorted(user_click_merge.groupby('user_id')['words_count'].mean(), reverse=True))
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x2899eb7f0>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_67_1.png
+.. figure:: output_3.analysis_183fda_67_0.png
 
 
 从上图中可以发现有一小部分人看的文章平均词数非常高，也有一小部分人看的平均文章次数非常低。
@@ -2272,24 +2023,12 @@
 .. code:: python
 
     #挑出大多数人的区间仔细看看
-    plt.plot(sorted(user_click_merge.groupby('user_id')['words_count'].mean(), reverse=True)[1000:45000])
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(sorted(user_click_merge.groupby('user_id')['words_count'].mean(), reverse=True)[1000:45000])
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x28a4098b0>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_69_1.png
+.. figure:: output_3.analysis_183fda_69_0.png
 
 
 可以发现大多数人都是看250字以下的文章
@@ -2560,24 +2299,12 @@
 
 .. code:: python
 
-    plt.plot(sorted(mean_diff_click_time.values, reverse=True))
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(sorted(mean_diff_click_time.values, reverse=True))
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x28a6aac10>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_77_1.png
+.. figure:: output_3.analysis_183fda_77_0.png
 
 
 从上图可以发现不同用户点击文章的时间差是有差异的。
@@ -2597,24 +2324,12 @@
 
 .. code:: python
 
-    plt.plot(sorted(mean_diff_created_time.values, reverse=True))
+    plt.figure(figsize=(5, 3))
+    _ = plt.plot(sorted(mean_diff_created_time.values, reverse=True))
 
 
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    [<matplotlib.lines.Line2D at 0x28a7c88b0>]
-
-
-
-
-.. figure:: output_3.analysis_183fda_80_1.png
+.. figure:: output_3.analysis_183fda_80_0.png
 
 
 从图中可以发现用户先后点击文章，文章的创建时间也是有差异的
@@ -2683,89 +2398,89 @@
       </thead>
       <tbody>
         <tr>
-          <th>41318</th>
-          <td>185469</td>
-          <td>42693</td>
-          <td>0.025770</td>
+          <th>11579</th>
+          <td>245280</td>
+          <td>181686</td>
+          <td>0.000882</td>
           <td>4</td>
           <td>1</td>
           <td>17</td>
           <td>1</td>
-          <td>4</td>
-          <td>1</td>
-          <td>8</td>
-          <td>8</td>
-          <td>67</td>
-          <td>0.989449</td>
-          <td>290</td>
-        </tr>
-        <tr>
-          <th>41319</th>
-          <td>185469</td>
-          <td>14425</td>
-          <td>0.025784</td>
-          <td>4</td>
-          <td>1</td>
-          <td>17</td>
-          <td>1</td>
-          <td>4</td>
-          <td>1</td>
-          <td>7</td>
-          <td>8</td>
-          <td>7</td>
-          <td>0.989457</td>
-          <td>255</td>
-        </tr>
-        <tr>
-          <th>41320</th>
-          <td>185469</td>
-          <td>166430</td>
-          <td>0.025853</td>
-          <td>4</td>
-          <td>1</td>
-          <td>17</td>
-          <td>1</td>
-          <td>4</td>
-          <td>1</td>
-          <td>6</td>
-          <td>8</td>
-          <td>289</td>
-          <td>0.989360</td>
-          <td>277</td>
-        </tr>
-        <tr>
-          <th>41321</th>
-          <td>185469</td>
-          <td>50823</td>
-          <td>0.025862</td>
-          <td>4</td>
-          <td>1</td>
-          <td>17</td>
-          <td>1</td>
-          <td>4</td>
+          <td>15</td>
           <td>1</td>
           <td>5</td>
-          <td>8</td>
-          <td>99</td>
-          <td>0.989385</td>
-          <td>213</td>
+          <td>5</td>
+          <td>301</td>
+          <td>0.988979</td>
+          <td>191</td>
         </tr>
         <tr>
-          <th>61227</th>
-          <td>178799</td>
-          <td>107205</td>
-          <td>0.028440</td>
+          <th>11580</th>
+          <td>245280</td>
+          <td>183046</td>
+          <td>0.000892</td>
           <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>15</td>
+          <td>1</td>
+          <td>4</td>
+          <td>5</td>
+          <td>301</td>
+          <td>0.988908</td>
+          <td>187</td>
+        </tr>
+        <tr>
+          <th>11581</th>
+          <td>245280</td>
+          <td>181335</td>
+          <td>0.000900</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>15</td>
+          <td>1</td>
           <td>3</td>
-          <td>2</td>
-          <td>1</td>
-          <td>25</td>
           <td>5</td>
+          <td>301</td>
+          <td>0.988499</td>
+          <td>191</td>
+        </tr>
+        <tr>
+          <th>65928</th>
+          <td>225426</td>
+          <td>158536</td>
+          <td>0.005472</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>19</td>
           <td>2</td>
+          <td>10</td>
+          <td>10</td>
+          <td>281</td>
+          <td>0.989112</td>
+          <td>858</td>
+        </tr>
+        <tr>
+          <th>65929</th>
+          <td>225426</td>
+          <td>199198</td>
+          <td>0.005485</td>
+          <td>4</td>
+          <td>1</td>
+          <td>17</td>
+          <td>1</td>
+          <td>19</td>
           <td>2</td>
-          <td>228</td>
-          <td>0.989291</td>
-          <td>119</td>
+          <td>9</td>
+          <td>10</td>
+          <td>323</td>
+          <td>0.989226</td>
+          <td>221</td>
         </tr>
       </tbody>
     </table>
@@ -2795,6 +2510,7 @@
 
 .. code:: python
 
+    plt.figure(figsize=(5, 3))
     for _, user_df in sub_user_info.groupby('user_id'):
         item_sim_list = get_item_sim_list(user_df)
         plt.plot(item_sim_list)

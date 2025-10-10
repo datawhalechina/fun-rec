@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -329,21 +330,23 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="personalized-rerank">
+  <section id="personalized-rerank">
 <span id="id1"></span><h1><span class="section-number">4.2. </span>基于个性化的重排<a class="headerlink" href="#personalized-rerank" title="Permalink to this heading">¶</a></h1>
 <p>上一节我们探讨了基于贪心策略的重排序方法，如MMR (Maximal Marginal
 Relevance) 和 DPP (Determinantal Point
 Processes)。这些方法通过显式定义多样性、相关性或覆盖度的优化目标，在初始排序列表上进行局部调整。它们计算高效且可解释性强，但在处理复杂的物品间相互影响和深度个性化方面存在局限：目标函数往往需要手工设计，难以捕捉高阶、非线性的交互模式；同时，将用户个性化信息深度融入列表级优化也颇具挑战。</p>
 <p>接下来会介绍两个经典的个性化重排模型：PRM和PRS。</p>
-<div class="section" id="prm">
+<section id="prm">
 <h2><span class="section-number">4.2.1. </span>PRM<a class="headerlink" href="#prm" title="Permalink to this heading">¶</a></h2>
 <p>PRM (Personalized Re-Ranking Model) <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id57" title="Pei, C., Zhang, Y., Zhang, Y., Sun, F., Lin, X., Sun, H., … others. (2019). Personalized re-ranking for recommendation. Proceedings of the 13th ACM conference on recommender systems (pp. 3–11).">Pei <em>et al.</em>, 2019</a>)</span>
 的提出，标志着重排序技术从基于规则/启发式向数据驱动、端到端学习的重要转变。其核心思想是：利用强大的序列建模能力（Transformer）自动学习列表中物品间复杂的相互影响，并将细粒度的用户个性化信息深度融入整个重排序过程，通过最大化列表级效用目标（如点击率）进行全局优化。
 PRM不再依赖预设的多样性公式，而是让模型直接从数据中学习最优的物品组合方式，同时精准反映用户的独特偏好。下图展示了PRM的整体架构：</p>
-<div class="figure align-default" id="id4">
+<figure class="align-default" id="id4">
 <span id="prm-architecture"></span><a class="reference internal image-reference" href="../_images/prm_architecture.png"><img alt="../_images/prm_architecture.png" src="../_images/prm_architecture.png" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-number">图4.2.1 </span><span class="caption-text">PRM模型架构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图4.2.1 </span><span class="caption-text">PRM模型架构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p><strong>输入层</strong></p>
 <p>输入层的核心任务是为初始列表 <span class="math notranslate nohighlight">\(S = [i_1, i_2, ..., i_n]\)</span>
 中的每个物品 <span class="math notranslate nohighlight">\(i_j\)</span>
@@ -480,22 +483,24 @@ Softmax 函数。Softmax 在此扮演两个关键角色：</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------+---------+--------------+-------------+------------+-----------+--------------+-------------+------------+-----------+--------+-------+</span>
 <span class="o">|</span>   <span class="nb">map</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="nb">map</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">new_map</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">new_map</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">new_p</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">new_p</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">old_map</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">old_map</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">old_p</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">old_p</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">p</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">p</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+==========+=========+==============+=============+============+===========+==============+=============+============+===========+========+=======+</span>
-<span class="o">|</span>   <span class="mf">0.1848</span> <span class="o">|</span>  <span class="mf">0.1676</span> <span class="o">|</span>       <span class="mf">0.1848</span> <span class="o">|</span>      <span class="mf">0.1676</span> <span class="o">|</span>     <span class="mf">0.0673</span> <span class="o">|</span>     <span class="mf">0.071</span> <span class="o">|</span>       <span class="mf">0.2954</span> <span class="o">|</span>      <span class="mf">0.2824</span> <span class="o">|</span>     <span class="mf">0.0936</span> <span class="o">|</span>    <span class="mf">0.1196</span> <span class="o">|</span> <span class="mf">0.0673</span> <span class="o">|</span> <span class="mf">0.071</span> <span class="o">|</span>
+<span class="o">|</span>   <span class="mf">0.2504</span> <span class="o">|</span>  <span class="mf">0.2456</span> <span class="o">|</span>       <span class="mf">0.2504</span> <span class="o">|</span>      <span class="mf">0.2456</span> <span class="o">|</span>     <span class="mf">0.0706</span> <span class="o">|</span>     <span class="mf">0.087</span> <span class="o">|</span>       <span class="mf">0.2954</span> <span class="o">|</span>      <span class="mf">0.2824</span> <span class="o">|</span>     <span class="mf">0.0936</span> <span class="o">|</span>    <span class="mf">0.1196</span> <span class="o">|</span> <span class="mf">0.0706</span> <span class="o">|</span> <span class="mf">0.087</span> <span class="o">|</span>
 <span class="o">+----------+---------+--------------+-------------+------------+-----------+--------------+-------------+------------+-----------+--------+-------+</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="prs">
+</section>
+<section id="prs">
 <h2><span class="section-number">4.2.2. </span>PRS<a class="headerlink" href="#prs" title="Permalink to this heading">¶</a></h2>
 <p>虽然PRM通过Transformer架构实现了端到端的个性化重排序，但它仍然存在一个根本性的局限：<strong>缺乏对排列组合影响的深度理解</strong>。
 想象这样一个场景：用户面对商品列表 [A, B, C] 时毫无购买欲望，但当看到
 [B, A, C] 这个排列时却购买了商品A。这种现象被称为 <strong>排列变异影响</strong>
 (Permutation-Variant
 Influence)。一个可能的解释是：将价格较高的商品B放在前面，会让用户觉得商品A相对便宜，从而激发购买欲望。</p>
-<div class="figure align-default" id="id5">
+<figure class="align-default" id="id5">
 <span id="prs-permutation-influence"></span><a class="reference internal image-reference" href="../_images/prs_permutation_influence.png"><img alt="../_images/prs_permutation_influence.png" src="../_images/prs_permutation_influence.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">图4.2.2 </span><span class="caption-text">排列变异影响</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图4.2.2 </span><span class="caption-text">排列变异影响</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>这个观察引出了一个重要问题：传统的重排序方法（包括PRM）主要关注单个物品的分数优化，却忽略了<strong>物品排列顺序本身对用户行为的影响</strong>。</p>
 <p>PRS <span id="id3">(<a class="reference internal" href="../chapter_references/references.html#id88" title="Feng, Y., Gong, Y., Sun, F., Ge, J., &amp; Ou, W. (2021). Revisit recommender system in the permutation prospective. arXiv preprint arXiv:2102.12057.">Feng <em>et al.</em>, 2021</a>)</span>
 的设计哲学可以用一个简单而深刻的题目来概括：<strong>如果我们能够评估所有可能的物品排列组合，并选择其中用户体验最佳的那一个，会怎样？</strong>
@@ -506,11 +511,13 @@ Influence)。一个可能的解释是：将价格较高的商品B放在前面，
 </ol>
 <p>这种设计既保证了计算效率，又能够捕捉到排列组合对用户体验的深层影响。</p>
 <p><strong>PRS整体架构</strong></p>
-<div class="figure align-default" id="id6">
+<figure class="align-default" id="id6">
 <span id="prs-framework"></span><a class="reference internal image-reference" href="../_images/prs_framework.png"><img alt="../_images/prs_framework.png" src="../_images/prs_framework.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">图4.2.3 </span><span class="caption-text">PRS框架整体架构</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
-<div class="section" id="pmatch">
+<figcaption>
+<p><span class="caption-number">图4.2.3 </span><span class="caption-text">PRS框架整体架构</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="pmatch">
 <h3><span class="section-number">4.2.2.1. </span>PMatch阶段：智能候选排列生成<a class="headerlink" href="#pmatch" title="Permalink to this heading">¶</a></h3>
 <p>PMatch (Permutation-Matching)
 阶段的使命是从指数级的排列空间中，高效地识别出最有潜力的候选排列。这个阶段采用了一种名为FPSA
@@ -532,10 +539,12 @@ Influence)。一个可能的解释是：将价格较高的商品B放在前面，
 分别表示用户和物品的特征向量，<span class="math notranslate nohighlight">\(\sigma\)</span>
 是sigmoid激活函数。两个模型都使用交叉熵损失进行训练。</p>
 <p><strong>在线服务：FPSA算法</strong></p>
-<div class="figure align-default" id="id7">
+<figure class="align-default" id="id7">
 <span id="prs-fpsa"></span><a class="reference internal image-reference" href="../_images/prs_fpsa.png"><img alt="../_images/prs_fpsa.png" src="../_images/prs_fpsa.png" style="width: 300px;" /></a>
-<p class="caption"><span class="caption-number">图4.2.4 </span><span class="caption-text">FPSA结构图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图4.2.4 </span><span class="caption-text">FPSA结构图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>上图展示了FPSA算法在整个PRS框架中的位置和核心组件。我们可以看到：</p>
 <ol class="arabic simple">
 <li><p><strong>输入处理</strong>：算法接收来自ranking阶段的候选物品集合C，每个物品都有丰富的特征表示</p></li>
@@ -671,18 +680,20 @@ Reward)</strong>：衡量排列中物品被点击的总概率，确保排列具�
 <li><p><strong>曝光概率的递减</strong>
 真实地模拟了用户浏览行为：越往后的物品，被用户看到的概率越低</p></li>
 </ul>
-</div>
-<div class="section" id="prank">
+</section>
+<section id="prank">
 <h3><span class="section-number">4.2.2.2. </span>PRank阶段：深度排列评估<a class="headerlink" href="#prank" title="Permalink to this heading">¶</a></h3>
 <p>PRank (Permutation-Ranking)
 阶段接收PMatch生成的候选排列，使用一个专门设计的神经网络模型DPWN (Deep
 Permutation-Wise Network) 来精确评估每个排列的质量。</p>
 <p><strong>DPWN模型架构</strong></p>
 <p>DPWN的设计理念是：<strong>排列中每个物品的价值不仅取决于它自身的特征，更取决于它在整个序列上下文中的位置和作用</strong>。为了捕捉这种复杂的序列依赖关系，DPWN采用了Bi-LSTM架构：</p>
-<div class="figure align-default" id="id8">
+<figure class="align-default" id="id8">
 <span id="prs-dpwn-architecture"></span><a class="reference internal image-reference" href="../_images/prs_dpwn_architecture.png"><img alt="../_images/prs_dpwn_architecture.png" src="../_images/prs_dpwn_architecture.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">图4.2.5 </span><span class="caption-text">DPWN模型架构</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图4.2.5 </span><span class="caption-text">DPWN模型架构</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p><strong>模型结构介绍</strong></p>
 <ol class="arabic simple">
 <li><p><strong>序列编码层</strong>：对于输入序列中的第t个物品，DPWN使用双向LSTM计算其上下文表示：</p></li>
@@ -712,9 +723,9 @@ Reward，它被定义为排列中所有物品预测点击概率的总和：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-3-rerank-2-personalized-8">
 <span class="eqno">(4.2.9)<a class="headerlink" href="#equation-chapter-3-rerank-2-personalized-8" title="Permalink to this equation">¶</a></span>\[LR(O) = \sum_{t=1}^{|O|} p_t\]</div>
 <p>这个简单而有效的指标反映了整个排列的预期收益。在线服务时，PRank会计算每个候选排列的LR值，并选择LR最高的排列作为最终输出。</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
         </div>

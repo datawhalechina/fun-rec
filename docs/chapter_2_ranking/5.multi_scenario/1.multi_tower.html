@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -114,11 +115,9 @@ Show Source
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.summary.html">2.1.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -237,11 +236,9 @@ Show Source
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.summary.html">2.1.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -330,25 +327,29 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="multi-tower">
+  <section id="multi-tower">
 <span id="id1"></span><h1><span class="section-number">3.5.1. </span>多塔结构<a class="headerlink" href="#multi-tower" title="Permalink to this heading">¶</a></h1>
 <p>在多目标建模领域，如 MMoE
 所展现的那样，专家网络（Expert）承担着挖掘不同任务之间共享的底层特征表示的重任，而门控网络（Gate）则灵活地动态分配专家权重，依据不同任务的特性需求进行精准适配。这种由
 “共享专家 + 任务专属门控”
 构成的架构，与生俱来地具备处理共性（共享专家所提取的通用特征）与特性（门控网络赋予的特定权重）的卓越能力。</p>
 <p>多场景建模与多任务学习类似但关注点不同：多任务学习处理相同场景/分布下的不同任务（如单样本同时预估CTR、CVR），而多场景建模处理不同场景/分布下的相同任务（如不同场景预估相同CTR）。前者是对于一条样本预估多个不同的目标值，后者是对于不同的样本预估相同的目标值。多场景建模若采用独立模型，会忽视场景共性，导致小场景效果差且资源消耗剧增；若混合样本训练单一模型，则会忽视场景差异，降低预测精度。</p>
-<div class="figure align-default" id="id2">
+<figure class="align-default" id="id2">
 <span id="multi-tower-diff"></span><a class="reference internal image-reference" href="../../_images/star_1.png"><img alt="../../_images/star_1.png" src="../../_images/star_1.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">图3.5.1 </span><span class="caption-text">多目标与多场景建模的差异(图片来自阿里妈妈博客)</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.5.1 </span><span class="caption-text">多目标与多场景建模的差异(图片来自阿里妈妈博客)</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>本小节将会介绍基于多塔结构建模时，在利用多场景共性的前提下，显示的使用不同场景的信号来捕捉场景的特性。</p>
-<div class="section" id="hmoe">
+<section id="hmoe">
 <h2><span class="section-number">3.5.1.1. </span>HMoE<a class="headerlink" href="#hmoe" title="Permalink to this heading">¶</a></h2>
 <p>在多任务建模小节中，介绍了MMoE（Mixture-of-Experts）底层通过多专家网络作为多任务的共享特征，顶层对于不同的任务使用门控机制融合专家特征实现不同任务差异化的学习。在多场景建模中HMoE借鉴了MMoE的思路，底层同样适用多专家网络提取提取多个场景的特征作为共享特征，只不过顶层的多个塔不再是多个任务的输出，而是多个场景的输出，HMoE模型结构如下：</p>
-<div class="figure align-default" id="id3">
+<figure class="align-default" id="id3">
 <span id="hmoe-model-structure"></span><a class="reference internal image-reference" href="../../_images/hmoe.png"><img alt="../../_images/hmoe.png" src="../../_images/hmoe.png" style="width: 300px;" /></a>
-<p class="caption"><span class="caption-number">图3.5.2 </span><span class="caption-text">HMoE模型结构</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.5.2 </span><span class="caption-text">HMoE模型结构</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>模型的底层使用多个专家抽取多个场景的特征，并通过一组门控网络将多个专家的输出结果进行融合，最后输入给上层不同的场景塔。</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-5-multi-scenario-1-multi-tower-0">
 <span class="eqno">(3.5.1)<a class="headerlink" href="#equation-chapter-2-ranking-5-multi-scenario-1-multi-tower-0" title="Permalink to this equation">¶</a></span>\[M(x) = \sum_{i=1}^{K} G_i(x) E_i(x)\]</div>
@@ -486,32 +487,36 @@ Show Source
 <span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+---------------+</span>
-<span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
-<span class="o">+========+========+===============+</span>
-<span class="o">|</span> <span class="mf">0.5676</span> <span class="o">|</span>  <span class="mf">0.537</span> <span class="o">|</span>           <span class="mi">217</span> <span class="o">|</span>
-<span class="o">+--------+--------+---------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+------------+</span>
+<span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">val_user</span> <span class="o">|</span>
+<span class="o">+========+========+============+</span>
+<span class="o">|</span> <span class="mf">0.5824</span> <span class="o">|</span> <span class="mf">0.5489</span> <span class="o">|</span>        <span class="mi">217</span> <span class="o">|</span>
+<span class="o">+--------+--------+------------+</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="star">
+</section>
+<section id="star">
 <h2><span class="section-number">3.5.1.2. </span>STAR<a class="headerlink" href="#star" title="Permalink to this heading">¶</a></h2>
 <p>STAR（Star Topology Adaptive
 Recommender）模型采用星型拓扑结构，实现场景私有参数和场景共享参数同时建模场景差异性和共性。场景私有参数以及场景共享参数最终聚合得到每个场景的模型。STAR结构如下图所示。</p>
-<div class="figure align-default" id="id4">
+<figure class="align-default" id="id4">
 <span id="star-model-structure"></span><a class="reference internal image-reference" href="../../_images/star_2.png"><img alt="../../_images/star_2.png" src="../../_images/star_2.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">图3.5.3 </span><span class="caption-text">STAR模型结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.5.3 </span><span class="caption-text">STAR模型结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>相比于单场景的模型，STAR有三个针对多场景建模的创新思路值得学习，分别是星型拓扑结构的全连接网络（STAR
 Topology Fully-Connected Network），Partitioned Normalization
 以及辅助网络，下面将以此进行介绍。</p>
 <p><strong>STAR Topology Fully-Connected Network</strong></p>
 <p>星形拓扑全连接结构的核心思想是对于每一个全连接网络（FCN）都有场景共享和场景独占的部分，每个场景最终的参数由共享和独占参数通过element-wise
 product融合计算得到。</p>
-<div class="figure align-default" id="id5">
+<figure class="align-default" id="id5">
 <span id="star-fcn-structure"></span><a class="reference internal image-reference" href="../../_images/star_fcn.png"><img alt="../../_images/star_fcn.png" src="../../_images/star_fcn.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">图3.5.4 </span><span class="caption-text">STAR FCN结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.5.4 </span><span class="caption-text">STAR FCN结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>具体而言，对于第<span class="math notranslate nohighlight">\(p\)</span>个场景的FCN的最终参数<span class="math notranslate nohighlight">\(W_p^{\star},b_p^{\star}\)</span>表示如下：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-5-multi-scenario-1-multi-tower-3">
 <span class="eqno">(3.5.4)<a class="headerlink" href="#equation-chapter-2-ranking-5-multi-scenario-1-multi-tower-3" title="Permalink to this equation">¶</a></span>\[\begin{split}W_p^{\star} = W_p \otimes W \\
@@ -729,7 +734,7 @@ Network)，辅助网络将场景特征和其他特征共同输入到浅层网络
 <p>完整的实践流程： <strong>1. 导入相关代码包</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_metrics_table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_metrics_table</span><span class="p">,</span> <span class="n">print_table</span>
 </pre></div>
 </div>
 <p><strong>2. 特征处理</strong></p>
@@ -744,18 +749,18 @@ Network)，辅助网络将场景特征和其他特征共同输入到浅层网络
 </div>
 <p><strong>4. 模型效果评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+<span class="n">print_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+---------------+</span>
-<span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
-<span class="o">+========+========+===============+</span>
-<span class="o">|</span> <span class="mf">0.6383</span> <span class="o">|</span> <span class="mf">0.6157</span> <span class="o">|</span>           <span class="mi">693</span> <span class="o">|</span>
-<span class="o">+--------+--------+---------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------+----------+------------+</span>
+<span class="o">|</span>      <span class="n">auc</span> <span class="o">|</span>     <span class="n">gauc</span> <span class="o">|</span>   <span class="n">val_user</span> <span class="o">|</span>
+<span class="o">+==========+==========+============+</span>
+<span class="o">|</span> <span class="mf">0.634766</span> <span class="o">|</span> <span class="mf">0.613918</span> <span class="o">|</span>        <span class="mi">693</span> <span class="o">|</span>
+<span class="o">+----------+----------+------------+</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>

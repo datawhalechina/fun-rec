@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -26,7 +27,7 @@
     <script src="../../_static/d2l.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="2.1.1. 基于用户的协同过滤" href="1.usercf.html" />
+    <link rel="next" title="2.1.1. 基于物品的协同过滤" href="1.itemcf.html" />
     <link rel="prev" title="2. 召回模型" href="../index.html" /> 
   </head>
 <body>
@@ -112,11 +113,9 @@ Show Source
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 召回模型</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.summary.html">2.1.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -235,11 +234,9 @@ Show Source
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 召回模型</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.summary.html">2.1.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -328,7 +325,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="id1">
+  <section id="id1">
 <h1><span class="section-number">2.1. </span>协同过滤<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>协同过滤（Collaborative
 Filtering）是推荐系统中最基础的技术之一。它的基本想法很简单：如果两个用户过去喜欢相似的物品，那么他们未来也可能有相似的偏好。或者反过来说，如果两个物品被相似的用户群体喜欢，那么喜欢其中一个物品的用户也可能喜欢另一个。</p>
@@ -336,24 +333,20 @@ Filtering）是推荐系统中最基础的技术之一。它的基本想法很�
 中被提出，后来在Amazon、Netflix等公司得到了广泛应用。</p>
 <p>协同过滤的工作过程可以简单描述为：首先收集用户的历史行为数据（如评分、点击、购买记录），然后计算用户之间或物品之间的相似度，最后基于这些相似度为用户生成推荐。</p>
 <p>根据计算相似度的对象不同，协同过滤可以分为两种基本类型：</p>
-<p>基于用户的协同过滤（User-based CF）(<a class="reference internal" href="1.usercf.html#usercf"><span class="std std-numref">2.1.1节</span></a>)
-：找到与目标用户兴趣相似的其他用户，然后推荐这些相似用户喜欢的物品。</p>
-<p>基于物品的协同过滤（Item-based CF）(<a class="reference internal" href="2.itemcf.html#itemcf"><span class="std std-numref">2.1.2节</span></a>)
-：找到与用户历史喜欢物品相似的其他物品进行推荐。</p>
-<p>除了这两种传统方法，矩阵分解（Matrix
-Factorization）(<a class="reference internal" href="4.mf.html#matrix-factorization"><span class="std std-numref">2.1.4节</span></a>)
-作为一种基于模型的协同过滤方法，通过学习用户和物品的低维向量表示来进行推荐，在实际应用中也取得了很好的效果。</p>
-<p>接下来我们将详细介绍这些协同过滤方法的原理和实现。</p>
+<p><strong>基于物品的协同过滤（Item-based CF）</strong>
+(<a class="reference internal" href="1.itemcf.html#itemcf"><span class="std std-numref">2.1.1节</span></a>)：找到与用户历史喜欢物品相似的其他物品进行推荐。我们从ItemCF开始介绍，主要基于以下考虑：首先，ItemCF在工业界应用更广泛，Amazon早在2003年就将其成功应用于电商推荐；其次，物品数量通常少于用户数量且属性更稳定，相似度矩阵维护成本更低。Swing算法作为ItemCF的改进方法，通过分析用户-物品二部图结构来提升相似度计算的鲁棒性，我们将其作为ItemCF的自然延伸一并介绍。</p>
+<p><strong>基于用户的协同过滤（User-based CF）</strong>
+(<a class="reference internal" href="2.usercf.html#usercf"><span class="std std-numref">2.1.2节</span></a>)：找到与目标用户兴趣相似的其他用户，然后推荐这些相似用户喜欢的物品。UserCF作为协同过滤的开山之作，其“用户可以用向量表示”的理念对后续方法影响深远。矩阵分解（Matrix
+Factorization，<a class="reference internal" href="2.usercf.html#matrix-factorization"><span class="std std-numref">2.1.2.2节</span></a>）标志着协同过滤从邻域方法向向量化表示的范式转变，通过学习用户和物品的低维向量来预测偏好，为后续的向量召回技术奠定了基础。我们将矩阵分解作为UserCF的发展方向一并介绍。</p>
+<p>接下来我们将详细介绍这些协同过滤方法的原理和实现，从基于邻域的统计方法到基于模型的学习方法，逐步展现协同过滤技术的演进历程。</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l1"><a class="reference internal" href="3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l1"><a class="reference internal" href="5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3.summary.html">2.1.3. 总结</a></li>
 </ul>
 </div>
-</div>
+</section>
 
 
         </div>
@@ -371,11 +364,11 @@ Factorization）(<a class="reference internal" href="4.mf.html#matrix-factorizat
             <div>2. 召回模型</div>
          </div>
      </a>
-     <a id="button-next" href="1.usercf.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+     <a id="button-next" href="1.itemcf.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
          <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
         <div class="pagenation-text">
             <span class="pagenation-direction">Next</span>
-            <div>2.1.1. 基于用户的协同过滤</div>
+            <div>2.1.1. 基于物品的协同过滤</div>
         </div>
      </a>
   </div>

@@ -750,7 +750,7 @@ def evaluate_ranking_model(
             # 每个任务的gAUC
             gauc, valid_users = group_auc(test_features, labels_array, preds)
             metrics[f"gauc{suffix}"] = gauc
-            metrics[f"valid_users{suffix}"] = valid_users
+            metrics[f"val_user{suffix}"] = valid_users
 
         # 如果有多任务，平均AUC和gAUC
         auc_values = [
@@ -776,7 +776,7 @@ def evaluate_ranking_model(
 
         auc = roc_auc_score(test_labels_array, predictions.flatten())
         gauc, valid_users = group_auc(test_features, test_labels_array, predictions)
-        return {"auc": auc, "gauc": gauc, "valid_users": valid_users}
+        return {"auc": auc, "gauc": gauc, "val_user": valid_users}
 
 
 def evaluate_rerank_model(

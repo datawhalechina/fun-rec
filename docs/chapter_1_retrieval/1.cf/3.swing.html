@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -330,13 +331,15 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="swing">
+  <section id="swing">
 <span id="id1"></span><h1><span class="section-number">2.1.3. </span>Swing 算法<a class="headerlink" href="#swing" title="Permalink to this heading">¶</a></h1>
 <p>当你在电商平台购买了一件T恤后，系统会向你推荐什么？如果是其他款式的T恤，这属于替代性推荐；如果是配套的裤子或配饰，这就是互补性推荐。传统的Item-based协同过滤在处理这类细粒度的商品关系时往往力不从心——它将所有用户-物品交互一视同仁，无论是用户深思熟虑的购买，还是偶然的误点击、好奇心驱动的浏览，都被赋予相同的权重。这种做法不仅难以区分真正的兴趣关联和随机噪声，更无法有效捕捉物品间的替代性与互补性关系。</p>
-<div class="figure align-default" id="id5">
+<figure class="align-default" id="id5">
 <span id="swing-illustration"></span><a class="reference internal image-reference" href="../../_images/swing_illustration.svg"><img alt="../../_images/swing_illustration.svg" src="../../_images/swing_illustration.svg" width="400px" /></a>
-<p class="caption"><span class="caption-number">图2.1.3 </span><span class="caption-text">产品之间的替代性和互补性关系</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图2.1.3 </span><span class="caption-text">产品之间的替代性和互补性关系</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>Swing Score <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id7" title="Yang, X., Zhu, Y., Zhang, Y., Wang, X., &amp; Yuan, Q. (2020). Large scale product graph construction for recommendation in e-commerce. arXiv preprint arXiv:2010.05525.">Yang <em>et al.</em>, 2020</a>)</span>
 提供了一个新的解题思路。它不再简单地统计共同购买次数，而是深入分析用户-物品二部图中的内部子结构，通过捕捉那些在用户行为中反复出现、具备较强“鲁棒性”的共同购买关系来度量物品相似性。其核心洞察是：<strong>如果多个用户在其他共同购买行为较少的情况下，同时购买了同一对物品，那么这对物品之间的关联性就更可信</strong>。</p>
 <p>基于这一思想，Swing算法能够构建更准确的产品索引，并在此基础上衍生出Surprise算法来专门处理互补商品推荐的挑战。</p>
@@ -363,10 +366,12 @@ Show Source
 <p>让我们通过一个具体例子来理解这个公式。如 <a class="reference internal" href="#swing-score"><span class="std std-numref">图2.1.4</span></a>
 所示，红色边连接的子图表示一个swing结构。用户A和B有四个swing结构，分别是
 <span class="math notranslate nohighlight">\([A, h, B]\)</span>、<span class="math notranslate nohighlight">\([A, t, B]\)</span>、<span class="math notranslate nohighlight">\([A, r, B]\)</span>、<span class="math notranslate nohighlight">\([A, p, B]\)</span>。</p>
-<div class="figure align-default" id="id6">
+<figure class="align-default" id="id6">
 <span id="swing-score"></span><a class="reference internal image-reference" href="../../_images/swing_score.svg"><img alt="../../_images/swing_score.svg" src="../../_images/swing_score.svg" width="250px" /></a>
-<p class="caption"><span class="caption-number">图2.1.4 </span><span class="caption-text">Swing Score 计算示意图</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图2.1.4 </span><span class="caption-text">Swing Score 计算示意图</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>假设 <span class="math notranslate nohighlight">\(\alpha = 1\)</span>，那么：</p>
 <ul class="simple">
 <li><p>用户对 <span class="math notranslate nohighlight">\([A, B]\)</span>
@@ -384,7 +389,7 @@ score为：<span class="math notranslate nohighlight">\(s(h, t) = s(h, r) = \fra
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-swing-0">
 <span class="eqno">(2.1.15)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-swing-0" title="Permalink to this equation">¶</a></span>\[s(i, j) = \sum_{u \in U_i \cap U_j} \sum_{v \in U_i \cap U_j} w_u \cdot w_v \cdot \frac{1}{\alpha + |I_u \cap I_v|}\]</div>
 <p>这个公式能够精准刻画物品之间的关联强度，为推荐系统提供更可靠的相似度度量。</p>
-<div class="section" id="surprise">
+<section id="surprise">
 <h2><span class="section-number">2.1.3.1. </span>Surprise 算法：互补商品推荐的进阶方案<a class="headerlink" href="#surprise" title="Permalink to this heading">¶</a></h2>
 <p>虽然Swing
 Score已经能够有效捕捉物品间的关联关系，但在处理互补商品推荐时仍面临挑战。相比替代关系，互补关系具有明确的时序性和方向性——用户通常先购买主商品，再购买配套商品（如先买手机再买手机壳）。为了更好地挖掘这类关系，Swing论文基于Swing
@@ -399,10 +404,12 @@ Score提出了Surprise算法。</p>
 <p>其中，<span class="math notranslate nohighlight">\(N(c_{i,j})\)</span> 表示先购买类别 <span class="math notranslate nohighlight">\(i\)</span> 后又购买类别
 <span class="math notranslate nohighlight">\(j\)</span> 这一事件发生的次数，<span class="math notranslate nohighlight">\(N(c_j)\)</span> 表示购买类别 <span class="math notranslate nohighlight">\(j\)</span>
 的次数。考虑到不同类别的数量差异，我们采用最大相对落点作为划分阈值来筛选相关类别。</p>
-<div class="figure align-default" id="id7">
+<figure class="align-default" id="id7">
 <span id="swing-max-drop"></span><a class="reference internal image-reference" href="../../_images/swing_max_drop.png"><img alt="../../_images/swing_max_drop.png" src="../../_images/swing_max_drop.png" style="width: 1000px;" /></a>
-<p class="caption"><span class="caption-number">图2.1.5 </span><span class="caption-text">最大相对落点示意图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图2.1.5 </span><span class="caption-text">最大相对落点示意图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>例如，图(a)中T恤类选取了前八个相关类别，而图(b)中手机类选择了前三个相关类别。</p>
 <p><strong>商品层面</strong></p>
 <p>针对类别相关的商品对，Surprise算法重点考虑两个因素：购买顺序的重要性（如先买手机后买充电宝比反之更合理）以及时间间隔的影响（间隔越短，互补性越强）。</p>
@@ -429,8 +436,8 @@ Score提出了Surprise算法。</p>
 代表聚类层面的互补相关性。</p>
 <p>通过这种多层次的综合分析，Surprise算法成功拓展了Swing
 Score的应用范围，为互补商品推荐提供了一套系统而高效的解决方案。该方法不仅利用了类别信息和标签传播技术有效解决了数据稀疏问题，还能够准确捕捉商品间的时序和方向性关系，从而提升推荐系统的整体效果。</p>
-</div>
-<div class="section" id="id4">
+</section>
+<section id="id4">
 <h2><span class="section-number">2.1.3.2. </span>代码实践<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
 <p>首先，我们导入funrec库中的核心组件：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -505,8 +512,8 @@ Score的计算，它通过分析用户-物品二部图中的swing结构来度量
 <span class="o">+---------------+--------------+----------------+---------------+</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>

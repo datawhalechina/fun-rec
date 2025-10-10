@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -330,18 +331,20 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="higher-order-feature-crossing">
+  <section id="higher-order-feature-crossing">
 <span id="id1"></span><h1><span class="section-number">3.2.2. </span>高阶特征交叉<a class="headerlink" href="#higher-order-feature-crossing" title="Permalink to this heading">¶</a></h1>
 <p>在掌握了二阶特征交叉的各种技术后，我们发现这些模型虽然能够显式地处理二阶交互，但对于更高阶的特征组合，它们主要依赖于深度神经网络（DNN）部分来隐式学习。然而，这种“隐式”学习的过程如同一个黑盒，我们很难解释模型具体学习到了哪些特征的组合，以及这些组合是如何影响最终预测的。因此，研究者们开始探索能否设计出像FM处理二阶交叉一样，能够<strong>显式地、可控地捕捉高阶交叉</strong>的网络结构，从而在提升模型性能的同时，增强模型的可解释性。</p>
-<div class="section" id="dcn">
+<section id="dcn">
 <h2><span class="section-number">3.2.2.1. </span>DCN: 残差连接的高阶交叉<a class="headerlink" href="#dcn" title="Permalink to this heading">¶</a></h2>
 <p>为了解决上述问题，Deep &amp; Cross Network (DCN) <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id43" title="Wang, R., Fu, B., Fu, G., &amp; Wang, M. (2017). Deep &amp; cross network for ad click predictions. Proceedings of the ADKDD'17 (pp. 1–7).">Wang <em>et al.</em>, 2017</a>)</span>
 通过一个创新的Cross Network来替代Wide &amp;
 Deep模型中的Wide部分。该网络的核心思想是在每一层都与原始的输入特征进行交叉，从而以一种显式且可控的方式，自动构建更高阶的特征交互，而无需繁琐的人工特征工程。</p>
-<div class="figure align-default" id="id6">
+<figure class="align-default" id="id6">
 <span id="dcn-model-structure"></span><a class="reference internal image-reference" href="../../_images/deepcross.png"><img alt="../../_images/deepcross.png" src="../../_images/deepcross.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">图3.2.7 </span><span class="caption-text">DCN模型结构</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.2.7 </span><span class="caption-text">DCN模型结构</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>DCN的整体结构由并行的Cross Network和Deep
 Network两部分组成，它们共享相同的Embedding层输入。首先，模型将稀疏的类别特征转换为低维稠密的Embedding向量，并与数值型特征拼接在一起，形成统一的输入向量
 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>。</p>
@@ -359,10 +362,12 @@ Network是DCN的核心创新。它由多个交叉层堆叠而成，其精妙之�
 层的输出列向量，<span class="math notranslate nohighlight">\(\mathbf{x}_0 \in \mathbb{R}^d\)</span> 是Cross
 Network的初始输入向量，<span class="math notranslate nohighlight">\(\mathbf{w}_l, \mathbf{b}_l \in \mathbb{R}^d\)</span>
 分别是第 <span class="math notranslate nohighlight">\(l\)</span> 层的权重和偏置列向量。</p>
-<div class="figure align-default" id="id7">
+<figure class="align-default" id="id7">
 <span id="cross-network-structure"></span><a class="reference internal image-reference" href="../../_images/cross_network.png"><img alt="../../_images/cross_network.png" src="../../_images/cross_network.png" style="width: 300px;" /></a>
-<p class="caption"><span class="caption-number">图3.2.8 </span><span class="caption-text">Cross Network</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.2.8 </span><span class="caption-text">Cross Network</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>我们可以观察到，这个结构本质上是一个残差网络。每一层都在上一层输出
 <span class="math notranslate nohighlight">\(\mathbf{x}_l\)</span> 的基础上，增加了一个交叉项
 <span class="math notranslate nohighlight">\(\mathbf{x}_0 \mathbf{x}_l^T \mathbf{w}_l\)</span> 和一个偏置项
@@ -383,8 +388,8 @@ Network的输出 <span class="math notranslate nohighlight">\(\mathbf{x}_{L_1}\)
 <span class="eqno">(3.2.29)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-2-higher-order-2" title="Permalink to this equation">¶</a></span>\[\mathbf{p} = \sigma([\mathbf{x}_{L_1}^T, \mathbf{h}_{L_2}^T] \mathbf{w}_{\text{logits}})\]</div>
 <p>DCN通过Cross
 Network提供了一种有效且高效的显式高阶特征交叉方案，并结合DNN的隐式交叉能力，为推荐模型的设计提供了新的思路。</p>
-</div>
-<div class="section" id="xdeepfm">
+</section>
+<section id="xdeepfm">
 <h2><span class="section-number">3.2.2.2. </span>xDeepFM: 向量级别的特征交互<a class="headerlink" href="#xdeepfm" title="Permalink to this heading">¶</a></h2>
 <p>尽管DCN能够显式地构建高阶特征，但它的交叉方式是在 <strong>元素级别(bit-wise)</strong>
 上进行的。这意味着Embedding向量中的每一个元素都会独立地与其他特征的Embedding元素进行交互，这在一定程度上忽略了Embedding向量作为一个整体所代表的特征场的概念。为了解决这个问题，xDeepFM模型被提了出来，其核心是设计了一个全新的压缩交互网络（Compressed
@@ -392,10 +397,12 @@ Interaction Network, CIN） <span id="id3">(<a class="reference internal" href="
 <strong>向量级别(vector-wise)</strong>
 的方式进行特征交互，这更符合我们进行特征工程时的直觉。</p>
 <p>xDeepFM的整体架构同样由三部分组成：一个传统的线性部分、一个用于隐式高阶交叉的DNN，以及创新的CIN网络用于显式高阶交叉。这三部分的输出最终被结合起来进行预测。</p>
-<div class="figure align-default" id="id8">
+<figure class="align-default" id="id8">
 <span id="xdeepfm-architecture"></span><a class="reference internal image-reference" href="../../_images/xdeepfm.png"><img alt="../../_images/xdeepfm.png" src="../../_images/xdeepfm.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">图3.2.9 </span><span class="caption-text">xdDeepFM模型架构</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.2.9 </span><span class="caption-text">xdDeepFM模型架构</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>CIN的设计目标是实现向量级别的显式高阶交互，同时控制网络复杂度。它的输入是一个<span class="math notranslate nohighlight">\(m \times D\)</span>的矩阵
 <span class="math notranslate nohighlight">\(\mathbf{X}_0\)</span>，其中 <span class="math notranslate nohighlight">\(m\)</span>
 是特征域（Field）的数量，<span class="math notranslate nohighlight">\(D\)</span> 是Embedding的维度，矩阵的第
@@ -450,18 +457,20 @@ Pooling），得到一个池化后的向量
 表示原始特征，<span class="math notranslate nohighlight">\(\mathbf{x}_{\text{dnn}}^k\)</span>
 表示DNN的输出，<span class="math notranslate nohighlight">\(\mathbf{b}\)</span> 是可学习参数。</p>
 <p>通过引入CIN，<strong>xDeepFM成功地将显性的、向量级别的特征交互与隐性的、元素级别的特征交互结合在同一个模型中</strong>，为自动学习高阶特征交互提供了又一个强大且更具解释性的解决方案。</p>
-</div>
-<div class="section" id="autoint">
+</section>
+<section id="autoint">
 <h2><span class="section-number">3.2.2.3. </span>AutoInt: 自注意力的自适应交互<a class="headerlink" href="#autoint" title="Permalink to this heading">¶</a></h2>
 <p>DCN通过残差连接实现了元素级别的高阶交互，xDeepFM通过CIN网络实现了向量级别的高阶交互，但这两种方法都有一个共同的局限性：它们对高阶特征交互的构建方式是相对固定的。DCN的每一层都必须与原始输入进行交叉，而xDeepFM的CIN网络则按照预定义的方式进行向量交互。那么，<strong>能否设计一种更加灵活、智能的高阶特征交互机制，让模型自主地决定哪些特征应该参与交互，以及交互的强度如何？</strong></p>
 <p>AutoInt (Automatic Feature Interaction) <span id="id4">(<a class="reference internal" href="../../chapter_references/references.html#id44" title="Song, W., Shi, C., Xiao, Z., Duan, Z., Xu, Y., Zhang, M., &amp; Tang, J. (2019). Autoint: automatic feature interaction learning via self-attentive neural networks. Proceedings of the 28th ACM international conference on information and knowledge management (pp. 1161–1170).">Song <em>et al.</em>, 2019</a>)</span>
 模型回答了这个问题。它借鉴了自然语言处理领域中 Transformer
 架构的核心思想，<strong>通过多头自注意力机制来自动、自适应地学习任意阶数的特征交互</strong>。与前面介绍的方法不同，AutoInt
 不依赖于固定的交互模式，而是让模型在训练过程中学习出最有效的特征交互组合。</p>
-<div class="figure align-default" id="id9">
+<figure class="align-default" id="id9">
 <span id="autoint-overview"></span><a class="reference internal image-reference" href="../../_images/autoint_overview.png"><img alt="../../_images/autoint_overview.png" src="../../_images/autoint_overview.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">图3.2.10 </span><span class="caption-text">AutoInt模型原理示意图</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.2.10 </span><span class="caption-text">AutoInt模型原理示意图</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>AutoInt
 的整体架构相对简洁，它将所有输入特征（无论是类别型还是数值型）都转换为相同维度的嵌入向量
 <span class="math notranslate nohighlight">\(\mathbf{e}_m \in \mathbb{R}^d\)</span>，其中 <span class="math notranslate nohighlight">\(m\)</span> 代表第 <span class="math notranslate nohighlight">\(m\)</span>
@@ -497,10 +506,12 @@ token embeddings。</p>
 同样是一个可学习的投影矩阵。这个新的表示
 <span class="math notranslate nohighlight">\(\mathbf{\tilde{e}}_m^{(h)}\)</span>
 本质上就是一个通过自适应学习得到的新组合特征。</p>
-<div class="figure align-default" id="id10">
+<figure class="align-default" id="id10">
 <span id="autoint-attention"></span><a class="reference internal image-reference" href="../../_images/autoint_attention.png"><img alt="../../_images/autoint_attention.png" src="../../_images/autoint_attention.png" style="width: 350px;" /></a>
-<p class="caption"><span class="caption-number">图3.2.11 </span><span class="caption-text">自注意力机制示意图</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.2.11 </span><span class="caption-text">自注意力机制示意图</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p><strong>多层交互与高阶特征学习</strong></p>
 <p>“多头”机制允许模型在不同的子空间中并行地学习不同方面的特征交互。模型将所有
 <span class="math notranslate nohighlight">\(H\)</span> 个头的输出拼接起来，形成一个更丰富的特征表示：</p>
@@ -523,8 +534,8 @@ DCN 和 xDeepFM 不同，AutoInt
 <span class="eqno">(3.2.38)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-2-higher-order-11" title="Permalink to this equation">¶</a></span>\[\hat{y}=\sigma\left(\mathbf{w}^{\mathrm{T}}\left(\mathbf{e}_{1}^{\mathbf{Res}} \oplus \mathbf{e}_{2}^{\mathbf{Res}} \oplus \cdots \oplus \mathbf{e}_{\mathbf{M}}^{\text {Res}}\right)+b\right)\]</div>
 <p>AutoInt 的一个巨大优势是其可解释性，通过可视化注意力权重矩阵
 <span class="math notranslate nohighlight">\(\alpha^{(h)}\)</span>，我们可以直观地看到模型认为哪些特征组合是最重要的。这种基于自注意力机制的高阶特征交互不仅提升了模型的表达能力，还为高阶特征交互的学习提供了一个全新的、更加灵活的范式。</p>
-</div>
-<div class="section" id="id5">
+</section>
+<section id="id5">
 <h2><span class="section-number">3.2.2.4. </span>代码实践<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
@@ -539,16 +550,16 @@ DCN 和 xDeepFM 不同，AutoInt
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------+--------+--------+---------------+</span>
 <span class="o">|</span> <span class="n">模型</span>    <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">valid_users</span> <span class="o">|</span>
 <span class="o">+=========+========+========+===============+</span>
-<span class="o">|</span> <span class="n">dcn</span>     <span class="o">|</span> <span class="mf">0.5998</span> <span class="o">|</span> <span class="mf">0.5741</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">dcn</span>     <span class="o">|</span> <span class="mf">0.6039</span> <span class="o">|</span> <span class="mf">0.5744</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">xdeepfm</span> <span class="o">|</span> <span class="mf">0.5945</span> <span class="o">|</span> <span class="mf">0.5766</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">xdeepfm</span> <span class="o">|</span> <span class="mf">0.6038</span> <span class="o">|</span> <span class="mf">0.5736</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
-<span class="o">|</span> <span class="n">autoint</span> <span class="o">|</span> <span class="mf">0.5905</span> <span class="o">|</span> <span class="mf">0.5689</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">autoint</span> <span class="o">|</span> <span class="mf">0.5986</span> <span class="o">|</span> <span class="mf">0.5725</span> <span class="o">|</span>           <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+---------------+</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>

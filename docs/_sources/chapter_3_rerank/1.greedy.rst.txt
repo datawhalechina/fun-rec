@@ -293,7 +293,12 @@ DPP：行列式点过程
 
    \mathbf{L}_{ij} = \langle \mathbf{B}_i, \mathbf{B}_j \rangle = \langle r_i \mathbf{f}_i, r_j \mathbf{f}_j \rangle = r_i r_j \langle \mathbf{f}_i, \mathbf{f}_j \rangle.
 
-其中，\ :math:`\langle \mathbf{f}_i, \mathbf{f}_j \rangle`\ 表示物品\ :math:`i`\ 和物品\ :math:`j`\ 的内积，即相似度得分\ :math:`S_{ij}`\ 。因此，核矩阵\ :math:`L`\ 可以进一步表示为：\ :math:`\mathbf{L} = \text{Diag}(\mathbf{r}) \cdot \mathbf{S} \cdot \text{Diag}(\mathbf{r})`\ ，即分别对相似性矩阵的每一行和每一列分别乘以\ :math:`r_i`\ 。
+其中，\ :math:`\langle \mathbf{f}_i, \mathbf{f}_j \rangle`\ 表示物品\ :math:`i`\ 和物品\ :math:`j`\ 的内积，即相似度得分\ :math:`S_{ij}`\ 。因此，核矩阵\ :math:`L`\ 可以进一步表示为：
+
+.. math:: \mathbf{L} = \text{Diag}(\mathbf{r}) \cdot \mathbf{S} \cdot \text{Diag}(\mathbf{r})
+   :label: eq-dpp-kernel
+
+即分别对相似性矩阵的每一行和每一列分别乘以\ :math:`r_i`\ 。
 
 在公式推导之前，我们看一个核矩阵的详细构造过程，假设我们有 3
 个物品，它们之间的相似度矩阵 :math:`S` 如下：
@@ -383,7 +388,8 @@ DPP：行列式点过程
    \end{bmatrix}
    \end{aligned}
 
-**构建完核矩阵后，继续上述的公式推导，根据行列式的乘法性质可得到：**
+构建完核矩阵后，继续 :eq:`eq-dpp-kernel`
+推导，根据行列式的乘法性质可得到：
 
 .. math::
 
@@ -431,36 +437,17 @@ inference），行列式点过程的MAP求解是一个复杂的过程，Hulu的�
 :cite:`chen2018fast`\ 。
 
 这一求解过程简单来说就是每次从候选集中贪心地选择一个能使边际收益（Marginal
-Gain）最大的商品加入到最终的结果子集中，直到满足停止条件为止，即每次选择物品\ :math:`j`\ 添加到结果集\ :math:`Y_g`\ 中，
-:math:`Y_g`\ 初始化为空集，物品\ :math:`j`\ 需要满足下面的等式：
+Gain）最大的商品加入到最终的结果子集中，直到满足停止条件为止，即每次选择物品\ :math:`j`\ 添加到结果集\ :math:`Y_g`\ 中，\ :math:`Y_g`\ 初始化为空集，物品\ :math:`j`\ 需要满足下面的等式：
 
-.. math::
-
-
-   j = \arg\max_{i \in Z \setminus Y_g} \log\det(\mathbf{L}_{Y_g \cup \{i\}}) - \log\det(\mathbf{L}_{Y_g})
+.. math:: j = \arg\max_{i \in Z \setminus Y_g} \log\det(\mathbf{L}_{Y_g \cup \{i\}}) - \log\det(\mathbf{L}_{Y_g})
+   :label: eq-dpp-marginal-gain
 
 由于\ :math:`L`\ 是一个半正定矩阵，所有主子矩阵也都是半正定矩阵，假设\ :math:`det(L_{Y_g}) > 0`\ ，\ :math:`det(L_{Y_g})`\ 的Cholesky分解可以表示为\ :math:`L_{Y_g}=VV^T`\ ，其中\ :math:`V`\ 是一个可逆的下三角矩阵。
 
 对于新加入的物品\ :math:`i`\ ，我们构造构造一个新的矩阵\ :math:`\mathbf{L}_{Y_g \cup \{i\}}`\ ，它包含了\ :math:`L_{Y_g}`\ 和新物品\ :math:`i`\ 相关的元素，新增物品\ :math:`i`\ 后的核矩阵\ :math:`\mathbf{L}_{Y_g \cup \{i\}}`\ 的Cholesky分解为：
 
-.. math::
-
-
-   \mathbf{L}_{Y_g \cup \{i\}} = \begin{bmatrix}
-   \mathbf{L}_{Y_g} & \mathbf{L}_{Y_g,i} \\
-   \mathbf{L}_{i,Y_g} & \mathbf{L}_{ii}
-   \end{bmatrix} = \begin{bmatrix}
-   \mathbf{V} & \mathbf{0} \\
-   \mathbf{c}_i & d_i
-   \end{bmatrix} \begin{bmatrix}
-   \mathbf{V} & \mathbf{0} \\
-   \mathbf{c}_i & d_i
-   \end{bmatrix}^\top
-   =
-   \begin{bmatrix}
-   V V^\top & V c_i^\top \\[4pt]
-   c_i V^\top & c_i c_i^\top + d_i^2
-   \end{bmatrix}
+.. math:: \mathbf{L}_{Y_g \cup \{i\}} = \begin{bmatrix} \mathbf{L}_{Y_g} & \mathbf{L}_{Y_g,i} \\ \mathbf{L}_{i,Y_g} & \mathbf{L}_{ii} \end{bmatrix} = \begin{bmatrix} \mathbf{V} & \mathbf{0} \\ \mathbf{c}_i & d_i \end{bmatrix} \begin{bmatrix} \mathbf{V} & \mathbf{0} \\ \mathbf{c}_i & d_i \end{bmatrix}^\top = \begin{bmatrix} V V^\top & V c_i^\top \\[4pt] c_i V^\top & c_i c_i^\top+ d_i^2 \end{bmatrix} 
+   :label: eq-dpp-cholesky
 
 其中：
 
@@ -491,7 +478,7 @@ Gain）最大的商品加入到最终的结果子集中，直到满足停止条�
 
 -  :math:`d_i = \sqrt{\mathbf{L}_{ii} - \|\mathbf{c}_i\|_2^2}`
 
-根据上述公式，我们有Cholesky分解的分块形式：
+根据 :eq:`eq-dpp-cholesky` 公式，我们有Cholesky分解的分块形式：
 
 .. math::
 
@@ -549,7 +536,8 @@ Gain）最大的商品加入到最终的结果子集中，直到满足停止条�
 
    \det(\mathbf{L}_{\mathbf{Y}_g \cup \{i\}}) = \det(\mathbf{L}_{\mathbf{Y}_g}) \cdot \det(d_i^2) = \det(\mathbf{L}_{\mathbf{Y}_g}) \cdot d_i^2
 
-再将\ :math:`\det(\mathbf{L}_{\mathbf{Y}_g \cup \{i\}})`\ 的结果代入优化目标可得：
+再将\ :math:`\det(\mathbf{L}_{\mathbf{Y}_g \cup \{i\}})`\ 的结果代入优化目标
+:eq:`eq-dpp-marginal-gain` 可得：
 
 .. math::
 
@@ -798,6 +786,6 @@ DPP贪心求解算法的代码实现如下：
 
     开始构建核矩阵...
     核矩阵生成完成！
-    算法运行时间: 	2.7776e-02
+    算法运行时间: 	2.4948e-02
     选择了 50 个物品
 

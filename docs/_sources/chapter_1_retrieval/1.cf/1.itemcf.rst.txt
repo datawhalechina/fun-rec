@@ -1,0 +1,526 @@
+
+.. _itemcf:
+
+基于物品的协同过滤
+==================
+
+
+当你在购物网站上买了一件T恤后，系统往往会推荐夹克等其他服装。这背后的逻辑很直观：既然你喜欢这件T恤，那么与它相似的其他服装可能也符合你的品味。这就是基于物品的协同过滤（ItemCF）的核心思想
+:cite:`linden2003amazon`\ 。
+
+ItemCF的思路建立在一个简单的假设上：用户的兴趣具有一定的连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。它关注的是“和你喜欢的物品相似的还有什么”这一问题。
+
+.. _itemcf_illustration:
+
+.. figure:: ../../img/itemcf_illustration.svg
+   :width: 300px
+
+   ItemCF 原理示意图
+
+
+
+从上图可以看到，当我们要给左方用户推荐物品时，ItemCF会分析T恤和夹克之间的相似性。由于右方两个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么夹克就成为了一个不错的推荐选择。
+
+ItemCF核心算法
+--------------
+
+ItemCF的实现流程主要包含以下两个步骤：
+
+**第一步：物品相似度计算**
+
+要实现ItemCF，首先需要量化物品之间的相似程度。在大多数实际应用场景中，我们通常只有用户是否对物品有过交互行为的数据（如点击、购买、收藏等），而没有具体的评分信息。
+
+在理论上，我们可以将每个物品表示为一个用户向量，然后计算向量间的相似度。但当商品数量巨大时，计算所有物品对之间的相似度会变成一个巨大的工程，时间复杂度达到\ :math:`O(|I|^2)`\ 。
+
+实际上，很多物品对之间没有共同的用户交互，它们的相似度必然为0，计算它们就是浪费时间。因此我们从用户出发找物品组合，采用更高效的实现方式：
+
+1. **构建用户-物品倒排表**\ ：为每个用户维护一个交互过的物品列表。
+
+2. **计算物品共现矩阵**\ ：创建一个矩阵\ :math:`C[i][j]`\ 来记录物品\ :math:`i`\ 和\ :math:`j`\ 的共同用户数量。遍历所有用户的物品列表，将列表中的物品两两配对，对应的\ :math:`C[i][j]`\ 值加1，这就构成了共现矩阵。
+
+3. **计算最终相似度**\ ：使用余弦相似度公式计算物品相似度：
+
+.. math:: w_{ij} = \frac{C[i][j]}{\sqrt{|N(i)| \cdot |N(j)|}}
+
+这里\ :math:`|N(i)|`\ 表示与物品\ :math:`i`\ 有交互的用户总数，\ :math:`C[i][j]`\ 是两个物品的共现次数。这个公式很直观：分子是两个物品的共同用户数，分母是对共同用户数的标准化，防止热门商品占据绝对优势。
+
+这种实现方式的时间复杂度约为\ :math:`O(R \cdot \bar{m})`\ ，其中\ :math:`R`\ 是用户-物品交互记录总数，\ :math:`\bar{m}`\ 是用户平均交互的物品数量。在数据稀疏的实际场景中，这比直接计算所有物品对的\ :math:`O(|I|^2)`\ 要高效得多。
+
+**第二步：候选物品推荐**
+
+有了物品相似度矩阵，我们就能预测用户对未接触物品的喜好程度了。计算用户\ :math:`u`\ 对物品\ :math:`i`\ 的兴趣分数：
+
+.. math:: p(u, i) = \sum_{j \in S_i \cap N(u)} w_{ij} r_{uj}
+
+其中\ :math:`S_i`\ 是与物品\ :math:`i`\ 最相似的\ :math:`K`\ 个物品集合，\ :math:`N(u)`\ 是用户\ :math:`u`\ 交互过的物品集合。实际推荐时，针对目标用户未交互过的物品计算上述兴趣度量值，并按分值降序排列，选择Top-N物品作为推荐结果。
+
+**处理评分数据：皮尔逊相关系数**
+
+在某些应用场景中，我们不仅知道用户是否与物品有交互，还有具体的评分信息（如5星评分、点赞数等）。这时候可以使用更细致的相似度计算方法。
+
+**皮尔逊相关系数**\ ：当有评分数据时，可以使用皮尔逊相关系数来衡量物品间的相似性
+:cite:`sarwar2001item`\ ：
+
+.. math:: w_{ij} = \frac{\sum_{u \in U}(r_{ui} - \bar{r}_i)(r_{uj} - \bar{r}_j)}{\sqrt{\sum_{u \in U}(r_{ui} - \bar{r}_i)^2}\sqrt{\sum_{u \in U}(r_{uj} - \bar{r}_j)^2}}
+
+这个公式的含义是：我们取出同时评价过物品\ :math:`i`\ 和物品\ :math:`j`\ 的所有用户，比较他们对这两个物品的评分模式。其中\ :math:`r_{ui}`\ 表示用户\ :math:`u`\ 对物品\ :math:`i`\ 的评分，\ :math:`\bar{r}_i`\ 表示物品\ :math:`i`\ 收到的平均评分。如果用户们对两个物品的评分趋势一致（都高或都低），相似度就会较高。
+
+**基于评分的预测**\ ：有了基于评分的相似度，我们可以更精确地预测用户对未接触物品的评分：
+
+.. math:: \hat{r}_{u,j} = \bar{r}_{j} + \frac{\sum_{k \in S_j} w_{jk}\,\left( r_{u,k} - \bar{r}_{k} \right)}{\sum_{k \in S_j} w_{jk}}
+   :label: eq-itemcf-predict
+
+这个预测公式的逻辑是：先以物品\ :math:`j`\ 的平均评分作为基准，然后根据用户\ :math:`u`\ 对相似物品的评分偏好进行调整。\ :math:`S_j`\ 表示与物品\ :math:`j`\ 最相似的物品集合，\ :math:`w_{jk}`\ 是物品\ :math:`j`\ 和\ :math:`k`\ 之间的相似度权重。
+
+皮尔逊相关系数通过中心化处理，有效消除了不同物品评分分布的差异，能够更好地捕获物品间的相似性模式。
+
+应用实践
+~~~~~~~~
+
+1.数据集 表格 :numref:`table-itemcf-data` 是和 :numref:`usercf`
+相同的用户评分数据。
+
+.. _table-itemcf-data:
+
+.. table:: 用户评分数据
+
+   ===== ===== ===== ===== ===== =====
+   \     用户1 用户2 用户3 用户4 用户5
+   ===== ===== ===== ===== ===== =====
+   物品1 5     3     4     3     1
+   物品2 3     1     3     3     5
+   物品3 4     2     4     1     5
+   物品4 4     3     3     5     2
+   物品5 ?     3     5     4     1
+   ===== ===== ===== ===== ===== =====
+
+
+2.手动分析
+计算物品之间的相似度，以物品5和物品1之间的皮尔逊相关系数为例。\ :math:`\hat{r}_{item5}=3.25,\ \hat{r}_{item1}=2.75`,
+向量减去均值:
+:math:`\text{item5}:(-0.25, 1.75, 0.75, -2.25) \quad \text{item1}: (0.25, 1.25, 0.25, -1.75)`.
+
+.. math::
+
+
+   \begin{aligned}
+   \text{sim}(item5,item1)&=\frac{\sum_{u \in U}(r_{u,item5} - \bar{r}_{item5})(r_{u,item1} - \bar{r}_{item1})}{\sqrt{\sum_{u \in U}(r_{u,item5} - \bar{r}_{item5})^2}\sqrt{\sum_{u \in U}(r_{u,item1} - \bar{r}_{item1})^2}}\\
+   &=cos((-0.25,  1.75,  0.75, -2.25),(0.25,  1.25,  0.25, -1.75))\\
+   &=0.96946
+   \end{aligned}
+
+根据皮尔逊相关系数，可以找到与物品5最相似的两个物品是物品1和物品4。基于相似物品，根据上面的计算公式
+:eq:`eq-itemcf-predict`\ ，可以计算出 用户1 对物品5的最终得分是:
+
+.. math::
+
+
+   \begin{aligned}
+   \hat{r}_{user1,item5}&=\bar{r}_{item5}+\frac{\sum_{k=1}^{2}\left(w_{item5,itemk}\left(r_{user1,itemk}-\bar{r}_{itemk}\right)\right)}{\sum_{k=1}^{2} w_{item5,itemk}}\\
+   &=\frac{13}{4}+\frac{0.97*(5-3.2)+0.58*(4-3.4)}{0.97+0.58}\\
+   &=4.6
+   \end{aligned}
+
+代码实践
+~~~~~~~~
+
+1. 数据准备
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   import numpy as np
+   item_data = {
+       'item1': {'user1': 5, 'user2': 3, 'user3': 4, 'user4': 3, 'user5': 1},
+       'item2': {'user1': 3, 'user2': 1, 'user3': 3, 'user4': 3, 'user5': 5},
+       'item3': {'user1': 4, 'user2': 2, 'user3': 4, 'user4': 1, 'user5': 5},
+       'item4': {'user1': 4, 'user2': 3, 'user3': 3, 'user4': 5, 'user5': 2},
+       'item5': {'user2': 3, 'user3': 5, 'user4': 4, 'user5': 1},
+   }
+
+2. 计算物品间的相似度矩阵
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   import pandas as pd
+   similarity_matrix = pd.DataFrame(
+       np.identity(len(item_data)),
+       index=item_data.keys(),
+       columns=item_data.keys(),
+   )
+
+   # 遍历每条物品-用户评分数据
+   for i1, users1 in item_data.items():
+       for i2, users2 in item_data.items():
+           if i1 == i2:
+               continue
+           vec1, vec2 = [], []
+           for user, rating1 in users1.items():
+               rating2 = users2.get(user, -1)
+               if rating2 == -1:
+                   continue
+               vec1.append(rating1)
+               vec2.append(rating2)
+           similarity_matrix[i1][i2] = np.corrcoef(vec1, vec2)[0][1]
+
+   print(similarity_matrix)
+
+3. 评分预测 从user1交互过的物品中，找到与item5最相似的2个物品
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   target_user = 'user1'
+   target_item = 'item5'
+   num = 2
+
+   sim_items = []
+   sim_items_list = similarity_matrix[target_item].sort_values(ascending=False).index.tolist()
+   for item in sim_items_list:
+       # 如果target_user对物品item评分过
+       if target_user in item_data[item]:
+           sim_items.append(item)
+       if len(sim_items) == num:
+           break
+   print(f'与物品{target_item}最相似的{num}个物品为：{sim_items}')
+
+预测用户1对物品5的评分
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   target_user_mean_rating = np.mean(list(item_data[target_item].values()))
+   weighted_scores = 0.
+   corr_values_sum = 0.
+
+
+   for item in sim_items:
+       corr_value = similarity_matrix[target_item][item]
+       user_mean_rating = np.mean(list(item_data[item].values()))
+
+       weighted_scores += corr_value * (item_data[item][target_user] - user_mean_rating)
+       corr_values_sum += corr_value
+
+   target_item_pred = target_user_mean_rating + weighted_scores / corr_values_sum
+   print(f'用户{target_user}对物品{target_item}的预测评分为：{target_item_pred}')
+
+4. 训练模型
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    import os
+    import sys
+    import funrec
+    from funrec.utils import build_metrics_table
+    
+    # 加载配置
+    config = funrec.load_config('item_cf')
+    
+    # 加载数据
+    train_data, test_data = funrec.load_data(config.data)
+    
+    # 准备特征
+    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
+    
+    # 训练模型
+    models = funrec.train_model(config.training, feature_columns, processed_data)
+    
+    # 评估模型
+    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
+    
+    print(build_metrics_table(metrics))
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    +---------------+--------------+----------------+---------------+
+    |   hit_rate@10 |   hit_rate@5 |   precision@10 |   precision@5 |
+    +===============+==============+================+===============+
+    |        0.6594 |       0.5459 |         0.1444 |        0.1826 |
+    +---------------+--------------+----------------+---------------+
+
+
+从ItemCF到Swing：面向工业场景的优化
+-----------------------------------
+
+ItemCF虽然简单有效，但在工业应用中暴露出明显问题：热门物品因共现次数多而占据主导地位，随机点击等噪音行为影响相似度的准确性。如何在保留ItemCF高效性的同时，提升相似度计算的鲁棒性？Swing算法
+:cite:`yang2020large`
+给出了一个优雅的答案——通过分析用户-物品交互的图结构特征来过滤噪音，更准确地捕捉物品间的真实关联。
+
+.. _swing:
+
+Swing算法原理
+~~~~~~~~~~~~~
+
+
+当你在电商平台购买了一件T恤后，系统会向你推荐什么？如果是其他款式的T恤，这属于替代性推荐；如果是配套的裤子或配饰，这就是互补性推荐。传统ItemCF在处理这类细粒度的商品关系时往往力不从心——它将所有用户-物品交互一视同仁，无论是用户深思熟虑的购买，还是偶然的误点击、好奇心驱动的浏览，都被赋予相同的权重。这种做法不仅难以区分真正的兴趣关联和随机噪声，更无法有效捕捉物品间的替代性与互补性关系。
+
+.. _swing_illustration:
+
+.. figure:: ../../img/swing_illustration.svg
+   :width: 400px
+
+   产品之间的替代性和互补性关系
+
+
+
+Swing Score
+提供了一个新的解题思路。它不再简单地统计共同购买次数，而是深入分析用户-物品二部图中的内部子结构，通过捕捉那些在用户行为中反复出现、具备较强“鲁棒性”的共同购买关系来度量物品相似性。其核心洞察是：\ **如果多个用户在其他共同购买行为较少的情况下，同时购买了同一对物品，那么这对物品之间的关联性就更可信**\ 。
+
+基于这一思想，Swing算法能够构建更准确的产品索引，并在此基础上衍生出Surprise算法来专门处理互补商品推荐的挑战。
+
+Swing算法的实现可以分为两个主要步骤：先构建用户-物品二部图，再通过分析图中用户对的共同交互模式（即swing结构）来计算物品相似度。
+
+**第一步：用户-物品二部图构建**\ 。我们首先将用户与物品的交互数据转化为一个二部图。在这个图中，一边是所有用户节点，另一边是所有物品节点。如果用户对某个物品发生了点击、购买等行为，就在对应的用户节点与物品节点之间添加一条边。这个二部图为后续的相似度计算提供了结构化的数据基础。
+
+**第二步：物品相似度计算**\ 。构建好二部图后，我们来计算任意一对物品
+:math:`i` 与 :math:`j` 的相似度。设 :math:`U_i` 和 :math:`U_j`
+分别表示与物品 :math:`i` 和 :math:`j` 有过交互的用户集合，\ :math:`I_u`
+表示用户 :math:`u`
+交互过的所有物品集合。具体计算过程如下：首先找到同时与物品 :math:`i` 和
+:math:`j` 相连的用户集合
+:math:`U_i \cap U_j`\ ；然后对集合中的每一对用户
+:math:`(u, v)`\ ，统计他们的其他共同购买行为。如果用户 :math:`u` 与
+:math:`v` 的其他交互行为重合较少（即 :math:`|I_u \cap I_v|`
+较小），则认为他们在共同选择物品 :math:`i` 和 :math:`j`
+上的行为更具特异性，应该为这对物品贡献更高的相似度得分。
+
+Swing score 的基础计算公式为：
+
+.. math:: s(i, j) = \sum_{u \in U_i \cap U_j} \sum_{v \in U_i \cap U_j} \frac{1}{\alpha + |I_u \cap I_v|}
+   :label: swing_score_formula
+
+其中，\ :math:`\alpha` 是平滑系数，用来防止分母过小导致数值不稳定。
+
+让我们通过一个具体例子来理解这个公式。如 :numref:`swing_score`
+所示，红色边连接的子图表示一个swing结构。用户A和B有四个swing结构，分别是
+:math:`[A, h, B]`\ 、\ :math:`[A, t, B]`\ 、\ :math:`[A, r, B]`\ 、\ :math:`[A, p, B]`\ 。
+
+.. _swing_score:
+
+.. figure:: ../../img/swing_score.svg
+   :width: 250px
+
+   Swing Score 计算示意图
+
+
+
+假设 :math:`\alpha = 1`\ ，那么：
+
+-  用户对 :math:`[A, B]`
+   的贡献分数为：\ :math:`\frac{1}{1 + 4} = \frac{1}{5}`
+-  用户对 :math:`[B, C]`
+   的贡献分数为：\ :math:`\frac{1}{1 + 2} = \frac{1}{3}`
+-  用户对 :math:`[A, C]`
+   的贡献分数为：\ :math:`\frac{1}{1 + 2} = \frac{1}{3}`
+
+因此，物品h和p之间的swing
+score为：\ :math:`s(h, p) = \frac{1}{5} + \frac{1}{3} + \frac{1}{3} = \frac{13}{15}`\ ，而物品h和t（或r）之间的swing
+score为：\ :math:`s(h, t) = s(h, r) = \frac{1}{3}`\ 。
+
+**用户权重调整**\ ：为了降低活跃用户对计算结果的过度影响，我们引入用户权重
+:math:`w_u = \frac{1}{\sqrt{|I_u|}}`\ 。最终的物品相似度计算公式为：
+
+.. math::
+
+
+   s(i, j) = \sum_{u \in U_i \cap U_j} \sum_{v \in U_i \cap U_j} w_u \cdot w_v \cdot \frac{1}{\alpha + |I_u \cap I_v|}
+
+这个公式能够精准刻画物品之间的关联强度，为推荐系统提供更可靠的相似度度量。
+
+Surprise算法：互补商品推荐
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+虽然Swing
+Score已经能够有效捕捉物品间的关联关系，但在处理互补商品推荐时仍面临挑战。相比替代关系，互补关系具有明确的时序性和方向性——用户通常先购买主商品，再购买配套商品（如先买手机再买手机壳）。为了更好地挖掘这类关系，Swing论文基于Swing
+Score提出了Surprise算法。
+
+Surprise算法的设计基于一个重要观察：真正的互补关系主要发生在不同商品类别之间，且购买时间间隔越短，互补性越强。同时，为了解决用户共购数据稀疏的问题，该算法通过商品聚类将稀疏的商品级别共现信号聚合到聚类级别，从而获得更可靠的互补关系证据。
+
+Surprise算法从类别、商品和聚类三个层面来衡量互补相关性：
+
+**类别层面**
+
+在这一层面，我们利用商品与类别之间的映射关系构建user-category矩阵。基于这个矩阵，可以计算类别
+:math:`i` 与类别 :math:`j` 之间的相关性：
+
+.. math::
+
+
+   \theta_{i,j} = p(c_{i,j} \mid c_j) = \frac{N(c_{i,j})}{N(c_j)}
+
+其中，\ :math:`N(c_{i,j})` 表示先购买类别 :math:`i` 后又购买类别
+:math:`j` 这一事件发生的次数，\ :math:`N(c_j)` 表示购买类别 :math:`j`
+的次数。考虑到不同类别的数量差异，我们采用最大相对落点作为划分阈值来筛选相关类别。
+
+.. _swing_max_drop:
+
+.. figure:: ../../img/swing_max_drop.png
+   :width: 1000px
+
+   最大相对落点示意图
+
+
+
+例如，图(a)中T恤类选取了前八个相关类别，而图(b)中手机类选择了前三个相关类别。
+
+**商品层面**
+
+针对类别相关的商品对，Surprise算法重点考虑两个因素：购买顺序的重要性（如先买手机后买充电宝比反之更合理）以及时间间隔的影响（间隔越短，互补性越强）。
+
+商品层面的互补相关性计算公式为：
+
+.. math::
+
+
+   s_{1}(i, j) = \frac{\sum_{u \in U_i \cap U_j} \frac{1}{1 + \left| t_{ui} - t_{uj} \right|}}{\lVert U_i \rVert \times \lVert U_j \rVert}
+
+其中，\ :math:`t_{ui}` 和 :math:`t_{uj}` 分别表示用户 :math:`u` 购买物品
+:math:`i` 和 :math:`j` 的时间，且只有当 :math:`j` 属于 :math:`i`
+的\ **相关类别**\ 且购买时间晚于 :math:`i` 时才计入计算。
+
+**聚类层面**
+
+考虑到实际业务中商品数量可能达到数十亿的规模，传统聚类算法难以胜任。Surprise算法采用\ **标签传播算法**
+:cite:`raghavan2007near`
+在大规模Item-Item图上进行聚类，这里的邻居关系通过Swing算法计算，边权重即为Swing分数。
+
+这种方法不仅高效（通常15分钟内可对数十亿商品完成聚类），还能显著缓解数据稀疏问题。设
+:math:`L(i)` 表示商品 :math:`i`
+的聚类标签，则聚类层面的相似度可以表示为：
+
+.. math::
+
+
+   s_2(i,j) = s_1(L(i), L(j))
+
+**线性组合**
+
+最终，Surprise算法采用线性组合的方式融合不同层面的信息：
+
+.. math::
+
+
+   s(i, j) = \omega \cdot s_{1}(i, j) + (1 - \omega) \cdot s_{2}(i, j)
+
+其中，\ :math:`\omega` 是权重超参数，\ :math:`s_{2}(i, j)`
+代表聚类层面的互补相关性。
+
+通过这种多层次的综合分析，Surprise算法成功拓展了Swing
+Score的应用范围，为互补商品推荐提供了一套系统而高效的解决方案。该方法不仅利用了类别信息和标签传播技术有效解决了数据稀疏问题，还能够准确捕捉商品间的时序和方向性关系，从而提升推荐系统的整体效果。
+
+代码实践
+~~~~~~~~
+
+首先，我们导入funrec库中的核心组件：
+
+::
+
+   import sys 
+
+   import funrec
+
+Swing算法的核心在于Swing
+Score的计算，它通过分析用户-物品二部图中的swing结构来度量物品相似度：
+
+::
+
+   def calculate_swing_similarity(item_users, user_items, user_weights, item_i, item_j, alpha=1.0):
+       """
+       计算两个物品之间的Swing Score相似度
+       参考funrec.models.swing.Swing._calculate_swing_similarity_optimized()的核心逻辑
+       """
+       # 找到同时与物品i和j交互的用户（共同用户）  
+       common_users = item_users[item_i].intersection(item_users[item_j])
+       
+       if len(common_users) < 2:
+           return 0.0  # 至少需要2个共同用户才能计算Swing score
+       
+       swing_score = 0.0
+       common_users_list = list(common_users)
+       
+       # 计算所有共同用户对的贡献
+       for u in common_users_list:
+           for v in common_users_list:
+               if u == v:
+                   continue
+                   
+               # 找到用户u和v的共同交互物品
+               common_items_uv = user_items[u].intersection(user_items[v])
+               
+               # 使用预计算的用户权重
+               user_weight_u = user_weights[u]  # 1.0 / sqrt(|I_u|)
+               user_weight_v = user_weights[v]  # 1.0 / sqrt(|I_v|)
+               
+               # Swing Score核心公式
+               contribution = (user_weight_u * user_weight_v) / (alpha + len(common_items_uv))
+               swing_score += contribution
+       
+       return swing_score
+
+构建、训练和评估Swing算法：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    import os
+    import sys
+    import funrec
+    from funrec.utils import build_metrics_table
+    
+    # 加载配置
+    config = funrec.load_config('swing')
+    
+    # 加载数据
+    train_data, test_data = funrec.load_data(config.data)
+    
+    # 准备特征
+    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
+    
+    # 训练模型
+    models = funrec.train_model(config.training, feature_columns, processed_data)
+    
+    # 评估模型
+    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
+    
+    print(build_metrics_table(metrics))
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    +---------------+--------------+----------------+---------------+
+    |   hit_rate@10 |   hit_rate@5 |   precision@10 |   precision@5 |
+    +===============+==============+================+===============+
+    |        0.6194 |       0.5042 |         0.1282 |        0.1629 |
+    +---------------+--------------+----------------+---------------+
+

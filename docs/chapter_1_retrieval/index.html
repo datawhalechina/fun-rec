@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -111,11 +112,9 @@ Show Source
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/3.summary.html">2.1.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -234,11 +233,9 @@ Show Source
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/3.summary.html">2.1.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -327,19 +324,17 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="id1">
+  <section id="id1">
 <h1><span class="section-number">2. </span>召回模型<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
-<p>召回系统是推荐流水线的第一步，在有限延迟内从海量候选中筛选出千级规模的初选集合，为后续排序提供高质量输入。本章围绕三条主线展开：协同过滤（UserCF、ItemCF、Swing、矩阵分解）通过相似性与隐向量建模刻画用户与物品关系；向量召回将用户与物品映射到统一嵌入空间，支持
+<p>召回系统是推荐流水线的第一步，在有限延迟内从海量候选中筛选出千级规模的初选集合，为后续排序提供高质量输入。本章围绕三条主线展开：协同过滤通过物品或用户的相似性建模刻画关系（ItemCF与Swing改进物品相似度；UserCF与矩阵分解开启向量化表示）；向量召回将用户与物品映射到统一嵌入空间，支持
 I2I 与 U2I
 的高效向量检索；序列召回关注用户行为的时序性，通过兴趣建模与序列预测提升相关性。</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.cf/5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.cf/3.summary.html">2.1.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -356,7 +351,7 @@ I2I 与 U2I
 </li>
 </ul>
 </div>
-</div>
+</section>
 
 
         </div>

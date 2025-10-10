@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -329,7 +330,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="word2vec">
+  <section id="word2vec">
 <span id="id1"></span><h1><span class="section-number">8.1. </span>Word2vec<a class="headerlink" href="#word2vec" title="Permalink to this heading">¶</a></h1>
 <p>在自然语言处理（NLP）任务中，如何将单词转换为能够被机器直接处理的数值形式一直是一个根本问题。早期的方法（例如
 one-hot
@@ -348,9 +349,11 @@ one-hot
 <span id="id3">(<a class="reference internal" href="../chapter_references/references.html#id16" title="Firth, J. R. (1957). Studies in Linguistic Analysis. Blackwell.">Firth, 1957</a>)</span> 提出：“You shall know a word by the
 company it keeps.”
 这一假设指导我们通过观察单词在大量文本中与哪些词共同出现，来推断该单词的语义。具体来说，当单词出现在文本中时，其上下文是该单词周围的一些单词。例如下图：</p>
-<div class="figure align-default" id="id5">
-<img alt="../_images/w2v_example.svg" src="../_images/w2v_example.svg" /><p class="caption"><span class="caption-number">图8.1.1 </span><span class="caption-text">上下文示例</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
+<figure class="align-default" id="id5">
+<img alt="../_images/w2v_example.svg" src="../_images/w2v_example.svg" /><figcaption>
+<p><span class="caption-number">图8.1.1 </span><span class="caption-text">上下文示例</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>这些上下文单词决定了单词<code class="docutils literal notranslate"><span class="pre">loves</span></code>的语义。Word2vec
 使用了大量的文本语料库来学习单词的向量表示。它遍历语料库中的每个单词，并通过调整单词的向量表示，使得模型预测的上下文单词与语料库中的真实上下文单词尽可能一致。</p>
 <p>Word2vec 主要包含两种模型：<strong>Skip-gram</strong> 和 <strong>Continuous Bag of Words
@@ -384,10 +387,12 @@ model (CBOW)</strong>。</p>
 <span id="id4">(<a class="reference internal" href="../chapter_references/references.html#id17" title="Rong, X. (2014). Word2vec parameter learning explained. arXiv preprint arXiv:1411.2738.">Rong, 2014</a>)</span>。以 Skip-gram
 模型为例，假设向量空间的维度为<span class="math notranslate nohighlight">\(D\)</span>，中心词向量表<span class="math notranslate nohighlight">\(\mathbf{W} \in \mathbb{R}^{V \times D}\)</span>，上下文词向量表<span class="math notranslate nohighlight">\(\mathbf{W}^c \in \mathbb{R}^{V \times D}\)</span>，其中<span class="math notranslate nohighlight">\(V\)</span>是词汇表的大小。Word2vec
 的模型结构如下：</p>
-<div class="figure align-default" id="id6">
+<figure class="align-default" id="id6">
 <a class="reference internal image-reference" href="../_images/w2v_model.svg"><img alt="../_images/w2v_model.svg" src="../_images/w2v_model.svg" width="500px" /></a>
-<p class="caption"><span class="caption-number">图8.1.2 </span><span class="caption-text">word2vec 模型</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图8.1.2 </span><span class="caption-text">word2vec 模型</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>从左到右，输入给定一个中心词的one-hot表示
 <span class="math notranslate nohighlight">\(\mathbf{x}_t \in \{0, 1\}^V\)</span>，中心词的向量
 <span class="math notranslate nohighlight">\(\mathbf{w}_{t}\)</span> 可以表示为：</p>
@@ -418,7 +423,7 @@ model (CBOW)</strong>。</p>
 <a class="reference internal" href="#equation-skip-gram-likelihood">(8.1.1)</a>
 的优化目标一致，并且在最大化原始似然函数的同时
 <span class="math notranslate nohighlight">\(\max P(w_{t+j} | w_t)\)</span>, 并且避免了对整个词汇表的计算。</p>
-</div>
+</section>
 
 
         </div>

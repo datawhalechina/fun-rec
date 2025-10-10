@@ -1,0 +1,464 @@
+
+.. _usercf:
+
+基于用户的协同过滤
+==================
+
+
+在网上购物时，我们经常会参考其他买家的选择和评价。如果你发现某个用户和你买了同样的T恤和裤子，而且都给了好评，那么当你看到这个用户还买了一双鞋子时，你可能也会对这双鞋子产生兴趣。基于用户的协同过滤（UserCF）正是基于这样一个朴素而有效的想法：\ **具有相似历史行为的用户，未来偏好也相似**\ 。
+
+UserCF是早期提出的协同过滤方法之一
+:cite:`resnick1994grouplens`\ ，它的工作原理很直观：先找到与目标用户购买偏好相似的“邻居用户”，然后基于这些邻居对商品的选择来预测目标用户的偏好。如
+:numref:`usercf_illustration`
+所示，如果用户A和用户B都购买了衣服和帽子，那么当用户B还购买了裤子和鞋子时，我们就可以推测用户A可能也会对这些商品感兴趣。
+
+.. _usercf_illustration:
+
+.. figure:: ../../img/usercf_illustration.svg
+   :width: 400px
+
+   UserCF 原理示意图
+
+
+
+UserCF和前面介绍的ItemCF构成了协同过滤的两大基本方法，它们都属于基于邻域（Neighborhood-based）的协同过滤，核心思想是通过计算相似度来寻找邻居。不同之处在于视角的转换：ItemCF从物品出发，关注“与用户喜欢的物品相似的还有什么”；UserCF从用户出发，关注“与目标用户相似的人还喜欢什么”。虽然ItemCF在工业应用中更常见，但UserCF作为协同过滤的开山之作，其思想对后续方法有着深远影响，特别是其隐含的“用户可以用向量表示”的理念，为矩阵分解等方法奠定了基础。
+
+UserCF核心算法
+--------------
+
+UserCF的实现过程可以分解为两个核心步骤：首先计算用户之间的相似度，找出与目标用户偏好最接近的邻居用户；然后基于这些邻居用户的历史行为，预测目标用户对未购买商品的兴趣程度。接下来我们详细看看每个步骤是如何实现的。
+
+**第一步：用户相似度计算**
+
+要实现UserCF，首先需要回答一个关键问题：如何判断两个用户是否相似？这就需要用到相似度计算。我们来看几种常用的方法。
+
+假设用户\ :math:`u`\ 和用户\ :math:`v`\ 分别对应物品集合\ :math:`N(u)`\ 和\ :math:`N(v)`\ （即他们各自有过行为的物品）。
+
+**杰卡德相似系数**\ ：如果你的系统只记录用户是否对物品有过行为（比如是否点击、购买），而没有具体的评分，那么杰卡德系数是个好选择：
+
+.. math:: w_{uv} = \frac{|N(u) \cap N(v)|}{|N(u) \cup N(v)|}
+
+这个公式可以直观理解为：分子是两人共同喜欢的物品数量，分母是两人喜欢的物品总数（去重后）。
+
+**余弦相似度**\ ：将每个用户看成一个向量，计算向量间的夹角：
+
+.. math:: w_{uv} = \frac{|N(u) \cap N(v)|}{\sqrt{|N(u)|\cdot|N(v)|}}
+
+余弦相似度考虑了用户活跃度的差异。
+
+**皮尔逊相关系数**\ ：当你有具体的评分数据时（比如5星评分），皮尔逊系数能更好地捕捉用户的偏好模式：
+
+.. math:: w_{uv} = \frac{\sum_{i \in I}(r_{ui} - \bar{r}_u)(r_{vi} - \bar{r}_v)}{\sqrt{\sum_{i \in I}(r_{ui} - \bar{r}_u)^2}\sqrt{\sum_{i \in I}(r_{vi} - \bar{r}_v)^2}}
+   :label: eq-usercf-pearson
+
+这里\ :math:`r_{ui}`\ 表示用户\ :math:`u`\ 对物品\ :math:`i`\ 的评分，\ :math:`\bar{r}_u`\ 是用户\ :math:`u`\ 的平均评分，\ :math:`I`\ 是两个用户都评价过的物品集合。皮尔逊系数通过中心化处理，有效消除了个人评分习惯的差异。有些人习惯给高分（“好人”），有些人比较严格，通过减去各自的平均分，我们关注的是评分的相对变化趋势，而不是绝对数值。
+
+计算完相似度后，我们通常选择相似度最高的K个用户作为“邻居”，这个K值需要仔细调整——太小可能信息不足，太大可能引入噪音。
+
+**第二步：候选物品推荐**
+
+有了相似用户，下一步就是利用他们的偏好来预测目标用户对未交互过的物品的兴趣。
+
+**简单加权平均**\ ：最直接的方法是用相似度作为权重，对邻居的评分进行加权平均：
+
+.. math:: \hat{r}_{u,p} = \frac{\sum_{v \in S_u} w_{uv} \, r_{v,p}}{\sum_{v \in S_u} w_{uv}}
+
+这里\ :math:`\hat{r}_{u,p}`\ 是预测的用户\ :math:`u`\ 对物品\ :math:`p`\ 的评分，\ :math:`S_u`\ 是邻居用户集合，\ :math:`w_{uv}`\ 是相似度权重，\ :math:`r_{v,p}`\ 是邻居\ :math:`v`\ 对物品\ :math:`p`\ 的实际评分。
+
+**考虑评分偏置的版本**\ ：为了进一步消除个人评分习惯的影响，我们可以加入偏置修正：
+
+.. math:: \hat{r}_{u,p} = \bar{r}_{u} + \frac{\sum_{v \in S_u} w_{uv} \, (r_{v,p} - \bar{r}_{v})}{\sum_{v \in S_u} w_{uv}}
+
+这里\ :math:`\bar{r}_u`\ 和\ :math:`\bar{r}_v`\ 分别是用户\ :math:`u`\ 和\ :math:`v`\ 的平均评分。这个公式的思路是：先看邻居们对这个物品的评分相比他们平均水平如何，然后根据目标用户的平均评分水平进行调整。
+
+**优化策略：让算法跑得更快**
+
+UserCF看起来很简单，但有个大问题：当用户数量很大时，计算所有用户对之间的相似度会非常耗时，时间复杂度达到\ :math:`O(|U|^2)`\ 。
+
+但仔细观察就会发现，很多用户对之间根本没有共同行为的物品，相似度必然为0，计算它们就是浪费时间。我们可以利用这个特点来优化算法。
+
+**基于物品倒排表的优化**\ ：
+
+1. **构建倒排表**\ ：为每个物品维护一个用户列表，记录哪些用户对这个物品有过行为。这样就可以通过物品快速找到相关用户。
+
+2. **稀疏矩阵计算**\ ：创建一个矩阵\ :math:`C[u][v]`\ 来记录用户\ :math:`u`\ 和\ :math:`v`\ 的共同物品数量。遍历每个物品的用户列表，将列表中的用户两两配对，对应的\ :math:`C[u][v]`\ 值加1。
+
+3. **计算最终相似度**\ ：矩阵\ :math:`C`\ 给出了余弦相似度公式的分子，再除以分母\ :math:`\sqrt{|N(u)||N(v)|}`\ 就得到了用户相似度。
+
+4. **生成推荐**\ ：使用以下公式计算用户\ :math:`u`\ 对物品\ :math:`i`\ 的兴趣分数：
+
+.. math:: p(u, i) = \sum_{v \in S_u \cap N(i)} w_{uv} r_{vi}
+
+其中\ :math:`S_u`\ 是与用户\ :math:`u`\ 最相似的\ :math:`K`\ 个用户集合，\ :math:`N(i)`\ 是对物品\ :math:`i`\ 有过行为的用户集合。实际推荐时，针对目标用户未交互过的物品计算上述兴趣度量值，并按分值降序排列，选择Top-N物品作为推荐结果。
+
+这个优化的效果如何呢？新算法的时间复杂度约为\ :math:`O(R \cdot \bar{n})`\ ，其中\ :math:`R`\ 是总的用户-物品交互记录数，\ :math:`\bar{n}`\ 是每个物品的平均用户数。在稀疏数据场景下（即\ :math:`R \ll |U|^2`\ 且\ :math:`\bar{n} \ll |U|`\ ）），这比原来的\ :math:`O(|U|^2)`\ 快得多。
+
+应用实践
+~~~~~~~~
+
+1.数据集。表格 :numref:`table-usercf-data`
+里是5个用户对5个物品的评分数据，可以理解为用户对物品的偏好程度。
+
+.. _table-usercf-data:
+
+.. table:: 用户评分数据
+
+   ===== ===== ===== ===== ===== =====
+   \     物品1 物品2 物品3 物品4 物品5
+   ===== ===== ===== ===== ===== =====
+   用户1 5     3     4     4     ?
+   用户2 3     1     2     3     3
+   用户3 4     3     4     3     5
+   用户4 3     3     1     5     4
+   用户5 1     5     5     2     1
+   ===== ===== ===== ===== ===== =====
+
+
+2.手动分析。基于皮尔逊相关系数，计算用户1
+与其他用户（以用户2为例）的相似度。
+
+-  计算用户1与用户2的皮尔逊相关系数:
+   :math:`\bar{r}_{user1}=4,\ \bar{r}_{user2}=2.25`\ 。向量减去均值:
+   :math:`\text{user1}:(1,-1, 0,0) \quad \text{user2}: (0.75,-1.25,-0.25,0.75)`
+
+-  计算这俩新向量的余弦相似度，得到皮尔逊相似度 :math:`0.852`\ 。
+
+根据相似用户，计算用户1对物品5的最终得分。用户2对物品5的评分是3，
+用户3对物品5的打分是5， 那么根据上面的计算公式
+:eq:`eq-usercf-pearson`\ ，可以计算出 用户1 对物品5的最终得分是:
+
+.. math::
+
+
+   P_{user1, item5}=\bar{r}_{user1}+\frac{\sum_{k=1}^{2}\left(w_{user1,user k}\left(r_{userk, item5}-\bar{r}_{userk}\right)\right)}{\sum_{k=1}^{2} w_{user1, userk}}=4+\frac{0.85*(3-2.4)+0.7*(5-3.8)}{0.85+0.7}=4.87
+
+代码实践
+~~~~~~~~
+
+1. 数据准备
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   import numpy as np
+   user_data = {
+       'user1': {'item1': 5, 'item2': 3, 'item3': 4, 'item4': 4},
+       'user2': {'item1': 3, 'item2': 1, 'item3': 2, 'item4': 3, 'item5': 3},
+       'user3': {'item1': 4, 'item2': 3, 'item3': 4, 'item4': 3, 'item5': 5},
+       'user4': {'item1': 3, 'item2': 3, 'item3': 1, 'item4': 5, 'item5': 4},
+       'user5': {'item1': 1, 'item2': 5, 'item3': 5, 'item4': 2, 'item5': 1},
+   }
+
+这里使用字典来建立用户-物品的交互表:
+
+-  字典users的键表示不同用户的名字，值为一个评分字典，评分字典的键值对表示某物品被当前用户的评分。
+-  由于现实场景中，用户对物品的评分比较稀疏。如果直接使用矩阵进行存储，会存在大量空缺值，故此处使用了字典。
+
+2.基于皮尔逊相关系数，计算用户相似性矩阵
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 初始化相似性矩阵
+   import pandas as pd
+   similarity_matrix = pd.DataFrame(
+       np.identity(len(user_data)),
+       index=user_data.keys(),
+       columns=user_data.keys(),
+   )
+
+   # 遍历每条用户-物品评分数据
+   for u1, items1 in user_data.items():
+       for u2, items2 in user_data.items():
+           if u1 == u2:
+               continue
+           vec1, vec2 = [], []
+           for item, rating1 in items1.items():
+               rating2 = items2.get(item, -1)
+               if rating2 == -1:
+                   continue
+               vec1.append(rating1)
+               vec2.append(rating2)
+           # 计算不同用户之间的皮尔逊相关系数
+           similarity_matrix[u1][u2] = np.corrcoef(vec1, vec2)[0][1]
+
+   print(similarity_matrix)
+
+3.计算用户1最相似的n个用户
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   target_user = 'user1'
+   num = 2
+   # 由于最相似的用户为自己，去除本身
+   sim_users = similarity_matrix[target_user].sort_values(ascending=False)[1:num+1].index.tolist()
+   print(f'与用户{target_user}最相似的{num}个用户为：{sim_users}')
+
+4. 预测用户1对物品5的评分
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   weighted_scores = 0.
+   corr_values_sum = 0.
+
+   target_item = 'item5'
+   # 基于皮尔逊相关系数预测用户评分
+   for user in sim_users:
+       corr_value = similarity_matrix[target_user][user]
+       user_mean_rating = np.mean(list(user_data[user].values()))
+
+       weighted_scores += corr_value * (user_data[user][target_item] - user_mean_rating)
+       corr_values_sum += corr_value
+
+   target_user_mean_rating = np.mean(list(user_data[target_user].values()))
+   target_item_pred = target_user_mean_rating + weighted_scores / corr_values_sum
+   print(f'用户{target_user}对物品{target_item}的预测评分为：{target_item_pred:.4f}')
+
+5. 训练模型
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    import os
+    import sys
+    import funrec
+    from funrec.utils import build_metrics_table
+    
+    # 加载配置
+    config = funrec.load_config('user_cf')
+    
+    # 加载数据
+    train_data, test_data = funrec.load_data(config.data)
+    
+    # 准备特征
+    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
+    
+    # 训练模型
+    models = funrec.train_model(config.training, feature_columns, processed_data)
+    
+    # 评估模型
+    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
+    
+    print(build_metrics_table(metrics))
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    +---------------+--------------+----------------+---------------+
+    |   hit_rate@10 |   hit_rate@5 |   precision@10 |   precision@5 |
+    +===============+==============+================+===============+
+    |        0.6912 |       0.5927 |         0.1643 |        0.2063 |
+    +---------------+--------------+----------------+---------------+
+
+
+UserCF和ItemCF虽然思路直观、易于理解，但它们都面临一个根本性的挑战：\ **数据稀疏性**\ 。在真实的推荐场景中，用户-物品交互矩阵往往是极度稀疏的——大部分用户只与极少数物品发生过交互。这导致两个问题：一是很难找到足够的共同评分来计算可靠的相似度；二是即使找到了相似用户或物品，他们的交互覆盖面也可能很有限。
+
+更深层的问题在于，邻域方法将相似度计算和推荐预测分离开来，先显式地计算相似度，再基于相似度进行推荐。这种两阶段的方法虽然直观，但缺乏对用户-物品交互数据的全局优化。能否换一种思路——不再显式计算相似度，而是通过学习用户和物品的\ **隐向量表示**\ ，让向量空间中的距离自然地反映相似性？矩阵分解正是这一思想的体现，它标志着协同过滤从统计方法向机器学习方法的转变。
+
+.. _matrix_factorization:
+
+矩阵分解：隐向量时代的开端
+--------------------------
+
+
+在推荐系统中，我们经常观察到这样的规律：喜欢《理智与情感》的用户往往也会给《公主日记》好评，而钟爱《致命武器》的观众通常也喜欢《独立日》。这反映了用户偏好的内在结构——一些隐含的“品味因子”在起作用。比如有些用户偏好面向女性的影片，有些则更喜欢面向男性的内容；有些人倾向于严肃深刻的作品如《阿马迪斯》，有些人则更享受轻松娱乐的片子如《阿呆与阿瓜》。
+
+回顾前面介绍的UserCF和ItemCF这些基于邻域的协同过滤方法，它们的思路很直观：通过寻找相似的用户或物品来进行推荐，就像
+:numref:`mf_usercf_illustration` 展示的那样。
+
+.. _mf_usercf_illustration:
+
+.. figure:: ../../img/mf_usercf_illustration.svg
+   :width: 350px
+
+   基于用户行为统计的方法。张三喜欢左边的三部电影。为了对他进行预测，系统会找到也喜欢这些电影的相似用户，然后确定他们还喜欢哪些其他电影。在这种情况下，所有三位用户都喜欢《拯救大兵瑞恩》，因此这是首个推荐。接着，其中两位用户喜欢《沙丘》，所以它排在第二位，依此类推。
+
+
+
+但这种方法有个致命弱点：当评分数据非常稀疏时，很难找到足够的相似用户或物品。想想看，在一个有百万用户和十万电影的系统中，大部分用户只看过其中几十部电影，传统方法很可能因为共同评分太少而失效。
+
+这时候，矩阵分解登场了。它不再直接寻找相似性，而是换了个思路：假设用户的偏好和电影的特征都可以用几个关键因子来描述。比如，我们可以用“面向男性vs面向女性”和“严肃vs逃避现实”这两个维度来刻画电影，同时用用户对这两类特征的偏好程度来描述用户。这样，预测一个用户对某部电影的评分就变成了计算这两个向量的相似度。
+
+矩阵分解的核心想法建立在两个关键假设上：
+
+-  第一个是低秩假设：虽然评分矩阵看起来很复杂，但实际上可能只受少数几个隐含因素影响，比如“面向男性vs面向女性”、“严肃vs逃避现实”等维度。
+-  第二个是隐向量假设：每个用户和每部电影都能用一个包含这些隐含因子的向量来表示，用户向量反映了其对各种因子的偏好程度，而电影向量则描述了该电影在各个因子上的特征强度。
+
+这种做法的好处是显而易见的：即使两个用户没有看过相同的电影，只要他们在隐含因子上表现相似，我们就能为他们推荐相似的内容。这大大提高了模型处理稀疏数据的能力。
+
+.. _mf_illustration:
+
+.. figure:: ../../img/mf_illustration.svg
+   :width: 400px
+
+   隐语义模型意图，该方法通过两个维度来刻画用户和电影：一个是面向男性与面向女性，另一个是严肃与逃避现实。
+
+
+
+接下来我们看看如何把这个想法变成具体的算法。我们将介绍两种矩阵分解模型：简单直接的\ **基础模型**\ （FunkSVD）和考虑评分偏差的\ **改进模型**\ （BiasSVD）。
+
+FunkSVD: 基础模型
+~~~~~~~~~~~~~~~~~
+
+FunkSVD 由 Simon Funk 在2006年提出
+:cite:`funk2006svd`\ ，是矩阵分解家族中最容易理解的一个。它的想法非常直接：把复杂的用户-物品评分矩阵分解成两个简单的矩阵——用户特征矩阵和物品特征矩阵。
+
+假设我们有\ :math:`m`\ 个用户和\ :math:`n`\ 个物品，想要用\ :math:`K`\ 个隐含因子来描述它们。那么用户\ :math:`u`\ 可以用一个\ :math:`K`\ 维向量\ :math:`p_u`\ 来表示，物品\ :math:`i`\ 也可以用一个\ :math:`K`\ 维向量\ :math:`q_i`\ 来表示。预测用户\ :math:`u`\ 对物品\ :math:`i`\ 的评分就是这两个向量的内积：
+
+.. math:: \hat{r}_{ui} = p_u^T q_i = \sum_{k=1}^{K} p_{u,k} \cdot q_{i,k}
+
+这里\ :math:`p_{u,k}`\ 表示用户\ :math:`u`\ 在第\ :math:`k`\ 个隐含因子上的偏好程度，\ :math:`q_{i,k}`\ 表示物品\ :math:`i`\ 在第\ :math:`k`\ 个隐含因子上的特征强度。
+
+现在问题变成了：如何找到这些隐含因子？我们采用一个很自然的思路——让预测评分尽可能接近真实评分。具体来说，我们要最小化所有已知评分的预测误差：
+
+.. math:: \min_{P,Q} \frac{1}{2} \sum_{(u,i)\in \mathcal{K}} \left( r_{ui} - p_u^T q_i \right)^2
+
+这里\ :math:`\mathcal{K}`\ 表示所有已知评分的用户-物品对，\ :math:`r_{ui}`\ 是用户\ :math:`u`\ 对物品\ :math:`i`\ 的真实评分。
+
+要解决这个优化问题，我们使用梯度下降法。对于每个观测到的评分，我们先计算预测误差\ :math:`e_{ui} = r_{ui} - p_u^T q_i`\ ，然后沿着误差减小的方向更新参数：
+
+.. math:: p_{u,k} \leftarrow p_{u,k} + \eta \cdot e_{ui} \cdot q_{i,k}
+
+.. math:: q_{i,k} \leftarrow q_{i,k} + \eta \cdot e_{ui} \cdot p_{u,k}
+
+其中\ :math:`\eta`\ 是学习率，控制每次更新的步长。这个更新规则的直觉很简单：如果预测评分偏低了（\ :math:`e_{ui} > 0`\ ），我们就增大相关的参数值；如果预测偏高了，就减小参数值。
+
+不过在实际应用中，我们通常还会加入L2正则化来防止过拟合：
+
+.. math:: \min_{P,Q} \frac{1}{2} \sum_{(u,i)\in \mathcal{K}} \left( r_{ui} - p_u^T q_i \right)^2 + \lambda \left( \|p_u\|^2 + \|q_i\|^2 \right)
+
+这样可以避免模型过度拟合训练数据，提高在新数据上的表现。
+
+BiasSVD: 改进模型
+~~~~~~~~~~~~~~~~~
+
+基础模型虽然简洁，但在实际使用中我们发现了一个问题：不同用户的评分习惯差异很大。有些用户天生就是“好人”，很少给低分；有些用户则比较严格，平均分都不高。同样，有些电影因为制作精良或者明星云集，普遍得到较高评分；而有些冷门或质量一般的电影则评分偏低。
+
+这些系统性的偏差如果不处理，会影响推荐的准确性。BiasSVD
+:cite:`koren2009matrix`
+正是为了解决这个问题而提出的。它在基础模型的基础上引入了偏置项，让预测公式变成：
+
+.. math:: \hat{r}_{ui} = \mu + b_u + b_i + p_u^T q_i
+
+这里新增了三个项：\ :math:`\mu`\ 是所有评分的全局平均值，反映了整个系统的评分水平；\ :math:`b_u`\ 是用户\ :math:`u`\ 的个人偏置，反映了该用户相对于平均水平是倾向于给高分还是低分；\ :math:`b_i`\ 是物品\ :math:`i`\ 的偏置，反映了该物品相对于平均水平是受欢迎还是不受欢迎。
+
+相应地，优化目标也要调整：
+
+.. math:: \min_{P,Q,b_u,b_i} \frac{1}{2} \sum_{(u,i)\in \mathcal{K}} \left( r_{ui} - \mu - b_u - b_i - p_u^T q_i \right)^2 + \lambda \left( \|p_u\|^2 + \|q_i\|^2 + b_u^2 + b_i^2 \right)
+
+在参数更新时，除了用户和物品的隐向量，我们还需要更新偏置项：
+
+.. math:: b_u \leftarrow b_u + \eta \left( e_{ui} - \lambda b_u \right)
+
+.. math:: b_i \leftarrow b_i + \eta \left( e_{ui} - \lambda b_i \right)
+
+这种改进看似简单，但效果显著。通过分离出系统性偏差，模型能够更准确地捕捉用户和物品之间的真实交互模式，从而提供更精准的推荐。
+
+代码实践
+~~~~~~~~
+
+FunkSVD 在 MovieLens 数据集上的应用
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    import os
+    import sys
+    import funrec
+    from funrec.utils import build_metrics_table
+    
+    # 加载配置
+    config = funrec.load_config('funksvd')
+    
+    # 加载数据
+    train_data, test_data = funrec.load_data(config.data)
+    
+    # 准备特征
+    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
+    
+    # 训练模型
+    models = funrec.train_model(config.training, feature_columns, processed_data)
+    
+    # 评估模型
+    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
+    
+    print(build_metrics_table(metrics))
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    +---------------+--------------+-----------+----------+----------------+---------------+
+    |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
+    +===============+==============+===========+==========+================+===============+
+    |        0.0025 |       0.0015 |    0.0013 |   0.0009 |         0.0002 |        0.0003 |
+    +---------------+--------------+-----------+----------+----------------+---------------+
+
+
+BiasSVD 在 MovieLens 数据集上的应用
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    config = funrec.load_config('biassvd')
+    
+    # 加载数据
+    train_data, test_data = funrec.load_data(config.data)
+    
+    # 准备特征
+    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
+    
+    # 训练模型
+    models = funrec.train_model(config.training, feature_columns, processed_data)
+    
+    # 评估模型
+    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
+    
+    print(build_metrics_table(metrics))
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    +---------------+--------------+-----------+----------+----------------+---------------+
+    |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
+    +===============+==============+===========+==========+================+===============+
+    |        0.0007 |       0.0007 |    0.0004 |   0.0004 |         0.0001 |        0.0001 |
+    +---------------+--------------+-----------+----------+----------------+---------------+
+

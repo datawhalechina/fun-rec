@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -114,11 +115,9 @@ Show Source
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.summary.html">2.1.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -237,11 +236,9 @@ Show Source
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.summary.html">2.1.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -330,9 +327,9 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="multi-objective-arch">
+  <section id="multi-objective-arch">
 <span id="id1"></span><h1><span class="section-number">3.4.1. </span>基础结构演进<a class="headerlink" href="#multi-objective-arch" title="Permalink to this heading">¶</a></h1>
-<div class="section" id="shared-bottom">
+<section id="shared-bottom">
 <h2><span class="section-number">3.4.1.1. </span>Shared-Bottom<a class="headerlink" href="#shared-bottom" title="Permalink to this heading">¶</a></h2>
 <p>Shared-Bottom
 模型作为多目标建模的奠基性架构，采用“共享地基+独立塔楼”的设计范式。其核心结构包含两个关键组件：</p>
@@ -342,10 +339,12 @@ Bottom）：所有任务共用同一组特征转换层，负责学习跨任务�
 <li><p>任务特定塔（Task-Specific
 Towers）：每个任务拥有独立的顶层网络，基于共享表示学习任务特定决策边界。</p></li>
 </ul>
-<div class="figure align-default" id="id2">
+<figure class="align-default" id="id2">
 <span id="shared-bottom-model-structure"></span><a class="reference internal image-reference" href="../../_images/shared-bottom.png"><img alt="../../_images/shared-bottom.png" src="../../_images/shared-bottom.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.1 </span><span class="caption-text">Shared-Bottom</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.1 </span><span class="caption-text">Shared-Bottom</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>这种架构的数学表达可描述为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-1-arch-0">
 <span class="eqno">(3.4.1)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-1-arch-0" title="Permalink to this equation">¶</a></span>\[\hat{y}_t = f_t(W_t \cdot g(W_s \mathbf{x}))\]</div>
@@ -400,7 +399,7 @@ DNN网络，遍历创建各个任务独立的DNN塔，最后输出多个塔的�
 <p><strong>1. 导入需要的包</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_metrics_table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_table</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;shared_bottom&#39;</span><span class="p">)</span>
 </pre></div>
@@ -416,23 +415,42 @@ DNN网络，遍历创建各个任务独立的DNN塔，最后输出多个塔的�
 </div>
 <p><strong>4. 模型评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+<span class="n">print_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
-<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">valid_users_is_click</span> <span class="o">|</span>   <span class="n">valid_users_is_like</span> <span class="o">|</span>   <span class="n">valid_users_long_view</span> <span class="o">|</span>
-<span class="o">+================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+</span>
-<span class="o">|</span>         <span class="mf">0.6004</span> <span class="o">|</span>        <span class="mf">0.4011</span> <span class="o">|</span>          <span class="mf">0.4407</span> <span class="o">|</span>      <span class="mf">0.4807</span> <span class="o">|</span>          <span class="mf">0.5741</span> <span class="o">|</span>         <span class="mf">0.4431</span> <span class="o">|</span>           <span class="mf">0.4558</span> <span class="o">|</span>        <span class="mf">0.491</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
-<span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">表格</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
+<span class="o">+----------------+---------------+-----------------+-------------+</span>
+<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>
+<span class="o">+================+===============+=================+=============+</span>
+<span class="o">|</span>         <span class="mf">0.5951</span> <span class="o">|</span>        <span class="mf">0.4122</span> <span class="o">|</span>          <span class="mf">0.4436</span> <span class="o">|</span>      <span class="mf">0.4836</span> <span class="o">|</span>
+<span class="o">+----------------+---------------+-----------------+-------------+</span>
+
+
+<span class="n">表格</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
+<span class="o">+-----------------+----------------+------------------+--------------+</span>
+<span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>
+<span class="o">+=================+================+==================+==============+</span>
+<span class="o">|</span>          <span class="mf">0.5753</span> <span class="o">|</span>         <span class="mf">0.4438</span> <span class="o">|</span>           <span class="mf">0.4512</span> <span class="o">|</span>       <span class="mf">0.4901</span> <span class="o">|</span>
+<span class="o">+-----------------+----------------+------------------+--------------+</span>
+
+
+<span class="n">表格</span> <span class="mi">3</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
+<span class="o">+---------------------+--------------------+----------------------+</span>
+<span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>   <span class="n">val_user_long_view</span> <span class="o">|</span>
+<span class="o">+=====================+====================+======================+</span>
+<span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>                  <span class="mi">925</span> <span class="o">|</span>
+<span class="o">+---------------------+--------------------+----------------------+</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="mmoe">
+</section>
+<section id="mmoe">
 <h2><span class="section-number">3.4.1.2. </span>MMOE<a class="headerlink" href="#mmoe" title="Permalink to this heading">¶</a></h2>
-<div class="figure align-default" id="id3">
+<figure class="align-default" id="id3">
 <span id="mmoe-model-structure"></span><a class="reference internal image-reference" href="../../_images/mmoe.png"><img alt="../../_images/mmoe.png" src="../../_images/mmoe.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.2 </span><span class="caption-text">MMOE模型结构</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.2 </span><span class="caption-text">MMOE模型结构</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>针对Shared-Bottom对相关性低的多个任务出现负迁移的现象，OMOE将底层共享的一个Shared-Bottom模块拆分成了多个Expert，最终OMOE的输出为多个Expert的加权和，本质可以看成是专家网络和全局门控的双层结构。</p>
 <p>虽然OMOE通过底层多专家融合的方式提升了特征表征的多样性，从最终的实验结果看，确实可以一定程度上缓解低相关性任务的负迁移问题，但没有彻底解决多任务冲突的问题。因为不同任务反向传播的梯度还是会直接影响底层专家网络的学习。</p>
 <p>为了进一步缓解多任务冲突，MMOE为每个任务配备专属门控网络，实现了门控从“全局共享”升级为“任务自适应”的方式。MMoE的数学表达式可以表示为：</p>
@@ -513,18 +531,35 @@ g_t(\mathbf{x}) &amp;= \text{softmax}(\mathbf{W}_t \mathbf{x}) \\
 </div>
 <p><strong>4. 模型效果评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+<span class="n">print_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
-<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">valid_users_is_click</span> <span class="o">|</span>   <span class="n">valid_users_is_like</span> <span class="o">|</span>   <span class="n">valid_users_long_view</span> <span class="o">|</span>
-<span class="o">+================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+</span>
-<span class="o">|</span>         <span class="mf">0.6002</span> <span class="o">|</span>        <span class="mf">0.4372</span> <span class="o">|</span>          <span class="mf">0.4515</span> <span class="o">|</span>      <span class="mf">0.4963</span> <span class="o">|</span>          <span class="mf">0.5727</span> <span class="o">|</span>         <span class="mf">0.4447</span> <span class="o">|</span>           <span class="mf">0.4672</span> <span class="o">|</span>       <span class="mf">0.4949</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
-<span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">表格</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
+<span class="o">+----------------+---------------+-----------------+-------------+</span>
+<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>
+<span class="o">+================+===============+=================+=============+</span>
+<span class="o">|</span>         <span class="mf">0.6032</span> <span class="o">|</span>        <span class="mf">0.4313</span> <span class="o">|</span>          <span class="mf">0.4458</span> <span class="o">|</span>      <span class="mf">0.4935</span> <span class="o">|</span>
+<span class="o">+----------------+---------------+-----------------+-------------+</span>
+
+
+<span class="n">表格</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
+<span class="o">+-----------------+----------------+------------------+--------------+</span>
+<span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>
+<span class="o">+=================+================+==================+==============+</span>
+<span class="o">|</span>          <span class="mf">0.5745</span> <span class="o">|</span>          <span class="mf">0.441</span> <span class="o">|</span>           <span class="mf">0.4588</span> <span class="o">|</span>       <span class="mf">0.4914</span> <span class="o">|</span>
+<span class="o">+-----------------+----------------+------------------+--------------+</span>
+
+
+<span class="n">表格</span> <span class="mi">3</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
+<span class="o">+---------------------+--------------------+----------------------+</span>
+<span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>   <span class="n">val_user_long_view</span> <span class="o">|</span>
+<span class="o">+=====================+====================+======================+</span>
+<span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>                  <span class="mi">925</span> <span class="o">|</span>
+<span class="o">+---------------------+--------------------+----------------------+</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="ple">
+</section>
+<section id="ple">
 <h2><span class="section-number">3.4.1.3. </span>PLE<a class="headerlink" href="#ple" title="Permalink to this heading">¶</a></h2>
 <p>MMoE
 通过为每个任务配备专属门控网络，在一定程度上缓解了多任务冲突问题。专属门控网络能够根据任务特性选择专家组合，从而使得不同任务可以关注不同的特征表示。但其架构仍存在一个根本性局限：所有专家对所有任务门控可见。这种“软隔离”设计在实践中仍面临两大挑战：</p>
@@ -544,10 +579,12 @@ g_t(\mathbf{x}) &amp;= \text{softmax}(\mathbf{W}_t \mathbf{x}) \\
 </li>
 </ol>
 <p>为解决上述问题，CGC结构被提出，其核心思想是通过硬性结构约束，显式分离共享知识与任务特定知识：</p>
-<div class="figure align-default" id="id4">
+<figure class="align-default" id="id4">
 <span id="cgc-model-structure"></span><a class="reference internal image-reference" href="../../_images/cgc.png"><img alt="../../_images/cgc.png" src="../../_images/cgc.png" style="width: 350px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.3 </span><span class="caption-text">CGC网络结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.3 </span><span class="caption-text">CGC网络结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p><strong>专家职责强制分离</strong>：</p>
 <ul class="simple">
 <li><p>共享专家
@@ -641,10 +678,12 @@ g_t(\mathbf{x}) &amp;= \text{softmax}(\mathbf{W}_t \mathbf{x}) \\
 <p>CGC解决了知识分离的核心问题，但其本质是单层结构，表征学习深度有限。受深度神经网络逐层抽象特征的启发，PLE
 (Progressive Layered Extraction)
 将多个CGC单元纵向堆叠，形成深层架构，实现渐进式知识提取与融合。</p>
-<div class="figure align-default" id="id5">
+<figure class="align-default" id="id5">
 <span id="ple-model-structure"></span><a class="reference internal image-reference" href="../../_images/ple.png"><img alt="../../_images/ple.png" src="../../_images/ple.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.4 </span><span class="caption-text">PLE网络结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.4 </span><span class="caption-text">PLE网络结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <ul class="simple">
 <li><p>第1层 (输入层 CGC)：</p>
 <ul>
@@ -748,18 +787,35 @@ g_t(\mathbf{x}) &amp;= \text{softmax}(\mathbf{W}_t \mathbf{x}) \\
 </div>
 <p><strong>4. 模型效果评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+<span class="n">print_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
-<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">valid_users_is_click</span> <span class="o">|</span>   <span class="n">valid_users_is_like</span> <span class="o">|</span>   <span class="n">valid_users_long_view</span> <span class="o">|</span>
-<span class="o">+================+===============+=================+=============+=================+================+==================+==============+========================+=======================+=========================+</span>
-<span class="o">|</span>         <span class="mf">0.6015</span> <span class="o">|</span>        <span class="mf">0.4356</span> <span class="o">|</span>          <span class="mf">0.4247</span> <span class="o">|</span>      <span class="mf">0.4873</span> <span class="o">|</span>          <span class="mf">0.5741</span> <span class="o">|</span>         <span class="mf">0.4437</span> <span class="o">|</span>            <span class="mf">0.447</span> <span class="o">|</span>       <span class="mf">0.4883</span> <span class="o">|</span>                    <span class="mi">928</span> <span class="o">|</span>                   <span class="mi">530</span> <span class="o">|</span>                     <span class="mi">925</span> <span class="o">|</span>
-<span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+------------------------+-----------------------+-------------------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">表格</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
+<span class="o">+----------------+---------------+-----------------+-------------+</span>
+<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>
+<span class="o">+================+===============+=================+=============+</span>
+<span class="o">|</span>         <span class="mf">0.5938</span> <span class="o">|</span>        <span class="mf">0.4225</span> <span class="o">|</span>          <span class="mf">0.4532</span> <span class="o">|</span>      <span class="mf">0.4898</span> <span class="o">|</span>
+<span class="o">+----------------+---------------+-----------------+-------------+</span>
+
+
+<span class="n">表格</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
+<span class="o">+-----------------+----------------+------------------+--------------+</span>
+<span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>
+<span class="o">+=================+================+==================+==============+</span>
+<span class="o">|</span>          <span class="mf">0.5724</span> <span class="o">|</span>         <span class="mf">0.4456</span> <span class="o">|</span>           <span class="mf">0.4655</span> <span class="o">|</span>       <span class="mf">0.4945</span> <span class="o">|</span>
+<span class="o">+-----------------+----------------+------------------+--------------+</span>
+
+
+<span class="n">表格</span> <span class="mi">3</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
+<span class="o">+---------------------+--------------------+----------------------+</span>
+<span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>   <span class="n">val_user_long_view</span> <span class="o">|</span>
+<span class="o">+=====================+====================+======================+</span>
+<span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>                  <span class="mi">925</span> <span class="o">|</span>
+<span class="o">+---------------------+--------------------+----------------------+</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>

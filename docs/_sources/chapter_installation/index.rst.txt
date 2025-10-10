@@ -38,7 +38,7 @@ Notebook 和相关依赖库的运行环境来执行本书中的代码示例。
 --------------------
 
 我们的下一步是安装funrec库及其依赖。
-在\ ``pyproject.toml``\ 同级目录下执行：
+在\ ``pyproject.toml``\ 同级目录，即代码仓库根目录下执行：
 
 .. raw:: latex
 
@@ -50,7 +50,7 @@ Notebook 和相关依赖库的运行环境来执行本书中的代码示例。
 
 从\ `数据链接 <https://drive.google.com/file/d/1NAsN1Bqf88Ag2KYmGhTKDiX0Uty2dDw3>`__\ 下载数据，并解压到相应目录，记录数据路径。
 
-先复制.env.example文件为.env文件：
+先复制代码仓库根目录下的.env.example文件为.env文件：
 
 .. raw:: latex
 

@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>2.1.2. 基于用户的协同过滤 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/d2l.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.1.3. 总结" href="3.summary.html" />
+    <link rel="prev" title="2.1.1. 基于物品的协同过滤" href="1.itemcf.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="../index.html"><span class="section-number">2. </span>召回模型</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">2.1. </span>协同过滤</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">2.1.2. </span>基于用户的协同过滤</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../../_sources/chapter_1_retrieval/1.cf/2.usercf.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://funrec-notebooks.s3.eu-west-3.amazonaws.com/fun-rec.zip">
+                  <i class="fas fa-download"></i>
+                  Jupyter 记事本
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
+                  <i class="fab fa-github"></i>
+                  GitHub
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 召回模型</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">2.1. 协同过滤</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.summary.html">2.1.3. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/3.summary.html">2.2.3. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/3.summary.html">2.3.3. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.1. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.2. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.3. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_5_projects/index.html">6. 项目实践</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../../index.html">
+              <span class="title-text">
+                  FunRec 推荐系统
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 召回模型</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">2.1. 协同过滤</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.summary.html">2.1.3. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.embedding/3.summary.html">2.2.3. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../3.sequence/3.summary.html">2.3.3. 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/1.debias.html">5.1. 模型去偏</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/2.cold_start.html">5.2. 冷启动问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/3.generative.html">5.3. 生成式推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_4_trends/4.summary.html">5.4. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_5_projects/index.html">6. 项目实践</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="usercf">
+<span id="id1"></span><h1><span class="section-number">2.1.2. </span>基于用户的协同过滤<a class="headerlink" href="#usercf" title="Permalink to this heading">¶</a></h1>
+<p>在网上购物时，我们经常会参考其他买家的选择和评价。如果你发现某个用户和你买了同样的T恤和裤子，而且都给了好评，那么当你看到这个用户还买了一双鞋子时，你可能也会对这双鞋子产生兴趣。基于用户的协同过滤（UserCF）正是基于这样一个朴素而有效的想法：<strong>具有相似历史行为的用户，未来偏好也相似</strong>。</p>
+<p>UserCF是早期提出的协同过滤方法之一
+<span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id3" title="Resnick, P., Iacovou, N., Suchak, M., Bergstrom, P., &amp; Riedl, J. (1994). Grouplens: an open architecture for collaborative filtering of netnews. Proceedings of the 1994 ACM conference on Computer supported cooperative work (pp. 175–186).">Resnick <em>et al.</em>, 1994</a>)</span>，它的工作原理很直观：先找到与目标用户购买偏好相似的“邻居用户”，然后基于这些邻居对商品的选择来预测目标用户的偏好。如
+<a class="reference internal" href="#usercf-illustration"><span class="std std-numref">图2.1.5</span></a>
+所示，如果用户A和用户B都购买了衣服和帽子，那么当用户B还购买了裤子和鞋子时，我们就可以推测用户A可能也会对这些商品感兴趣。</p>
+<figure class="align-default" id="id10">
+<span id="usercf-illustration"></span><a class="reference internal image-reference" href="../../_images/usercf_illustration.svg"><img alt="../../_images/usercf_illustration.svg" src="../../_images/usercf_illustration.svg" width="400px" /></a>
+<figcaption>
+<p><span class="caption-number">图2.1.5 </span><span class="caption-text">UserCF 原理示意图</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>UserCF和前面介绍的ItemCF构成了协同过滤的两大基本方法，它们都属于基于邻域（Neighborhood-based）的协同过滤，核心思想是通过计算相似度来寻找邻居。不同之处在于视角的转换：ItemCF从物品出发，关注“与用户喜欢的物品相似的还有什么”；UserCF从用户出发，关注“与目标用户相似的人还喜欢什么”。虽然ItemCF在工业应用中更常见，但UserCF作为协同过滤的开山之作，其思想对后续方法有着深远影响，特别是其隐含的“用户可以用向量表示”的理念，为矩阵分解等方法奠定了基础。</p>
+<section id="id3">
+<h2><span class="section-number">2.1.2.1. </span>UserCF核心算法<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
+<p>UserCF的实现过程可以分解为两个核心步骤：首先计算用户之间的相似度，找出与目标用户偏好最接近的邻居用户；然后基于这些邻居用户的历史行为，预测目标用户对未购买商品的兴趣程度。接下来我们详细看看每个步骤是如何实现的。</p>
+<p><strong>第一步：用户相似度计算</strong></p>
+<p>要实现UserCF，首先需要回答一个关键问题：如何判断两个用户是否相似？这就需要用到相似度计算。我们来看几种常用的方法。</p>
+<p>假设用户<span class="math notranslate nohighlight">\(u\)</span>和用户<span class="math notranslate nohighlight">\(v\)</span>分别对应物品集合<span class="math notranslate nohighlight">\(N(u)\)</span>和<span class="math notranslate nohighlight">\(N(v)\)</span>（即他们各自有过行为的物品）。</p>
+<p><strong>杰卡德相似系数</strong>：如果你的系统只记录用户是否对物品有过行为（比如是否点击、购买），而没有具体的评分，那么杰卡德系数是个好选择：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-0">
+<span class="eqno">(2.1.13)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-0" title="Permalink to this equation">¶</a></span>\[w_{uv} = \frac{|N(u) \cap N(v)|}{|N(u) \cup N(v)|}\]</div>
+<p>这个公式可以直观理解为：分子是两人共同喜欢的物品数量，分母是两人喜欢的物品总数（去重后）。</p>
+<p><strong>余弦相似度</strong>：将每个用户看成一个向量，计算向量间的夹角：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-1">
+<span class="eqno">(2.1.14)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-1" title="Permalink to this equation">¶</a></span>\[w_{uv} = \frac{|N(u) \cap N(v)|}{\sqrt{|N(u)|\cdot|N(v)|}}\]</div>
+<p>余弦相似度考虑了用户活跃度的差异。</p>
+<p><strong>皮尔逊相关系数</strong>：当你有具体的评分数据时（比如5星评分），皮尔逊系数能更好地捕捉用户的偏好模式：</p>
+<div class="math notranslate nohighlight" id="equation-eq-usercf-pearson">
+<span class="eqno">(2.1.15)<a class="headerlink" href="#equation-eq-usercf-pearson" title="Permalink to this equation">¶</a></span>\[w_{uv} = \frac{\sum_{i \in I}(r_{ui} - \bar{r}_u)(r_{vi} - \bar{r}_v)}{\sqrt{\sum_{i \in I}(r_{ui} - \bar{r}_u)^2}\sqrt{\sum_{i \in I}(r_{vi} - \bar{r}_v)^2}}\]</div>
+<p>这里<span class="math notranslate nohighlight">\(r_{ui}\)</span>表示用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的评分，<span class="math notranslate nohighlight">\(\bar{r}_u\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>的平均评分，<span class="math notranslate nohighlight">\(I\)</span>是两个用户都评价过的物品集合。皮尔逊系数通过中心化处理，有效消除了个人评分习惯的差异。有些人习惯给高分（“好人”），有些人比较严格，通过减去各自的平均分，我们关注的是评分的相对变化趋势，而不是绝对数值。</p>
+<p>计算完相似度后，我们通常选择相似度最高的K个用户作为“邻居”，这个K值需要仔细调整——太小可能信息不足，太大可能引入噪音。</p>
+<p><strong>第二步：候选物品推荐</strong></p>
+<p>有了相似用户，下一步就是利用他们的偏好来预测目标用户对未交互过的物品的兴趣。</p>
+<p><strong>简单加权平均</strong>：最直接的方法是用相似度作为权重，对邻居的评分进行加权平均：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-2">
+<span class="eqno">(2.1.16)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-2" title="Permalink to this equation">¶</a></span>\[\hat{r}_{u,p} = \frac{\sum_{v \in S_u} w_{uv} \, r_{v,p}}{\sum_{v \in S_u} w_{uv}}\]</div>
+<p>这里<span class="math notranslate nohighlight">\(\hat{r}_{u,p}\)</span>是预测的用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(p\)</span>的评分，<span class="math notranslate nohighlight">\(S_u\)</span>是邻居用户集合，<span class="math notranslate nohighlight">\(w_{uv}\)</span>是相似度权重，<span class="math notranslate nohighlight">\(r_{v,p}\)</span>是邻居<span class="math notranslate nohighlight">\(v\)</span>对物品<span class="math notranslate nohighlight">\(p\)</span>的实际评分。</p>
+<p><strong>考虑评分偏置的版本</strong>：为了进一步消除个人评分习惯的影响，我们可以加入偏置修正：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-3">
+<span class="eqno">(2.1.17)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-3" title="Permalink to this equation">¶</a></span>\[\hat{r}_{u,p} = \bar{r}_{u} + \frac{\sum_{v \in S_u} w_{uv} \, (r_{v,p} - \bar{r}_{v})}{\sum_{v \in S_u} w_{uv}}\]</div>
+<p>这里<span class="math notranslate nohighlight">\(\bar{r}_u\)</span>和<span class="math notranslate nohighlight">\(\bar{r}_v\)</span>分别是用户<span class="math notranslate nohighlight">\(u\)</span>和<span class="math notranslate nohighlight">\(v\)</span>的平均评分。这个公式的思路是：先看邻居们对这个物品的评分相比他们平均水平如何，然后根据目标用户的平均评分水平进行调整。</p>
+<p><strong>优化策略：让算法跑得更快</strong></p>
+<p>UserCF看起来很简单，但有个大问题：当用户数量很大时，计算所有用户对之间的相似度会非常耗时，时间复杂度达到<span class="math notranslate nohighlight">\(O(|U|^2)\)</span>。</p>
+<p>但仔细观察就会发现，很多用户对之间根本没有共同行为的物品，相似度必然为0，计算它们就是浪费时间。我们可以利用这个特点来优化算法。</p>
+<p><strong>基于物品倒排表的优化</strong>：</p>
+<ol class="arabic simple">
+<li><p><strong>构建倒排表</strong>：为每个物品维护一个用户列表，记录哪些用户对这个物品有过行为。这样就可以通过物品快速找到相关用户。</p></li>
+<li><p><strong>稀疏矩阵计算</strong>：创建一个矩阵<span class="math notranslate nohighlight">\(C[u][v]\)</span>来记录用户<span class="math notranslate nohighlight">\(u\)</span>和<span class="math notranslate nohighlight">\(v\)</span>的共同物品数量。遍历每个物品的用户列表，将列表中的用户两两配对，对应的<span class="math notranslate nohighlight">\(C[u][v]\)</span>值加1。</p></li>
+<li><p><strong>计算最终相似度</strong>：矩阵<span class="math notranslate nohighlight">\(C\)</span>给出了余弦相似度公式的分子，再除以分母<span class="math notranslate nohighlight">\(\sqrt{|N(u)||N(v)|}\)</span>就得到了用户相似度。</p></li>
+<li><p><strong>生成推荐</strong>：使用以下公式计算用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的兴趣分数：</p></li>
+</ol>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-4">
+<span class="eqno">(2.1.18)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-4" title="Permalink to this equation">¶</a></span>\[p(u, i) = \sum_{v \in S_u \cap N(i)} w_{uv} r_{vi}\]</div>
+<p>其中<span class="math notranslate nohighlight">\(S_u\)</span>是与用户<span class="math notranslate nohighlight">\(u\)</span>最相似的<span class="math notranslate nohighlight">\(K\)</span>个用户集合，<span class="math notranslate nohighlight">\(N(i)\)</span>是对物品<span class="math notranslate nohighlight">\(i\)</span>有过行为的用户集合。实际推荐时，针对目标用户未交互过的物品计算上述兴趣度量值，并按分值降序排列，选择Top-N物品作为推荐结果。</p>
+<p>这个优化的效果如何呢？新算法的时间复杂度约为<span class="math notranslate nohighlight">\(O(R \cdot \bar{n})\)</span>，其中<span class="math notranslate nohighlight">\(R\)</span>是总的用户-物品交互记录数，<span class="math notranslate nohighlight">\(\bar{n}\)</span>是每个物品的平均用户数。在稀疏数据场景下（即<span class="math notranslate nohighlight">\(R \ll |U|^2\)</span>且<span class="math notranslate nohighlight">\(\bar{n} \ll |U|\)</span>）），这比原来的<span class="math notranslate nohighlight">\(O(|U|^2)\)</span>快得多。</p>
+<section id="id4">
+<h3><span class="section-number">2.1.2.1.1. </span>应用实践<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
+<p>1.数据集。表格 <a class="reference internal" href="#table-usercf-data"><span class="std std-numref">表2.1.2</span></a>
+里是5个用户对5个物品的评分数据，可以理解为用户对物品的偏好程度。</p>
+<span id="table-usercf-data"></span><table class="docutils align-default" id="id11">
+<caption><span class="caption-number">表2.1.2 </span><span class="caption-text">用户评分数据</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>物品1</p></th>
+<th class="head"><p>物品2</p></th>
+<th class="head"><p>物品3</p></th>
+<th class="head"><p>物品4</p></th>
+<th class="head"><p>物品5</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>用户1</p></td>
+<td><p>5</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td><p>?</p></td>
+</tr>
+<tr class="row-odd"><td><p>用户2</p></td>
+<td><p>3</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>用户3</p></td>
+<td><p>4</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>3</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p>用户4</p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p>用户5</p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+<td><p>5</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>2.手动分析。基于皮尔逊相关系数，计算用户1
+与其他用户（以用户2为例）的相似度。</p>
+<ul class="simple">
+<li><p>计算用户1与用户2的皮尔逊相关系数:
+<span class="math notranslate nohighlight">\(\bar{r}_{user1}=4,\ \bar{r}_{user2}=2.25\)</span>。向量减去均值:
+<span class="math notranslate nohighlight">\(\text{user1}:(1,-1, 0,0) \quad \text{user2}: (0.75,-1.25,-0.25,0.75)\)</span></p></li>
+<li><p>计算这俩新向量的余弦相似度，得到皮尔逊相似度 <span class="math notranslate nohighlight">\(0.852\)</span>。</p></li>
+</ul>
+<p>根据相似用户，计算用户1对物品5的最终得分。用户2对物品5的评分是3，
+用户3对物品5的打分是5， 那么根据上面的计算公式
+<a class="reference internal" href="#equation-eq-usercf-pearson">(2.1.15)</a>，可以计算出 用户1 对物品5的最终得分是:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-5">
+<span class="eqno">(2.1.19)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-5" title="Permalink to this equation">¶</a></span>\[P_{user1, item5}=\bar{r}_{user1}+\frac{\sum_{k=1}^{2}\left(w_{user1,user k}\left(r_{userk, item5}-\bar{r}_{userk}\right)\right)}{\sum_{k=1}^{2} w_{user1, userk}}=4+\frac{0.85*(3-2.4)+0.7*(5-3.8)}{0.85+0.7}=4.87\]</div>
+</section>
+<section id="id5">
+<h3><span class="section-number">2.1.2.1.2. </span>代码实践<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>数据准备</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">user_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;user1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;item1&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;item2&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;item3&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;item4&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+    <span class="s1">&#39;user2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;item1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;item2&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;item3&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;item4&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;item5&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="s1">&#39;user3&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;item1&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;item2&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;item3&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;item4&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;item5&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+    <span class="s1">&#39;user4&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;item1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;item2&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;item3&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;item4&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;item5&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+    <span class="s1">&#39;user5&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;item1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;item2&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;item3&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;item4&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;item5&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>这里使用字典来建立用户-物品的交互表:</p>
+<ul class="simple">
+<li><p>字典users的键表示不同用户的名字，值为一个评分字典，评分字典的键值对表示某物品被当前用户的评分。</p></li>
+<li><p>由于现实场景中，用户对物品的评分比较稀疏。如果直接使用矩阵进行存储，会存在大量空缺值，故此处使用了字典。</p></li>
+</ul>
+<p>2.基于皮尔逊相关系数，计算用户相似性矩阵</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 初始化相似性矩阵</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="n">similarity_matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">user_data</span><span class="p">)),</span>
+    <span class="n">index</span><span class="o">=</span><span class="n">user_data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+    <span class="n">columns</span><span class="o">=</span><span class="n">user_data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="c1"># 遍历每条用户-物品评分数据</span>
+<span class="k">for</span> <span class="n">u1</span><span class="p">,</span> <span class="n">items1</span> <span class="ow">in</span> <span class="n">user_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">u2</span><span class="p">,</span> <span class="n">items2</span> <span class="ow">in</span> <span class="n">user_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">u2</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">rating1</span> <span class="ow">in</span> <span class="n">items1</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">rating2</span> <span class="o">=</span> <span class="n">items2</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rating2</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">vec1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rating1</span><span class="p">)</span>
+            <span class="n">vec2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rating2</span><span class="p">)</span>
+        <span class="c1"># 计算不同用户之间的皮尔逊相关系数</span>
+        <span class="n">similarity_matrix</span><span class="p">[</span><span class="n">u1</span><span class="p">][</span><span class="n">u2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">similarity_matrix</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>3.计算用户1最相似的n个用户</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">target_user</span> <span class="o">=</span> <span class="s1">&#39;user1&#39;</span>
+<span class="n">num</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1"># 由于最相似的用户为自己，去除本身</span>
+<span class="n">sim_users</span> <span class="o">=</span> <span class="n">similarity_matrix</span><span class="p">[</span><span class="n">target_user</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="n">num</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;与用户</span><span class="si">{</span><span class="n">target_user</span><span class="si">}</span><span class="s1">最相似的</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1">个用户为：</span><span class="si">{</span><span class="n">sim_users</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>预测用户1对物品5的评分</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">weighted_scores</span> <span class="o">=</span> <span class="mf">0.</span>
+<span class="n">corr_values_sum</span> <span class="o">=</span> <span class="mf">0.</span>
+
+<span class="n">target_item</span> <span class="o">=</span> <span class="s1">&#39;item5&#39;</span>
+<span class="c1"># 基于皮尔逊相关系数预测用户评分</span>
+<span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">sim_users</span><span class="p">:</span>
+    <span class="n">corr_value</span> <span class="o">=</span> <span class="n">similarity_matrix</span><span class="p">[</span><span class="n">target_user</span><span class="p">][</span><span class="n">user</span><span class="p">]</span>
+    <span class="n">user_mean_rating</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="n">user</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+    <span class="n">weighted_scores</span> <span class="o">+=</span> <span class="n">corr_value</span> <span class="o">*</span> <span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="n">user</span><span class="p">][</span><span class="n">target_item</span><span class="p">]</span> <span class="o">-</span> <span class="n">user_mean_rating</span><span class="p">)</span>
+    <span class="n">corr_values_sum</span> <span class="o">+=</span> <span class="n">corr_value</span>
+
+<span class="n">target_user_mean_rating</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">user_data</span><span class="p">[</span><span class="n">target_user</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+<span class="n">target_item_pred</span> <span class="o">=</span> <span class="n">target_user_mean_rating</span> <span class="o">+</span> <span class="n">weighted_scores</span> <span class="o">/</span> <span class="n">corr_values_sum</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;用户</span><span class="si">{</span><span class="n">target_user</span><span class="si">}</span><span class="s1">对物品</span><span class="si">{</span><span class="n">target_item</span><span class="si">}</span><span class="s1">的预测评分为：</span><span class="si">{</span><span class="n">target_item_pred</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>训练模型</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_metrics_table</span>
+
+<span class="c1"># 加载配置</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;user_cf&#39;</span><span class="p">)</span>
+
+<span class="c1"># 加载数据</span>
+<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># 准备特征</span>
+<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+
+<span class="c1"># 训练模型</span>
+<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
+
+<span class="c1"># 评估模型</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+----------------+---------------+</span>
+<span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
+<span class="o">+===============+==============+================+===============+</span>
+<span class="o">|</span>        <span class="mf">0.6912</span> <span class="o">|</span>       <span class="mf">0.5927</span> <span class="o">|</span>         <span class="mf">0.1643</span> <span class="o">|</span>        <span class="mf">0.2063</span> <span class="o">|</span>
+<span class="o">+---------------+--------------+----------------+---------------+</span>
+</pre></div>
+</div>
+<p>UserCF和ItemCF虽然思路直观、易于理解，但它们都面临一个根本性的挑战：<strong>数据稀疏性</strong>。在真实的推荐场景中，用户-物品交互矩阵往往是极度稀疏的——大部分用户只与极少数物品发生过交互。这导致两个问题：一是很难找到足够的共同评分来计算可靠的相似度；二是即使找到了相似用户或物品，他们的交互覆盖面也可能很有限。</p>
+<p>更深层的问题在于，邻域方法将相似度计算和推荐预测分离开来，先显式地计算相似度，再基于相似度进行推荐。这种两阶段的方法虽然直观，但缺乏对用户-物品交互数据的全局优化。能否换一种思路——不再显式计算相似度，而是通过学习用户和物品的<strong>隐向量表示</strong>，让向量空间中的距离自然地反映相似性？矩阵分解正是这一思想的体现，它标志着协同过滤从统计方法向机器学习方法的转变。</p>
+</section>
+</section>
+<section id="matrix-factorization">
+<span id="id6"></span><h2><span class="section-number">2.1.2.2. </span>矩阵分解：隐向量时代的开端<a class="headerlink" href="#matrix-factorization" title="Permalink to this heading">¶</a></h2>
+<p>在推荐系统中，我们经常观察到这样的规律：喜欢《理智与情感》的用户往往也会给《公主日记》好评，而钟爱《致命武器》的观众通常也喜欢《独立日》。这反映了用户偏好的内在结构——一些隐含的“品味因子”在起作用。比如有些用户偏好面向女性的影片，有些则更喜欢面向男性的内容；有些人倾向于严肃深刻的作品如《阿马迪斯》，有些人则更享受轻松娱乐的片子如《阿呆与阿瓜》。</p>
+<p>回顾前面介绍的UserCF和ItemCF这些基于邻域的协同过滤方法，它们的思路很直观：通过寻找相似的用户或物品来进行推荐，就像
+<a class="reference internal" href="#mf-usercf-illustration"><span class="std std-numref">图2.1.6</span></a> 展示的那样。</p>
+<figure class="align-default" id="id12">
+<span id="mf-usercf-illustration"></span><a class="reference internal image-reference" href="../../_images/mf_usercf_illustration.svg"><img alt="../../_images/mf_usercf_illustration.svg" src="../../_images/mf_usercf_illustration.svg" width="350px" /></a>
+<figcaption>
+<p><span class="caption-number">图2.1.6 </span><span class="caption-text">基于用户行为统计的方法。张三喜欢左边的三部电影。为了对他进行预测，系统会找到也喜欢这些电影的相似用户，然后确定他们还喜欢哪些其他电影。在这种情况下，所有三位用户都喜欢《拯救大兵瑞恩》，因此这是首个推荐。接着，其中两位用户喜欢《沙丘》，所以它排在第二位，依此类推。</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>但这种方法有个致命弱点：当评分数据非常稀疏时，很难找到足够的相似用户或物品。想想看，在一个有百万用户和十万电影的系统中，大部分用户只看过其中几十部电影，传统方法很可能因为共同评分太少而失效。</p>
+<p>这时候，矩阵分解登场了。它不再直接寻找相似性，而是换了个思路：假设用户的偏好和电影的特征都可以用几个关键因子来描述。比如，我们可以用“面向男性vs面向女性”和“严肃vs逃避现实”这两个维度来刻画电影，同时用用户对这两类特征的偏好程度来描述用户。这样，预测一个用户对某部电影的评分就变成了计算这两个向量的相似度。</p>
+<p>矩阵分解的核心想法建立在两个关键假设上：</p>
+<ul class="simple">
+<li><p>第一个是低秩假设：虽然评分矩阵看起来很复杂，但实际上可能只受少数几个隐含因素影响，比如“面向男性vs面向女性”、“严肃vs逃避现实”等维度。</p></li>
+<li><p>第二个是隐向量假设：每个用户和每部电影都能用一个包含这些隐含因子的向量来表示，用户向量反映了其对各种因子的偏好程度，而电影向量则描述了该电影在各个因子上的特征强度。</p></li>
+</ul>
+<p>这种做法的好处是显而易见的：即使两个用户没有看过相同的电影，只要他们在隐含因子上表现相似，我们就能为他们推荐相似的内容。这大大提高了模型处理稀疏数据的能力。</p>
+<figure class="align-default" id="id13">
+<span id="mf-illustration"></span><a class="reference internal image-reference" href="../../_images/mf_illustration.svg"><img alt="../../_images/mf_illustration.svg" src="../../_images/mf_illustration.svg" width="400px" /></a>
+<figcaption>
+<p><span class="caption-number">图2.1.7 </span><span class="caption-text">隐语义模型意图，该方法通过两个维度来刻画用户和电影：一个是面向男性与面向女性，另一个是严肃与逃避现实。</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>接下来我们看看如何把这个想法变成具体的算法。我们将介绍两种矩阵分解模型：简单直接的<strong>基础模型</strong>（FunkSVD）和考虑评分偏差的<strong>改进模型</strong>（BiasSVD）。</p>
+<section id="funksvd">
+<h3><span class="section-number">2.1.2.2.1. </span>FunkSVD: 基础模型<a class="headerlink" href="#funksvd" title="Permalink to this heading">¶</a></h3>
+<p>FunkSVD 由 Simon Funk 在2006年提出
+<span id="id7">(<a class="reference internal" href="../../chapter_references/references.html#id10" title="Funk, S. (2006). Netflix update: try this at home. Blog. URL: https://sifter.org/simon/journal/20061211.html">Funk, 2006</a>)</span>，是矩阵分解家族中最容易理解的一个。它的想法非常直接：把复杂的用户-物品评分矩阵分解成两个简单的矩阵——用户特征矩阵和物品特征矩阵。</p>
+<p>假设我们有<span class="math notranslate nohighlight">\(m\)</span>个用户和<span class="math notranslate nohighlight">\(n\)</span>个物品，想要用<span class="math notranslate nohighlight">\(K\)</span>个隐含因子来描述它们。那么用户<span class="math notranslate nohighlight">\(u\)</span>可以用一个<span class="math notranslate nohighlight">\(K\)</span>维向量<span class="math notranslate nohighlight">\(p_u\)</span>来表示，物品<span class="math notranslate nohighlight">\(i\)</span>也可以用一个<span class="math notranslate nohighlight">\(K\)</span>维向量<span class="math notranslate nohighlight">\(q_i\)</span>来表示。预测用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的评分就是这两个向量的内积：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-6">
+<span class="eqno">(2.1.20)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-6" title="Permalink to this equation">¶</a></span>\[\hat{r}_{ui} = p_u^T q_i = \sum_{k=1}^{K} p_{u,k} \cdot q_{i,k}\]</div>
+<p>这里<span class="math notranslate nohighlight">\(p_{u,k}\)</span>表示用户<span class="math notranslate nohighlight">\(u\)</span>在第<span class="math notranslate nohighlight">\(k\)</span>个隐含因子上的偏好程度，<span class="math notranslate nohighlight">\(q_{i,k}\)</span>表示物品<span class="math notranslate nohighlight">\(i\)</span>在第<span class="math notranslate nohighlight">\(k\)</span>个隐含因子上的特征强度。</p>
+<p>现在问题变成了：如何找到这些隐含因子？我们采用一个很自然的思路——让预测评分尽可能接近真实评分。具体来说，我们要最小化所有已知评分的预测误差：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-7">
+<span class="eqno">(2.1.21)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-7" title="Permalink to this equation">¶</a></span>\[\min_{P,Q} \frac{1}{2} \sum_{(u,i)\in \mathcal{K}} \left( r_{ui} - p_u^T q_i \right)^2\]</div>
+<p>这里<span class="math notranslate nohighlight">\(\mathcal{K}\)</span>表示所有已知评分的用户-物品对，<span class="math notranslate nohighlight">\(r_{ui}\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的真实评分。</p>
+<p>要解决这个优化问题，我们使用梯度下降法。对于每个观测到的评分，我们先计算预测误差<span class="math notranslate nohighlight">\(e_{ui} = r_{ui} - p_u^T q_i\)</span>，然后沿着误差减小的方向更新参数：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-8">
+<span class="eqno">(2.1.22)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-8" title="Permalink to this equation">¶</a></span>\[p_{u,k} \leftarrow p_{u,k} + \eta \cdot e_{ui} \cdot q_{i,k}\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-9">
+<span class="eqno">(2.1.23)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-9" title="Permalink to this equation">¶</a></span>\[q_{i,k} \leftarrow q_{i,k} + \eta \cdot e_{ui} \cdot p_{u,k}\]</div>
+<p>其中<span class="math notranslate nohighlight">\(\eta\)</span>是学习率，控制每次更新的步长。这个更新规则的直觉很简单：如果预测评分偏低了（<span class="math notranslate nohighlight">\(e_{ui} &gt; 0\)</span>），我们就增大相关的参数值；如果预测偏高了，就减小参数值。</p>
+<p>不过在实际应用中，我们通常还会加入L2正则化来防止过拟合：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-10">
+<span class="eqno">(2.1.24)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-10" title="Permalink to this equation">¶</a></span>\[\min_{P,Q} \frac{1}{2} \sum_{(u,i)\in \mathcal{K}} \left( r_{ui} - p_u^T q_i \right)^2 + \lambda \left( \|p_u\|^2 + \|q_i\|^2 \right)\]</div>
+<p>这样可以避免模型过度拟合训练数据，提高在新数据上的表现。</p>
+</section>
+<section id="biassvd">
+<h3><span class="section-number">2.1.2.2.2. </span>BiasSVD: 改进模型<a class="headerlink" href="#biassvd" title="Permalink to this heading">¶</a></h3>
+<p>基础模型虽然简洁，但在实际使用中我们发现了一个问题：不同用户的评分习惯差异很大。有些用户天生就是“好人”，很少给低分；有些用户则比较严格，平均分都不高。同样，有些电影因为制作精良或者明星云集，普遍得到较高评分；而有些冷门或质量一般的电影则评分偏低。</p>
+<p>这些系统性的偏差如果不处理，会影响推荐的准确性。BiasSVD
+<span id="id8">(<a class="reference internal" href="../../chapter_references/references.html#id11" title="Koren, Y., Bell, R., &amp; Volinsky, C. (2009). Matrix factorization techniques for recommender systems. Computer, 42(8), 30–37.">Koren <em>et al.</em>, 2009</a>)</span>
+正是为了解决这个问题而提出的。它在基础模型的基础上引入了偏置项，让预测公式变成：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-11">
+<span class="eqno">(2.1.25)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-11" title="Permalink to this equation">¶</a></span>\[\hat{r}_{ui} = \mu + b_u + b_i + p_u^T q_i\]</div>
+<p>这里新增了三个项：<span class="math notranslate nohighlight">\(\mu\)</span>是所有评分的全局平均值，反映了整个系统的评分水平；<span class="math notranslate nohighlight">\(b_u\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>的个人偏置，反映了该用户相对于平均水平是倾向于给高分还是低分；<span class="math notranslate nohighlight">\(b_i\)</span>是物品<span class="math notranslate nohighlight">\(i\)</span>的偏置，反映了该物品相对于平均水平是受欢迎还是不受欢迎。</p>
+<p>相应地，优化目标也要调整：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-12">
+<span class="eqno">(2.1.26)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-12" title="Permalink to this equation">¶</a></span>\[\min_{P,Q,b_u,b_i} \frac{1}{2} \sum_{(u,i)\in \mathcal{K}} \left( r_{ui} - \mu - b_u - b_i - p_u^T q_i \right)^2 + \lambda \left( \|p_u\|^2 + \|q_i\|^2 + b_u^2 + b_i^2 \right)\]</div>
+<p>在参数更新时，除了用户和物品的隐向量，我们还需要更新偏置项：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-13">
+<span class="eqno">(2.1.27)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-13" title="Permalink to this equation">¶</a></span>\[b_u \leftarrow b_u + \eta \left( e_{ui} - \lambda b_u \right)\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-2-usercf-14">
+<span class="eqno">(2.1.28)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-2-usercf-14" title="Permalink to this equation">¶</a></span>\[b_i \leftarrow b_i + \eta \left( e_{ui} - \lambda b_i \right)\]</div>
+<p>这种改进看似简单，但效果显著。通过分离出系统性偏差，模型能够更准确地捕捉用户和物品之间的真实交互模式，从而提供更精准的推荐。</p>
+</section>
+<section id="id9">
+<h3><span class="section-number">2.1.2.2.3. </span>代码实践<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
+<p>FunkSVD 在 MovieLens 数据集上的应用</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_metrics_table</span>
+
+<span class="c1"># 加载配置</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;funksvd&#39;</span><span class="p">)</span>
+
+<span class="c1"># 加载数据</span>
+<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># 准备特征</span>
+<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+
+<span class="c1"># 训练模型</span>
+<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
+
+<span class="c1"># 评估模型</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
+<span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
+<span class="o">+===============+==============+===========+==========+================+===============+</span>
+<span class="o">|</span>        <span class="mf">0.0025</span> <span class="o">|</span>       <span class="mf">0.0015</span> <span class="o">|</span>    <span class="mf">0.0013</span> <span class="o">|</span>   <span class="mf">0.0009</span> <span class="o">|</span>         <span class="mf">0.0002</span> <span class="o">|</span>        <span class="mf">0.0003</span> <span class="o">|</span>
+<span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
+</pre></div>
+</div>
+<p>BiasSVD 在 MovieLens 数据集上的应用</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;biassvd&#39;</span><span class="p">)</span>
+
+<span class="c1"># 加载数据</span>
+<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># 准备特征</span>
+<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+
+<span class="c1"># 训练模型</span>
+<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
+
+<span class="c1"># 评估模型</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
+<span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
+<span class="o">+===============+==============+===========+==========+================+===============+</span>
+<span class="o">|</span>        <span class="mf">0.0007</span> <span class="o">|</span>       <span class="mf">0.0007</span> <span class="o">|</span>    <span class="mf">0.0004</span> <span class="o">|</span>   <span class="mf">0.0004</span> <span class="o">|</span>         <span class="mf">0.0001</span> <span class="o">|</span>        <span class="mf">0.0001</span> <span class="o">|</span>
+<span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">2.1.2. 基于用户的协同过滤</a><ul>
+<li><a class="reference internal" href="#id3">2.1.2.1. UserCF核心算法</a><ul>
+<li><a class="reference internal" href="#id4">2.1.2.1.1. 应用实践</a></li>
+<li><a class="reference internal" href="#id5">2.1.2.1.2. 代码实践</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#matrix-factorization">2.1.2.2. 矩阵分解：隐向量时代的开端</a><ul>
+<li><a class="reference internal" href="#funksvd">2.1.2.2.1. FunkSVD: 基础模型</a></li>
+<li><a class="reference internal" href="#biassvd">2.1.2.2.2. BiasSVD: 改进模型</a></li>
+<li><a class="reference internal" href="#id9">2.1.2.2.3. 代码实践</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="1.itemcf.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>2.1.1. 基于物品的协同过滤</div>
+         </div>
+     </a>
+     <a id="button-next" href="3.summary.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>2.1.3. 总结</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>
