@@ -338,7 +338,7 @@ Swing score 的基础计算公式为：
 
 因此，物品h和p之间的swing
 score为：\ :math:`s(h, p) = \frac{1}{5} + \frac{1}{3} + \frac{1}{3} = \frac{13}{15}`\ ，而物品h和t（或r）之间的swing
-score为：\ :math:`s(h, t) = s(h, r) = \frac{1}{3}`\ 。
+score为：\ :math:`s(h, t) = s(h, r) = \frac{1}{5}`\ 。
 
 **用户权重调整**\ ：为了降低活跃用户对计算结果的过度影响，我们引入用户权重
 :math:`w_u = \frac{1}{\sqrt{|I_u|}}`\ 。最终的物品相似度计算公式为：
