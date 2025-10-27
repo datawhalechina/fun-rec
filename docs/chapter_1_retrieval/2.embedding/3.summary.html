@@ -115,11 +115,10 @@ Show Source
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 召回模型</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.2. 向量召回</a><ul class="current">
@@ -238,11 +237,10 @@ Show Source
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 召回模型</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.2. 向量召回</a><ul class="current">
@@ -333,46 +331,17 @@ Show Source
         
   <section id="id1">
 <h1><span class="section-number">2.2.3. </span>总结<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
-<section id="id2">
-<h2><span class="section-number">2.2.3.1. </span>从“匹配”到“搜索”<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
-<p>向量召回的最大贡献在于将推荐从复杂的“匹配”问题简化为高效的“搜索”问题。这一转变的基石是学习高质量的嵌入表示——将用户和物品从离散的ID符号映射到连续的向量空间中，让“距离”具有了语义意义。通过这种方式，原本需要<span class="math notranslate nohighlight">\(O(U \times I)\)</span>复杂度的用户-物品匹配问题，被优雅地转化为<span class="math notranslate nohighlight">\(O(\log I)\)</span>复杂度的向量搜索问题，其中<span class="math notranslate nohighlight">\(U\)</span>是用户数量，<span class="math notranslate nohighlight">\(I\)</span>是物品数量。</p>
-</section>
-<section id="id3">
-<h2><span class="section-number">2.2.3.2. </span>两大技术路径的演进轨迹<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
-<p><strong>i2i召回的核心是序列建模</strong>。从Word2Vec的分布假说出发，所有i2i方法都在探索同一个本质问题：如何更好地定义和利用“序列”来学习物品之间的相似性。这条路径展现了对“序列”概念不断深化的过程——从最直接的用户行为序列（Item2Vec），到融入属性信息弥补序列稀疏性的增强方法（EGES），再到将业务目标融入序列学习的实践探索（Airbnb），最终发展为从复杂图结构中动态挖掘序列的前沿技术（PinSage）。</p>
-<p><strong>u2i召回的核心是双塔架构</strong>。这条路径体现了模型表示能力的持续增强：从因子分解的经典数学原型（FM），到深度学习的标准化实现（DSSM），最终演进为更符合推荐本质的生成式预测范式（YouTubeDNN）。双塔模型的成功在于找到了效果与效率的最佳平衡点——用户塔和物品塔的解耦设计使得物品向量可以离线预计算，而用户向量可以实时计算，然后通过高效的最近邻搜索完成召回。</p>
-</section>
-<section id="id4">
-<h2><span class="section-number">2.2.3.3. </span>向量召回的统一使命<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
-<p>尽管技术路径不同，所有向量召回模型的最终使命都是统一的：在保证极高效率的前提下，从海量物料库中快速、准确地筛选出一个几百到上千的候选集，与用户兴趣高度相关。向量召回追求的是“宁可错杀，不能放过”的高召回率，它的职责是构建一个覆盖面广泛的候选池，为后续的精排模型提供充足的优化空间。</p>
-</section>
-<section id="id5">
-<h2><span class="section-number">2.2.3.4. </span>技术边界与发展方向<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
-<p>向量召回在解决传统协同过滤局限性方面取得了显著成功，但也面临着新的挑战。表示瓶颈是一个核心问题——将复杂的用户兴趣和物品特性压缩到固定维度的向量中，不可避免地会损失信息。特别是对于兴趣多样化的用户，单一向量难以全面刻画其偏好。静态性限制也不容忽视——预计算的物品向量无法实时反映用户的即时反馈和兴趣变化。</p>
-<p>更深层的挑战在于序列建模的局限性。无论是i2i的共现序列还是u2i的行为历史，都主要关注相邻元素间的关系，对长期依赖和复杂序列模式的捕捉能力有限。现实中用户的兴趣演化往往呈现出复杂的时序特征，可能存在周期性模式、突发性兴趣转移、多兴趣并行发展等现象，这些都难以用简单的向量表示充分描述。</p>
-<p>用户行为本质上是一个时序过程，包含着丰富的序列模式和动态特征。如何更好地建模这种序列性，如何捕捉用户兴趣的时序演化规律，如何处理多兴趣的并行发展，这些都是下一代召回技术需要解决的核心问题。接下来我们将探讨专门针对序列建模的召回方法，这些方法不再满足于静态的向量表示，而是深入挖掘用户行为序列中的时序依赖关系，通过更精细的序列建模技术来提升召回的准确性和多样性。</p>
-</section>
+<p>向量召回技术的核心贡献在于将推荐系统从“匹配”转向“搜索”，通过向量化表示实现了从<span class="math notranslate nohighlight">\(O(U \times I)\)</span>到<span class="math notranslate nohighlight">\(O(U + I)\)</span>的复杂度优化。这一转变不仅解决了大规模推荐系统的计算瓶颈，更重要的是为推荐算法提供了统一的数学框架——将用户和物品都映射到同一个向量空间中，让“距离”代表“相似度”。</p>
+<p><strong>I2I召回的演进脉络</strong>：从NLP领域的Word2Vec出发，I2I召回经历了三个关键发展阶段。Item2Vec实现了从“词语-句子”到“物品-用户序列”的直接迁移，验证了序列建模在推荐系统中的可行性；EGES通过构建商品关系图和融合辅助信息，解决了稀疏性和冷启动问题，展现了图结构和属性信息的价值；Airbnb则将业务目标深度融入序列构建，通过会话切分、全局上下文和市场感知负采样，实现了从相似性到转化率的跨越。这一演进过程本质上是对“序列”概念的不断深化——从简单的共现关系到复杂的业务逻辑。</p>
+<p><strong>U2I召回的技术路径</strong>：U2I召回以双塔模型为核心架构，体现了“分而治之”的设计哲学。FM通过数学变换首次实现了用户-物品交互的向量分解，奠定了双塔模型的理论基础；DSSM用深度神经网络替代线性变换，将双塔模型的表达能力推向新高度，同时建立了多分类训练范式和工程化部署模式；YouTubeDNN则通过“预测下一个观看视频”的任务重定义，引入了时序分割、负采样优化等关键工程技巧，展现了双塔模型在超大规模场景下的实用价值。</p>
+<p><strong>核心技术洞察</strong>：向量召回的成功建立在几个关键洞察之上。首先是<strong>向量空间的语义性</strong>——通过合适的训练目标，向量间的距离能够反映真实的用户偏好和物品相似性；其次是<strong>架构的可分解性</strong>——双塔设计实现了训练复杂度和服务效率的平衡，物品向量可离线预计算，用户向量可实时生成；最后是<strong>序列的信息密度</strong>——用户行为序列蕴含着丰富的偏好信号，通过不同的序列构建和建模方式可以挖掘出不同层次的用户意图。</p>
+<p><strong>技术边界与挑战</strong>：向量召回在解决效率问题的同时，也带来了固有的局限性。双塔之间缺乏深度交互可能损失复杂的用户-物品关系，向量表示的有限维度难以完全捕捉丰富的语义信息，这些挑战推动了后续序列建模技术的发展。向量召回的使命是在庞大的物品库中高效筛选出与用户兴趣匹配的候选集，为后续的精排模型提供高质量输入，它更像是推荐系统的“粗筛”阶段，追求的是召回率而非精确率。</p>
 </section>
 
 
         </div>
         <div class="side-doc-outline">
             <div class="side-doc-outline--content"> 
-<div class="localtoc">
-    <p class="caption">
-      <span class="caption-text">Table Of Contents</span>
-    </p>
-    <ul>
-<li><a class="reference internal" href="#">2.2.3. 总结</a><ul>
-<li><a class="reference internal" href="#id2">2.2.3.1. 从“匹配”到“搜索”</a></li>
-<li><a class="reference internal" href="#id3">2.2.3.2. 两大技术路径的演进轨迹</a></li>
-<li><a class="reference internal" href="#id4">2.2.3.3. 向量召回的统一使命</a></li>
-<li><a class="reference internal" href="#id5">2.2.3.4. 技术边界与发展方向</a></li>
-</ul>
-</li>
-</ul>
-
-</div>
             </div>
         </div>
 

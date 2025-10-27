@@ -114,11 +114,10 @@ Show Source
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -237,11 +236,10 @@ Show Source
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.usercf.html">2.1.1. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.itemcf.html">2.1.2. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.swing.html">2.1.3. Swing 算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/5.summary.html">2.1.5. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -346,20 +344,20 @@ Show Source
 </figure>
 <p><strong>数据偏差</strong>的核心问题在于训练数据的分布与理想测试数据的分布存在差异。在推荐系统中，这种差异主要体现在以下几个方面：</p>
 <ul class="simple">
-<li><p><strong>选择偏差</strong>是显式反馈场景中的典型问题。用户倾向于只对自己感兴趣的内容进行评分，这导致我们观测到的评分数据并非所有可能评分的随机样本。研究表明，用户主动评分的物品通常获得更高的评分，而大量中性或负面的潜在评分则缺失在数据中。这种现象被称为“非随机缺失”
+<li><p><strong>选择偏差</strong>是显式反馈场景中的典型问题。用户倾向于只对自己感兴趣的内容进行评分，这使得我们观测到的评分数据并不能代表用户对所有物品的真实态度。研究表明，用户主动评分的物品通常获得更高的评分，而大量中性或负面的潜在评分却没有被记录下来。这种现象被称为“非随机缺失”
 （Missing Not At Random, MNAR） <span id="id4">(<a class="reference internal" href="../chapter_references/references.html#id75" title="Marlin, B., Zemel, R. S., Roweis, S., &amp; Slaney, M. (2012). Collaborative filtering and the missing at random assumption. arXiv preprint arXiv:1206.5267.">Marlin <em>et al.</em>, 2012</a>)</span>
 ，它会使模型高估用户的整体满意度。</p></li>
-<li><p><strong>曝光偏差</strong>则是隐式反馈场景中的核心挑战。用户只能与系统展示给他们的物品进行交互，因此一个未被观测到的交互可能有两种截然不同的含义：用户确实不感兴趣（真正的负样本），或者用户从未见过这个物品（潜在的正样本）
+<li><p><strong>曝光偏差</strong>则是隐式反馈场景中的核心挑战。用户只能看到系统推荐给他们的物品，没有交互的物品可能有两种截然不同的情况：一种是用户确实不感兴趣（真正的负样本），另一种是用户根本没有见过这个物品（潜在的正样本）
 <span id="id5">(<a class="reference internal" href="../chapter_references/references.html#id76" title="Liu, D. C., Rogers, S., Shiau, R., Kislyuk, D., Ma, K. C., Zhong, Z., … Jing, Y. (2017). Related pins at pinterest: the evolution of a real-world recommender system. Proceedings of the 26th international conference on world wide web companion (pp. 583–592).">Liu <em>et al.</em>, 2017</a>)</span>
-。如果简单地将所有未观测的交互都视为负样本，模型就会学到错误的用户偏好，特别是对那些从未获得充分展示机会的长尾物品。</p></li>
-<li><p><strong>从众偏差</strong>源于社会心理学中的群体效应。用户的行为和判断往往会受到他人意见的影响，即使这种影响与他们原本的判断相冲突。例如，当用户看到某个商品有大量好评时，他们更倾向于给出正面评价以寻求群体认同；反之，如果看到负面评价居多，也可能会随波逐流。这种从众心理使得我们收集到的反馈数据可能并非用户独立、真实的偏好表达，而是被社会舆论或群体热度所影响的结果
+。如果简单地把所有没有交互的物品都当作负样本，模型就会学到错误的用户偏好。这个问题在长尾物品上尤为严重，因为它们本身就缺乏曝光机会。</p></li>
+<li><p><strong>从众偏差</strong>源于社会心理学中的群体效应。他人的意见往往会影响用户的行为和判断，即使与他们原本的想法相冲突。例如，当用户看到某个商品有大量好评时，为了寻求群体认同，他们更倾向于给出正面评价；反之，如果看到负面评价居多，也可能随波逐流。这种从众心理导致我们收集到的反馈数据未必是用户独立、真实的偏好表达，而可能受到社会舆论或群体热度的影响
 <span id="id6">(<a class="reference internal" href="../chapter_references/references.html#id78" title="Krishnan, S., Patel, J., Franklin, M. J., &amp; Goldberg, K. (2014). A methodology for learning, analyzing, and mitigating social influence bias in recommender systems. Proceedings of the 8th ACM Conference on Recommender systems (pp. 137–144).">Krishnan <em>et al.</em>, 2014</a>)</span> 。</p></li>
-<li><p><strong>位置偏差</strong>在列表推荐中尤为明显。用户通常会给予排在前面的物品更多关注，无论其实际相关性如何。这种现象源于用户的浏览习惯和对系统的信任。研究数据显示，物品的点击率会随着位置的下降而急剧衰减，这意味着“点击”这个行为不仅反映了用户偏好，还强烈地受到位置因素的影响
+<li><p><strong>位置偏差</strong>在列表推荐中尤为明显。用户通常更关注排在前面的物品，无论其实际相关性如何。这种现象源于用户的浏览习惯和对系统的信任。研究数据显示，物品的点击率会随着位置的下降而急剧衰减，这说明“点击”行为不仅反映了用户偏好，也受到位置因素的强烈影响
 <span id="id7">(<a class="reference internal" href="../chapter_references/references.html#id77" title="Collins, A., Tkaczyk, D., Aizawa, A., &amp; Beel, J. (2018). A study of position bias in digital library recommender systems. arXiv preprint arXiv:1802.06565.">Collins <em>et al.</em>, 2018</a>, <a class="reference internal" href="../chapter_references/references.html#id83" title="Richardson, M., Dominowska, E., &amp; Ragno, R. (2007). Predicting clicks: estimating the click-through rate for new ads. Proceedings of the 16th international conference on World Wide Web (pp. 521–530).">Richardson <em>et al.</em>, 2007</a>)</span> 。</p></li>
 </ul>
 <p>当有偏的数据经过模型处理后，会在<strong>推荐结果</strong>中产生或进一步放大偏差:</p>
 <ul class="simple">
-<li><p><strong>流行度偏差</strong>是最常见的结果偏差。由于热门物品在训练数据中占据了绝大多数的交互记录，模型会过度学习这些模式，认为“推荐热门物品总是安全的”。这导致推荐结果严重偏向热门物品，其推荐频率甚至超过了它们本身的流行度。这种现象不仅降低了推荐的个性化程度，还剥夺了长尾物品被发现的机会
+<li><p><strong>流行度偏差</strong>是最常见的结果偏差。热门物品在训练数据中贡献了绝大多数的交互记录，模型会过度学习这些模式，形成“推荐热门物品就能获得点击”的惯性。结果就是推荐结果严重偏向热门物品，推荐频率甚至超过它们本身的流行度。这种现象不仅降低了推荐的个性化程度，还让长尾物品失去了被发现的机会
 <span id="id8">(<a class="reference internal" href="../chapter_references/references.html#id79" title="Abdollahpouri, H., Burke, R., &amp; Mobasher, B. (2017). Controlling popularity bias in learning-to-rank recommendation. Proceedings of the eleventh ACM conference on recommender systems (pp. 42–46).">Abdollahpouri <em>et al.</em>, 2017</a>)</span> 。</p></li>
 <li><p><strong>不公平性</strong>则体现在系统可能对某些用户群体或物品类别产生系统性的歧视。例如，如果历史数据中某个群体的用户获得的优质推荐较少，模型就会学习并延续这种模式，在未来的推荐中继续对该群体产生不公平的对待
 <span id="id9">(<a class="reference internal" href="../chapter_references/references.html#id80" title="Wang, Y., Ma, W., Zhang, M., Liu, Y., &amp; Ma, S. (2023). A survey on the fairness of recommender systems. ACM Transactions on Information Systems, 41(3), 1–43.">Wang <em>et al.</em>, 2023</a>)</span> 。</p></li>
@@ -372,7 +370,7 @@ Show Source
 <h2><span class="section-number">5.1.2. </span>用逆倾向得分（IPS）纠正选择偏差<a class="headerlink" href="#ips" title="Permalink to this heading">¶</a></h2>
 <p>逆倾向得分（Inverse Propensity Score, IPS）
 <span id="id11">(<a class="reference internal" href="../chapter_references/references.html#id74" title="Schnabel, T., Swaminathan, A., Singh, A., Chandak, N., &amp; Joachims, T. (2016). Recommendations as treatments: debiasing learning and evaluation. international conference on machine learning (pp. 1670–1679).">Schnabel <em>et al.</em>, 2016</a>)</span>
-是一种常用的纠偏方法，它的核心思想源于因果推断领域。IPS将推荐系统中的“物品展示”看作一种“干预”，通过重新加权的方式来消除数据中的选择偏差。</p>
+是一种常用的纠偏方法，它的核心思想源于因果推断领域。IPS将推荐系统中的“物品展示”看作一种“干预”（Intervention），通过重新加权的方式来消除数据中的选择偏差。</p>
 <p>IPS的基本逻辑非常直观：如果一个样本本来就很容易被观测到（比如热门商品或排在首位的物品），那么它在训练中的贡献应该被适当降低；反之，如果一个样本很难被观测到（比如长尾商品或低位置的物品），但它依然被用户发现并产生了交互，那么这个样本很可能包含了更强的偏好信号，应该获得更高的权重。</p>
 <p>在IPS框架中，<strong>倾向得分</strong>（Propensity
 Score）是关键概念，它定义为用户<span class="math notranslate nohighlight">\(u\)</span>与物品<span class="math notranslate nohighlight">\(i\)</span>的交互被观测到的概率，记作<span class="math notranslate nohighlight">\(P(O_{u,i}=1)\)</span>。这个概率反映了样本被观测到的“容易程度”。对于容易被观测到的样本（如热门物品），倾向得分较高；对于难以被观测到的样本（如长尾物品），倾向得分较低。IPS的核心操作就是用倾向得分的<strong>倒数</strong>作为权重，这样就实现了“逆向加权”：高倾向得分的样本获得低权重，而低倾向得分的样本获得高权重。这种设计确保了模型不会过度关注那些“容易获得”的样本，而是更加重视那些“来之不易”的样本。</p>
@@ -381,13 +379,13 @@ Score）是关键概念，它定义为用户<span class="math notranslate nohigh
 <p>传统的评估方法直接在观测数据上计算平均损失：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-1-debias-0">
 <span class="eqno">(5.1.1)<a class="headerlink" href="#equation-chapter-4-trends-1-debias-0" title="Permalink to this equation">¶</a></span>\[\hat{R}_{naive}(\hat{Y}) = \frac{1}{|D_O|} \sum_{(u,i) \in D_O} \delta_{u,i}(Y, \hat{Y})\]</div>
-<p>其中，<span class="math notranslate nohighlight">\(D_O=\{(u,i):O_{ui}=1\}\)</span>表示观测到的数据集，<span class="math notranslate nohighlight">\(Y\)</span>表示用户对物品的真实评分，<span class="math notranslate nohighlight">\(\hat{Y}\)</span>表示模型预测的用户对物品的评分，<span class="math notranslate nohighlight">\(\delta_{u,i}\)</span>表示在<span class="math notranslate nohighlight">\((u,i)\)</span>上损失函数（如均方误差）或者评价指标（如准确率）。研究证明，当选择偏差存在时，朴素估计器是有偏的
+<p>其中，<span class="math notranslate nohighlight">\(D_O=\{(u,i):O_{ui}=1\}\)</span>表示观测到的数据集，<span class="math notranslate nohighlight">\(Y\)</span>表示用户对物品的真实评分，<span class="math notranslate nohighlight">\(\hat{Y}\)</span>表示模型预测的用户对物品的评分，<span class="math notranslate nohighlight">\(\delta_{u,i}\)</span>表示在<span class="math notranslate nohighlight">\((u,i)\)</span>上损失函数（如均方误差）或者评价指标（如准确率）。研究证明，当选择偏差存在时，朴素估计量是有偏的
 <span id="id12">(<a class="reference internal" href="../chapter_references/references.html#id82" title="Steck, H. (2013). Evaluation of recommendations: rating-prediction and ranking. Proceedings of the 7th ACM conference on Recommender systems (pp. 213–220).">Steck, 2013</a>)</span>
 ，即<span class="math notranslate nohighlight">\(\mathbb{E}_{O}[\hat{R}_{naive}(\hat{Y})] \neq R(\hat{Y})\)</span>。</p>
-<p>而IPS估计器则引入倾向得分加权：</p>
+<p>而IPS估计量则引入倾向得分加权：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-1-debias-1">
 <span class="eqno">(5.1.2)<a class="headerlink" href="#equation-chapter-4-trends-1-debias-1" title="Permalink to this equation">¶</a></span>\[\hat{R}_{IPS}(\hat{Y}) = \frac{1}{|U||I|} \sum_{(u,i) \in D_O} \frac{1}{P(O_{ui}=1)} \delta_{u,i}(Y, \hat{Y})\]</div>
-<p>其中，<span class="math notranslate nohighlight">\(U\)</span>和<span class="math notranslate nohighlight">\(I\)</span>分别表示用户和物品的集合。理论上可以证明，IPS估计器是真实风险的无偏估计，即<span class="math notranslate nohighlight">\(\mathbb{E}_{O}[\hat{R}_{IPS}(\hat{Y}|P)] = R(\hat{Y})\)</span>。这个性质保证了经过IPS校正后的模型能够更准确地反映用户的真实偏好。需要注意的是，当某些样本的倾向得分非常小时，其倒数会变得异常大，可能导致估计结果不稳定。在实际应用中，通常会对权重进行适当的截断或归一化来缓解这个问题。</p>
+<p>其中，<span class="math notranslate nohighlight">\(U\)</span>和<span class="math notranslate nohighlight">\(I\)</span>分别表示用户和物品的集合。理论上可以证明，IPS估计量是真实风险的无偏估计，即<span class="math notranslate nohighlight">\(\mathbb{E}_{O}[\hat{R}_{IPS}(\hat{Y}|P)] = R(\hat{Y})\)</span>。这个性质保证了经过IPS校正后的模型能够更准确地反映用户的真实偏好。需要注意的是，当某些样本的倾向得分非常小时，其倒数会变得异常大，可能导致估计结果不稳定。在实际应用中，通常会对权重进行适当的截断或归一化来缓解这个问题。</p>
 <p><strong>应用到模型训练</strong></p>
 <p>IPS不仅可以用于模型评估，还可以直接应用到模型训练中。以矩阵分解为例，传统的目标函数是：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-1-debias-2">
@@ -399,7 +397,6 @@ Score）是关键概念，它定义为用户<span class="math notranslate nohigh
 <p>这个改动非常简洁，可以方便地集成到现有的优化算法中。</p>
 <p><strong>倾向得分估计</strong></p>
 <p>IPS方法的<strong>关键挑战</strong>在于如何准确估计倾向得分。在实际应用中，倾向得分通常是未知的，需要通过额外的模型来估计。一种简单的估计方法是<strong>朴素贝叶斯方法</strong>，它假设观测概率只与评分值相关，例如5分评价被观测到的概率远高于1分评价。另一种更精确的方法是<strong>逻辑回归方法</strong>，它利用用户特征、物品特征等丰富信息建立预测“是否被观测到”的分类模型。这种方法能够捕捉到更复杂的观测模式，通常能获得更准确的倾向得分估计。</p>
-<p>值得注意的是，即使倾向得分的估计不够精确，IPS方法仍然能够带来显著的性能提升。研究表明，“不完美的纠偏”也远远好于“完全不纠偏”。</p>
 <p><strong>如何验证纠偏效果</strong></p>
 <p>理解纠偏方法的有效性需要设计合适的实验。一个经典的验证方法是<strong>半合成实验</strong>，它既保持了真实数据的复杂性，又允许我们控制偏差的严重程度。</p>
 <p><strong>第一步：构建完整的“真实”评分矩阵</strong> 实验从真实数据集（如MovieLens
@@ -409,10 +406,10 @@ truth”。</p>
 接下来我们需要设计一个偏差模型来模拟真实的数据收集过程。对于评分为r的用户-物品对，我们定义其被观测到的概率：如果<span class="math notranslate nohighlight">\(r \geq 4\)</span>，观测概率为<span class="math notranslate nohighlight">\(k\)</span>（基础概率）；如果<span class="math notranslate nohighlight">\(r &lt; 4\)</span>，观测概率为<span class="math notranslate nohighlight">\(k × \alpha^{4-r}\)</span>（递减概率）。这里参数<span class="math notranslate nohighlight">\(\alpha\)</span>控制偏差程度，当<span class="math notranslate nohighlight">\(\alpha=1\)</span>时无偏差，<span class="math notranslate nohighlight">\(\alpha\)</span>越小偏差越严重。参数<span class="math notranslate nohighlight">\(k\)</span>则调整为使总体观测率约为5%，以模拟稀疏数据的特性。</p>
 <p><strong>第三步：生成有偏观测数据</strong>
 有了偏差模型，我们就能对每个用户-物品对<span class="math notranslate nohighlight">\((u,i)\)</span>，根据其评分<span class="math notranslate nohighlight">\(R_{true}[u,i]\)</span>和上述概率模型，随机决定是否观测。这样就生成了观测矩阵<span class="math notranslate nohighlight">\(O\)</span>，其中<span class="math notranslate nohighlight">\(O[u,i]=1\)</span>表示该评分被观测到。最终得到的有偏训练数据只包含<span class="math notranslate nohighlight">\(O[u,i]=1\)</span>的评分，这就模拟了真实推荐系统中的数据收集过程。</p>
-<p><strong>第四步：比较不同估计器</strong>
-在这个实验框架中，我们可以精确地比较不同估计器的效果。真实MAE是在完整的<span class="math notranslate nohighlight">\(R_{true}\)</span>矩阵上计算的真实平均绝对误差，这是我们想要估计的目标。朴素估计器直接在观测数据上计算平均误差，而IPS估计器使用<span class="math notranslate nohighlight">\(1/P(\text{观测})\)</span>作为权重计算加权平均误差。我们的比较指标是每个估计器的估计值与真实MAE之间的差异，差异越小说明估计越准确。</p>
+<p><strong>第四步：比较不同估计量</strong>
+在这个实验框架中，我们可以精确地比较不同估计量的效果。真实MAE是在完整的<span class="math notranslate nohighlight">\(R_{true}\)</span>矩阵上计算的真实平均绝对误差，这是我们想要估计的目标。朴素估计量直接在观测数据上计算平均误差，而IPS估计量使用<span class="math notranslate nohighlight">\(1/P(\text{观测})\)</span>作为权重计算加权平均误差。我们的比较指标是每个估计量的估计值与真实MAE之间的差异，差异越小说明估计越准确。</p>
 <p>实验结果的显示，
-当<span class="math notranslate nohighlight">\(\alpha=0.25\)</span>时，IPS估计器的误差比朴素估计器小2-3个数量级。这种量化的对比清楚地证明了纠偏方法的有效性。更重要的是，这个实验框架可以复制到任何数据集上，成为验证纠偏方法的标准做法。它不仅为研究者提供了一个客观的评估工具，也为实际应用中选择合适的纠偏方法提供了科学依据。这种实验设计的关键在于创造了一个“已知答案”的测试环境，让我们能够精确量化不同方法的效果。</p>
+当<span class="math notranslate nohighlight">\(\alpha=0.25\)</span>时，IPS估计量的误差比朴素估计量小2-3个数量级。这种量化的对比清楚地证明了纠偏方法的有效性。更重要的是，这个实验框架可以复制到任何数据集上，成为验证纠偏方法的标准做法。它不仅为研究者提供了一个客观的评估工具，也为实际应用中选择合适的纠偏方法提供了科学依据。这种实验设计的关键在于创造了一个“已知答案”的测试环境，让我们能够精确量化不同方法的效果。</p>
 <p>IPS为推荐系统的纠偏提供了一个理论坚实且实用的框架。它的优势在于简洁性和可扩展性，可以方便地应用到各种推荐模型中。接下来我们将介绍另一种针对特定偏差类型的纠偏方法——PAL框架。</p>
 </section>
 <section id="id13">
@@ -422,7 +419,7 @@ truth”。</p>
 。这种现象就是推荐系统中的位置偏差，它看似简单，实则给系统设计带来了深刻的挑战。</p>
 <p>位置感知学习（Position-bias Aware Learning, PAL） <span id="id15">(<a class="reference internal" href="../chapter_references/references.html#id64" title="Guo, H., Yu, J., Liu, Q., Tang, R., &amp; Zhang, Y. (2019). Pal: a position-bias aware learning framework for ctr prediction in live recommender systems. Proceedings of the 13th ACM Conference on Recommender Systems (pp. 452–456).">Guo <em>et al.</em>, 2019</a>)</span>
 框架正是为了解决这一挑战而生。与IPS通过重新加权数据的思路不同，PAL采用了一种更加直接的方法：通过重新设计模型架构，将位置影响和用户真实偏好在结构层面分离开来。</p>
-<p>PAL框架的突破来自于对用户点击行为的重新理解。研究者意识到，用户点击一个物品实际上是两个连续事件的结合：用户首先必须“看到”这个物品，然后在看到的前提下“决定点击”。这个观察包含了深刻的洞察：位置主要影响的是“看到”的概率，而不是“喜欢”的程度。</p>
+<p>PAL框架的突破在于重新理解了用户的点击行为。研究者意识到，用户点击一个物品实际上包含两个连续的事件：用户首先必须“看到”这个物品，然后才会“决定是否点击”。这个观察背后有一个关键洞察：位置主要影响的是“看到”的概率，而不是用户“喜欢”的程度。</p>
 <p>基于这个理解，PAL将点击概率进行了数学上的分解：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-1-debias-4">
 <span class="eqno">(5.1.5)<a class="headerlink" href="#equation-chapter-4-trends-1-debias-4" title="Permalink to this equation">¶</a></span>\[p(click|user, item, position) = p(seen|position) \times p(click|user, item, seen)\]</div>
@@ -439,8 +436,7 @@ truth”。</p>
 <p>ProbSeen模块专门负责建模位置效应。它的输入只有位置信息，输出是该位置被用户看到的概率。这个模块的设计相对简单，通常可以是一个浅层的神经网络，甚至可以是一个简单的查找表。它的作用是学习不同位置的“可见性”，比如第一个位置的可见性是<span class="math notranslate nohighlight">\(0.9\)</span>，第二个位置是<span class="math notranslate nohighlight">\(0.7\)</span>，第三个位置是<span class="math notranslate nohighlight">\(0.5\)</span>，等等。ProbSeen模块可以用简单的线性模型来实现，也可以用复杂的深度学习模型来实现
 <span id="id16">(<a class="reference internal" href="../chapter_references/references.html#id64" title="Guo, H., Yu, J., Liu, Q., Tang, R., &amp; Zhang, Y. (2019). Pal: a position-bias aware learning framework for ctr prediction in live recommender systems. Proceedings of the 13th ACM Conference on Recommender Systems (pp. 452–456).">Guo <em>et al.</em>, 2019</a>)</span> 。</p>
 <p>pCTR模块则负责建模用户的真实偏好。它的输入包括用户特征、物品特征和上下文信息，但关键的是，它完全不包含位置信息。这个模块通常是一个复杂的深度学习模型，比如DeepFM
-<a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html#deepfm"><span class="std std-numref">3.2.1.6节</span></a>
-或者其他推荐模型。它的任务是学习用户对物品的真实偏好，而不受位置因素的干扰。</p>
+（<a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html#deepfm"><span class="std std-numref">3.2.1.6节</span></a>）或者其他推荐模型。它的任务是学习用户对物品的真实偏好，而不受位置因素的干扰。</p>
 <p>在离线训练时，两个模块的输出相乘得到最终的点击率预测：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-1-debias-5">
 <span class="eqno">(5.1.6)<a class="headerlink" href="#equation-chapter-4-trends-1-debias-5" title="Permalink to this equation">¶</a></span>\[bCTR = ProbSeen(position) \times pCTR(user, item, context)\]</div>

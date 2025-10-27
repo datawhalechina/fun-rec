@@ -24,7 +24,6 @@
    chapter_3_rerank/index
    chapter_4_trends/index
    chapter_5_projects/index
-   chapter_6_interview/index
    chapter_appendix/index
 
 .. toctree::

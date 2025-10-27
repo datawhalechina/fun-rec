@@ -116,7 +116,8 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.summary.html">2.1.3. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -237,7 +238,8 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.summary.html">2.1.3. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -602,14 +604,14 @@ DPP）。</p>
 \end{pmatrix}\end{split}\]</div>
 <p>它们的行列式分别为：</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(|S_{a,b}|=1*1-0.9*0.9=0.19\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(|S_{b,d}|=1*1-0.1*0.1=0.81\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(|S_{a,b}|=1\times1-0.9\times0.9=0.19\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(|S_{b,d}|=1\times1-0.1\times0.1=0.81\)</span></p></li>
 </ul>
 <p>从行列式的结果可以看出，当相似度矩阵的行列式值较大时，对应物品的多样性越高，反之行列式的值越低，多样性越低。</p>
 </section>
 <section id="id4">
 <h3><span class="section-number">4.1.2.2. </span>相关性与多样性融合<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
-<p>在推荐中，相关性和多样性是两个重要的指标。相关性指的是物品之间的相似性，即物品的相关性越高，推荐的结果越相似。在DPP中，通过引入一个半正定的核矩阵<span class="math notranslate nohighlight">\(L\)</span>来同时优化物品的相关性和多样性。该半正定核矩阵可以分解为<span class="math notranslate nohighlight">\(L=B^TB\)</span>，其中<span class="math notranslate nohighlight">\(B\)</span>的每一列表示重排候选集中物品的表示向量。具体来说，<span class="math notranslate nohighlight">\(B\)</span>的向量是通过相关性得分<span class="math notranslate nohighlight">\(r_i\)</span>和归一化后的物品向量的乘积计算得来。因此核矩阵中的元素<span class="math notranslate nohighlight">\(L_{i,j}\)</span>可以表示为：</p>
+<p>在推荐中，相关性和多样性是两个重要的指标。相关性指的是物品之间的相似性，即物品的相关性越高，推荐的结果越相似。在DPP中，通过引入一个半正定的核矩阵<span class="math notranslate nohighlight">\(L\)</span>来同时优化物品的相关性和多样性。该半正定核矩阵可以分解为<span class="math notranslate nohighlight">\(L=B^TB\)</span>，其中<span class="math notranslate nohighlight">\(B\)</span>的每一列表示重排候选集中物品的表示向量。具体来说，<span class="math notranslate nohighlight">\(B\)</span>的向量是通过相关性得分<span class="math notranslate nohighlight">\(r_i\)</span>（即物品的精排得分）和归一化后的物品向量的乘积计算得来。因此核矩阵中的元素<span class="math notranslate nohighlight">\(L_{i,j}\)</span>可以表示为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-3-rerank-1-greedy-5">
 <span class="eqno">(4.1.6)<a class="headerlink" href="#equation-chapter-3-rerank-1-greedy-5" title="Permalink to this equation">¶</a></span>\[\mathbf{L}_{ij} = \langle \mathbf{B}_i, \mathbf{B}_j \rangle = \langle r_i \mathbf{f}_i, r_j \mathbf{f}_j \rangle = r_i r_j \langle \mathbf{f}_i, \mathbf{f}_j \rangle.\]</div>
 <p>其中，<span class="math notranslate nohighlight">\(\langle \mathbf{f}_i, \mathbf{f}_j \rangle\)</span>表示物品<span class="math notranslate nohighlight">\(i\)</span>和物品<span class="math notranslate nohighlight">\(j\)</span>的内积，即相似度得分<span class="math notranslate nohighlight">\(S_{ij}\)</span>。因此，核矩阵<span class="math notranslate nohighlight">\(L\)</span>可以进一步表示为：</p>
@@ -704,7 +706,7 @@ DPP）。</p>
 </section>
 <section id="id5">
 <h3><span class="section-number">4.1.2.3. </span>贪心求解过程<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
-<p>上述介绍了相似矩阵的行列式可以度量多样性，通过核矩阵可以融合相关性和多样性，下面继续来看一下贪心求解的过程。重排从物品候选列表中选择一个子集，使得<span class="math notranslate nohighlight">\(\log |L_{R_u}|\)</span>的值最大需要通过DPP（行列式点过程）来实现。</p>
+<p>上述介绍了相似矩阵的行列式可以度量多样性，通过核矩阵可以融合相关性和多样性，下面继续来看一下贪心求解的过程。重排阶段通过从物品候选列表中选择一个子集，使得<span class="math notranslate nohighlight">\(\log |L_{R_u}|\)</span>的值最大，这一过程需要通过DPP（行列式点过程）来实现。</p>
 <p>DPP是一种性能较高的概率模型，能将复杂的概率计算转换成简单的行列式计算，通过核矩阵的行列式计算每一个子集的概率，这一筛选过程就是行列式点过程的最大后验概率推断MAP（maximum
 a posteriori
 inference），行列式点过程的MAP求解是一个复杂的过程，Hulu的论文中提出了一种改进的贪心算法能够快速求解
@@ -971,9 +973,7 @@ c_i^T = \mathbf{L}_{Y_g \cup \{j\}, i} = \begin{bmatrix}
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vec2</span><span class="p">))</span>
 
 <span class="c1"># 构建核矩阵</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;开始构建核矩阵...&#39;</span><span class="p">)</span>
 <span class="n">kernel_matrix</span> <span class="o">=</span> <span class="n">create_kernel_matrix</span><span class="p">(</span><span class="n">test_items</span><span class="p">,</span> <span class="n">cosine_similarity_func</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;核矩阵生成完成！&#39;</span><span class="p">)</span>
 
 <span class="c1"># 执行DPP重排</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -982,10 +982,8 @@ c_i^T = \mathbf{L}_{Y_g \cup \{j\}, i} = \begin{bmatrix}
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;选择了 </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="si">}</span><span class="s1"> 个物品&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>开始构建核矩阵...
-核矩阵生成完成！
-算法运行时间:     2.4948e-02
-选择了 50 个物品
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">算法运行时间</span><span class="p">:</span>     <span class="mf">2.5355e-02</span>
+<span class="n">选择了</span> <span class="mi">50</span> <span class="n">个物品</span>
 </pre></div>
 </div>
 </section>

@@ -117,7 +117,8 @@ Show Source
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.1. 协同过滤</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.1. 基于物品的协同过滤</a></li>
 <li class="toctree-l3"><a class="reference internal" href="2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.summary.html">2.1.3. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -180,16 +181,8 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">7. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">7.1. Word2vec</a></li>
 </ul>
 </li>
 </ul>
@@ -238,7 +231,8 @@ Show Source
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.1. 协同过滤</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.1. 基于物品的协同过滤</a></li>
 <li class="toctree-l3"><a class="reference internal" href="2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.summary.html">2.1.3. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -301,16 +295,8 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">7. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">7.1. Word2vec</a></li>
 </ul>
 </li>
 </ul>
@@ -332,19 +318,19 @@ Show Source
 <p>当你在购物网站上买了一件T恤后，系统往往会推荐夹克等其他服装。这背后的逻辑很直观：既然你喜欢这件T恤，那么与它相似的其他服装可能也符合你的品味。这就是基于物品的协同过滤（ItemCF）的核心思想
 <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id6" title="Linden, G., Smith, B., &amp; York, J. (2003). Amazon.com recommendations: item-to-item collaborative filtering. IEEE Internet computing, 7(1), 76–80.">Linden <em>et al.</em>, 2003</a>)</span>。</p>
 <p>ItemCF的思路建立在一个简单的假设上：用户的兴趣具有一定的连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。它关注的是“和你喜欢的物品相似的还有什么”这一问题。</p>
-<figure class="align-default" id="id11">
+<figure class="align-default" id="id9">
 <span id="itemcf-illustration"></span><a class="reference internal image-reference" href="../../_images/itemcf_illustration.svg"><img alt="../../_images/itemcf_illustration.svg" src="../../_images/itemcf_illustration.svg" width="300px" /></a>
 <figcaption>
-<p><span class="caption-number">图2.1.1 </span><span class="caption-text">ItemCF 原理示意图</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图2.1.1 </span><span class="caption-text">ItemCF 原理示意图</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>从上图可以看到，当我们要给左方用户推荐物品时，ItemCF会分析T恤和夹克之间的相似性。由于右方两个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么夹克就成为了一个不错的推荐选择。</p>
+<p>从上图可以看到，当我们要给左方用户推荐物品时，ItemCF会分析T恤和夹克之间的相似性。由于右方三个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么夹克就成为了一个不错的推荐选择。</p>
 <section id="id3">
 <h2><span class="section-number">2.1.1.1. </span>ItemCF核心算法<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
 <p>ItemCF的实现流程主要包含以下两个步骤：</p>
 <p><strong>第一步：物品相似度计算</strong></p>
 <p>要实现ItemCF，首先需要量化物品之间的相似程度。在大多数实际应用场景中，我们通常只有用户是否对物品有过交互行为的数据（如点击、购买、收藏等），而没有具体的评分信息。</p>
-<p>在理论上，我们可以将每个物品表示为一个用户向量，然后计算向量间的相似度。但当商品数量巨大时，计算所有物品对之间的相似度会变成一个巨大的工程，时间复杂度达到<span class="math notranslate nohighlight">\(O(|I|^2)\)</span>。</p>
+<p>理论上，我们可以将每个物品表示为一个用户向量，然后计算向量间的相似度。但当商品数量巨大时，计算所有物品对之间的相似度会变成一个巨大的工程，时间复杂度达到<span class="math notranslate nohighlight">\(O(|I|^2)\)</span>。</p>
 <p>实际上，很多物品对之间没有共同的用户交互，它们的相似度必然为0，计算它们就是浪费时间。因此我们从用户出发找物品组合，采用更高效的实现方式：</p>
 <ol class="arabic simple">
 <li><p><strong>构建用户-物品倒排表</strong>：为每个用户维护一个交互过的物品列表。</p></li>
@@ -354,30 +340,43 @@ Show Source
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-0">
 <span class="eqno">(2.1.1)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-0" title="Permalink to this equation">¶</a></span>\[w_{ij} = \frac{C[i][j]}{\sqrt{|N(i)| \cdot |N(j)|}}\]</div>
 <p>这里<span class="math notranslate nohighlight">\(|N(i)|\)</span>表示与物品<span class="math notranslate nohighlight">\(i\)</span>有交互的用户总数，<span class="math notranslate nohighlight">\(C[i][j]\)</span>是两个物品的共现次数。这个公式很直观：分子是两个物品的共同用户数，分母是对共同用户数的标准化，防止热门商品占据绝对优势。</p>
-<p>这种实现方式的时间复杂度约为<span class="math notranslate nohighlight">\(O(R \cdot \bar{m})\)</span>，其中<span class="math notranslate nohighlight">\(R\)</span>是用户-物品交互记录总数，<span class="math notranslate nohighlight">\(\bar{m}\)</span>是用户平均交互的物品数量。在数据稀疏的实际场景中，这比直接计算所有物品对的<span class="math notranslate nohighlight">\(O(|I|^2)\)</span>要高效得多。</p>
+<p><strong>算法复杂度分析</strong></p>
+<p>这种基于用户交互的实现方式相比暴力计算有显著的效率提升：</p>
+<ul class="simple">
+<li><p><strong>暴力方法</strong>：计算所有物品对的相似度，复杂度为<span class="math notranslate nohighlight">\(O(|I|^2 \cdot |U|)\)</span></p></li>
+<li><p><strong>优化方法</strong>：只计算有共同用户的物品对，复杂度为<span class="math notranslate nohighlight">\(O(\sum_{u} |N(u)|^2)\)</span></p></li>
+</ul>
+<p>其中<span class="math notranslate nohighlight">\(|N(u)|\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>交互过的物品数量。由于<span class="math notranslate nohighlight">\(\sum_{u} |N(u)| = R\)</span>（总交互数），且用户平均交互物品数<span class="math notranslate nohighlight">\(\bar{m} = R/|U|\)</span>，所以总复杂度可以表示为<span class="math notranslate nohighlight">\(O(R \cdot \bar{m})\)</span>。</p>
+<p>在实际的稀疏数据场景中，由于<span class="math notranslate nohighlight">\(\bar{m} \ll |I|\)</span>，这种方法的效率远高于暴力计算。更重要的是，它只计算真正有意义的物品对（即有共同用户的物品对），避免了大量无效计算。</p>
 <p><strong>第二步：候选物品推荐</strong></p>
-<p>有了物品相似度矩阵，我们就能预测用户对未接触物品的喜好程度了。计算用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的兴趣分数：</p>
+<p>有了物品相似度矩阵，我们就能预测用户对未接触物品的喜好程度了。在实际应用中，ItemCF的推荐流程通常采用以下策略来提高效率：</p>
+<p>首先，系统会选取用户最近交互的物品作为兴趣种子（通常是几百个），然后为每个种子物品找到最相似的若干个候选物品（如Top-10），这样可以快速生成大量候选集合。接下来计算用户<span class="math notranslate nohighlight">\(u\)</span>对候选物品<span class="math notranslate nohighlight">\(i\)</span>的兴趣分数：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-1">
-<span class="eqno">(2.1.2)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-1" title="Permalink to this equation">¶</a></span>\[p(u, i) = \sum_{j \in S_i \cap N(u)} w_{ij} r_{uj}\]</div>
-<p>其中<span class="math notranslate nohighlight">\(S_i\)</span>是与物品<span class="math notranslate nohighlight">\(i\)</span>最相似的<span class="math notranslate nohighlight">\(K\)</span>个物品集合，<span class="math notranslate nohighlight">\(N(u)\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>交互过的物品集合。实际推荐时，针对目标用户未交互过的物品计算上述兴趣度量值，并按分值降序排列，选择Top-N物品作为推荐结果。</p>
-<p><strong>处理评分数据：皮尔逊相关系数</strong></p>
-<p>在某些应用场景中，我们不仅知道用户是否与物品有交互，还有具体的评分信息（如5星评分、点赞数等）。这时候可以使用更细致的相似度计算方法。</p>
-<p><strong>皮尔逊相关系数</strong>：当有评分数据时，可以使用皮尔逊相关系数来衡量物品间的相似性
+<span class="eqno">(2.1.2)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-1" title="Permalink to this equation">¶</a></span>\[p(u, i) = \sum_{j \in N(u)} w_{ij} \cdot r_{uj}\]</div>
+<p>其中<span class="math notranslate nohighlight">\(N(u)\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>交互过的物品集合，<span class="math notranslate nohighlight">\(w_{ij}\)</span>是物品<span class="math notranslate nohighlight">\(i\)</span>和<span class="math notranslate nohighlight">\(j\)</span>的相似度，<span class="math notranslate nohighlight">\(r_{uj}\)</span>表示用户对物品<span class="math notranslate nohighlight">\(j\)</span>的兴趣强度（可以是简单的1，也可以根据交互时间、类型等设置不同权重）。</p>
+<p>最终，系统对所有候选物品按兴趣分数排序，选择Top-N物品作为ItemCF通道的推荐结果。这种“种子扩展”的方式既保证了推荐质量，又大大提高了计算效率。</p>
+<p><strong>扩展：处理评分数据的相似度计算</strong></p>
+<p>前面介绍的余弦相似度适用于隐式反馈场景（如点击、浏览），但在某些应用中我们还有显式评分数据（如5星评分、点赞数等）。对于这类数据，可以使用更精细的相似度计算方法。</p>
+<p><strong>皮尔逊相关系数</strong>：当有评分数据时，皮尔逊相关系数能更好地捕获物品间的相似性模式
 <span id="id4">(<a class="reference internal" href="../../chapter_references/references.html#id4" title="Sarwar, B., Karypis, G., Konstan, J., &amp; Riedl, J. (2001). Item-based collaborative filtering recommendation algorithms. Proceedings of the 10th international conference on World Wide Web (pp. 285–295).">Sarwar <em>et al.</em>, 2001</a>)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-2">
-<span class="eqno">(2.1.3)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-2" title="Permalink to this equation">¶</a></span>\[w_{ij} = \frac{\sum_{u \in U}(r_{ui} - \bar{r}_i)(r_{uj} - \bar{r}_j)}{\sqrt{\sum_{u \in U}(r_{ui} - \bar{r}_i)^2}\sqrt{\sum_{u \in U}(r_{uj} - \bar{r}_j)^2}}\]</div>
-<p>这个公式的含义是：我们取出同时评价过物品<span class="math notranslate nohighlight">\(i\)</span>和物品<span class="math notranslate nohighlight">\(j\)</span>的所有用户，比较他们对这两个物品的评分模式。其中<span class="math notranslate nohighlight">\(r_{ui}\)</span>表示用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的评分，<span class="math notranslate nohighlight">\(\bar{r}_i\)</span>表示物品<span class="math notranslate nohighlight">\(i\)</span>收到的平均评分。如果用户们对两个物品的评分趋势一致（都高或都低），相似度就会较高。</p>
-<p><strong>基于评分的预测</strong>：有了基于评分的相似度，我们可以更精确地预测用户对未接触物品的评分：</p>
+<span class="eqno">(2.1.3)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-2" title="Permalink to this equation">¶</a></span>\[w_{ij} = \frac{\sum_{u \in U_{ij}}(r_{ui} - \bar{r}_i)(r_{uj} - \bar{r}_j)}{\sqrt{\sum_{u \in U_{ij}}(r_{ui} - \bar{r}_i)^2}\sqrt{\sum_{u \in U_{ij}}(r_{uj} - \bar{r}_j)^2}}\]</div>
+<p>其中<span class="math notranslate nohighlight">\(U_{ij}\)</span>表示同时评价过物品<span class="math notranslate nohighlight">\(i\)</span>和<span class="math notranslate nohighlight">\(j\)</span>的用户集合，<span class="math notranslate nohighlight">\(r_{ui}\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的评分，<span class="math notranslate nohighlight">\(\bar{r}_i\)</span>是物品<span class="math notranslate nohighlight">\(i\)</span>的平均评分。</p>
+<p><strong>核心优势</strong>：皮尔逊相关系数通过中心化处理，能够： -
+消除不同物品评分分布的差异（有些物品普遍评分高，有些偏低） -
+关注用户评分的相对趋势而非绝对数值 -
+更好地识别“用户对两个物品评分模式一致”的相似性</p>
+<p><strong>评分预测</strong>：基于皮尔逊相似度，可以预测用户对未接触物品的评分：</p>
 <div class="math notranslate nohighlight" id="equation-eq-itemcf-predict">
 <span class="eqno">(2.1.4)<a class="headerlink" href="#equation-eq-itemcf-predict" title="Permalink to this equation">¶</a></span>\[\hat{r}_{u,j} = \bar{r}_{j} + \frac{\sum_{k \in S_j} w_{jk}\,\left( r_{u,k} - \bar{r}_{k} \right)}{\sum_{k \in S_j} w_{jk}}\]</div>
-<p>这个预测公式的逻辑是：先以物品<span class="math notranslate nohighlight">\(j\)</span>的平均评分作为基准，然后根据用户<span class="math notranslate nohighlight">\(u\)</span>对相似物品的评分偏好进行调整。<span class="math notranslate nohighlight">\(S_j\)</span>表示与物品<span class="math notranslate nohighlight">\(j\)</span>最相似的物品集合，<span class="math notranslate nohighlight">\(w_{jk}\)</span>是物品<span class="math notranslate nohighlight">\(j\)</span>和<span class="math notranslate nohighlight">\(k\)</span>之间的相似度权重。</p>
-<p>皮尔逊相关系数通过中心化处理，有效消除了不同物品评分分布的差异，能够更好地捕获物品间的相似性模式。</p>
+<p>这个公式以物品<span class="math notranslate nohighlight">\(j\)</span>的平均评分为基准，根据用户对相似物品的评分偏好进行调整。</p>
+<p><strong>实际应用考虑</strong>：虽然皮尔逊相关系数在理论上更适合评分数据，但在现代大规模推荐系统中，由于计算复杂度和数据稀疏性问题，多数系统仍倾向于使用简化的余弦相似度，并通过其他方式（如加权、归一化）来处理评分差异。</p>
 <section id="id5">
 <h3><span class="section-number">2.1.1.1.1. </span>应用实践<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <p>1.数据集 表格 <a class="reference internal" href="#table-itemcf-data"><span class="std std-numref">表2.1.1</span></a> 是和 <a class="reference internal" href="2.usercf.html#usercf"><span class="std std-numref">2.1.2节</span></a>
 相同的用户评分数据。</p>
-<span id="table-itemcf-data"></span><table class="docutils align-default" id="id12">
-<caption><span class="caption-number">表2.1.1 </span><span class="caption-text">用户评分数据</span><a class="headerlink" href="#id12" title="Permalink to this table">¶</a></caption>
+<span id="table-itemcf-data"></span><table class="docutils align-default" id="id10">
+<caption><span class="caption-number">表2.1.1 </span><span class="caption-text">用户评分数据</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p></p></th>
 <th class="head"><p>用户1</p></th>
@@ -443,9 +442,7 @@ Show Source
 &amp;=\frac{13}{4}+\frac{0.97*(5-3.2)+0.58*(4-3.4)}{0.97+0.58}\\
 &amp;=4.6
 \end{aligned}\end{split}\]</div>
-</section>
-<section id="id6">
-<h3><span class="section-number">2.1.1.1.2. </span>代码实践<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
+<p><strong>代码实践</strong></p>
 <ol class="arabic simple">
 <li><p>数据准备</p></li>
 </ol>
@@ -559,15 +556,15 @@ Show Source
 <section id="itemcfswing">
 <h2><span class="section-number">2.1.1.2. </span>从ItemCF到Swing：面向工业场景的优化<a class="headerlink" href="#itemcfswing" title="Permalink to this heading">¶</a></h2>
 <p>ItemCF虽然简单有效，但在工业应用中暴露出明显问题：热门物品因共现次数多而占据主导地位，随机点击等噪音行为影响相似度的准确性。如何在保留ItemCF高效性的同时，提升相似度计算的鲁棒性？Swing算法
-<span id="id7">(<a class="reference internal" href="../../chapter_references/references.html#id7" title="Yang, X., Zhu, Y., Zhang, Y., Wang, X., &amp; Yuan, Q. (2020). Large scale product graph construction for recommendation in e-commerce. arXiv preprint arXiv:2010.05525.">Yang <em>et al.</em>, 2020</a>)</span>
+<span id="id6">(<a class="reference internal" href="../../chapter_references/references.html#id7" title="Yang, X., Zhu, Y., Zhang, Y., Wang, X., &amp; Yuan, Q. (2020). Large scale product graph construction for recommendation in e-commerce. arXiv preprint arXiv:2010.05525.">Yang <em>et al.</em>, 2020</a>)</span>
 给出了一个优雅的答案——通过分析用户-物品交互的图结构特征来过滤噪音，更准确地捕捉物品间的真实关联。</p>
 <section id="swing">
-<span id="id8"></span><h3><span class="section-number">2.1.1.2.1. </span>Swing算法原理<a class="headerlink" href="#swing" title="Permalink to this heading">¶</a></h3>
+<span id="id7"></span><h3><span class="section-number">2.1.1.2.1. </span>Swing算法原理<a class="headerlink" href="#swing" title="Permalink to this heading">¶</a></h3>
 <p>当你在电商平台购买了一件T恤后，系统会向你推荐什么？如果是其他款式的T恤，这属于替代性推荐；如果是配套的裤子或配饰，这就是互补性推荐。传统ItemCF在处理这类细粒度的商品关系时往往力不从心——它将所有用户-物品交互一视同仁，无论是用户深思熟虑的购买，还是偶然的误点击、好奇心驱动的浏览，都被赋予相同的权重。这种做法不仅难以区分真正的兴趣关联和随机噪声，更无法有效捕捉物品间的替代性与互补性关系。</p>
-<figure class="align-default" id="id13">
+<figure class="align-default" id="id11">
 <span id="swing-illustration"></span><a class="reference internal image-reference" href="../../_images/swing_illustration.svg"><img alt="../../_images/swing_illustration.svg" src="../../_images/swing_illustration.svg" width="400px" /></a>
 <figcaption>
-<p><span class="caption-number">图2.1.2 </span><span class="caption-text">产品之间的替代性和互补性关系</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图2.1.2 </span><span class="caption-text">产品之间的替代性和互补性关系</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Swing Score
@@ -593,10 +590,10 @@ Show Source
 <p>让我们通过一个具体例子来理解这个公式。如 <a class="reference internal" href="#swing-score"><span class="std std-numref">图2.1.3</span></a>
 所示，红色边连接的子图表示一个swing结构。用户A和B有四个swing结构，分别是
 <span class="math notranslate nohighlight">\([A, h, B]\)</span>、<span class="math notranslate nohighlight">\([A, t, B]\)</span>、<span class="math notranslate nohighlight">\([A, r, B]\)</span>、<span class="math notranslate nohighlight">\([A, p, B]\)</span>。</p>
-<figure class="align-default" id="id14">
+<figure class="align-default" id="id12">
 <span id="swing-score"></span><a class="reference internal image-reference" href="../../_images/swing_score.svg"><img alt="../../_images/swing_score.svg" src="../../_images/swing_score.svg" width="250px" /></a>
 <figcaption>
-<p><span class="caption-number">图2.1.3 </span><span class="caption-text">Swing Score 计算示意图</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图2.1.3 </span><span class="caption-text">Swing Score 计算示意图</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>假设 <span class="math notranslate nohighlight">\(\alpha = 1\)</span>，那么：</p>
@@ -632,10 +629,10 @@ Score提出了Surprise算法。</p>
 <p>其中，<span class="math notranslate nohighlight">\(N(c_{i,j})\)</span> 表示先购买类别 <span class="math notranslate nohighlight">\(i\)</span> 后又购买类别
 <span class="math notranslate nohighlight">\(j\)</span> 这一事件发生的次数，<span class="math notranslate nohighlight">\(N(c_j)\)</span> 表示购买类别 <span class="math notranslate nohighlight">\(j\)</span>
 的次数。考虑到不同类别的数量差异，我们采用最大相对落点作为划分阈值来筛选相关类别。</p>
-<figure class="align-default" id="id15">
+<figure class="align-default" id="id13">
 <span id="swing-max-drop"></span><a class="reference internal image-reference" href="../../_images/swing_max_drop.png"><img alt="../../_images/swing_max_drop.png" src="../../_images/swing_max_drop.png" style="width: 1000px;" /></a>
 <figcaption>
-<p><span class="caption-number">图2.1.4 </span><span class="caption-text">最大相对落点示意图</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图2.1.4 </span><span class="caption-text">最大相对落点示意图</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>例如，图(a)中T恤类选取了前八个相关类别，而图(b)中手机类选择了前三个相关类别。</p>
@@ -649,7 +646,7 @@ Score提出了Surprise算法。</p>
 的<strong>相关类别</strong>且购买时间晚于 <span class="math notranslate nohighlight">\(i\)</span> 时才计入计算。</p>
 <p><strong>聚类层面</strong></p>
 <p>考虑到实际业务中商品数量可能达到数十亿的规模，传统聚类算法难以胜任。Surprise算法采用<strong>标签传播算法</strong>
-<span id="id9">(<a class="reference internal" href="../../chapter_references/references.html#id8" title="Raghavan, U. N., Albert, R., &amp; Kumara, S. (2007). Near linear time algorithm to detect community structures in large-scale networks. Physical Review E—Statistical, Nonlinear, and Soft Matter Physics, 76(3), 036106.">Raghavan <em>et al.</em>, 2007</a>)</span>
+<span id="id8">(<a class="reference internal" href="../../chapter_references/references.html#id8" title="Raghavan, U. N., Albert, R., &amp; Kumara, S. (2007). Near linear time algorithm to detect community structures in large-scale networks. Physical Review E—Statistical, Nonlinear, and Soft Matter Physics, 76(3), 036106.">Raghavan <em>et al.</em>, 2007</a>)</span>
 在大规模Item-Item图上进行聚类，这里的邻居关系通过Swing算法计算，边权重即为Swing分数。</p>
 <p>这种方法不仅高效（通常15分钟内可对数十亿商品完成聚类），还能显著缓解数据稀疏问题。设
 <span class="math notranslate nohighlight">\(L(i)\)</span> 表示商品 <span class="math notranslate nohighlight">\(i\)</span>
@@ -664,9 +661,7 @@ Score提出了Surprise算法。</p>
 代表聚类层面的互补相关性。</p>
 <p>通过这种多层次的综合分析，Surprise算法成功拓展了Swing
 Score的应用范围，为互补商品推荐提供了一套系统而高效的解决方案。该方法不仅利用了类别信息和标签传播技术有效解决了数据稀疏问题，还能够准确捕捉商品间的时序和方向性关系，从而提升推荐系统的整体效果。</p>
-</section>
-<section id="id10">
-<h3><span class="section-number">2.1.1.2.3. </span>代码实践<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h3>
+<p><strong>代码实践</strong></p>
 <p>首先，我们导入funrec库中的核心组件：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
@@ -756,13 +751,11 @@ Score的计算，它通过分析用户-物品二部图中的swing结构来度量
 <li><a class="reference internal" href="#">2.1.1. 基于物品的协同过滤</a><ul>
 <li><a class="reference internal" href="#id3">2.1.1.1. ItemCF核心算法</a><ul>
 <li><a class="reference internal" href="#id5">2.1.1.1.1. 应用实践</a></li>
-<li><a class="reference internal" href="#id6">2.1.1.1.2. 代码实践</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#itemcfswing">2.1.1.2. 从ItemCF到Swing：面向工业场景的优化</a><ul>
 <li><a class="reference internal" href="#swing">2.1.1.2.1. Swing算法原理</a></li>
 <li><a class="reference internal" href="#surprise">2.1.1.2.2. Surprise算法：互补商品推荐</a></li>
-<li><a class="reference internal" href="#id10">2.1.1.2.3. 代码实践</a></li>
 </ul>
 </li>
 </ul>

@@ -8,7 +8,7 @@
 首先了解一下这次赛题的概况和数据，从中分析赛题以及大致的处理方式，
 其次我们了解模型评测的指标，最后对赛题的理解整理一些经验。
 
-此次比赛是\ `新闻推荐场景下的用户行为预测挑战赛 <https://tianchi.aliyun.com/competition/entrance/532063/introduction>`__\ ，
+此次比赛是\ `新闻推荐场景下的用户行为预测挑战赛 <https://tianchi.aliyun.com/competition/entrance/531842?spm=5176.12281973.J_6-HJZaSjQocH7SIdvbK02.1.724d3b74lGCqEO>`__\ ，
 该赛题是以新闻APP中的新闻推荐为背景，
 目的是\ **要求我们根据用户历史浏览点击新闻文章的数据信息预测用户未来的点击行为，
 即用户的最后一次点击的新闻文章**\ ，

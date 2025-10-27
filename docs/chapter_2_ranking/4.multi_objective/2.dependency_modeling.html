@@ -117,7 +117,8 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.summary.html">2.1.3. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -180,16 +181,8 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">7. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">7.1. Word2vec</a></li>
 </ul>
 </li>
 </ul>
@@ -238,7 +231,8 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.summary.html">2.1.3. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
@@ -301,16 +295,8 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_6_interview/index.html">7. 面试经验</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/1.machine_learning.html">7.1. 机器学习相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/2.recommender.html">7.2. 推荐模型相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/3.trends.html">7.3. 热门技术相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/4.product.html">7.4. 业务场景相关</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_interview/5.hr_other.html">7.5. HR及其他</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">8. Appendix</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">8.1. Word2vec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_appendix/index.html">7. Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_appendix/word2vec.html">7.1. Word2vec</a></li>
 </ul>
 </li>
 </ul>
@@ -334,10 +320,10 @@ Show Source
 <p>本节介绍两个全空间建模方法：ESMM解决经典的CTR-CVR联合建模问题，ESM2将思想扩展到更复杂的多阶段行为链路。</p>
 <section id="esmm">
 <h2><span class="section-number">3.4.2.1. </span>ESMM<a class="headerlink" href="#esmm" title="Permalink to this heading">¶</a></h2>
-<figure class="align-default" id="id2">
+<figure class="align-default" id="id4">
 <span id="esmm-sample-bias"></span><a class="reference internal image-reference" href="../../_images/esmm_sample_bias.png"><img alt="../../_images/esmm_sample_bias.png" src="../../_images/esmm_sample_bias.png" style="width: 300px;" /></a>
 <figcaption>
-<p><span class="caption-number">图3.4.5 </span><span class="caption-text">点击率和转化率预估的样本空间</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图3.4.5 </span><span class="caption-text">点击率和转化率预估的样本空间</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>在推荐系统的用户行为链中，存在严格的时序依赖关系。以电商场景为例：</p>
@@ -351,11 +337,12 @@ Bias)：传统CVR模型仅在点击样本（CTR正样本）上训练，但线上
 CVR，典型场景：CTR≈2%, CVR≈0.5% →
 转化样本仅为曝光的万分之一，稀疏样本难以支撑复杂模型学习</p></li>
 </ol>
-<p>ESMM (Entire Space Multi-task Model) 通过概率图约束重建任务关系：</p>
-<figure class="align-default" id="id3">
+<p>ESMM (Entire Space Multi-task Model) <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id91" title="Ma, X., Zhao, L., Huang, G., Wang, Z., Hu, Z., Zhu, X., &amp; Gai, K. (2018). Entire space multi-task model: an effective approach for estimating post-click conversion rate. The 41st International ACM SIGIR Conference on Research &amp; Development in Information Retrieval (pp. 1137–1140).">Ma <em>et al.</em>, 2018</a>)</span>
+通过概率图约束重建任务关系：</p>
+<figure class="align-default" id="id5">
 <span id="esmm-model-structure"></span><a class="reference internal image-reference" href="../../_images/esmm.png"><img alt="../../_images/esmm.png" src="../../_images/esmm.png" style="width: 400px;" /></a>
 <figcaption>
-<p><span class="caption-number">图3.4.6 </span><span class="caption-text">ESMM模型结构</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图3.4.6 </span><span class="caption-text">ESMM模型结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <ul class="simple">
@@ -452,7 +439,7 @@ Tower的参数更新是在曝光空间下进行的</strong>：</p>
 <span class="o">+----------------+---------------+-------------+-----------------+</span>
 <span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>
 <span class="o">+================+===============+=============+=================+</span>
-<span class="o">|</span>         <span class="mf">0.6022</span> <span class="o">|</span>        <span class="mf">0.6806</span> <span class="o">|</span>      <span class="mf">0.6414</span> <span class="o">|</span>          <span class="mf">0.5734</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.5942</span> <span class="o">|</span>        <span class="mf">0.6717</span> <span class="o">|</span>       <span class="mf">0.633</span> <span class="o">|</span>          <span class="mf">0.5746</span> <span class="o">|</span>
 <span class="o">+----------------+---------------+-------------+-----------------+</span>
 
 
@@ -460,7 +447,7 @@ Tower的参数更新是在曝光空间下进行的</strong>：</p>
 <span class="o">+----------------+--------------+---------------------+--------------------+</span>
 <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>
 <span class="o">+================+==============+=====================+====================+</span>
-<span class="o">|</span>         <span class="mf">0.5785</span> <span class="o">|</span>        <span class="mf">0.576</span> <span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.5877</span> <span class="o">|</span>       <span class="mf">0.5811</span> <span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>
 <span class="o">+----------------+--------------+---------------------+--------------------+</span>
 </pre></div>
 </div>
@@ -468,19 +455,19 @@ Tower的参数更新是在曝光空间下进行的</strong>：</p>
 <section id="esm2">
 <h2><span class="section-number">3.4.2.2. </span>ESM2<a class="headerlink" href="#esm2" title="Permalink to this heading">¶</a></h2>
 <p>ESMM成功解决了曝光→点击→转化这一两阶段行为链路的样本偏差问题，但在真实工业场景中，用户行为链路往往更长更复杂。</p>
-<figure class="align-default" id="id4">
+<figure class="align-default" id="id6">
 <span id="esm2-seq"></span><a class="reference internal image-reference" href="../../_images/esm2_seq.png"><img alt="../../_images/esm2_seq.png" src="../../_images/esm2_seq.png" style="width: 250px;" /></a>
 <figcaption>
-<p><span class="caption-number">图3.4.7 </span><span class="caption-text">用户下单链路图</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图3.4.7 </span><span class="caption-text">用户下单链路图</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>如图所示，用户从曝光到转化可能会有非常多条的路径，例如
 <code class="docutils literal notranslate"><span class="pre">曝光-&gt;点击-&gt;加入购物车-&gt;购买</span></code>、<code class="docutils literal notranslate"><span class="pre">曝光-&gt;点击-&gt;加入许愿池-&gt;加入购物车-&gt;购买</span></code>等。为了方便后续建模，对点击后的行为分解做了进一步的简化，将加入购物车、加入心愿单归并为决定行为（Deterministic
 Action，DAction），将其余行为归并为其他行为（Other Action，OAction）</p>
-<figure class="align-default" id="id5">
+<figure class="align-default" id="id7">
 <span id="esm2-seq-2"></span><a class="reference internal image-reference" href="../../_images/esm2_seq_2.png"><img alt="../../_images/esm2_seq_2.png" src="../../_images/esm2_seq_2.png" style="width: 300px;" /></a>
 <figcaption>
-<p><span class="caption-number">图3.4.8 </span><span class="caption-text">简化后的用户下单链路图</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图3.4.8 </span><span class="caption-text">简化后的用户下单链路图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>为了更好理解后续建模时的数学表达，先对简化后图中的过程，做进一步的数学表示。</p>
@@ -491,13 +478,14 @@ Action，DAction），将其余行为归并为其他行为（Other Action，OAct
 <li><p><span class="math notranslate nohighlight">\(y_4=p(\text{购买}|\text{其他行为})\)</span></p></li>
 </ul>
 <p>根据上述定义，更便于理解ESM2模型的结构图：</p>
-<figure class="align-default" id="id6">
+<figure class="align-default" id="id8">
 <span id="esm2-model-structure"></span><a class="reference internal image-reference" href="../../_images/esm2.png"><img alt="../../_images/esm2.png" src="../../_images/esm2.png" style="width: 500px;" /></a>
 <figcaption>
-<p><span class="caption-number">图3.4.9 </span><span class="caption-text">ESM2模型结构图</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图3.4.9 </span><span class="caption-text">ESM2模型结构图</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>ESM2模型有四个塔，分别用来预测上述的<span class="math notranslate nohighlight">\(y_1,y_2,y_3\)</span>和<span class="math notranslate nohighlight">\(y_4\)</span>，对于这四个塔的输出并不是算4个Loss，而是分别计算<code class="docutils literal notranslate"><span class="pre">曝光-&gt;点击</span></code>、<code class="docutils literal notranslate"><span class="pre">曝光-&gt;决定行为</span></code>和<code class="docutils literal notranslate"><span class="pre">曝光-&gt;购买</span></code>这三个Loss。可以很明显的看出，这三个Loss都是在曝光空间上计算的，和ESMM在曝光空间优化CVR有着异曲同工之处。下面对于上述的三个Loss做简单的介绍，下面的<span class="math notranslate nohighlight">\(BCE_{Loss}\)</span>表示的是二元交叉熵损失。</p>
+<p>ESM2模型 <span id="id3">(<a class="reference internal" href="../../chapter_references/references.html#id92" title="Wen, H., Zhang, J., Wang, Y., Lv, F., Bao, W., Lin, Q., &amp; Yang, K. (2020). Entire space multi-task modeling via post-click behavior decomposition for conversion rate prediction. Proceedings of the 43rd International ACM SIGIR conference on research and development in Information Retrieval (pp. 2377–2386).">Wen <em>et al.</em>, 2020</a>)</span>
+有四个塔，分别用来预测上述的<span class="math notranslate nohighlight">\(y_1,y_2,y_3\)</span>和<span class="math notranslate nohighlight">\(y_4\)</span>，对于这四个塔的输出并不是算4个Loss，而是分别计算<code class="docutils literal notranslate"><span class="pre">曝光-&gt;点击</span></code>、<code class="docutils literal notranslate"><span class="pre">曝光-&gt;决定行为</span></code>和<code class="docutils literal notranslate"><span class="pre">曝光-&gt;购买</span></code>这三个Loss。可以很明显的看出，这三个Loss都是在曝光空间上计算的，和ESMM在曝光空间优化CVR有着异曲同工之处。下面对于上述的三个Loss做简单的介绍，下面的<span class="math notranslate nohighlight">\(BCE_{Loss}\)</span>表示的是二元交叉熵损失。</p>
 <p><span class="math notranslate nohighlight">\(L_{ctr}\)</span>点击率预估损失：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-5">
 <span class="eqno">(3.4.11)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-5" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
