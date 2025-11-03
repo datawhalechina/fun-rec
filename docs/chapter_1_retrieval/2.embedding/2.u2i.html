@@ -140,7 +140,6 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
@@ -148,13 +147,11 @@ Show Source
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
@@ -254,7 +251,6 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
@@ -262,13 +258,11 @@ Show Source
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
@@ -341,8 +335,8 @@ Tower）</strong>则专精于刻画物品——整合物品的ID、类别、属�
 <span class="eqno">(2.2.11)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-1" title="Permalink to this equation">¶</a></span>\[\hat{y}(\mathbf{x}):=w_{0}+\sum_{i=1}^{n} w_{i} x_{i}+\sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j}\]</div>
 <p>这个公式看起来复杂，但其核心思想简单而深刻：每个特征<span class="math notranslate nohighlight">\(i\)</span>都对应一个<span class="math notranslate nohighlight">\(k\)</span>维的隐向量<span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span>，特征间的交互通过这些隐向量的内积<span class="math notranslate nohighlight">\(\langle\mathbf{v}_{i}, \mathbf{v}_{j}\rangle = \sum_{f=1}^{k} v_{i,f} \cdot v_{j,f}\)</span>来建模。</p>
 <p>FM的真正巧妙之处在于一个数学变换技巧。原本<span class="math notranslate nohighlight">\(O(n^2)\)</span>复杂度的二阶交互项，可以通过代数运算重写为：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-2">
-<span class="eqno">(2.2.12)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-2" title="Permalink to this equation">¶</a></span>\[\sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j} = \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right)\]</div>
+<div class="math notranslate nohighlight" id="equation-eq-fm-cross">
+<span class="eqno">(2.2.12)<a class="headerlink" href="#equation-eq-fm-cross" title="Permalink to this equation">¶</a></span>\[\sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j} = \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right)\]</div>
 <p>这一变换将计算复杂度从<span class="math notranslate nohighlight">\(O(kn^2)\)</span>降低到<span class="math notranslate nohighlight">\(O(kn)\)</span>，使得FM能够处理大规模稀疏数据。</p>
 </section>
 <section id="id4">
@@ -352,18 +346,18 @@ Tower）</strong>则专精于刻画物品——整合物品的ID、类别、属�
 <p>这里有一个关键的发现：当我们为同一个用户推荐不同物品时，用户特征是固定不变的。因此，用户特征内部的交互得分（无论是一阶还是二阶）对所有候选物品都是相同的。既然这部分得分相同，在排序时就可以忽略，我们只需要关注：
 1. 物品特征内部的交互得分 2. 用户特征与物品特征之间的交互得分</p>
 <p>基于这个思路，我们可以将FM的二阶交互项重新组织：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-3">
-<span class="eqno">(2.2.13)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-2">
+<span class="eqno">(2.2.13)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
 &amp; \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right) \\
 =&amp; \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{u \in U} v_{u, f} x_{u} + \sum_{t \in I} v_{t, f} x_{t}\right)^{2}-\sum_{u \in U} v_{u, f}^{2} x_{u}^{2} - \sum_{t\in I} v_{t, f}^{2} x_{t}^{2}\right) \\
 =&amp; \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{u \in U} v_{u, f} x_{u}\right)^{2} + \left(\sum_{t \in I} v_{t, f} x_{t}\right)^{2} + 2{\sum_{u \in U} v_{u, f} x_{u}}{\sum_{t \in I} v_{t, f} x_{t}} - \sum_{u \in U} v_{u, f}^{2} x_{u}^{2} - \sum_{t \in I} v_{t, f}^{2} x_{t}^{2}\right)
 \end{aligned}\end{split}\]</div>
 <p>基于前面的分析，我们发现用户特征内部的交互项对所有候选物品都相同，因此可以在召回阶段忽略。这样就可以将FM重新组织，只保留对排序有影响的部分：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-4">
-<span class="eqno">(2.2.14)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-4" title="Permalink to this equation">¶</a></span>\[\text{score}_{FM} = \sum_{t \in I} w_{t} x_{t} + \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{t \in I} v_{t, f} x_{t}\right)^{2}  - \sum_{t \in I} v_{t, f}^{2} x_{t}^{2}\right)  + \sum_{f=1}^{k}\left( {\sum_{u \in U} v_{u, f} x_{u}}{\sum_{t \in I} v_{t, f} x_{t}} \right)\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-3">
+<span class="eqno">(2.2.14)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-3" title="Permalink to this equation">¶</a></span>\[\text{score}_{FM} = \sum_{t \in I} w_{t} x_{t} + \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{t \in I} v_{t, f} x_{t}\right)^{2}  - \sum_{t \in I} v_{t, f}^{2} x_{t}^{2}\right)  + \sum_{f=1}^{k}\left( {\sum_{u \in U} v_{u, f} x_{u}}{\sum_{t \in I} v_{t, f} x_{t}} \right)\]</div>
 <p>观察上面的公式，我们发现一个重要的数学结构：最后一项<span class="math notranslate nohighlight">\(\sum_{f=1}^{k}\left( {\sum_{u \in U} v_{u, f} x_{u}}{\sum_{t \in I} v_{t, f} x_{t}} \right)\)</span>实际上是两个向量<span class="math notranslate nohighlight">\(\sum_{u \in U} v_{u} x_{u}\)</span>和<span class="math notranslate nohighlight">\(\sum_{t \in I} v_{t} x_{t}\)</span>的内积。这启发我们将整个匹配分数重新组织为双塔结构：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-5">
-<span class="eqno">(2.2.15)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-5" title="Permalink to this equation">¶</a></span>\[\text{score}_{FM} = V_{item} \cdot V_{user}^T\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-4">
+<span class="eqno">(2.2.15)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-4" title="Permalink to this equation">¶</a></span>\[\text{score}_{FM} = V_{item} \cdot V_{user}^T\]</div>
 <p>通过这种重新组织，我们得到了FM的双塔表示：</p>
 <ul class="simple">
 <li><p>用户向量：<span class="math notranslate nohighlight">\(V_{user} = [1; \sum_{u \in U} v_{u} x_{u}]\)</span></p></li>
@@ -372,35 +366,15 @@ Tower）</strong>则专精于刻画物品——整合物品的ID、类别、属�
 <p>这里的设计很巧妙：用户向量包含一个常数项1和用户特征的聚合表示，物品向量则包含物品的内部交互信息和物品特征的聚合表示。两个向量通过内积运算，既能捕捉用户-物品之间的交互，又保留了物品内部特征的复杂关系。</p>
 <p>这样的分解揭示了一个重要原理：即使是复杂的特征交互模式，也可以通过合适的向量表示和简单的内积运算来实现。</p>
 <p><strong>代码实践</strong></p>
-<p>首先，我们导入funrec库中的核心组件：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_metrics_table</span>
-</pre></div>
-</div>
-<p>构建、训练和评估FM召回模型：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;fm_recall&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
-<span class="c1"># 加载数据</span>
-<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># 准备特征</span>
-<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
-
-<span class="c1"># 训练模型</span>
-<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
-
-<span class="c1"># 评估模型</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+<span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;fm_recall&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0008</span> <span class="o">|</span>            <span class="mi">0</span> <span class="o">|</span>    <span class="mf">0.0003</span> <span class="o">|</span>        <span class="mi">0</span> <span class="o">|</span>         <span class="mf">0.0001</span> <span class="o">|</span>             <span class="mi">0</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0624</span> <span class="o">|</span>       <span class="mf">0.0394</span> <span class="o">|</span>    <span class="mf">0.0327</span> <span class="o">|</span>   <span class="mf">0.0254</span> <span class="o">|</span>         <span class="mf">0.0062</span> <span class="o">|</span>        <span class="mf">0.0079</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -425,8 +399,8 @@ Structured Semantic Model, DSSM） <span id="id5">(<a class="reference internal"
 <section id="id7">
 <h3><span class="section-number">2.2.2.2.2. </span>多分类训练范式<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <p>DSSM将召回任务视为一个极端多分类问题，将物料库中的所有物品看作不同的类别。模型的目标是最大化用户对正样本物品的预测概率：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-6">
-<span class="eqno">(2.2.16)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-6" title="Permalink to this equation">¶</a></span>\[P(y|x,\theta) = \frac{e^{s(x,y)}}{\sum_{j\in M}e^{s(x,y_j)}}\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-5">
+<span class="eqno">(2.2.16)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-5" title="Permalink to this equation">¶</a></span>\[P(y|x,\theta) = \frac{e^{s(x,y)}}{\sum_{j\in M}e^{s(x,y_j)}}\]</div>
 <p>这里<span class="math notranslate nohighlight">\(s(x,y)\)</span>表示用户<span class="math notranslate nohighlight">\(x\)</span>和物品<span class="math notranslate nohighlight">\(y\)</span>的相似度分数，<span class="math notranslate nohighlight">\(P(y|x,\theta)\)</span>表示匹配概率，<span class="math notranslate nohighlight">\(M\)</span>表示整个物料库。由于物料库规模庞大，直接计算这个Softmax在计算上不可行，因此实际训练时采用负采样技术，为每个正样本采样一定数量的负样本来近似计算。</p>
 </section>
 <section id="id8">
@@ -434,40 +408,25 @@ Structured Semantic Model, DSSM） <span id="id5">(<a class="reference internal"
 <p>除了相对简单的模型结构外，双塔模型在实际应用中的一些关键细节同样值得深入探讨。这些细节往往决定了模型的最终效果，<span id="id9">(<a class="reference internal" href="../../chapter_references/references.html#id24" title="Yi, X., Yang, J., Hong, L., Cheng, D. Z., Heldt, L., Kumthekar, A., … Chi, E. (2019). Sampling-bias-corrected neural modeling for large corpus item recommendations. Proceedings of the 13th ACM conference on recommender systems (pp. 269–277).">Yi <em>et al.</em>, 2019</a>)</span>
 等研究对此进行了分析。</p>
 <p><strong>向量归一化</strong>：对用户塔和物品塔输出的Embedding进行L2归一化：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-7">
-<span class="eqno">(2.2.17)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-7" title="Permalink to this equation">¶</a></span>\[u \leftarrow \frac{u}{||u||_2}, \quad v \leftarrow \frac{v}{||v||_2}\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-6">
+<span class="eqno">(2.2.17)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-6" title="Permalink to this equation">¶</a></span>\[u \leftarrow \frac{u}{||u||_2}, \quad v \leftarrow \frac{v}{||v||_2}\]</div>
 <p>归一化的核心作用是解决向量点积的非度量性问题。原始的向量点积不满足三角不等式，可能导致“距离”计算的不一致性。例如，对于三个点<span class="math notranslate nohighlight">\(A=(10,0)\)</span>、<span class="math notranslate nohighlight">\(B=(0,10)\)</span>、<span class="math notranslate nohighlight">\(C=(11,0)\)</span>，使用点积计算会得到<span class="math notranslate nohighlight">\(\text{dist}(A,B) &lt; \text{dist}(A,C)\)</span>，但这与直观的几何距离不符。</p>
 <p>通过归一化，向量点积被转化为欧式距离的度量形式。对于归一化向量<span class="math notranslate nohighlight">\(u\)</span>和<span class="math notranslate nohighlight">\(v\)</span>，它们的欧式距离为：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-8">
-<span class="eqno">(2.2.18)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-8" title="Permalink to this equation">¶</a></span>\[||u - v|| = \sqrt{2-2\langle u,v \rangle}\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-7">
+<span class="eqno">(2.2.18)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-7" title="Permalink to this equation">¶</a></span>\[||u - v|| = \sqrt{2-2\langle u,v \rangle}\]</div>
 <p>这种转换的关键意义在于<strong>训练与检索的一致性</strong>：模型训练时使用的相似度计算（归一化后的点积）与线上ANN检索系统使用的距离度量（欧式距离）本质上是等价的。这确保了离线训练学到的向量关系能够在线上检索中得到正确体现，避免了训练-服务不一致的问题。</p>
 <p><strong>温度系数调节</strong>：在归一化后的向量计算内积后，除以温度系数<span class="math notranslate nohighlight">\(\tau\)</span>：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-9">
-<span class="eqno">(2.2.19)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-9" title="Permalink to this equation">¶</a></span>\[s(u,v) = \frac{\langle u,v \rangle}{\tau}\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-8">
+<span class="eqno">(2.2.19)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-8" title="Permalink to this equation">¶</a></span>\[s(u,v) = \frac{\langle u,v \rangle}{\tau}\]</div>
 <p>这里的温度系数<span class="math notranslate nohighlight">\(\tau\)</span>看起来是个简单的除法操作，但实际上它对模型的训练效果有着深远的影响。从数学角度来看，温度系数本质上是在缩放logits，进而改变Softmax函数的输出分布形状。当我们设置<span class="math notranslate nohighlight">\(\tau &lt; 1\)</span>时，相似度的差异会被放大，这意味着模型会对高分样本给出更高的概率，预测变得更加“确定”；相反，当<span class="math notranslate nohighlight">\(\tau &gt; 1\)</span>时，分布会变得更加平滑，模型的预测也更加保守。</p>
 <p><strong>代码实践</strong></p>
-<p>现在我们构建、训练和评估DSSM模型：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;dssm&#39;</span><span class="p">)</span>
-
-<span class="c1"># 加载数据</span>
-<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># 准备特征</span>
-<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
-
-<span class="c1"># 训练模型</span>
-<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
-
-<span class="c1"># 评估模型</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;dssm&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0142</span> <span class="o">|</span>        <span class="mf">0.007</span> <span class="o">|</span>    <span class="mf">0.0054</span> <span class="o">|</span>    <span class="mf">0.003</span> <span class="o">|</span>         <span class="mf">0.0014</span> <span class="o">|</span>        <span class="mf">0.0014</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.046</span> <span class="o">|</span>        <span class="mf">0.007</span> <span class="o">|</span>    <span class="mf">0.0157</span> <span class="o">|</span>   <span class="mf">0.0039</span> <span class="o">|</span>         <span class="mf">0.0046</span> <span class="o">|</span>        <span class="mf">0.0014</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -487,8 +446,8 @@ Structured Semantic Model, DSSM） <span id="id5">(<a class="reference internal"
 Age”特征来建模内容新鲜度的影响；物品塔则相对简化，本质上是一个巨大的嵌入矩阵，每个视频对应一个可学习的向量，避免了复杂的物品特征工程。</p>
 <p>这种“预测下一个观看视频”的任务设定，本质上类似于NLP中的next
 token预测，可以自然地建模为一个极端多分类问题：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-10">
-<span class="eqno">(2.2.20)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-10" title="Permalink to this equation">¶</a></span>\[P(w_t=i|U,C) = \frac{e^{v_i \cdot u}}{\sum_{j \in V} e^{v_j \cdot u}}\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-9">
+<span class="eqno">(2.2.20)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-9" title="Permalink to this equation">¶</a></span>\[P(w_t=i|U,C) = \frac{e^{v_i \cdot u}}{\sum_{j \in V} e^{v_j \cdot u}}\]</div>
 <p>这里<span class="math notranslate nohighlight">\(w_t\)</span>表示用户在时间<span class="math notranslate nohighlight">\(t\)</span>观看的视频，<span class="math notranslate nohighlight">\(U\)</span>是用户特征，<span class="math notranslate nohighlight">\(C\)</span>是上下文信息，<span class="math notranslate nohighlight">\(V\)</span>是整个视频库。由于视频库规模庞大，直接计算全量Softmax不可行，因此采用Sampled
 Softmax进行高效训练。</p>
 <section id="id11">
@@ -505,28 +464,13 @@ Softmax进行高效训练。</p>
 <p><strong>用户样本均衡</strong>：为每个用户生成固定数量的训练样本，避免高活跃用户主导模型学习。这个看似简单的技巧，对提升长尾用户的推荐效果至关重要。</p>
 <p>YouTubeDNN的成功在于建立了一套可扩展、可工程化的推荐系统范式——训练时使用复杂的多分类目标和丰富的用户特征，服务时通过预计算物品向量和实时计算用户向量，配合高效的ANN检索完成召回。这种设计实现了训练复杂度和服务效率的有效平衡，至今仍被广泛借鉴。</p>
 <p><strong>代码实践</strong></p>
-<p>构建、训练和评估YouTubeDNN模型：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;youtubednn&#39;</span><span class="p">)</span>
-
-<span class="c1"># 加载数据</span>
-<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># 准备特征</span>
-<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
-
-<span class="c1"># 训练模型</span>
-<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
-
-<span class="c1"># 评估模型</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;youtubednn&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0144</span> <span class="o">|</span>       <span class="mf">0.0036</span> <span class="o">|</span>    <span class="mf">0.0051</span> <span class="o">|</span>   <span class="mf">0.0017</span> <span class="o">|</span>         <span class="mf">0.0014</span> <span class="o">|</span>        <span class="mf">0.0007</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0099</span> <span class="o">|</span>       <span class="mf">0.0041</span> <span class="o">|</span>    <span class="mf">0.0038</span> <span class="o">|</span>    <span class="mf">0.002</span> <span class="o">|</span>          <span class="mf">0.001</span> <span class="o">|</span>        <span class="mf">0.0008</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>

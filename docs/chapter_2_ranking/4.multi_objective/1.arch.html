@@ -140,7 +140,6 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../3.sequence.html">3.3. 序列建模</a></li>
@@ -148,13 +147,11 @@ Show Source
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.4.1. 基础结构演进</a></li>
 <li class="toctree-l3"><a class="reference internal" href="2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
 <li class="toctree-l3"><a class="reference internal" href="3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
@@ -254,7 +251,6 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../3.sequence.html">3.3. 序列建模</a></li>
@@ -262,13 +258,11 @@ Show Source
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.4.1. 基础结构演进</a></li>
 <li class="toctree-l3"><a class="reference internal" href="2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
 <li class="toctree-l3"><a class="reference internal" href="3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
@@ -317,7 +311,7 @@ Show Source
 <span id="id1"></span><h1><span class="section-number">3.4.1. </span>基础结构演进<a class="headerlink" href="#multi-objective-arch" title="Permalink to this heading">¶</a></h1>
 <section id="shared-bottom">
 <h2><span class="section-number">3.4.1.1. </span>Shared-Bottom<a class="headerlink" href="#shared-bottom" title="Permalink to this heading">¶</a></h2>
-<p>Shared-Bottom <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id88" title="Caruana, R. (1997). Multitask learning. Machine learning, 28(1), 41–75.">Caruana, 1997</a>)</span>
+<p>Shared-Bottom <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id87" title="Caruana, R. (1997). Multitask learning. Machine learning, 28(1), 41–75.">Caruana, 1997</a>)</span>
 模型作为多目标建模的奠基性架构，采用“共享地基+独立塔楼”的设计范式。其核心结构包含两个关键组件：</p>
 <ul class="simple">
 <li><p>共享底层（Shared
@@ -381,51 +375,17 @@ DNN网络，遍历创建各个任务独立的DNN塔，最后输出多个塔的�
     <span class="k">return</span> <span class="n">model</span>
 </pre></div>
 </div>
-<p><strong>完整训练流程如下</strong></p>
-<p><strong>1. 导入需要的包</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_table</span>
+<p><strong>训练和评估</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
-<span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;shared_bottom&#39;</span><span class="p">)</span>
+<span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;shared_bottom&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>2. 数据和特征准备</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>3. 模型构建及训练</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>4. 模型评估</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-<span class="n">print_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">表格</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
-<span class="o">+----------------+---------------+-----------------+-------------+</span>
-<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>
-<span class="o">+================+===============+=================+=============+</span>
-<span class="o">|</span>         <span class="mf">0.5933</span> <span class="o">|</span>          <span class="mf">0.41</span> <span class="o">|</span>           <span class="mf">0.431</span> <span class="o">|</span>      <span class="mf">0.4781</span> <span class="o">|</span>
-<span class="o">+----------------+---------------+-----------------+-------------+</span>
-
-
-<span class="n">表格</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
-<span class="o">+-----------------+----------------+------------------+--------------+</span>
-<span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>
-<span class="o">+=================+================+==================+==============+</span>
-<span class="o">|</span>          <span class="mf">0.5743</span> <span class="o">|</span>         <span class="mf">0.4429</span> <span class="o">|</span>            <span class="mf">0.443</span> <span class="o">|</span>       <span class="mf">0.4867</span> <span class="o">|</span>
-<span class="o">+-----------------+----------------+------------------+--------------+</span>
-
-
-<span class="n">表格</span> <span class="mi">3</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
-<span class="o">+---------------------+--------------------+----------------------+</span>
-<span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>   <span class="n">val_user_long_view</span> <span class="o">|</span>
-<span class="o">+=====================+====================+======================+</span>
-<span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>                  <span class="mi">925</span> <span class="o">|</span>
-<span class="o">+---------------------+--------------------+----------------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+</span>
+<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>   <span class="n">val_user_long_view</span> <span class="o">|</span>
+<span class="o">+================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+</span>
+<span class="o">|</span>         <span class="mf">0.5891</span> <span class="o">|</span>        <span class="mf">0.4198</span> <span class="o">|</span>          <span class="mf">0.4359</span> <span class="o">|</span>      <span class="mf">0.4816</span> <span class="o">|</span>           <span class="mf">0.572</span> <span class="o">|</span>         <span class="mf">0.4343</span> <span class="o">|</span>           <span class="mf">0.4488</span> <span class="o">|</span>        <span class="mf">0.485</span> <span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>                  <span class="mi">925</span> <span class="o">|</span>
+<span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+</span>
 </pre></div>
 </div>
 </section>
@@ -503,45 +463,15 @@ g_t(\mathbf{x}) &amp;= \text{softmax}(\mathbf{W}_t \mathbf{x}) \\
     <span class="k">return</span> <span class="n">model</span>
 </pre></div>
 </div>
-<p><strong>完整训练流程如下</strong></p>
-<p><strong>1. 导入需要的包</strong>，这一步在前面Shared-Bottom的过程已经导入过了</p>
-<p><strong>2. 数据和特征准备</strong>，由于和Shared-Bottom一样，这里不再赘述</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;mmoe&#39;</span><span class="p">)</span>
-<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+<p><strong>训练和评估</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;mmoe&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>3. 构建模型</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>4. 模型效果评估</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-<span class="n">print_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">表格</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
-<span class="o">+----------------+---------------+-----------------+-------------+</span>
-<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>
-<span class="o">+================+===============+=================+=============+</span>
-<span class="o">|</span>         <span class="mf">0.5956</span> <span class="o">|</span>        <span class="mf">0.4357</span> <span class="o">|</span>          <span class="mf">0.4441</span> <span class="o">|</span>      <span class="mf">0.4918</span> <span class="o">|</span>
-<span class="o">+----------------+---------------+-----------------+-------------+</span>
-
-
-<span class="n">表格</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
-<span class="o">+-----------------+----------------+------------------+--------------+</span>
-<span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>
-<span class="o">+=================+================+==================+==============+</span>
-<span class="o">|</span>          <span class="mf">0.5718</span> <span class="o">|</span>         <span class="mf">0.4441</span> <span class="o">|</span>           <span class="mf">0.4623</span> <span class="o">|</span>       <span class="mf">0.4927</span> <span class="o">|</span>
-<span class="o">+-----------------+----------------+------------------+--------------+</span>
-
-
-<span class="n">表格</span> <span class="mi">3</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
-<span class="o">+---------------------+--------------------+----------------------+</span>
-<span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>   <span class="n">val_user_long_view</span> <span class="o">|</span>
-<span class="o">+=====================+====================+======================+</span>
-<span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>                  <span class="mi">925</span> <span class="o">|</span>
-<span class="o">+---------------------+--------------------+----------------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+</span>
+<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>   <span class="n">val_user_long_view</span> <span class="o">|</span>
+<span class="o">+================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+</span>
+<span class="o">|</span>         <span class="mf">0.5911</span> <span class="o">|</span>        <span class="mf">0.4112</span> <span class="o">|</span>          <span class="mf">0.4496</span> <span class="o">|</span>       <span class="mf">0.484</span> <span class="o">|</span>           <span class="mf">0.576</span> <span class="o">|</span>         <span class="mf">0.4449</span> <span class="o">|</span>           <span class="mf">0.4567</span> <span class="o">|</span>       <span class="mf">0.4926</span> <span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>                  <span class="mi">925</span> <span class="o">|</span>
+<span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+</span>
 </pre></div>
 </div>
 </section>
@@ -761,45 +691,15 @@ Control）结构，其核心思想是通过硬性结构约束，显式分离共�
     <span class="k">return</span> <span class="n">model</span>
 </pre></div>
 </div>
-<p><strong>完整训练流程如下</strong></p>
-<p><strong>1. 导入需要的包</strong>，这一步在前面Shared-Bottom的过程已经导入过了</p>
-<p><strong>2. 数据和特征准备</strong>，由于和Shared-Bottom一样，这里不再赘述</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;ple&#39;</span><span class="p">)</span>
-<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+<p><strong>训练和评估</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;ple&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>3. 构建模型</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>4. 模型效果评估</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-<span class="n">print_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">表格</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
-<span class="o">+----------------+---------------+-----------------+-------------+</span>
-<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>
-<span class="o">+================+===============+=================+=============+</span>
-<span class="o">|</span>         <span class="mf">0.5946</span> <span class="o">|</span>        <span class="mf">0.4175</span> <span class="o">|</span>          <span class="mf">0.4475</span> <span class="o">|</span>      <span class="mf">0.4865</span> <span class="o">|</span>
-<span class="o">+----------------+---------------+-----------------+-------------+</span>
-
-
-<span class="n">表格</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
-<span class="o">+-----------------+----------------+------------------+--------------+</span>
-<span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>
-<span class="o">+=================+================+==================+==============+</span>
-<span class="o">|</span>          <span class="mf">0.5711</span> <span class="o">|</span>         <span class="mf">0.4413</span> <span class="o">|</span>           <span class="mf">0.4496</span> <span class="o">|</span>       <span class="mf">0.4873</span> <span class="o">|</span>
-<span class="o">+-----------------+----------------+------------------+--------------+</span>
-
-
-<span class="n">表格</span> <span class="mi">3</span><span class="o">/</span><span class="mi">3</span><span class="p">:</span>
-<span class="o">+---------------------+--------------------+----------------------+</span>
-<span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>   <span class="n">val_user_long_view</span> <span class="o">|</span>
-<span class="o">+=====================+====================+======================+</span>
-<span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>                  <span class="mi">925</span> <span class="o">|</span>
-<span class="o">+---------------------+--------------------+----------------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+</span>
+<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>   <span class="n">val_user_long_view</span> <span class="o">|</span>
+<span class="o">+================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+</span>
+<span class="o">|</span>         <span class="mf">0.5985</span> <span class="o">|</span>        <span class="mf">0.4461</span> <span class="o">|</span>          <span class="mf">0.4286</span> <span class="o">|</span>      <span class="mf">0.4911</span> <span class="o">|</span>          <span class="mf">0.5744</span> <span class="o">|</span>         <span class="mf">0.4388</span> <span class="o">|</span>           <span class="mf">0.4388</span> <span class="o">|</span>        <span class="mf">0.484</span> <span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>                  <span class="mi">925</span> <span class="o">|</span>
+<span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+</span>
 </pre></div>
 </div>
 </section>

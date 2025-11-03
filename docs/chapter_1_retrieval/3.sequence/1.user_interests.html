@@ -140,7 +140,6 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
@@ -148,13 +147,11 @@ Show Source
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
@@ -254,7 +251,6 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
@@ -262,13 +258,11 @@ Show Source
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
@@ -411,30 +405,15 @@ Interest，B2I）动态路由：将用户的历史行为视为行为胶囊，将
 <p>通过标签感知得到用户向量<span class="math notranslate nohighlight">\(v_u\)</span>后，MIND模型的训练目标就是让用户向量与其真实交互的商品尽可能“匹配”。具体来说，模型会最大化用户与正样本商品的相似度，同时最小化与负样本的相似度。由于商品库通常非常庞大，直接计算所有商品的概率分布在计算上不现实，因此MIND采用了和YouTubeDNN相同的策略——使用Sampled
 Softmax损失函数，通过随机采样一小部分负样本来近似全局的归一化计算。</p>
 <p><strong>代码实践</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_metrics_table</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
-<span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;mind&#39;</span><span class="p">)</span>
-
-<span class="c1"># 加载数据</span>
-<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># 准备特征</span>
-<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
-
-<span class="c1"># 训练模型</span>
-<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
-
-<span class="c1"># 评估模型</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+<span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;mind&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0123</span> <span class="o">|</span>       <span class="mf">0.0007</span> <span class="o">|</span>     <span class="mf">0.004</span> <span class="o">|</span>   <span class="mf">0.0004</span> <span class="o">|</span>         <span class="mf">0.0012</span> <span class="o">|</span>        <span class="mf">0.0001</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0084</span> <span class="o">|</span>       <span class="mf">0.0013</span> <span class="o">|</span>    <span class="mf">0.0031</span> <span class="o">|</span>   <span class="mf">0.0009</span> <span class="o">|</span>         <span class="mf">0.0008</span> <span class="o">|</span>        <span class="mf">0.0003</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -524,26 +503,13 @@ Softmax损失函数，通过随机采样一小部分负样本来近似全局的�
 <p>这里<span class="math notranslate nohighlight">\(\boldsymbol{G}_{t}^{u} \in \mathbb{R}^{d \times 1}\)</span>是门控向量，<span class="math notranslate nohighlight">\(\odot\)</span>表示逐元素乘法，<span class="math notranslate nohighlight">\(\boldsymbol{W}^{1}\)</span>、<span class="math notranslate nohighlight">\(\boldsymbol{W}^{2}\)</span>、<span class="math notranslate nohighlight">\(\boldsymbol{W}^{3}\)</span>是权重矩阵。</p>
 <p>门控网络接收三个输入：用户画像<span class="math notranslate nohighlight">\(\boldsymbol{e}_{u}\)</span>、短期兴趣<span class="math notranslate nohighlight">\(\boldsymbol{s}_{t}^{u}\)</span>和长期兴趣<span class="math notranslate nohighlight">\(\boldsymbol{p}^{u}\)</span>，输出的门控向量每个元素值介于0到1之间，决定了对应维度上长短期兴趣的贡献比例。这让模型能够在不同兴趣维度上分别选择保留长期或短期信息，避免简单平均可能带来的信息损失，使模型能够精确捕捉长期行为中与当前兴趣最相关的部分。</p>
 <p><strong>代码实践</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;sdm&#39;</span><span class="p">)</span>
-
-<span class="c1"># 加载数据</span>
-<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># 准备特征</span>
-<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
-
-<span class="c1"># 训练模型</span>
-<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
-
-<span class="c1"># 评估模型</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;sdm&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0061</span> <span class="o">|</span>       <span class="mf">0.0023</span> <span class="o">|</span>    <span class="mf">0.0021</span> <span class="o">|</span>    <span class="mf">0.001</span> <span class="o">|</span>         <span class="mf">0.0006</span> <span class="o">|</span>        <span class="mf">0.0005</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0079</span> <span class="o">|</span>       <span class="mf">0.0028</span> <span class="o">|</span>    <span class="mf">0.0027</span> <span class="o">|</span>   <span class="mf">0.0012</span> <span class="o">|</span>         <span class="mf">0.0008</span> <span class="o">|</span>        <span class="mf">0.0006</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>

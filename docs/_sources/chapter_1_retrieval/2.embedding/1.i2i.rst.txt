@@ -92,27 +92,9 @@ Item2Vec直接采用Word2Vec的Skip-Gram架构，但在序列构建上有所简�
 
 .. code:: python
 
-    import os
-    import sys
-    import funrec
-    from funrec.utils import build_metrics_table
+    from funrec import run_experiment
     
-    # 加载配置
-    config = funrec.load_config('item2vec')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    
-    print(build_metrics_table(metrics))
+    run_experiment('item2vec')
 
 
 .. raw:: latex
@@ -125,7 +107,7 @@ Item2Vec直接采用Word2Vec的Skip-Gram架构，但在序列构建上有所简�
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0066 |       0.0016 |    0.0023 |   0.0007 |         0.0007 |        0.0003 |
+    |        0.0148 |       0.0082 |    0.0064 |   0.0041 |         0.0015 |        0.0016 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 
 
@@ -221,27 +203,7 @@ EGES在淘宝的实际部署效果显著：在包含十亿级训练样本的大�
 
 .. code:: python
 
-    import os
-    import sys
-    import funrec
-    from funrec.utils import build_metrics_table
-    
-    # 加载配置
-    config = funrec.load_config('eges')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    
-    print(build_metrics_table(metrics))
+    run_experiment('eges')
 
 
 .. raw:: latex
@@ -254,7 +216,7 @@ EGES在淘宝的实际部署效果显著：在包含十亿级训练样本的大�
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0141 |       0.0066 |    0.0058 |   0.0035 |         0.0014 |        0.0013 |
+    |        0.0169 |       0.0123 |    0.0102 |   0.0088 |         0.0017 |        0.0025 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 
 

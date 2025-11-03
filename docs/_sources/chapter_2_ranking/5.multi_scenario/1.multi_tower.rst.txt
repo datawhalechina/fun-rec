@@ -174,7 +174,7 @@ HMoE核心代码如下，其中包括了是否共享门控和融合打分权重�
        model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=final_logits)
        return model
 
-完整的实践流程： **1. 导入相关代码包**
+**代码实践**
 
 .. raw:: latex
 
@@ -182,42 +182,9 @@ HMoE核心代码如下，其中包括了是否共享门控和融合打分权重�
 
 .. code:: python
 
-    import sys
-    import funrec
-    from funrec.utils import build_metrics_table
-
-**2. 特征处理**
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    config = funrec.load_config('hmoe')
-    train_data, test_data = funrec.load_data(config.data)
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-
-**3. 模型定义及训练**
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    model = funrec.train_model(config.training, feature_columns, processed_data)
-
-**4. 模型效果评估**
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    metrics = funrec.evaluate_model(model, processed_data, config.evaluation, feature_columns)
-    print(build_metrics_table(metrics))
+    from funrec import run_experiment
+    
+    run_experiment('hmoe')
 
 
 .. raw:: latex
@@ -230,7 +197,7 @@ HMoE核心代码如下，其中包括了是否共享门控和融合打分权重�
     +--------+--------+------------+
     |    auc |   gauc |   val_user |
     +========+========+============+
-    | 0.5973 | 0.5493 |        217 |
+    | 0.5814 | 0.5475 |        217 |
     +--------+--------+------------+
 
 
@@ -527,7 +494,7 @@ STAR模型的实现代码如下：
        model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=final_prediction)
        return model
 
-完整的实践流程： **1. 导入相关代码包**
+**代码实践**
 
 .. raw:: latex
 
@@ -535,42 +502,7 @@ STAR模型的实现代码如下：
 
 .. code:: python
 
-    import sys
-    import funrec
-    from funrec.utils import build_metrics_table, print_table
-
-**2. 特征处理**
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    config = funrec.load_config('star')
-    train_data, test_data = funrec.load_data(config.data)
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-
-**3. 模型定义及训练**
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    model = funrec.train_model(config.training, feature_columns, processed_data)
-
-**4. 模型效果评估**
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    metrics = funrec.evaluate_model(model, processed_data, config.evaluation, feature_columns)
-    print_table(metrics)
+    run_experiment('star')
 
 
 .. raw:: latex
@@ -580,9 +512,9 @@ STAR模型的实现代码如下：
 .. parsed-literal::
     :class: output
 
-    +----------+---------+------------+
-    |      auc |    gauc |   val_user |
-    +==========+=========+============+
-    | 0.666684 | 0.62543 |        693 |
-    +----------+---------+------------+
+    +--------+--------+------------+
+    |    auc |   gauc |   val_user |
+    +========+========+============+
+    | 0.6446 | 0.6142 |        693 |
+    +--------+--------+------------+
 

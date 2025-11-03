@@ -49,6 +49,7 @@ FM模型的完整数学表达式为：
 FM的真正巧妙之处在于一个数学变换技巧。原本\ :math:`O(n^2)`\ 复杂度的二阶交互项，可以通过代数运算重写为：
 
 .. math:: \sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j} = \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right)
+   :label: eq-fm-cross
 
 这一变换将计算复杂度从\ :math:`O(kn^2)`\ 降低到\ :math:`O(kn)`\ ，使得FM能够处理大规模稀疏数据。
 
@@ -95,42 +96,15 @@ FM的真正巧妙之处在于一个数学变换技巧。原本\ :math:`O(n^2)`\ 
 
 **代码实践**
 
-首先，我们导入funrec库中的核心组件：
-
 .. raw:: latex
 
    \diilbookstyleinputcell
 
 .. code:: python
 
-    import sys
-    import funrec
-    import tensorflow as tf
-    from funrec.utils import build_metrics_table
-
-构建、训练和评估FM召回模型：
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    config = funrec.load_config('fm_recall')
+    from funrec import run_experiment
     
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    
-    print(build_metrics_table(metrics))
+    run_experiment('fm_recall')
 
 
 .. raw:: latex
@@ -143,7 +117,7 @@ FM的真正巧妙之处在于一个数学变换技巧。原本\ :math:`O(n^2)`\ 
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0008 |            0 |    0.0003 |        0 |         0.0001 |             0 |
+    |        0.0624 |       0.0394 |    0.0327 |   0.0254 |         0.0062 |        0.0079 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 
 
@@ -205,29 +179,13 @@ DSSM将召回任务视为一个极端多分类问题，将物料库中的所有�
 
 **代码实践**
 
-现在我们构建、训练和评估DSSM模型：
-
 .. raw:: latex
 
    \diilbookstyleinputcell
 
 .. code:: python
 
-    config = funrec.load_config('dssm')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    
-    print(build_metrics_table(metrics))
+    run_experiment('dssm')
 
 
 .. raw:: latex
@@ -240,7 +198,7 @@ DSSM将召回任务视为一个极端多分类问题，将物料库中的所有�
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0142 |        0.007 |    0.0054 |    0.003 |         0.0014 |        0.0014 |
+    |         0.046 |        0.007 |    0.0157 |   0.0039 |         0.0046 |        0.0014 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 
 
@@ -294,29 +252,13 @@ YouTubeDNN的成功在于建立了一套可扩展、可工程化的推荐系统�
 
 **代码实践**
 
-构建、训练和评估YouTubeDNN模型：
-
 .. raw:: latex
 
    \diilbookstyleinputcell
 
 .. code:: python
 
-    config = funrec.load_config('youtubednn')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    
-    print(build_metrics_table(metrics))
+    run_experiment('youtubednn')
 
 
 .. raw:: latex
@@ -329,6 +271,6 @@ YouTubeDNN的成功在于建立了一套可扩展、可工程化的推荐系统�
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0144 |       0.0036 |    0.0051 |   0.0017 |         0.0014 |        0.0007 |
+    |        0.0099 |       0.0041 |    0.0038 |    0.002 |          0.001 |        0.0008 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 

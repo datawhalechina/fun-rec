@@ -231,7 +231,7 @@ UserCF看起来很简单，但有个大问题：当用户数量很大时，计�
    target_item_pred = target_user_mean_rating + weighted_scores / corr_values_sum
    print(f'用户{target_user}对物品{target_item}的预测评分为：{target_item_pred:.4f}')
 
-5. 训练模型
+5. 训练和评估模型
 
 .. raw:: latex
 
@@ -239,27 +239,9 @@ UserCF看起来很简单，但有个大问题：当用户数量很大时，计�
 
 .. code:: python
 
-    import os
-    import sys
-    import funrec
-    from funrec.utils import build_metrics_table
+    from funrec import run_experiment
     
-    # 加载配置
-    config = funrec.load_config('user_cf')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    
-    print(build_metrics_table(metrics))
+    run_experiment('user_cf')
 
 
 .. raw:: latex

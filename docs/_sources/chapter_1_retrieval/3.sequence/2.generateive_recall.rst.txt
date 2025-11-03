@@ -145,24 +145,9 @@ Only的Transformer模型，SASRec的训练目标也是预测用户下一个交�
 
 .. code:: python
 
-    import sys
-    import funrec
-    from funrec.utils import build_metrics_table
+    from funrec import run_experiment
     
-    config = funrec.load_config('sasrec')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    print(build_metrics_table(metrics))
+    run_experiment('sasrec')
 
 
 .. raw:: latex
@@ -175,7 +160,7 @@ Only的Transformer模型，SASRec的训练目标也是预测用户下一个交�
     +---------------+--------------+-----------+----------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |
     +===============+==============+===========+==========+
-    |         0.022 |       0.0111 |    0.0107 |   0.0072 |
+    |        0.0197 |       0.0093 |    0.0095 |   0.0061 |
     +---------------+--------------+-----------+----------+
 
 
@@ -256,20 +241,7 @@ HSTU的完整工作流程包含训练和召回两个阶段。在训练阶段，�
 
 .. code:: python
 
-    config = funrec.load_config('hstu')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    print(build_metrics_table(metrics))
+    run_experiment('hstu')
 
 
 .. raw:: latex
@@ -282,7 +254,7 @@ HSTU的完整工作流程包含训练和召回两个阶段。在训练阶段，�
     +---------------+--------------+-----------+----------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |
     +===============+==============+===========+==========+
-    |        0.0101 |       0.0048 |    0.0045 |   0.0028 |
+    |        0.0167 |       0.0076 |    0.0073 |   0.0044 |
     +---------------+--------------+-----------+----------+
 
 

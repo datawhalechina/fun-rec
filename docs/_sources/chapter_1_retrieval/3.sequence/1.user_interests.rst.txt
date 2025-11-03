@@ -129,24 +129,9 @@ Softmax损失函数，通过随机采样一小部分负样本来近似全局的�
 
 .. code:: python
 
-    import sys
-    import funrec
-    from funrec.utils import build_metrics_table
+    from funrec import run_experiment
     
-    config = funrec.load_config('mind')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    print(build_metrics_table(metrics))
+    run_experiment('mind')
 
 
 .. raw:: latex
@@ -159,7 +144,7 @@ Softmax损失函数，通过随机采样一小部分负样本来近似全局的�
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0123 |       0.0007 |     0.004 |   0.0004 |         0.0012 |        0.0001 |
+    |        0.0084 |       0.0013 |    0.0031 |   0.0009 |         0.0008 |        0.0003 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 
 
@@ -302,20 +287,7 @@ SDM设计了门控融合机制，类似LSTM中的门控思想
 
 .. code:: python
 
-    config = funrec.load_config('sdm')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    print(build_metrics_table(metrics))
+    run_experiment('sdm')
 
 
 .. raw:: latex
@@ -328,6 +300,6 @@ SDM设计了门控融合机制，类似LSTM中的门控思想
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0061 |       0.0023 |    0.0021 |    0.001 |         0.0006 |        0.0005 |
+    |        0.0079 |       0.0028 |    0.0027 |   0.0012 |         0.0008 |        0.0006 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 

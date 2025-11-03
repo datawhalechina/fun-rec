@@ -3,6 +3,7 @@ import warnings
 import logging
 from pathlib import Path
 from typing import Dict, Any, List
+
 logger = logging.getLogger(__name__)
 
 from dotenv import find_dotenv, load_dotenv
@@ -125,58 +126,65 @@ def build_metrics_table(metrics: Dict[str, Any]) -> str:
 
     return tabulate([row], headers=headers, tablefmt="grid")
 
-def split_table_by_columns(metrics: Dict[str, Any], 
-                          max_cols: int = 4, fixed_cols: int = 0) -> List[tuple]:
+
+def split_table_by_columns(
+    metrics: Dict[str, Any], max_cols: int = 4, fixed_cols: int = 0
+) -> List[tuple]:
     """
     将宽表格按列分割成多个较小的表格。
-    
+
     参数:
         metrics: 指标名称 -> 数值的映射
         max_cols: 每个子表格的最大列数（包括固定列）
         fixed_cols: 需要在每个子表格中重复显示的固定列数（从左开始）
-    
+
     返回:
         元组列表，每个元组包含 (sub_headers, sub_table_data)
     """
     headers = sorted(metrics.keys())
     table_data = [[metrics[key] for key in headers]]
-    
+
     if len(headers) <= max_cols:
         return [(headers, table_data)]
-    
+
     tables = []
     fixed_headers = headers[:fixed_cols]
     remaining_headers = headers[fixed_cols:]
-    
+
     # 计算除了固定列外，每个子表格能容纳多少列
     cols_per_table = max_cols - fixed_cols
-    
+
     for i in range(0, len(remaining_headers), cols_per_table):
         # 获取当前批次的列
-        batch_headers = remaining_headers[i:i + cols_per_table]
+        batch_headers = remaining_headers[i : i + cols_per_table]
         sub_headers = fixed_headers + batch_headers
-        
+
         # 构建对应的数据行
         sub_table_data = []
         for row in table_data:
             # 固定列 + 当前批次的列
             fixed_data = row[:fixed_cols]
-            batch_data = row[fixed_cols + i:fixed_cols + i + cols_per_table]
+            batch_data = row[fixed_cols + i : fixed_cols + i + cols_per_table]
             sub_row = fixed_data + batch_data
-            sub_row = [f"{item:.4f}" if isinstance(item, (int, float)) else str(item) for item in sub_row]
+            sub_row = [
+                f"{item:.4f}" if isinstance(item, (int, float)) else str(item)
+                for item in sub_row
+            ]
             sub_table_data.append(sub_row)
-        
+
         tables.append((sub_headers, sub_table_data))
-    
+
     return tables
 
 
-def print_table(metrics: Dict[str, Any], title: str = None, max_cols: int = 4, fixed_cols: int = 0) -> None:
+def print_table(
+    metrics: Dict[str, Any], title: str = None, max_cols: int = 4, fixed_cols: int = 0
+) -> None:
     """
     打印表格，如果列数过多会自动分割显示。
-    
+
     参数:
-        metrics: 指标名称 -> 数值的映射        
+        metrics: 指标名称 -> 数值的映射
         title: 表格标题（可选）
         max_cols: 每个子表格的最大列数
         fixed_cols: 需要在每个子表格中重复显示的固定列数
@@ -184,20 +192,19 @@ def print_table(metrics: Dict[str, Any], title: str = None, max_cols: int = 4, f
     if title:
         print(f"\n{title}")
         print("=" * len(title))
-    
+
     tables = split_table_by_columns(metrics, max_cols, fixed_cols)
-    
+
     for i, (sub_headers, sub_data) in enumerate(tables):
         if len(tables) > 1:
             print(f"\n表格 {i + 1}/{len(tables)}:")
-        
+
         table_str = tabulate(sub_data, headers=sub_headers, tablefmt="grid")
         print(table_str)
-        
+
         # 在多个子表格之间添加分隔
         if i < len(tables) - 1:
             print()
-
 
 
 def build_model_comparison_table(model_to_metrics: Dict[str, Dict[str, Any]]) -> str:

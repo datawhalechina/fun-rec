@@ -31,4 +31,3 @@
 
    1.multi_tower.md
    2.dynamic_weight.md
-   3.summary.md

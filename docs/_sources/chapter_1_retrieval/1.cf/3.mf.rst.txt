@@ -115,27 +115,9 @@ FunkSVD 在 MovieLens 数据集上的应用
 
 .. code:: python
 
-    import os
-    import sys
-    import funrec
-    from funrec.utils import build_metrics_table
+    from funrec import run_experiment
     
-    # 加载配置
-    config = funrec.load_config('funksvd')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    
-    print(build_metrics_table(metrics))
+    run_experiment('funksvd')
 
 
 .. raw:: latex
@@ -148,7 +130,7 @@ FunkSVD 在 MovieLens 数据集上的应用
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0026 |       0.0018 |    0.0013 |    0.001 |         0.0003 |        0.0004 |
+    |        0.0022 |       0.0012 |    0.0012 |   0.0009 |         0.0002 |        0.0002 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 
 
@@ -160,21 +142,7 @@ BiasSVD 在 MovieLens 数据集上的应用
 
 .. code:: python
 
-    config = funrec.load_config('biassvd')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    
-    print(build_metrics_table(metrics))
+    run_experiment('biassvd')
 
 
 .. raw:: latex
@@ -187,6 +155,6 @@ BiasSVD 在 MovieLens 数据集上的应用
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |         0.001 |        0.001 |     0.001 |    0.001 |         0.0001 |        0.0002 |
+    |        0.0005 |       0.0003 |    0.0004 |   0.0003 |              0 |        0.0001 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 

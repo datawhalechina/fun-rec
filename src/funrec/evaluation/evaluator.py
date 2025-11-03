@@ -11,14 +11,11 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.preprocessing import normalize
 from sklearn.metrics import roc_auc_score
+from sklearn.preprocessing import normalize
 from tqdm import tqdm
 
 
-from ..config import load_config, Config
-from ..data.loaders import load_data
-from ..features.processors import prepare_features
 from ..features.feature_column import FeatureColumn
 from .metrics import (
     precision_at_k,
@@ -28,8 +25,6 @@ from .metrics import (
     evaluate_sasmodel_sampling_item,
     group_auc,
 )
-from ..training.trainer import train_model
-from ..utils import build_model_comparison_table
 
 
 def evaluate_model(
@@ -477,9 +472,7 @@ def evaluate_embedding_model(
     return metrics
 
 
-def evaluate_classical_model(
-    model, test_data, k_list=[5, 10], exclude_train=True
-):
+def evaluate_classical_model(model, test_data, k_list=[5, 10], exclude_train=True):
     """
     经典推荐模型评估。
 
@@ -586,9 +579,7 @@ def cosine_similarity_3d(X, Y):
     return similarity_matrix
 
 
-def evaluate_mind_model(
-    user_embs, item_embs, test_model_input, k_list=[5, 10]
-):
+def evaluate_mind_model(user_embs, item_embs, test_model_input, k_list=[5, 10]):
     """
     评估MIND模型，使用Hit Rate@k, NDCG@k, and Precision@k。
     Args:
@@ -863,67 +854,3 @@ def evaluate_rerank_model(
         metrics[f"map@{k}"] = metrics[f"new_map@{k}"]
 
     return metrics
-
-
-def compare_models(
-    models: List[str],
-    return_table: bool = True,
-) -> Union[Dict[str, Dict[str, Any]], Tuple[Dict[str, Dict[str, Any]], str]]:
-    """
-    训练和评估多个模型并比较它们的指标。
-
-    每个模型可以通过以下方式指定：
-    - name (str): 加载funrec.config下的模型
-
-    参数:
-        models: 模型列表
-        return_table: 是否同时返回格式化的比较表格
-
-    返回:
-        - 如果return_table为False: 模型显示名称 -> 指标字典的映射
-        - 如果return_table为True: (结果字典, 表格字符串)
-    """
-    # 将输入标准化为(display_name, Config)的列表
-    normalized: List[Tuple[str, Config]] = []
-
-    for model in models:
-        normalized.append((model, load_config(model)))
-
-    results: Dict[str, Dict[str, Any]] = {}
-
-    for display_name, cfg in normalized:
-        try:
-            # 1) 加载数据
-            train_data, test_data = load_data(cfg.data)
-            # 2) 准备特征
-            feature_columns, processed_data = prepare_features(
-                cfg.features, train_data, test_data
-            )
-            # 3) 训练
-            model_tuple = train_model(cfg.training, feature_columns, processed_data)
-            # 4) 评估
-            metrics = evaluate_model(
-                model_tuple, processed_data, cfg.evaluation, feature_columns
-            )
-            results[str(display_name)] = metrics
-        except Exception as e:
-            # 捕获失败信息，保持表格对齐
-            results[str(display_name)] = {"error": str(e)}
-
-    if return_table:
-        # 过滤成功的指标字典用于显示；在单独列中包含错误
-        any_error = any(("error" in m) for m in results.values())
-        if any_error:
-            # 构建包含'error'列的组合表格（如果存在）
-            # 合并指标键并包含'error'
-            model_to_metrics: Dict[str, Dict[str, Any]] = {}
-            for name, m in results.items():
-                if "error" in m:
-                    model_to_metrics[name] = {"error": m["error"]}
-                else:
-                    model_to_metrics[name] = m
-            table = build_model_comparison_table(model_to_metrics)
-        else:
-            table = build_model_comparison_table(results)
-        return results, table
-    return results

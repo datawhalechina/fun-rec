@@ -128,9 +128,7 @@ ESMM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
        model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=[ctr_output_prob, ctcvr_output_prob])
        return model
 
-**完整训练流程：**
-
-1. 导入相关包
+**训练和评估**
 
 .. raw:: latex
 
@@ -138,42 +136,9 @@ ESMM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
 
 .. code:: python
 
-    import sys
-    import funrec
-    from funrec.utils import print_table
-
-2. 样本和特征处理
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    config = funrec.load_config('esmm')
-    train_data, test_data = funrec.load_data(config.data)
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-
-3. 模型训练
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    model = funrec.train_model(config.training, feature_columns, processed_data)
-
-4. 模型评估
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    metrics = funrec.evaluate_model(model, processed_data, config.evaluation, feature_columns)
-    print_table(metrics)
+    from funrec import run_experiment
+    
+    run_experiment('esmm')
 
 
 .. raw:: latex
@@ -183,21 +148,11 @@ ESMM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
 .. parsed-literal::
     :class: output
 
-    
-    表格 1/2:
-    +----------------+---------------+-------------+-----------------+
-    |   auc_is_click |   auc_is_like |   auc_macro |   gauc_is_click |
-    +================+===============+=============+=================+
-    |         0.5942 |        0.6717 |       0.633 |          0.5746 |
-    +----------------+---------------+-------------+-----------------+
-    
-    
-    表格 2/2:
-    +----------------+--------------+---------------------+--------------------+
-    |   gauc_is_like |   gauc_macro |   val_user_is_click |   val_user_is_like |
-    +================+==============+=====================+====================+
-    |         0.5877 |       0.5811 |                 928 |                530 |
-    +----------------+--------------+---------------------+--------------------+
+    +----------------+---------------+-------------+-----------------+----------------+--------------+---------------------+--------------------+
+    |   auc_is_click |   auc_is_like |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_macro |   val_user_is_click |   val_user_is_like |
+    +================+===============+=============+=================+================+==============+=====================+====================+
+    |         0.6012 |        0.6639 |      0.6326 |          0.5724 |         0.5735 |       0.5729 |                 928 |                530 |
+    +----------------+---------------+-------------+-----------------+----------------+--------------+---------------------+--------------------+
 
 
 ESM2

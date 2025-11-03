@@ -234,7 +234,7 @@ ItemCF的实现流程主要包含以下两个步骤：
    target_item_pred = target_user_mean_rating + weighted_scores / corr_values_sum
    print(f'用户{target_user}对物品{target_item}的预测评分为：{target_item_pred}')
 
-4. 训练模型
+4. 训练和评估模型
 
 .. raw:: latex
 
@@ -242,27 +242,9 @@ ItemCF的实现流程主要包含以下两个步骤：
 
 .. code:: python
 
-    import os
-    import sys
-    import funrec
-    from funrec.utils import build_metrics_table
+    from funrec import run_experiment
     
-    # 加载配置
-    config = funrec.load_config('item_cf')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    
-    print(build_metrics_table(metrics))
+    run_experiment('item_cf')
 
 
 .. raw:: latex
@@ -504,27 +486,7 @@ Score的计算，它通过分析用户-物品二部图中的swing结构来度量
 
 .. code:: python
 
-    import os
-    import sys
-    import funrec
-    from funrec.utils import build_metrics_table
-    
-    # 加载配置
-    config = funrec.load_config('swing')
-    
-    # 加载数据
-    train_data, test_data = funrec.load_data(config.data)
-    
-    # 准备特征
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    
-    # 训练模型
-    models = funrec.train_model(config.training, feature_columns, processed_data)
-    
-    # 评估模型
-    metrics = funrec.evaluate_model(models, processed_data, config.evaluation, feature_columns)
-    
-    print(build_metrics_table(metrics))
+    run_experiment('swing')
 
 
 .. raw:: latex

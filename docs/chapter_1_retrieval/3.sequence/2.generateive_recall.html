@@ -140,7 +140,6 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
@@ -148,13 +147,11 @@ Show Source
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
@@ -254,7 +251,6 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/3.summary.html">3.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
@@ -262,13 +258,11 @@ Show Source
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/4.summary.html">3.4.4. 小结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/3.summary.html">3.5.3. 小结</a></li>
 </ul>
 </li>
 </ul>
@@ -329,9 +323,9 @@ Show Source
 <section id="sasrec">
 <h2><span class="section-number">2.3.2.1. </span>SASRec：基于自注意力的序列推荐<a class="headerlink" href="#sasrec" title="Permalink to this heading">¶</a></h2>
 <p>在SASRec出现之前，主流的序列模型，如基于马尔可夫链或RNN的方法，存在各自的局限。马尔可夫链
-<span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id68" title="Rendle, S., Freudenthaler, C., &amp; Schmidt-Thieme, L. (2010). Factorizing personalized markov chains for next-basket recommendation. Proceedings of the 19th international conference on World wide web (pp. 811–820).">Rendle <em>et al.</em>, 2010</a>)</span>
+<span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id67" title="Rendle, S., Freudenthaler, C., &amp; Schmidt-Thieme, L. (2010). Factorizing personalized markov chains for next-basket recommendation. Proceedings of the 19th international conference on World wide web (pp. 811–820).">Rendle <em>et al.</em>, 2010</a>)</span>
 通常只考虑最近的少数几个行为，视野有限；而RNN
-<span id="id3">(<a class="reference internal" href="../../chapter_references/references.html#id69" title="Dobrovolny, M., Selamat, A., &amp; Krejcar, O. (2021). Session based recommendations using recurrent neural networks-long short-term memory. Asian Conference on Intelligent Information and Database Systems (pp. 53–65).">Dobrovolny <em>et al.</em>, 2021</a>)</span>
+<span id="id3">(<a class="reference internal" href="../../chapter_references/references.html#id68" title="Dobrovolny, M., Selamat, A., &amp; Krejcar, O. (2021). Session based recommendations using recurrent neural networks-long short-term memory. Asian Conference on Intelligent Information and Database Systems (pp. 53–65).">Dobrovolny <em>et al.</em>, 2021</a>)</span>
 虽然理论上能捕捉长期依赖，但其串行计算的特性导致训练效率低下。SASRec
 <span id="id4">(<a class="reference internal" href="../../chapter_references/references.html#id39" title="Kang, W.-C., &amp; McAuley, J. (2018). Self-attentive sequential recommendation. 2018 IEEE international conference on data mining (ICDM) (pp. 197–206).">Kang and McAuley, 2018</a>)</span>
 的出发点便是：能否找到一种方法，既能像RNN一样看到完整的历史序列，又能高效地捕捉其中最重要的依赖关系？答案是借用在自然语言处理（NLP）领域大获成功的Transformer模型
@@ -405,30 +399,15 @@ s_{t+1} &amp; 1\leq t&lt;n\\
 <p>其中 <span class="math notranslate nohighlight">\(\sigma\)</span> 是sigmoid函数，<span class="math notranslate nohighlight">\(r_{o_t,t}\)</span>
 是正样本分数，<span class="math notranslate nohighlight">\(r_{j,t}\)</span> 是负样本分数。</p>
 <p><strong>代码实践</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">funrec</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">funrec.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_metrics_table</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
-<span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;sasrec&#39;</span><span class="p">)</span>
-
-<span class="c1"># 加载数据</span>
-<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># 准备特征</span>
-<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
-
-<span class="c1"># 训练模型</span>
-<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
-
-<span class="c1"># 评估模型</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+<span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;sasrec&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+</span>
-<span class="o">|</span>         <span class="mf">0.022</span> <span class="o">|</span>       <span class="mf">0.0111</span> <span class="o">|</span>    <span class="mf">0.0107</span> <span class="o">|</span>   <span class="mf">0.0072</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0197</span> <span class="o">|</span>       <span class="mf">0.0093</span> <span class="o">|</span>    <span class="mf">0.0095</span> <span class="o">|</span>   <span class="mf">0.0061</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+</span>
 </pre></div>
 </div>
@@ -484,26 +463,13 @@ Normalization（层归一化），<span class="math notranslate nohighlight">\(\
 <p>HSTU的完整工作流程包含训练和召回两个阶段。在训练阶段，模型基于前面描述的输入输出格式进行标准的Transformer训练——通过预测用户行为序列中的下一个正向交互物品来学习用户偏好模式和物品间的依赖关系。在召回阶段，经过多层HSTU编码器处理后，模型将用户的完整行为事件序列转换为能够概括用户历史、捕捉当前兴趣的实时动态表示<span class="math notranslate nohighlight">\(u_i\)</span>。拥有了用户表示向量<span class="math notranslate nohighlight">\(u_i\)</span>后，召回过程就转变为一个标准的向量检索问题——将<span class="math notranslate nohighlight">\(u_i\)</span>与物品语料库中所有物品的Embedding向量进行高效的相似度计算，通过近似最近邻（ANN）搜索从海量物品池中快速检索出与用户当前兴趣最匹配的Top-K个物品，形成召回列表。</p>
 <p>总而言之，如果说SASRec是将推荐序列视为一句由‘单词’（物品ID）组成的句子，那么HSTU则是将推荐场景中的所有信息（用户属性、行为、物品、上下文）都看作一种更复杂的‘语言’，并为此设计了一套全新的‘语法规则’（HSTU单元）来理解和生成这种语言。它的核心创新在于<strong>丰富了模型的输入</strong>，从而实现了对用户行为更深层次的理解。</p>
 <p><strong>代码实践</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="s1">&#39;hstu&#39;</span><span class="p">)</span>
-
-<span class="c1"># 加载数据</span>
-<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># 准备特征</span>
-<span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">prepare_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
-
-<span class="c1"># 训练模型</span>
-<span class="n">models</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
-
-<span class="c1"># 评估模型</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="n">funrec</span><span class="o">.</span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;hstu&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+</span>
-<span class="o">|</span>        <span class="mf">0.0101</span> <span class="o">|</span>       <span class="mf">0.0048</span> <span class="o">|</span>    <span class="mf">0.0045</span> <span class="o">|</span>   <span class="mf">0.0028</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0167</span> <span class="o">|</span>       <span class="mf">0.0076</span> <span class="o">|</span>    <span class="mf">0.0073</span> <span class="o">|</span>   <span class="mf">0.0044</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+</span>
 </pre></div>
 </div>

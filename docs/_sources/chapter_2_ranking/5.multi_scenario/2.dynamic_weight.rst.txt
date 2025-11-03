@@ -212,7 +212,7 @@ PPNet实现代码如下：
                output_list.append(output)
            return output_list
 
-完整的实践流程： **1. 导入相关代码包**
+**代码实践**
 
 .. raw:: latex
 
@@ -220,44 +220,9 @@ PPNet实现代码如下：
 
 .. code:: python
 
-    # -*- coding: utf-8 -*-
-    import sys
-    import funrec
-    from funrec.utils import print_table
+    from funrec import run_experiment
     
-    config = funrec.load_config('mmoe')
-
-**2. 特征处理**
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    train_data, test_data = funrec.load_data(config.data)
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-
-**3. 模型定义及训练**
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    model = funrec.train_model(config.training, feature_columns, processed_data)
-
-**4. 模型效果评估**
-
-.. raw:: latex
-
-   \diilbookstyleinputcell
-
-.. code:: python
-
-    metrics = funrec.evaluate_model(model, processed_data, config.evaluation, feature_columns)
-    print_table(metrics)
+    run_experiment('mmoe')
 
 
 .. raw:: latex
@@ -267,29 +232,11 @@ PPNet实现代码如下：
 .. parsed-literal::
     :class: output
 
-    
-    表格 1/3:
-    +----------------+---------------+-----------------+-------------+
-    |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |
-    +================+===============+=================+=============+
-    |         0.5904 |        0.4191 |          0.4778 |      0.4958 |
-    +----------------+---------------+-----------------+-------------+
-    
-    
-    表格 2/3:
-    +-----------------+----------------+------------------+--------------+
-    |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |
-    +=================+================+==================+==============+
-    |          0.5712 |          0.444 |           0.4809 |       0.4987 |
-    +-----------------+----------------+------------------+--------------+
-    
-    
-    表格 3/3:
-    +---------------------+--------------------+----------------------+
-    |   val_user_is_click |   val_user_is_like |   val_user_long_view |
-    +=====================+====================+======================+
-    |                 928 |                530 |                  925 |
-    +---------------------+--------------------+----------------------+
+    +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
+    |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   val_user_is_click |   val_user_is_like |   val_user_long_view |
+    +================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+
+    |         0.5995 |        0.4183 |           0.471 |      0.4963 |          0.5721 |         0.4414 |           0.4879 |       0.5005 |                 928 |                530 |                  925 |
+    +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 
 
 APG
@@ -538,7 +485,7 @@ APG Layer核心代码：
            if self.activation: output = self.activation(output)
            return output
 
-完整训练流程如下：
+**代码实践**
 
 .. raw:: latex
 
@@ -546,12 +493,7 @@ APG Layer核心代码：
 
 .. code:: python
 
-    config = funrec.load_config('apg')
-    train_data, test_data = funrec.load_data(config.data)
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    model = funrec.train_model(config.training, feature_columns, processed_data)
-    metrics = funrec.evaluate_model(model, processed_data, config.evaluation, feature_columns)
-    print_table(metrics)
+    run_experiment('apg')
 
 
 .. raw:: latex
@@ -561,11 +503,11 @@ APG Layer核心代码：
 .. parsed-literal::
     :class: output
 
-    +----------+---------+------------+
-    |      auc |    gauc |   val_user |
-    +==========+=========+============+
-    | 0.652398 | 0.62772 |        217 |
-    +----------+---------+------------+
+    +-------+--------+------------+
+    |   auc |   gauc |   val_user |
+    +=======+========+============+
+    | 0.672 | 0.6287 |        217 |
+    +-------+--------+------------+
 
 
 M2M
@@ -686,7 +628,7 @@ M2M
    \mathbf{L}_t^{(0)} = \mathbf{R}_t, \\
    \mathbf{L}_t^{(j)} = \sigma( \text{Meta}^{(j-1)}( \mathbf{L}_t^{(j-1)} ) + \mathbf{L}_t^{(j-1)} ), \quad \forall j \in 1, 2, \ldots, L
 
-Tower元网络的代码实现如下：
+**代码实践**
 
 .. raw:: latex
 
@@ -694,12 +636,7 @@ Tower元网络的代码实现如下：
 
 .. code:: python
 
-    config = funrec.load_config('m2m')
-    train_data, test_data = funrec.load_data(config.data)
-    feature_columns, processed_data = funrec.prepare_features(config.features, train_data, test_data)
-    model = funrec.train_model(config.training, feature_columns, processed_data)
-    metrics = funrec.evaluate_model(model, processed_data, config.evaluation, feature_columns)
-    print_table(metrics)
+    run_experiment('m2m')
 
 
 .. raw:: latex
@@ -709,27 +646,9 @@ Tower元网络的代码实现如下：
 .. parsed-literal::
     :class: output
 
-    
-    表格 1/3:
-    +----------------+---------------+-----------------+-------------+
-    |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |
-    +================+===============+=================+=============+
-    |         0.6759 |        0.6068 |          0.6887 |      0.6571 |
-    +----------------+---------------+-----------------+-------------+
-    
-    
-    表格 2/3:
-    +-----------------+----------------+------------------+--------------+
-    |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |
-    +=================+================+==================+==============+
-    |          0.6262 |         0.6467 |           0.6408 |       0.6379 |
-    +-----------------+----------------+------------------+--------------+
-    
-    
-    表格 3/3:
-    +---------------------+--------------------+----------------------+
-    |   val_user_is_click |   val_user_is_like |   val_user_long_view |
-    +=====================+====================+======================+
-    |                 217 |                131 |                  217 |
-    +---------------------+--------------------+----------------------+
+    +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
+    |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   val_user_is_click |   val_user_is_like |   val_user_long_view |
+    +================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+
+    |         0.5777 |        0.6044 |          0.6609 |      0.6143 |          0.5483 |         0.6498 |           0.6268 |       0.6083 |                 217 |                131 |                  217 |
+    +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 
