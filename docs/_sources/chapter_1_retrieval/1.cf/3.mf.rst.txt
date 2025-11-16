@@ -80,6 +80,70 @@ FunkSVD 由 Simon Funk 在2006年提出
 
 这样可以避免模型过度拟合训练数据，提高在新数据上的表现。
 
+**核心代码**
+
+FunkSVD的核心在于学习用户和物品的隐向量表示。在实现中，我们使用Embedding层来表示这些隐向量，并通过内积计算预测评分：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 用户的隐向量表示
+   user_factors = Embedding(
+       user_vocab_size,
+       embedding_dim,
+       embeddings_initializer="normal",
+       embeddings_regularizer=tf.keras.regularizers.l2(0.02),
+       name="user_factors",
+   )(user_id_input)
+   user_factors = Flatten()(user_factors)
+
+   # 物品的隐向量表示
+   item_factors = Embedding(
+       item_vocab_size,
+       embedding_dim,
+       embeddings_initializer="normal",
+       embeddings_regularizer=tf.keras.regularizers.l2(0.02),
+       name="item_factors",
+   )(item_id_input)
+   item_factors = Flatten()(item_factors)
+
+   # 预测：计算用户向量和物品向量的内积
+   prediction = Dot(axes=1)([user_factors, item_factors])
+
+这里的\ ``embedding_dim``\ 对应公式中的隐含因子数量\ :math:`K`\ 。\ ``user_factors``\ 对应\ :math:`p_u`\ ，\ ``item_factors``\ 对应\ :math:`q_i`\ ，而\ ``Dot``\ 操作计算的就是\ :math:`p_u^T q_i`\ 。通过训练，模型会自动学习最优的隐向量表示，使预测评分尽可能接近真实评分。
+
+**训练和评估**
+
+FunkSVD 在 MovieLens 数据集上的应用
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+    from funrec import run_experiment
+    
+    run_experiment('funksvd')
+
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    +---------------+--------------+-----------+----------+----------------+---------------+
+    |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
+    +===============+==============+===========+==========+================+===============+
+    |        0.0002 |            0 |    0.0001 |        0 |              0 |             0 |
+    +---------------+--------------+-----------+----------+----------------+---------------+
+
+
 BiasSVD: 改进模型
 -----------------
 
@@ -105,9 +169,9 @@ BiasSVD: 改进模型
 
 这种改进看似简单，但效果显著。通过分离出系统性偏差，模型能够更准确地捕捉用户和物品之间的真实交互模式，从而提供更精准的推荐。
 
-**代码实践**
+**核心代码**
 
-FunkSVD 在 MovieLens 数据集上的应用
+BiasSVD在FunkSVD的基础上增加了偏置项。在实现中，我们为用户和物品分别添加偏置Embedding，并在预测时将所有项相加：
 
 .. raw:: latex
 
@@ -115,24 +179,58 @@ FunkSVD 在 MovieLens 数据集上的应用
 
 .. code:: python
 
-    from funrec import run_experiment
-    
-    run_experiment('funksvd')
+   # 用户的隐向量表示 + 用户偏置
+   user_factors = Embedding(
+       user_vocab_size, embedding_dim,
+       embeddings_initializer="normal",
+       embeddings_regularizer=tf.keras.regularizers.l2(0.02),
+       name="user_factors",
+   )(user_id_input)
+   user_factors = Flatten()(user_factors)
 
+   user_bias = Embedding(
+       user_vocab_size, 1,
+       embeddings_initializer="zeros",
+       embeddings_regularizer=tf.keras.regularizers.l2(0.02),
+       name="user_bias",
+   )(user_id_input)
+   user_bias = Flatten()(user_bias)
 
-.. raw:: latex
+   # 物品的隐向量表示 + 物品偏置
+   item_factors = Embedding(
+       item_vocab_size, embedding_dim,
+       embeddings_initializer="normal",
+       embeddings_regularizer=tf.keras.regularizers.l2(0.02),
+       name="item_factors",
+   )(item_id_input)
+   item_factors = Flatten()(item_factors)
 
-   \diilbookstyleoutputcell
+   item_bias = Embedding(
+       item_vocab_size, 1,
+       embeddings_initializer="zeros",
+       embeddings_regularizer=tf.keras.regularizers.l2(0.02),
+       name="item_bias",
+   )(item_id_input)
+   item_bias = Flatten()(item_bias)
 
-.. parsed-literal::
-    :class: output
+   # 计算各个部分
+   interaction = Dot(axes=1)([user_factors, item_factors])  # 交互项
+   ones_input = tf.keras.layers.Lambda(lambda x: tf.ones_like(x))(interaction)
+   global_bias = Dense(1, use_bias=True, kernel_initializer="zeros", 
+                        name="global_bias")(ones_input)  # 全局偏置
 
-    +---------------+--------------+-----------+----------+----------------+---------------+
-    |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
-    +===============+==============+===========+==========+================+===============+
-    |        0.0022 |       0.0012 |    0.0012 |   0.0009 |         0.0002 |        0.0002 |
-    +---------------+--------------+-----------+----------+----------------+---------------+
+   # BiasSVD 预测：global_bias + user_bias + item_bias + interaction
+   prediction = Add()([global_bias, user_bias, item_bias, interaction])
 
+与FunkSVD相比，BiasSVD的关键区别在于：
+
+-  用户和物品都增加了独立的偏置Embedding（\ ``user_bias``\ 和\ ``item_bias``\ ）
+-  添加了全局偏置项（\ ``global_bias``\ ），对应公式中的\ :math:`\mu`
+-  最终预测使用\ ``Add``\ 层将四个部分相加：\ :math:`\mu + b_u + b_i + p_u^T q_i`
+
+偏置项的初始化使用\ ``"zeros"``\ ，因为它们代表的是相对于平均水平的偏移。这种设计使得模型能够自动学习不同用户的打分习惯和不同物品的受欢迎程度。
+
+**训练和评估**
 
 BiasSVD 在 MovieLens 数据集上的应用
 
@@ -155,6 +253,6 @@ BiasSVD 在 MovieLens 数据集上的应用
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0005 |       0.0003 |    0.0004 |   0.0003 |              0 |        0.0001 |
+    |        0.0081 |       0.0065 |    0.0037 |   0.0032 |         0.0008 |        0.0013 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 

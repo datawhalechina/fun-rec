@@ -62,6 +62,10 @@ NU的代码实现如下：
 .. code:: python
 
    class GateNU(tf.keras.layers.Layer):
+       """
+       两层门控网络（NU）：用于为不同分支/专家动态生成权重或系数。
+       结构：Dense(ReLU) -> Dense(Sigmoid) -> gamma 缩放。
+       """
        def __init__(self,
                     hidden_units,
                     gamma=2.,
@@ -69,14 +73,15 @@ NU的代码实现如下：
            assert len(hidden_units) == 2
            self.gamma = gamma
            self.dense_layers = [
-               tf.keras.layers.Dense(hidden_units[0], activation="relu", kernel_regularizer=tf.keras.regularizers.l2(l2_reg)),
-               tf.keras.layers.Dense(hidden_units[1], activation="sigmoid", kernel_regularizer=tf.keras.regularizers.l2(l2_reg))
+               tf.keras.layers.Dense(hidden_units[0], activation="relu", kernel_regularizer=tf.keras.regularizers.l2(l2_reg)),  # 第一层：非线性特征提取
+               tf.keras.layers.Dense(hidden_units[1], activation="sigmoid", kernel_regularizer=tf.keras.regularizers.l2(l2_reg)) # 第二层：输出 (0,1) 门值
            ]
            super(GateNU, self).__init__()
 
        def call(self, inputs):
-           output = self.dense_layers[0](inputs)
-           output = self.gamma * self.dense_layers[1](output)
+           output = self.dense_layers[0](inputs)  # [B, hidden_units[0]]
+           # 乘以 gamma 对 Sigmoid 输出进行缩放。
+           output = self.gamma * self.dense_layers[1](output)  # [B, hidden_units[1]]
            return output
 
 EPNet：场景感知的嵌入个性化
@@ -130,7 +135,8 @@ EPNet的实现代码如下：
 
        def call(self, inputs, *args, **kwargs):
            domain, emb = inputs
-           return self.gate_nu(tf.concat([domain, tf.stop_gradient(emb)], axis=-1)) * emb
+           # stop_gradient 阻断系数支路对 emb 的反向梯度，避免过度耦合。
+           return self.gate_nu(tf.concat([domain, tf.stop_gradient(emb)], axis=-1)) * emb  # 输出形状 [B, D_emb]
 
 PPNet：用户感知的参数个性化
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -167,6 +173,7 @@ PPNet实现代码如下：
 .. code:: python
 
    class PPNet(tf.keras.layers.Layer):
+       # 核心：用 persona 生成逐层、逐塔的门控系数，对输出按维度缩放
        def __init__(self,
                     multiples,
                     hidden_units,
@@ -177,40 +184,47 @@ PPNet实现代码如下：
            self.hidden_units = hidden_units
            self.l2_reg = l2_reg
            self.multiples = multiples
-           self.dense_layers = []
-           self.dropout_layers = []
-           for i in range(multiples):
-               self.dense_layers.append(
-                   [tf.keras.layers.Dense(units, activation=activation, kernel_regularizer=tf.keras.regularizers.l2(l2_reg)) for units in hidden_units]
-               )
-               self.dropout_layers.append(
-                   [tf.keras.layers.Dropout(dropout) for _ in hidden_units]
-               )
+           # 每个塔一份同结构的层
+           self.dense_layers = [
+               [tf.keras.layers.Dense(u, activation=activation,
+                                      kernel_regularizer=tf.keras.regularizers.l2(l2_reg))
+                for u in hidden_units]
+               for _ in range(multiples)
+           ]
+           self.dropout_layers = [
+               [tf.keras.layers.Dropout(dropout) for _ in hidden_units]
+               for _ in range(multiples)
+           ]
            self.gate_nu = []
            super(PPNet, self).__init__( **kwargs)
 
        def build(self, input_shape):
-           self.gate_nu = [GateNU([i*self.multiples, i*self.multiples], l2_reg=self.l2_reg
-                                  ) for i in self.hidden_units]
+           # 为每层生成 gate：输出维度 units*multiples，后续按塔切片
+           self.gate_nu = [
+               GateNU([units * self.multiples, units * self.multiples], l2_reg=self.l2_reg)
+               for units in self.hidden_units
+           ]
 
        def call(self, inputs, training=None, **kwargs):
            inputs, persona = inputs
 
+           # 先计算各层 gate（persona ⊕ stop_gradient(inputs)）
            gate_list = []
-           for i in range(len(self.hidden_units)):
-               gate = self.gate_nu[i](tf.concat([persona, tf.stop_gradient(inputs)], axis=-1))
-               gate = tf.split(gate, self.multiples, axis=1)
-               gate_list.append(gate)
+           concat_in = tf.concat([persona, tf.stop_gradient(inputs)], axis=-1)
+           for i, gate in enumerate(self.gate_nu):
+               g = gate(concat_in)                     # [B, units*multiples]
+               g = tf.split(g, self.multiples, axis=1) # 每塔 [B, units]
+               gate_list.append(g)
            
-           output_list = []
+           # 按塔前向：逐层 Dense 后用 gate 做逐维调制
+           outputs = []
            for n in range(self.multiples):
-               output = inputs
+               x = inputs
                for i in range(len(self.hidden_units)):
-                   fc = self.dense_layers[n][i](output)
-                   output = gate_list[i][n] * fc
-                   output = self.dropout_layers[n][i](output, training=training)
-               output_list.append(output)
-           return output_list
+                   x = gate_list[i][n] * self.dense_layers[n][i](x)
+                   x = self.dropout_layers[n][i](x, training=training)
+               outputs.append(x)
+           return outputs
 
 **代码实践**
 
@@ -235,7 +249,7 @@ PPNet实现代码如下：
     +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
     |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   val_user_is_click |   val_user_is_like |   val_user_long_view |
     +================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+
-    |         0.5995 |        0.4183 |           0.471 |      0.4963 |          0.5721 |         0.4414 |           0.4879 |       0.5005 |                 928 |                530 |                  925 |
+    |         0.6034 |        0.4272 |          0.4362 |      0.4889 |          0.5756 |         0.4461 |           0.4511 |       0.4909 |                 928 |                530 |                  925 |
     +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 
 
@@ -331,158 +345,68 @@ APG Layer核心代码：
 .. code:: python
 
    class APGLayer(tf.keras.layers.Layer):
-       """注意力个性化门控层 (Attention Personalized Gating Layer)
-
-       该层实现了基于场景嵌入的注意力个性化机制，通过共享权重和场景特定权重的组合，
-       动态调整输入特征的转换过程，支持矩阵分解和不同的权重共享策略。
-
-       参数:
-           input_dim: 输入特征维度
-           output_dim: 输出特征维度
-           scene_emb_dim: 场景嵌入向量维度
-           activation: 输出激活函数名称
-           generate_activation: 权重生成网络的激活函数
-           inner_activation: 内部层激活函数
-           use_uv_shared: 是否使用UV共享权重模式
-           mf_k: 矩阵分解中K路径的分割因子
-           use_mf_p: 是否使用P路径的矩阵分解
-           mf_p: 矩阵分解中P路径的分割因子
        """
-       def __init__(self, input_dim, output_dim, scene_emb_dim, activation='relu', generate_activation=None,
-                    inner_activation=None, use_uv_shared=True, mf_k=16, use_mf_p=True, mf_p=4, **kwargs):
+       APG 自适应参数生成层（简化版）
+       核心：共享 U/V（输入→K、K→输出） + 样本私有 S_i（K×K）。
+       用场景/样本嵌入逐样本生成 S_i，对 K 表示进行调制，体现“按样本生成参数”的低秩形式。
+       仅保留 K 路：输入到 K（共享）→ K×K 调制（私有）→ K 到输出（共享）。
+       """
+       def __init__(self, input_dim, output_dim, scene_emb_dim,
+                    activation='relu', generate_activation=None,
+                    inner_activation=None, mf_k=16,**kwargs):
            super(APGLayer, self).__init__( **kwargs)
-           self.input_dim = input_dim                  # 输入特征维度
-           self.output_dim = output_dim                # 输出特征维度
-           self.scene_emb_dim = scene_emb_dim          # 场景嵌入向量维度
-           self.use_uv_shared = use_uv_shared          # 是否使用UV共享权重模式
-           self.use_mf_p = use_mf_p                    # 是否使用P路径矩阵分解
-           self.mf_k = mf_k                            # K路径矩阵分解分割因子
-           self.mf_p = mf_p                            # P路径矩阵分解分割因子
-           
-           # 激活函数初始化
+           self.input_dim = input_dim
+           self.output_dim = output_dim
+           self.scene_emb_dim = scene_emb_dim
+
+           # 激活函数（可选）
            self.activation = get_activation(activation) if activation else None
            self.inner_activation = get_activation(inner_activation) if inner_activation else None
-           
-           # 计算矩阵分解维度
+
+           # 低秩维度 K：取输入/输出较小维度并缩减，强调“低秩”
            min_dim = min(input_dim, output_dim)
-           self.p_dim = np.math.ceil(min_dim / mf_p) if use_mf_p else None  # P路径维度
-           self.k_dim = np.math.ceil(min_dim / mf_k)                        # K路径维度
-           
-           # 场景特定KK权重生成器
-           # 用于从场景嵌入生成KK权重矩阵和偏置
-           kk_weight_size = self.k_dim * self.k_dim
+           self.k_dim = int(np.math.ceil(min_dim / mf_k))  # K ≪ min(N, M)
+
+           # 私有因子 S_i：从场景嵌入生成逐样本的 K×K 权重与 K 偏置
+           kk_weight_size = self.k_dim * self.k_dim  # K×K
            self.specific_weight_kk = DNNs([kk_weight_size], activation=generate_activation)
            self.specific_bias_kk = DNNs([self.k_dim], activation=generate_activation)
-           
-           # 权重初始化: 共享权重模式或场景特定权重模式
-           if use_uv_shared:
-               # UV共享权重模式: 使用共享矩阵进行特征转换
-               if use_mf_p:
-                   # P路径矩阵分解: NP -> PK -> KK -> KP -> PM
-                   self.shared_weight_np = self.add_weight(shape=(input_dim, self.p_dim), initializer='glorot_uniform', name='shared_weight_np')
-                   self.shared_bias_np = self.add_weight(shape=(self.p_dim,), initializer='zeros', name='shared_bias_np')
-                   self.shared_weight_pk = self.add_weight(shape=(self.p_dim, self.k_dim), initializer='glorot_uniform', name='shared_weight_pk')
-                   self.shared_bias_pk = self.add_weight(shape=(self.k_dim,), initializer='zeros', name='shared_bias_pk')
-                   self.shared_weight_kp = self.add_weight(shape=(self.k_dim, self.p_dim), initializer='glorot_uniform', name='shared_weight_kp')
-                   self.shared_bias_kp = self.add_weight(shape=(self.p_dim,), initializer='zeros', name='shared_bias_kp')
-                   self.shared_weight_pm = self.add_weight(shape=(self.p_dim, output_dim), initializer='glorot_uniform', name='shared_weight_pm')
-                   self.shared_bias_pm = self.add_weight(shape=(output_dim,), initializer='zeros', name='shared_bias_pm')
-               else:
-                   # 无P路径矩阵分解: NK -> KK -> KM
-                   self.shared_weight_nk = self.add_weight(shape=(input_dim, self.k_dim), initializer='glorot_uniform', name='shared_weight_nk')
-                   self.shared_bias_nk = self.add_weight(shape=(self.k_dim,), initializer='zeros', name='shared_bias_nk')
-                   self.shared_weight_km = self.add_weight(shape=(self.k_dim, output_dim), initializer='glorot_uniform', name='shared_weight_km')
-                   self.shared_bias_km = self.add_weight(shape=(output_dim,), initializer='zeros', name='shared_bias_km')
-           else:
-               # 场景特定权重模式: NK和KM权重由场景嵌入生成
-               nk_weight_size = input_dim * self.k_dim
-               km_weight_size = self.k_dim * output_dim
-               self.specific_weight_nk = DNNs([nk_weight_size], activation=generate_activation)
-               self.specific_bias_nk = DNNs([self.k_dim], activation=generate_activation)
-               self.specific_weight_km = DNNs([km_weight_size], activation=generate_activation)
-               self.specific_bias_km = DNNs([output_dim], activation=generate_activation)
+
+           # 共享因子 U/V：固定的 NK（输入→K）与 KM（K→输出）权重与偏置
+           self.shared_weight_nk = self.add_weight(shape=(input_dim, self.k_dim), initializer='glorot_uniform', name='shared_weight_nk')
+           self.shared_bias_nk = self.add_weight(shape=(self.k_dim,), initializer='zeros', name='shared_bias_nk')
+           self.shared_weight_km = self.add_weight(shape=(self.k_dim, output_dim), initializer='glorot_uniform', name='shared_weight_km')
+           self.shared_bias_km = self.add_weight(shape=(output_dim,), initializer='zeros', name='shared_bias_km')
 
        def call(self, inputs):
-           """前向传播方法
-
-           参数:
-               inputs: 包含两个元素的列表 [x, scene_emb]
-                   x: 输入特征张量，形状为 (batch_size, input_dim)
-                   scene_emb: 场景嵌入张量，形状为 (batch_size, scene_emb_dim)
-
-           返回:
-               output: 经过注意力个性化门控处理的输出张量，形状为 (batch_size, output_dim)
            """
-           x, scene_emb = inputs  # x: 输入特征, scene_emb: 场景嵌入
-           batch_size = tf.shape(x)[0]
-           
-           # 生成场景特定KK权重矩阵和偏置
-           specific_weight_kk = self.specific_weight_kk(scene_emb)  # 形状: (batch_size, k_dim*k_dim)
-           specific_weight_kk = tf.reshape(specific_weight_kk, (-1, self.k_dim, self.k_dim))  # 重塑为矩阵
-           specific_bias_kk = self.specific_bias_kk(scene_emb)  # KK偏置
-           
-           if self.use_uv_shared:
-               # UV共享权重模式下的前向传播
-               if self.use_mf_p:
-                   # P路径矩阵分解路径: NP -> PK -> KK -> KP -> PM
-                   # 1. NP: 输入特征到P维度空间
-                   output_np = tf.matmul(x, self.shared_weight_np) + self.shared_bias_np
-                   if self.inner_activation: output_np = self.inner_activation(output_np)
-                   
-                   # 2. PK: P维度到K维度空间
-                   output_pk = tf.matmul(output_np, self.shared_weight_pk) + self.shared_bias_pk
-                   if self.inner_activation: output_pk = self.inner_activation(output_pk)
-                   
-                   # 3. KK: 应用场景特定KK权重
-                   output_kk = tf.matmul(tf.expand_dims(output_pk, 1), specific_weight_kk)
-                   output_kk = tf.squeeze(output_kk, 1) + specific_bias_kk
-                   if self.inner_activation: output_kk = self.inner_activation(output_kk)
-                   
-                   # 4. KP: K维度到P维度空间
-                   output_kp = tf.matmul(output_kk, self.shared_weight_kp) + self.shared_bias_kp
-                   if self.inner_activation: output_kp = self.inner_activation(output_kp)
-                   
-                   # 5. PM: P维度到输出维度
-                   output = tf.matmul(output_kp, self.shared_weight_pm) + self.shared_bias_pm
-               else:
-                   # 无P路径矩阵分解路径: NK -> KK -> KM
-                   # 1. NK: 输入特征到K维度空间
-                   output_nk = tf.matmul(x, self.shared_weight_nk) + self.shared_bias_nk
-                   if self.inner_activation: output_nk = self.inner_activation(output_nk)
-                   
-                   # 2. KK: 应用场景特定KK权重
-                   output_kk = tf.matmul(tf.expand_dims(output_nk, 1), specific_weight_kk)
-                   output_kk = tf.squeeze(output_kk, 1) + specific_bias_kk
-                   if self.inner_activation: output_kk = self.inner_activation(output_kk)
-                   
-                   # 3. KM: K维度到输出维度
-                   output = tf.matmul(output_kk, self.shared_weight_km) + self.shared_bias_km
-           else:
-               # 场景特定权重模式下的前向传播: NK -> KK -> KM
-               # 1. NK: 生成场景特定NK权重并应用
-               specific_weight_nk = self.specific_weight_nk(scene_emb)
-               specific_weight_nk = tf.reshape(specific_weight_nk, (-1, self.input_dim, self.k_dim))
-               specific_bias_nk = self.specific_bias_nk(scene_emb)
-               
-               output_nk = tf.matmul(tf.expand_dims(x, 1), specific_weight_nk)
-               output_nk = tf.squeeze(output_nk, 1) + specific_bias_nk
-               if self.inner_activation: output_nk = self.inner_activation(output_nk)
-               
-               # 2. KK: 应用场景特定KK权重
-               output_kk = tf.matmul(tf.expand_dims(output_nk, 1), specific_weight_kk)
-               output_kk = tf.squeeze(output_kk, 1) + specific_bias_kk
-               if self.inner_activation: output_kk = self.inner_activation(output_kk)
-               
-               # 3. KM: 生成场景特定KM权重并应用
-               specific_weight_km = self.specific_weight_km(scene_emb)
-               specific_weight_km = tf.reshape(specific_weight_km, (-1, self.k_dim, self.output_dim))
-               specific_bias_km = self.specific_bias_km(scene_emb)
-               
-               output = tf.matmul(tf.expand_dims(output_kk, 1), specific_weight_km)
-               output = tf.squeeze(output, 1) + specific_bias_km
-           
-           # 应用输出激活函数
-           if self.activation: output = self.activation(output)
+           前向（分解前向）：
+           x → NK（共享U）→ K → S_i（样本私有KK调制）→ K_mod → KM（共享V）→ 输出 → activation
+           """
+           x, scene_emb = inputs
+
+           # 生成样本私有 KK 权重/偏置（S_i）
+           specific_weight_kk = self.specific_weight_kk(scene_emb)              # [B, K*K]
+           specific_weight_kk = tf.reshape(specific_weight_kk, (-1, self.k_dim, self.k_dim))  # [B, K, K]
+           specific_bias_kk = self.specific_bias_kk(scene_emb)                  # [B, K]
+
+           # NK：输入到 K（共享 U）
+           k = tf.matmul(x, self.shared_weight_nk) + self.shared_bias_nk        # [B, K]
+           if self.inner_activation:
+               k = self.inner_activation(k)
+
+           # KK：样本私有调制（批量矩阵乘）：[B,1,K] × [B,K,K] → [B,1,K]
+           k_mod = tf.matmul(tf.expand_dims(k, 1), specific_weight_kk)          # [B, 1, K]
+           k_mod = tf.squeeze(k_mod, 1) + specific_bias_kk                      # [B, K]
+           if self.inner_activation:
+               k_mod = self.inner_activation(k_mod)
+
+           # KM：K 到输出（共享 V）
+           output = tf.matmul(k_mod, self.shared_weight_km) + self.shared_bias_km
+
+           # 最终激活（可选）
+           if self.activation:
+               output = self.activation(output)
            return output
 
 **代码实践**
@@ -503,11 +427,11 @@ APG Layer核心代码：
 .. parsed-literal::
     :class: output
 
-    +-------+--------+------------+
-    |   auc |   gauc |   val_user |
-    +=======+========+============+
-    | 0.672 | 0.6287 |        217 |
-    +-------+--------+------------+
+    +--------+--------+------------+
+    |    auc |   gauc |   val_user |
+    +========+========+============+
+    | 0.6739 | 0.6379 |        217 |
+    +--------+--------+------------+
 
 
 M2M
@@ -649,6 +573,6 @@ M2M
     +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
     |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   val_user_is_click |   val_user_is_like |   val_user_long_view |
     +================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+
-    |         0.5777 |        0.6044 |          0.6609 |      0.6143 |          0.5483 |         0.6498 |           0.6268 |       0.6083 |                 217 |                131 |                  217 |
+    |         0.6824 |        0.5682 |          0.7021 |      0.6509 |          0.6394 |         0.6458 |           0.6503 |       0.6451 |                 217 |                131 |                  217 |
     +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 

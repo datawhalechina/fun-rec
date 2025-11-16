@@ -137,7 +137,57 @@ Only的Transformer模型，SASRec的训练目标也是预测用户下一个交�
 其中 :math:`\sigma` 是sigmoid函数，\ :math:`r_{o_t,t}`
 是正样本分数，\ :math:`r_{j,t}` 是负样本分数。
 
-**代码实践**
+**核心代码**
+
+SASRec的核心在于将位置编码与序列嵌入相结合，然后通过多层Transformer模块处理：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 位置编码与序列嵌入相加
+   position_embedding = PositionEncodingLayer(
+       dims=emb_dim,
+       max_len=max_seq_len,
+       trainable=True,
+       initializer='glorot_uniform',
+   )(sequence_embedding)
+   sequence_embedding = add_tensor_func([sequence_embedding, position_embedding])
+
+   # 多头注意力层，使用因果掩码确保只看到历史信息
+   for i in range(mha_num):
+       sequence_embedding_norm = tf.keras.layers.LayerNormalization()(
+           sequence_embedding
+       )
+       sequence_embedding_output = tf.keras.layers.MultiHeadAttention(
+           num_heads=nums_heads,
+           key_dim=emb_dim,
+           dropout=dropout,
+           name=f"{i}_block",
+       )(sequence_embedding_norm, sequence_embedding, use_causal_mask=True)
+       
+       # 残差连接
+       sequence_embedding = add_tensor_func(
+           [sequence_embedding, sequence_embedding_output]
+       )
+       sequence_embedding = tf.keras.layers.LayerNormalization()(sequence_embedding)
+       
+       # 前馈网络层
+       sequence_embedding = DNNs(
+           units=[emb_dim, emb_dim],
+           dropout_rate=dropout,
+           activation='relu',
+           name=f"{i}_dnn",
+       )(sequence_embedding)
+
+关键的设计点包括：(1) ``use_causal_mask=True``
+确保预测第\ :math:`t`\ 个位置时只能看到前\ :math:`t-1`\ 个位置；(2)
+残差连接和层归一化稳定训练；(3)
+前馈网络增强非线性表达能力。最后取序列最后一个位置的输出表示用户当前兴趣，用于预测下一个物品。
+
+**训练和评估**
 
 .. raw:: latex
 
@@ -160,7 +210,7 @@ Only的Transformer模型，SASRec的训练目标也是预测用户下一个交�
     +---------------+--------------+-----------+----------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |
     +===============+==============+===========+==========+
-    |        0.0197 |       0.0093 |    0.0095 |   0.0061 |
+    |        0.0154 |       0.0076 |    0.0066 |   0.0041 |
     +---------------+--------------+-----------+----------+
 
 
@@ -231,9 +281,98 @@ HSTU Pointwise Aggregation
 
 HSTU的完整工作流程包含训练和召回两个阶段。在训练阶段，模型基于前面描述的输入输出格式进行标准的Transformer训练——通过预测用户行为序列中的下一个正向交互物品来学习用户偏好模式和物品间的依赖关系。在召回阶段，经过多层HSTU编码器处理后，模型将用户的完整行为事件序列转换为能够概括用户历史、捕捉当前兴趣的实时动态表示\ :math:`u_i`\ 。拥有了用户表示向量\ :math:`u_i`\ 后，召回过程就转变为一个标准的向量检索问题——将\ :math:`u_i`\ 与物品语料库中所有物品的Embedding向量进行高效的相似度计算，通过近似最近邻（ANN）搜索从海量物品池中快速检索出与用户当前兴趣最匹配的Top-K个物品，形成召回列表。
 
-总而言之，如果说SASRec是将推荐序列视为一句由‘单词’（物品ID）组成的句子，那么HSTU则是将推荐场景中的所有信息（用户属性、行为、物品、上下文）都看作一种更复杂的‘语言’，并为此设计了一套全新的‘语法规则’（HSTU单元）来理解和生成这种语言。它的核心创新在于\ **丰富了模型的输入**\ ，从而实现了对用户行为更深层次的理解。
+总而言之，如果说SASRec是将推荐序列视为一句由’单词’（物品ID）组成的句子，那么HSTU则是将推荐场景中的所有信息（用户属性、行为、物品、上下文）都看作一种更复杂的’语言’，并为此设计了一套全新的’语法规则’（HSTU单元）来理解和生成这种语言。它的核心创新在于\ **丰富了模型的输入**\ ，从而实现了对用户行为更深层次的理解。
 
-**代码实践**
+**核心代码**
+
+HSTU的核心在于其定制的注意力机制，它通过SiLU激活和门控机制实现了点向聚合，避免了传统Softmax的归一化：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   class HstuLayer(tf.keras.layers.Layer):
+       """HSTU层实现点向聚合的注意力机制"""
+       
+       def __init__(self, num_units, num_heads, attention_type='dot_product', 
+                    dropout_rate=0, causality=False):
+           super(HstuLayer, self).__init__()
+           self.num_units = num_units
+           self.num_heads = num_heads
+           self.attention_type = attention_type
+           self.dropout_rate = dropout_rate
+           self.causality = causality
+       
+       def build(self, input_shape):
+           # 点向投影：同时产生Q、K、V（这里简化为独立投影）
+           self.query_dense = tf.keras.layers.Dense(
+               self.num_units, activation=None, use_bias=False, name='query_projection'
+           )
+           self.key_dense = tf.keras.layers.Dense(
+               self.num_units, activation=None, use_bias=False, name='key_projection'
+           )
+           self.value_dense = tf.keras.layers.Dense(
+               self.num_units, activation=None, use_bias=False, name='value_projection'
+           )
+       
+       def silu(self, x):
+           """SiLU (Swish) 激活函数，用于点向聚合"""
+           return x * tf.sigmoid(x)
+       
+       def call(self, inputs, input_interval=None, training=True):
+           queries = keys = inputs
+           batch_size = tf.shape(queries)[0]
+           
+           # 点向投影：线性变换生成Q、K、V
+           Q = self.query_dense(queries)  # (N, T_q, C)
+           K = self.key_dense(keys)       # (N, T_k, C)
+           V = self.value_dense(keys)     # (N, T_k, C)
+           
+           # 分割多头
+           Q_ = tf.reshape(Q, [batch_size * self.num_heads, -1, 
+                              self.num_units // self.num_heads])
+           K_ = tf.reshape(K, [batch_size * self.num_heads, -1, 
+                              self.num_units // self.num_heads])
+           V_ = tf.reshape(V, [batch_size * self.num_heads, -1, 
+                              self.num_units // self.num_heads])
+           
+           # 应用SiLU激活（HSTU特色）
+           Q_, K_, V_ = self.silu(Q_), self.silu(K_), self.silu(V_)
+           
+           # 点向聚合：计算注意力但不使用Softmax归一化
+           outputs = tf.matmul(Q_, tf.transpose(K_, [0, 2, 1]))  # (h*N, T_q, T_k)
+           
+           # 因果掩码（用于序列预测）
+           if self.causality:
+               diag_vals = tf.ones_like(outputs[0, :, :])
+               tril = tf.linalg.band_part(diag_vals, -1, 0)
+               causality_mask = tf.tile(tf.expand_dims(tril, 0), 
+                                       [tf.shape(outputs)[0], 1, 1])
+               paddings = tf.ones_like(causality_mask) * (-(2 ** 32) + 1)
+               outputs = tf.where(tf.equal(causality_mask, 0), paddings, outputs)
+           
+           # 这里不使用Softmax，而是直接应用激活（保留强度信息）
+           weights = self.silu(outputs)  # 点向聚合的核心：用SiLU代替Softmax
+           
+           # 加权求和（点向转换）
+           attention_output = tf.matmul(weights, V_)
+           
+           # 合并多头
+           outputs = tf.reshape(attention_output, 
+                              [batch_size, -1, self.num_units])
+           
+           # 残差连接
+           outputs += queries
+           
+           return outputs
+
+HSTU的关键设计在于用SiLU激活代替Softmax归一化。传统Softmax会将注意力权重归一化使其和为1，这抹平了不同用户兴趣强度的差异。而HSTU通过
+``weights = self.silu(outputs)``
+保持了原始的相关性强度，使得历史行为丰富的用户能够产生更强的激活信号，更准确地反映用户的真实偏好强度。
+
+**训练和评估**
 
 .. raw:: latex
 
@@ -254,7 +393,7 @@ HSTU的完整工作流程包含训练和召回两个阶段。在训练阶段，�
     +---------------+--------------+-----------+----------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |
     +===============+==============+===========+==========+
-    |        0.0167 |       0.0076 |    0.0073 |   0.0044 |
+    |        0.0174 |       0.0073 |    0.0075 |   0.0042 |
     +---------------+--------------+-----------+----------+
 
 

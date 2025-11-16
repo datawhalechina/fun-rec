@@ -364,6 +364,27 @@ Network的输出 <span class="math notranslate nohighlight">\(\mathbf{x}_{L_1}\)
 <span class="eqno">(3.2.29)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-2-higher-order-2" title="Permalink to this equation">¶</a></span>\[\mathbf{p} = \sigma([\mathbf{x}_{L_1}^T, \mathbf{h}_{L_2}^T] \mathbf{w}_{\text{logits}})\]</div>
 <p>DCN用Cross
 Network明确地学习高阶特征交叉，再配合DNN学习复杂的非线性关系，这样就能更好地处理特征组合问题。</p>
+<p><strong>核心代码</strong></p>
+<p>DCN的核心在于Cross Network的交叉层计算。每一层都保持与原始输入
+<span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> 的交叉：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Cross Network的交叉层：x_{l+1} = x_0 * (x_l^T * w_l) + b_l + x_l</span>
+<span class="c1"># 输入 x_0: [batch_size, feature_dim]</span>
+
+<span class="n">x_l</span> <span class="o">=</span> <span class="n">x_0</span>  <span class="c1"># 初始化为原始输入</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cross_layers</span><span class="p">):</span>
+    <span class="c1"># 计算 x_l^T * w_l：得到一个标量权重</span>
+    <span class="n">xlw</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x_l</span><span class="p">,</span> <span class="n">w_l</span><span class="p">)</span>  <span class="c1"># [B, 1]</span>
+
+    <span class="c1"># 计算 x_0 * (x_l^T * w_l)：交叉项</span>
+    <span class="n">cross_term</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">x_0</span><span class="p">,</span> <span class="n">xlw</span><span class="p">)</span>  <span class="c1"># [B, D]</span>
+
+    <span class="c1"># 残差连接：x_{l+1} = cross_term + b_l + x_l</span>
+    <span class="n">x_l</span> <span class="o">=</span> <span class="n">cross_term</span> <span class="o">+</span> <span class="n">b_l</span> <span class="o">+</span> <span class="n">x_l</span>  <span class="c1"># [B, D]</span>
+</pre></div>
+</div>
+<p>这个设计的巧妙之处在于：通过残差连接保留了原始信息，通过与
+<span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>
+的持续交叉实现了高阶特征组合，且参数量仅与输入维度线性相关。</p>
 </section>
 <section id="xdeepfm">
 <h2><span class="section-number">3.2.2.2. </span>xDeepFM: 向量级别的特征交互<a class="headerlink" href="#xdeepfm" title="Permalink to this heading">¶</a></h2>
@@ -432,6 +453,41 @@ Pooling），得到一个池化后的向量
 表示原始特征，<span class="math notranslate nohighlight">\(\mathbf{x}_{\text{dnn}}^k\)</span>
 表示DNN的输出，<span class="math notranslate nohighlight">\(\mathbf{b}\)</span> 是可学习参数。</p>
 <p>通过CIN网络，<strong>xDeepFM把向量级别的显式交互和元素级别的隐式交互结合到了一起</strong>，为高阶特征交互提供了一个更好的解决方案。</p>
+<p><strong>核心代码</strong></p>
+<p>CIN的核心在于向量级别的特征交互计算。每一层都通过哈达玛积实现上一层输出与原始输入的交叉：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># CIN层的向量级别交互</span>
+<span class="c1"># inputs: [batch_size, field_num, embed_dim]</span>
+
+<span class="n">cin_layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">inputs</span><span class="p">]</span>  <span class="c1"># X^0：原始输入</span>
+<span class="n">pooled_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">layer_size</span> <span class="ow">in</span> <span class="n">cin_layer_sizes</span><span class="p">:</span>
+    <span class="c1"># 获取上一层输出 X^{k-1} 和原始输入 X^0</span>
+    <span class="n">x_k_minus_1</span> <span class="o">=</span> <span class="n">cin_layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># [B, H_{k-1}, D]</span>
+    <span class="n">x_0</span> <span class="o">=</span> <span class="n">cin_layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># [B, m, D]</span>
+
+    <span class="c1"># 扩展维度以便进行广播计算</span>
+    <span class="n">x_k_minus_1_expand</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">x_k_minus_1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># [B, H_{k-1}, 1, D]</span>
+    <span class="n">x_0_expand</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">x_0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, 1, m, D]</span>
+
+    <span class="c1"># 向量级别的哈达玛积交互</span>
+    <span class="n">z_k</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">x_k_minus_1_expand</span><span class="p">,</span> <span class="n">x_0_expand</span><span class="p">)</span>  <span class="c1"># [B, H_{k-1}, m, D]</span>
+
+    <span class="c1"># 压缩：通过线性变换将 H_{k-1}*m 个交互向量压缩为 H_k 个</span>
+    <span class="n">z_k_reshape</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z_k</span><span class="p">,</span> <span class="p">[</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">])</span>  <span class="c1"># [B, H_{k-1}*m, D]</span>
+    <span class="n">x_k</span> <span class="o">=</span> <span class="n">dense_layer</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">z_k_reshape</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>  <span class="c1"># [B, D, H_k]</span>
+    <span class="n">x_k</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x_k</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>  <span class="c1"># [B, H_k, D]</span>
+
+    <span class="n">cin_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_k</span><span class="p">)</span>
+
+    <span class="c1"># 求和池化：将向量维度聚合为标量</span>
+    <span class="n">pooled_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">x_k</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># [B, H_k]</span>
+
+<span class="c1"># 拼接所有层的输出</span>
+<span class="n">cin_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">pooled_outputs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, sum(H_k)]</span>
+</pre></div>
+</div>
+<p>CIN通过保持向量结构的交互方式，既实现了显式的高阶特征组合，又避免了参数量的过快增长。</p>
 </section>
 <section id="autoint">
 <h2><span class="section-number">3.2.2.3. </span>AutoInt: 自注意力的自适应交互<a class="headerlink" href="#autoint" title="Permalink to this heading">¶</a></h2>
@@ -507,6 +563,37 @@ DCN 和 xDeepFM 不同，AutoInt
 <span class="eqno">(3.2.38)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-2-higher-order-11" title="Permalink to this equation">¶</a></span>\[\hat{y}=\sigma\left(\mathbf{w}^{\mathrm{T}}\left(\mathbf{e}_{1}^{\mathbf{Res}} \oplus \mathbf{e}_{2}^{\mathbf{Res}} \oplus \cdots \oplus \mathbf{e}_{\mathbf{M}}^{\text {Res}}\right)+b\right)\]</div>
 <p>AutoInt 的一个好处是比较好解释，通过看注意力权重矩阵
 <span class="math notranslate nohighlight">\(\alpha^{(h)}\)</span>，我们能直接看出模型觉得哪些特征组合重要。这种用自注意力做高阶特征交互的方法，不仅让模型表达能力更强，还提供了一种更灵活的学习方式。</p>
+<p><strong>核心代码</strong></p>
+<p>AutoInt的核心在于多头自注意力机制，它能够自适应地学习特征之间的交互关系：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 多头自注意力层的前向传播</span>
+<span class="c1"># inputs: [batch_size, num_features, embed_dim]</span>
+
+<span class="n">head_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_heads</span><span class="p">):</span>
+    <span class="c1"># 计算Query、Key、Value矩阵</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bfe,ea-&gt;bfa&#39;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">query_weights</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>  <span class="c1"># [B, N, d&#39;]</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bfe,ea-&gt;bfa&#39;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">key_weights</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>      <span class="c1"># [B, N, d&#39;]</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;bfe,ea-&gt;bfa&#39;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">value_weights</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>  <span class="c1"># [B, N, d&#39;]</span>
+
+    <span class="c1"># 计算注意力得分：Query和Key的点积</span>
+    <span class="n">attention_score</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">transpose_b</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># [B, N, N]</span>
+
+    <span class="c1"># Softmax归一化得到注意力权重</span>
+    <span class="n">attention_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attention_score</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, N, N]</span>
+
+    <span class="c1"># 加权求和：用注意力权重对Value进行聚合</span>
+    <span class="n">head_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">attention_weights</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>  <span class="c1"># [B, N, d&#39;]</span>
+    <span class="n">head_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">head_output</span><span class="p">)</span>
+
+<span class="c1"># 拼接多个注意力头的输出</span>
+<span class="n">multi_head_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">head_outputs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, N, d&#39;*H]</span>
+
+<span class="c1"># 残差连接：保留原始信息</span>
+<span class="n">residual_input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">residual_weights</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">[[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()(</span><span class="n">multi_head_output</span> <span class="o">+</span> <span class="n">residual_input</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>通过堆叠多层这样的自注意力层，AutoInt能够显式地构建任意高阶的特征交互，且交互模式完全由数据驱动学习得到。</p>
 <p><strong>代码实践</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">compare_models</span>
 
@@ -516,11 +603,11 @@ DCN 和 xDeepFM 不同，AutoInt
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------+--------+--------+------------+</span>
 <span class="o">|</span> <span class="n">模型</span>    <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">val_user</span> <span class="o">|</span>
 <span class="o">+=========+========+========+============+</span>
-<span class="o">|</span> <span class="n">dcn</span>     <span class="o">|</span> <span class="mf">0.5996</span> <span class="o">|</span> <span class="mf">0.5746</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">dcn</span>     <span class="o">|</span> <span class="mf">0.5968</span> <span class="o">|</span> <span class="mf">0.574</span>  <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
-<span class="o">|</span> <span class="n">xdeepfm</span> <span class="o">|</span> <span class="mf">0.6012</span> <span class="o">|</span> <span class="mf">0.5749</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">xdeepfm</span> <span class="o">|</span> <span class="mf">0.5964</span> <span class="o">|</span> <span class="mf">0.5741</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
-<span class="o">|</span> <span class="n">autoint</span> <span class="o">|</span> <span class="mf">0.6087</span> <span class="o">|</span> <span class="mf">0.5743</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">autoint</span> <span class="o">|</span> <span class="mf">0.5988</span> <span class="o">|</span> <span class="mf">0.571</span>  <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
 </pre></div>
 </div>

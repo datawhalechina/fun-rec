@@ -110,22 +110,24 @@ ESMM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
            feature_columns,
            task_tower_dnn_units=[128, 64],
            ):
+       # 1) 输入与嵌入：构建输入层和分组嵌入，拼接为共享 DNN 输入
        input_layer_dict = build_input_layer(feature_columns)
-       # 构建特征嵌入表字典
-       group_embedding_feature_dict = build_group_feature_embedding_table_dict(feature_columns, input_layer_dict, prefix="embedding/")
-
-       # 连接不同组的嵌入向量作为各个网络的输入
+       group_embedding_feature_dict = build_group_feature_embedding_table_dict(
+           feature_columns, input_layer_dict, prefix="embedding/"
+       )
        dnn_inputs = concat_group_embedding(group_embedding_feature_dict, 'dnn')
 
-       ctr_output_logits = DNNs(task_tower_dnn_units + [1], name="ctr_dnn")(dnn_inputs)
-       cvr_output_logits = DNNs(task_tower_dnn_units + [1], name="cvr_dnn")(dnn_inputs)
+       # 2) 双塔共享底座：同一输入分别走 CTR/CVR 塔，输出各自的 logit
+       ctr_logit = DNNs(task_tower_dnn_units + [1], name="ctr_dnn")(dnn_inputs)
+       cvr_logit = DNNs(task_tower_dnn_units + [1], name="cvr_dnn")(dnn_inputs)
 
-       ctr_output_prob = PredictLayer(name="ctr_output")(ctr_output_logits)
-       cvr_output_prob = PredictLayer(name="cvr_output")(cvr_output_logits)
-       ctcvr_output_prob = tf.keras.layers.Lambda(lambda x: tf.multiply(x[0], x[1]))([ctr_output_prob, cvr_output_prob])
+       # 3) 概率与联乘：CTR 概率，CVR 概率；CTCVR = CTR × CVR
+       ctr_prob = PredictLayer(name="ctr_output")(ctr_logit)
+       cvr_prob = PredictLayer(name="cvr_output")(cvr_logit)
+       ctcvr_prob = tf.keras.layers.Multiply()([ctr_prob, cvr_prob])
 
-       # 构建模型
-       model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=[ctr_output_prob, ctcvr_output_prob])
+       # 4) 构建模型：输入为所有原始输入层，输出为 [CTR, CTCVR]
+       model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=[ctr_prob, ctcvr_prob])
        return model
 
 **训练和评估**
@@ -151,7 +153,7 @@ ESMM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
     +----------------+---------------+-------------+-----------------+----------------+--------------+---------------------+--------------------+
     |   auc_is_click |   auc_is_like |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_macro |   val_user_is_click |   val_user_is_like |
     +================+===============+=============+=================+================+==============+=====================+====================+
-    |         0.6012 |        0.6639 |      0.6326 |          0.5724 |         0.5735 |       0.5729 |                 928 |                530 |
+    |         0.5987 |        0.6699 |      0.6343 |          0.5723 |          0.587 |       0.5797 |                 928 |                530 |
     +----------------+---------------+-------------+-----------------+----------------+--------------+---------------------+--------------------+
 
 

@@ -365,7 +365,39 @@ Tower）</strong>则专精于刻画物品——整合物品的ID、类别、属�
 </ul>
 <p>这里的设计很巧妙：用户向量包含一个常数项1和用户特征的聚合表示，物品向量则包含物品的内部交互信息和物品特征的聚合表示。两个向量通过内积运算，既能捕捉用户-物品之间的交互，又保留了物品内部特征的复杂关系。</p>
 <p>这样的分解揭示了一个重要原理：即使是复杂的特征交互模式，也可以通过合适的向量表示和简单的内积运算来实现。</p>
-<p><strong>代码实践</strong></p>
+<p><strong>核心代码</strong></p>
+<p>FM召回的双塔实现关键在于如何将数学推导转化为实际的向量表示。用户塔构建了包含常数项和特征聚合的向量：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 用户塔：V_user = [1; ∑(v_u * x_u)]</span>
+<span class="n">user_concat</span> <span class="o">=</span> <span class="n">Concatenate</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span><span class="n">user_embeddings</span><span class="p">)</span>  <span class="c1"># [batch_size, num_user_features, embedding_dim]</span>
+<span class="n">user_embedding_sum</span> <span class="o">=</span> <span class="n">SumPooling</span><span class="p">()(</span><span class="n">user_concat</span><span class="p">)</span>  <span class="c1"># [batch_size, embedding_dim]</span>
+
+<span class="c1"># 构建用户向量：[1; ∑(v_u * x_u)]</span>
+<span class="n">ones_vector</span> <span class="o">=</span> <span class="n">OnesLayer</span><span class="p">()(</span><span class="n">user_embedding_sum</span><span class="p">)</span>  <span class="c1"># [batch_size, 1]</span>
+<span class="n">user_vector</span> <span class="o">=</span> <span class="n">Concatenate</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)([</span><span class="n">ones_vector</span><span class="p">,</span> <span class="n">user_embedding_sum</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>物品塔则更为复杂，需要计算一阶线性项和FM交互项：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 物品塔：V_item = [∑w_t*x_t + FM_interaction; ∑(v_t * x_t)]</span>
+<span class="n">item_concat</span> <span class="o">=</span> <span class="n">Concatenate</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span><span class="n">item_embeddings</span><span class="p">)</span>  <span class="c1"># [batch_size, num_item_features, embedding_dim]</span>
+<span class="n">item_embedding_sum</span> <span class="o">=</span> <span class="n">SumPooling</span><span class="p">()(</span><span class="n">item_concat</span><span class="p">)</span>  <span class="c1"># [batch_size, embedding_dim]</span>
+
+<span class="c1"># 计算一阶线性项：∑(w_t * x_t)</span>
+<span class="n">item_linear_weights</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)(</span><span class="n">item_embedding_sum</span><span class="p">)</span>
+
+<span class="c1"># 计算FM二阶交互项：0.5 * ((∑v_t*x_t)² - ∑(v_t²*x_t²))</span>
+<span class="n">sum_squared</span> <span class="o">=</span> <span class="n">SquareLayer</span><span class="p">()(</span><span class="n">item_embedding_sum</span><span class="p">)</span>
+<span class="n">item_squared</span> <span class="o">=</span> <span class="n">SquareLayer</span><span class="p">()(</span><span class="n">item_concat</span><span class="p">)</span>
+<span class="n">squared_sum</span> <span class="o">=</span> <span class="n">SumPooling</span><span class="p">()(</span><span class="n">item_squared</span><span class="p">)</span>
+<span class="n">fm_interaction_vector</span> <span class="o">=</span> <span class="n">Subtract</span><span class="p">()([</span><span class="n">sum_squared</span><span class="p">,</span> <span class="n">squared_sum</span><span class="p">])</span>
+<span class="n">fm_interaction_scalar</span> <span class="o">=</span> <span class="n">SumScalarLayer</span><span class="p">()(</span><span class="n">ScaleLayer</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)(</span><span class="n">fm_interaction_vector</span><span class="p">))</span>
+
+<span class="c1"># 组合为物品向量</span>
+<span class="n">first_term</span> <span class="o">=</span> <span class="n">Add</span><span class="p">()([</span><span class="n">item_linear_weights</span><span class="p">,</span> <span class="n">fm_interaction_scalar</span><span class="p">])</span>
+<span class="n">item_vector</span> <span class="o">=</span> <span class="n">Concatenate</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)([</span><span class="n">first_term</span><span class="p">,</span> <span class="n">item_embedding_sum</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>最终通过内积计算匹配分数：<code class="docutils literal notranslate"><span class="pre">fm_score</span> <span class="pre">=</span> <span class="pre">Dot(axes=1)([item_vector,</span> <span class="pre">user_vector])</span></code>。这种设计使得物品向量可以离线预计算，用户向量实时计算，从而支持高效的召回检索。</p>
+<p><strong>训练和评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
 <span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;fm_recall&#39;</span><span class="p">)</span>
@@ -374,7 +406,7 @@ Tower）</strong>则专精于刻画物品——整合物品的ID、类别、属�
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0624</span> <span class="o">|</span>       <span class="mf">0.0394</span> <span class="o">|</span>    <span class="mf">0.0327</span> <span class="o">|</span>   <span class="mf">0.0254</span> <span class="o">|</span>         <span class="mf">0.0062</span> <span class="o">|</span>        <span class="mf">0.0079</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0123</span> <span class="o">|</span>       <span class="mf">0.0073</span> <span class="o">|</span>    <span class="mf">0.0071</span> <span class="o">|</span>   <span class="mf">0.0055</span> <span class="o">|</span>         <span class="mf">0.0012</span> <span class="o">|</span>        <span class="mf">0.0015</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -419,14 +451,47 @@ Structured Semantic Model, DSSM） <span id="id5">(<a class="reference internal"
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-2-u2i-8">
 <span class="eqno">(2.2.19)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-2-u2i-8" title="Permalink to this equation">¶</a></span>\[s(u,v) = \frac{\langle u,v \rangle}{\tau}\]</div>
 <p>这里的温度系数<span class="math notranslate nohighlight">\(\tau\)</span>看起来是个简单的除法操作，但实际上它对模型的训练效果有着深远的影响。从数学角度来看，温度系数本质上是在缩放logits，进而改变Softmax函数的输出分布形状。当我们设置<span class="math notranslate nohighlight">\(\tau &lt; 1\)</span>时，相似度的差异会被放大，这意味着模型会对高分样本给出更高的概率，预测变得更加“确定”；相反，当<span class="math notranslate nohighlight">\(\tau &gt; 1\)</span>时，分布会变得更加平滑，模型的预测也更加保守。</p>
-<p><strong>代码实践</strong></p>
+<p><strong>核心代码</strong></p>
+<p>DSSM的实现核心在于构建独立的用户塔和物品塔，每个塔都是一个深度神经网络：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 拼接用户侧和物品侧特征</span>
+<span class="n">user_feature</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span>
+    <span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>  <span class="c1"># B x (N*D)</span>
+<span class="n">item_feature</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span>
+    <span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>  <span class="c1"># B x (N*D)</span>
+
+<span class="c1"># 构建用户塔和物品塔（深度神经网络）</span>
+<span class="n">user_tower</span> <span class="o">=</span> <span class="n">DNNs</span><span class="p">(</span>
+    <span class="n">units</span><span class="o">=</span><span class="n">dnn_units</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;tanh&quot;</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="o">=</span><span class="n">dropout_rate</span><span class="p">,</span> <span class="n">use_bn</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)(</span><span class="n">user_feature</span><span class="p">)</span>
+<span class="n">item_tower</span> <span class="o">=</span> <span class="n">DNNs</span><span class="p">(</span>
+    <span class="n">units</span><span class="o">=</span><span class="n">dnn_units</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;tanh&quot;</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="o">=</span><span class="n">dropout_rate</span><span class="p">,</span> <span class="n">use_bn</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)(</span><span class="n">item_feature</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>关键的向量归一化和相似度计算：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># L2归一化：确保训练与检索的一致性</span>
+<span class="n">user_embedding</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_normalize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))(</span>
+    <span class="n">user_tower</span>
+<span class="p">)</span>
+<span class="n">item_embedding</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_normalize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))(</span>
+    <span class="n">item_tower</span>
+<span class="p">)</span>
+
+<span class="c1"># 计算余弦相似度（归一化向量的点积）</span>
+<span class="n">cosine_similarity</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dot</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="mi">1</span><span class="p">)([</span><span class="n">user_embedding</span><span class="p">,</span> <span class="n">item_embedding</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>这种设计使得用户和物品的表示完全独立，支持离线预计算物品向量并存储在ANN索引中，实现毫秒级的召回响应。</p>
+<p><strong>训练和评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;dssm&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>         <span class="mf">0.046</span> <span class="o">|</span>        <span class="mf">0.007</span> <span class="o">|</span>    <span class="mf">0.0157</span> <span class="o">|</span>   <span class="mf">0.0039</span> <span class="o">|</span>         <span class="mf">0.0046</span> <span class="o">|</span>        <span class="mf">0.0014</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0161</span> <span class="o">|</span>       <span class="mf">0.0131</span> <span class="o">|</span>    <span class="mf">0.0083</span> <span class="o">|</span>   <span class="mf">0.0074</span> <span class="o">|</span>         <span class="mf">0.0016</span> <span class="o">|</span>        <span class="mf">0.0026</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -463,14 +528,61 @@ Softmax进行高效训练。</p>
 <p><strong>负采样策略</strong>：为了高效处理数百万类别的Softmax，模型采用重要性采样技术，每次只对数千个负样本进行计算，将训练速度提升了100多倍。</p>
 <p><strong>用户样本均衡</strong>：为每个用户生成固定数量的训练样本，避免高活跃用户主导模型学习。这个看似简单的技巧，对提升长尾用户的推荐效果至关重要。</p>
 <p>YouTubeDNN的成功在于建立了一套可扩展、可工程化的推荐系统范式——训练时使用复杂的多分类目标和丰富的用户特征，服务时通过预计算物品向量和实时计算用户向量，配合高效的ANN检索完成召回。这种设计实现了训练复杂度和服务效率的有效平衡，至今仍被广泛借鉴。</p>
-<p><strong>代码实践</strong></p>
+<p><strong>核心代码</strong></p>
+<p>YouTubeDNN的用户塔设计体现了“非对称”的思想，它整合了多种用户特征和历史行为序列：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 整合用户特征和历史行为序列</span>
+<span class="n">user_feature_embedding</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span>
+    <span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="s2">&quot;user_dnn&quot;</span>
+<span class="p">)</span>  <span class="c1"># B x (D * N)</span>
+
+<span class="k">if</span> <span class="s2">&quot;raw_hist_seq&quot;</span> <span class="ow">in</span> <span class="n">group_embedding_feature_dict</span><span class="p">:</span>
+    <span class="n">hist_seq_embedding</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span>
+        <span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="s2">&quot;raw_hist_seq&quot;</span>
+    <span class="p">)</span>  <span class="c1"># B x D</span>
+    <span class="n">user_dnn_inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">user_feature_embedding</span><span class="p">,</span> <span class="n">hist_seq_embedding</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>  <span class="c1"># B x (D * N + D)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">user_dnn_inputs</span> <span class="o">=</span> <span class="n">user_feature_embedding</span>
+
+<span class="c1"># 构建用户塔：输出归一化的用户向量</span>
+<span class="n">user_dnn_output</span> <span class="o">=</span> <span class="n">DNNs</span><span class="p">(</span>
+    <span class="n">units</span><span class="o">=</span><span class="n">dnn_units</span> <span class="o">+</span> <span class="p">[</span><span class="n">emb_dim</span><span class="p">],</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">,</span> <span class="n">use_bn</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)(</span><span class="n">user_dnn_inputs</span><span class="p">)</span>
+<span class="n">user_dnn_output</span> <span class="o">=</span> <span class="n">L2NormalizeLayer</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)(</span><span class="n">user_dnn_output</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>物品塔则采用简化设计，直接使用物品Embedding表：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 物品Embedding表（从特征列配置中获取）</span>
+<span class="n">item_embedding_table</span> <span class="o">=</span> <span class="n">embedding_table_dict</span><span class="p">[</span><span class="n">label_name</span><span class="p">]</span>
+
+<span class="c1"># 为评估构建物品模型</span>
+<span class="n">output_item_embedding</span> <span class="o">=</span> <span class="n">SqueezeLayer</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span>
+    <span class="n">item_embedding_table</span><span class="p">(</span><span class="n">input_layer_dict</span><span class="p">[</span><span class="n">label_name</span><span class="p">])</span>
+<span class="p">)</span>
+<span class="n">output_item_embedding</span> <span class="o">=</span> <span class="n">L2NormalizeLayer</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)(</span><span class="n">output_item_embedding</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>训练时采用Sampled
+Softmax优化，将百万级的多分类问题转化为高效的采样学习：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 构建采样softmax层</span>
+<span class="n">sampled_softmax_layer</span> <span class="o">=</span> <span class="n">SampledSoftmaxLayer</span><span class="p">(</span><span class="n">item_vocab_size</span><span class="p">,</span> <span class="n">neg_sample</span><span class="p">,</span> <span class="n">emb_dim</span><span class="p">)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">sampled_softmax_layer</span><span class="p">([</span>
+    <span class="n">item_embedding_table</span><span class="o">.</span><span class="n">embeddings</span><span class="p">,</span>
+    <span class="n">user_dnn_output</span><span class="p">,</span>
+    <span class="n">input_layer_dict</span><span class="p">[</span><span class="n">label_name</span><span class="p">]</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>这种设计的核心优势在于：用户塔可以根据业务需求灵活扩展特征和模型复杂度，而物品塔保持简洁高效，易于离线预计算和实时检索。</p>
+<p><strong>训练和评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;youtubednn&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0099</span> <span class="o">|</span>       <span class="mf">0.0041</span> <span class="o">|</span>    <span class="mf">0.0038</span> <span class="o">|</span>    <span class="mf">0.002</span> <span class="o">|</span>          <span class="mf">0.001</span> <span class="o">|</span>        <span class="mf">0.0008</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0303</span> <span class="o">|</span>       <span class="mf">0.0219</span> <span class="o">|</span>    <span class="mf">0.0169</span> <span class="o">|</span>   <span class="mf">0.0142</span> <span class="o">|</span>          <span class="mf">0.003</span> <span class="o">|</span>        <span class="mf">0.0044</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>

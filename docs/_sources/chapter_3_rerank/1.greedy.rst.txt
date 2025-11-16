@@ -57,137 +57,73 @@ MMR核心代码实现：
 
 .. code:: python
 
-    import copy
-    from typing import Any, Callable, Dict, List
-    import numpy as np
-    from numpy.linalg import norm
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.metrics.pairwise import cosine_similarity
-    
-    
-    class Item:
-        def __init__(
-            self,
-            id: str,
-            rel: float,
-            dense_vector: List[float] = None,
-            sparse_features: Dict[str, Any] = None
-        ):
-            self.id = id
-            self.rel = rel  # 相关性分数（精排分）
-            self.dense_vector = dense_vector  # 稠密向量表示（如嵌入向量）
-            self.sparse_features = sparse_features  # 稀疏特征（标签、类别、作者等）
-    
-    def MMR_Reranking(
-        item_pool: List[Item],
-        k: int,
-        lambda_param: float,  # 权衡参数
-        sim_func: Callable[[Item, Item], float],  # 相似度计算函数
-        window_size: int = None  # 滑动窗口大小
-    ) -> List[Item]:
-        """
-        基于最大边际相关(MMR)算法的重排实现，支持滑动窗口优化
-    
-        参数:
-        item_pool -- 候选物品列表
-        k -- 最终返回的物品数量
-        lambda_param -- 相关性与多样性权衡参数 (0-1)
-        sim_func -- 物品相似度计算函数
-        window_size -- 滑动窗口大小，默认为None（使用所有已选物品）
-    
-        返回:
-        重排后的物品列表
-        """
-        # 创建副本避免修改原始输入
-        candidates = copy.deepcopy(item_pool)
-        S = []  # 初始化重排结果列表
-    
-        if not candidates:
-            return S
-    
-        # 第一步：选取精排最高分物品
-        first_item = max(candidates, key=lambda x: x.rel)
-        S.append(first_item)
-        candidates.remove(first_item)
-    
-        # 第二步：贪心迭代选择
-        while len(S) < k and candidates:
-            best_score = -float('inf')
-            best_item = None
-    
-            # 确定要考虑的已选物品窗口
-            if window_size and len(S) > window_size:
-                # 只使用最近选择的window_size个物品
-                window = S[-window_size:]
-            else:
-                # 使用所有已选物品
-                window = S
-    
-            for item in candidates:
-                # 计算与窗口中物品的最大相似度
-                max_sim = max(sim_func(item, s) for s in window) if window else 0
-    
-                # 使用MMR公式: MR(i) = $\lambda$ * Rel(i) - (1 - $\lambda$) * max_sim(i, window)
-                score = lambda_param * item.rel - (1 - lambda_param) * max_sim
-    
-                if score > best_score:
-                    best_score = score
-                    best_item = item
-    
-            if best_item:
-                S.append(best_item)
-                candidates.remove(best_item)
-            else:
-                break  # 无有效候选时退出
-    
-        return S
-    
-    def cosine_similarity(x, y):
-        vec1 = np.array(x.dense_vector)
-        vec2 = np.array(y.dense_vector)
-        return np.dot(vec1, vec2) / (norm(vec1) * norm(vec2))
-    
-    
-    # 生成测试数据
-    item_size = 1000
-    feature_dimension = 100
-    max_length = 50
-    
-    # 创建测试物品
-    test_items = []
-    for i in range(item_size):
-        rel_score = np.exp(0.01 * np.random.randn() + 0.2)
-        dense_vec = np.random.randn(feature_dimension)
-        dense_vec /= norm(dense_vec)  # 归一化
-    
-        item = Item(
-            id=f"item_{i}",
-            rel=rel_score,
-            dense_vector=dense_vec.tolist()
-        )
-        test_items.append(item)
-    
-    # 计算相似度
-    sim_func = cosine_similarity
-    # 滑动窗口大小
-    window_size = 3
-    # 权衡参数
-    lambda_param = 0.7
-    # 重排
-    reranked_items = MMR_Reranking(test_items, 3, lambda_param, sim_func, window_size)
-    # 输出结果
-    print(f'选择了 {len(reranked_items)} 个物品')
+   class Item:
+       def __init__(
+           self, 
+           id: str, 
+           rel: float, 
+           dense_vector: List[float] = None,
+           sparse_features: Dict[str, Any] = None
+       ):
+           self.id = id
+           self.rel = rel  # 相关性分数（精排分）
+           self.dense_vector = dense_vector  # 稠密向量表示（如嵌入向量）
+           self.sparse_features = sparse_features  # 稀疏特征（标签、类别、作者等）
 
-
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    选择了 3 个物品
-
+   def MMR_Reranking(
+       item_pool: List[Item], 
+       k: int, 
+       lambda_param: float,  # 权衡参数
+       sim_func: Callable[[Item, Item], float],  # 相似度计算函数
+       window_size: int = None  # 滑动窗口大小
+   ) -> List[Item]:
+       """
+       基于最大边际相关(MMR)算法的重排实现，支持滑动窗口优化
+       
+       参数:
+       item_pool -- 候选物品列表
+       k -- 最终返回的物品数量
+       lambda_param -- 相关性与多样性权衡参数 (0-1)
+       sim_func -- 物品相似度计算函数
+       window_size -- 滑动窗口大小，默认为None（使用所有已选物品）
+       
+       返回:
+       重排后的物品列表
+       """
+       # 创建副本避免修改原始输入
+       candidates = copy.deepcopy(item_pool)
+       S = []  # 初始化重排结果列表
+       if not candidates:
+           return S
+       # 第一步：选取精排最高分物品
+       first_item = max(candidates, key=lambda x: x.rel)
+       S.append(first_item)
+       candidates.remove(first_item)
+       # 第二步：贪心迭代选择
+       while len(S) < k and candidates:
+           best_score = -float('inf')
+           best_item = None
+           # 确定要考虑的已选物品窗口
+           if window_size and len(S) > window_size:
+               # 只使用最近选择的window_size个物品
+               window = S[-window_size:]
+           else:
+               # 使用所有已选物品
+               window = S
+           for item in candidates:
+               # 计算与窗口中物品的最大相似度
+               max_sim = max(sim_func(item, s) for s in window) if window else 0
+               # 使用MMR公式: MR(i) = $\lambda$ * Rel(i) - (1 - $\lambda$) * max_sim(i, window)
+               score = lambda_param * item.rel - (1 - lambda_param) * max_sim
+               if score > best_score:
+                   best_score = score
+                   best_item = item
+           if best_item:
+               S.append(best_item)
+               candidates.remove(best_item)
+           else:
+               break  # 无有效候选时退出
+       return S
 
 假如有5个待重排的物品，已知精排打分和item之间的两两相似度，重排需要从5个物品中筛选出top3条内容的详细计算流程如下：
 1. 假设候选集包含5个商品及其精排分（Rel），相似度矩阵如下：
@@ -618,170 +554,101 @@ DPP贪心求解算法的代码实现如下：
 
 .. code:: python
 
-    import copy
-    import math
-    import time
-    from typing import Any, Callable, Dict, List
-    import numpy as np
-    
-    
-    class Item:
-        def __init__(
-            self,
-            id: str,
-            rel: float,
-            dense_vector: List[float] = None,
-            sparse_features: Dict[str, Any] = None
-        ) -> None:
-            self.id = id
-            self.rel = rel  # 相关性分数（精排分）
-            self.dense_vector = dense_vector  # 稠密向量表示（如嵌入向量）
-            self.sparse_features = sparse_features  # 稀疏特征（标签、类别、作者等）
-    
-    def DPP_Reranking(
-        item_pool: List[Item],
-        k: int,
-        kernel_matrix: np.ndarray,
-        epsilon: float = 1E-10) -> List[Item]:
-        """
-        基于行列式点过程(DPP)的贪心重排实现
-    
-        参数:
-        item_pool -- 候选物品列表
-        k -- 最终返回的物品数量
-        kernel_matrix -- 核矩阵，融合了相关性和多样性
-        epsilon -- 数值稳定性阈值
-    
-        返回:
-        重排后的物品列表
-        """
-        # 创建副本避免修改原始输入
-        candidates = copy.deepcopy(item_pool)
-        item_size = len(candidates)
-    
-        if not candidates or k <= 0:
-            return []
-    
-        # 初始化Cholesky分解相关变量
-        cis = np.zeros((k, item_size))  # 存储c_i向量
-        di2s = np.copy(np.diag(kernel_matrix))  # 存储d_i^2值
-        selected_items = []  # 已选择物品的索引
-    
-        # 第一步：选择初始物品（d_i^2最大的物品）
-        selected_item_idx = np.argmax(di2s)
-        selected_items.append(selected_item_idx)
-    
-        # 第二步：贪心迭代选择
-        while len(selected_items) < k and len(selected_items) < item_size:
-            k_current = len(selected_items) - 1  # 当前迭代轮次
-    
-            # 获取当前选中物品的c_i和d_i
-            ci_optimal = cis[:k_current, selected_item_idx]
-            di_optimal = math.sqrt(di2s[selected_item_idx])
-    
-            # 计算与当前选中物品的核矩阵元素
-            elements = kernel_matrix[selected_item_idx, :]
-    
-            # 更新所有候选物品的c_i和d_i^2
-            # e_i = (L_{ji} - <c_j, c_i>) / d_j
-            eis = (elements - np.dot(ci_optimal, cis[:k_current, :])) / di_optimal
-            cis[k_current, :] = eis
-    
-            # 更新d_i^2 = d_i^2 - e_i^2
-            di2s -= np.square(eis)
-    
-            # 选择下一个物品：argmax log(d_i^2)
-            selected_item_idx = np.argmax(di2s)
-    
-            # 数值稳定性检查
-            if di2s[selected_item_idx] < epsilon:
-                break
-    
-            selected_items.append(selected_item_idx)
-    
-        # 根据选中的索引返回对应的物品
-        result = [candidates[idx] for idx in selected_items]
-        return result
-    
-    def create_kernel_matrix(
-        item_pool: List[Item],
-        sim_func: Callable[[Item, Item], float]
-    ) -> np.ndarray:
-        """
-        构建DPP核矩阵，融合相关性和多样性
-    
-        参数:
-        item_pool -- 候选物品列表
-        sim_func -- 物品相似度计算函数
-    
-        返回:
-        核矩阵 L = diag(r) * S * diag(r)
-        """
-        n = len(item_pool)
-    
-        # 构建相关性向量
-        relevance_scores = np.array([item.rel for item in item_pool])
-    
-        # 构建相似度矩阵
-        similarity_matrix = np.zeros((n, n))
-        for i in range(n):
-            for j in range(n):
-                if i == j:
-                    similarity_matrix[i, j] = 1.0
-                else:
-                    similarity_matrix[i, j] = sim_func(item_pool[i], item_pool[j])
-    
-        # 构建核矩阵: L = diag(r) * S * diag(r)
-        kernel_matrix = (
-            relevance_scores.reshape((n, 1)) *
-            similarity_matrix *
-            relevance_scores.reshape((1, n))
-        )
-    
-        return kernel_matrix
-    
-    # 生成测试数据
-    item_size = 1000
-    feature_dimension = 100
-    max_length = 50
-    
-    # 创建测试物品
-    test_items = []
-    for i in range(item_size):
-        rel_score = np.exp(0.01 * np.random.randn() + 0.2)
-        dense_vec = np.random.randn(feature_dimension)
-        dense_vec /= np.linalg.norm(dense_vec)  # 归一化
-    
-        item = Item(
-            id=f"item_{i}",
-            rel=rel_score,
-            dense_vector=dense_vec.tolist()
-        )
-        test_items.append(item)
-    
-    # 定义相似度函数
-    def cosine_similarity_func(item1: Item, item2: Item) -> float:
-        vec1 = np.array(item1.dense_vector)
-        vec2 = np.array(item2.dense_vector)
-        return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
-    
-    # 构建核矩阵
-    kernel_matrix = create_kernel_matrix(test_items, cosine_similarity_func)
-    
-    # 执行DPP重排
-    t = time.time()
-    result = DPP_Reranking(test_items, max_length, kernel_matrix)
-    print('算法运行时间: ' + '\t' + "{0:.4e}".format(time.time() - t))
-    print(f'选择了 {len(result)} 个物品')
+   class Item:
+       def __init__(
+           self, 
+           id: str, 
+           rel: float, 
+           dense_vector: List[float] = None,
+           sparse_features: Dict[str, Any] = None
+       ) -> None:
+           self.id = id
+           self.rel = rel  # 相关性分数（精排分）
+           self.dense_vector = dense_vector  # 稠密向量表示（如嵌入向量）
+           self.sparse_features = sparse_features  # 稀疏特征（标签、类别、作者等）
 
+   def DPP_Reranking(
+       item_pool: List[Item], 
+       k: int,
+       kernel_matrix: np.ndarray,
+       epsilon: float = 1E-10) -> List[Item]:
+       """
+       基于行列式点过程(DPP)的贪心重排实现
+       
+       参数:
+       item_pool -- 候选物品列表
+       k -- 最终返回的物品数量
+       kernel_matrix -- 核矩阵，融合了相关性和多样性
+       epsilon -- 数值稳定性阈值
+       
+       返回:
+       重排后的物品列表
+       """
+       # 创建副本避免修改原始输入
+       candidates = copy.deepcopy(item_pool)
+       item_size = len(candidates)
+       if not candidates or k <= 0:
+           return []
+       # 初始化Cholesky分解相关变量
+       cis = np.zeros((k, item_size))  # 存储c_i向量
+       di2s = np.copy(np.diag(kernel_matrix))  # 存储d_i^2值
+       selected_items = []  # 已选择物品的索引
+       # 第一步：选择初始物品（d_i^2最大的物品）
+       selected_item_idx = np.argmax(di2s)
+       selected_items.append(selected_item_idx)
+       # 第二步：贪心迭代选择
+       while len(selected_items) < k and len(selected_items) < item_size:
+           k_current = len(selected_items) - 1  # 当前迭代轮次
+           # 获取当前选中物品的c_i和d_i
+           ci_optimal = cis[:k_current, selected_item_idx]
+           di_optimal = math.sqrt(di2s[selected_item_idx])
+           # 计算与当前选中物品的核矩阵元素
+           elements = kernel_matrix[selected_item_idx, :]
+           # 更新所有候选物品的c_i和d_i^2
+           # e_i = (L_{ji} - <c_j, c_i>) / d_j
+           eis = (elements - np.dot(ci_optimal, cis[:k_current, :])) / di_optimal
+           cis[k_current, :] = eis
+           # 更新d_i^2 = d_i^2 - e_i^2
+           di2s -= np.square(eis)
+           # 选择下一个物品：argmax log(d_i^2)
+           selected_item_idx = np.argmax(di2s)
+           # 数值稳定性检查
+           if di2s[selected_item_idx] < epsilon:
+               break
+           selected_items.append(selected_item_idx)
+       # 根据选中的索引返回对应的物品
+       result = [candidates[idx] for idx in selected_items]
+       return result
 
-.. raw:: latex
-
-   \diilbookstyleoutputcell
-
-.. parsed-literal::
-    :class: output
-
-    算法运行时间: 	2.5355e-02
-    选择了 50 个物品
-
+   def create_kernel_matrix(
+       item_pool: List[Item],
+       sim_func: Callable[[Item, Item], float]
+   ) -> np.ndarray:
+       """
+       构建DPP核矩阵，融合相关性和多样性
+       
+       参数:
+       item_pool -- 候选物品列表
+       sim_func -- 物品相似度计算函数
+       
+       返回:
+       核矩阵 L = diag(r) * S * diag(r)
+       """
+       n = len(item_pool)
+       # 构建相关性向量
+       relevance_scores = np.array([item.rel for item in item_pool])
+       # 构建相似度矩阵
+       similarity_matrix = np.zeros((n, n))
+       for i in range(n):
+           for j in range(n):
+               if i == j:
+                   similarity_matrix[i, j] = 1.0
+               else:
+                   similarity_matrix[i, j] = sim_func(item_pool[i], item_pool[j])
+       # 构建核矩阵: L = diag(r) * S * diag(r)
+       kernel_matrix = (
+           relevance_scores.reshape((n, 1)) * 
+           similarity_matrix * 
+           relevance_scores.reshape((1, n))
+       )
+       return kernel_matrix

@@ -345,6 +345,34 @@ Unit）</strong>，其本质就是<strong>注意力机制</strong>。如上图�
 </ul>
 <p>通过这个公式，用户的最终兴趣表示<span class="math notranslate nohighlight">\(\boldsymbol{v}_{U}(A)\)</span>不再是一个固定的向量，而是与候选广告A紧密相关。与广告A越相关的历史行为，会获得越高的权重，从而在最终的兴趣向量中占据主导地位。</p>
 <p>一个值得注意的细节是，DIN计算出的注意力权重<span class="math notranslate nohighlight">\(\boldsymbol{w}_{j}\)</span>没有经过Softmax归一化。这意味着<span class="math notranslate nohighlight">\(\sum \boldsymbol{w}_{j}\)</span>不一定等于1。这样设计的目的是为了保留用户兴趣的绝对强度。例如，如果一个用户的历史行为大部分都与某个广告高度相关，那么加权和之后的向量模长就会比较大，反之则较小。这种设计使得模型不仅能捕捉兴趣的“方向”，还能感知兴趣的“强度”。</p>
+<p><strong>核心代码</strong></p>
+<p>DIN的注意力机制通过将候选广告与历史行为进行多角度交互来计算权重：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># DIN注意力层的核心计算</span>
+<span class="c1"># query: 候选广告 [batch_size, 1, embedding_dim]</span>
+<span class="c1"># keys: 历史行为序列 [batch_size, seq_len, embedding_dim]</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, H]</span>
+<span class="n">length</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">keys</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, 1, H]</span>
+
+<span class="c1"># 构建多角度交互特征：query, keys, query-keys, query*keys</span>
+<span class="n">att_inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>  <span class="c1"># 重复query以匹配序列长度</span>
+    <span class="n">keys</span><span class="p">,</span>                             <span class="c1"># 历史行为</span>
+    <span class="n">query</span> <span class="o">-</span> <span class="n">keys</span><span class="p">,</span>                     <span class="c1"># 差异特征</span>
+    <span class="n">query</span> <span class="o">*</span> <span class="n">keys</span>                      <span class="c1"># 元素积特征</span>
+<span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, L, 4*H]</span>
+
+<span class="c1"># 通过前馈网络计算注意力分数</span>
+<span class="n">hidden_layer</span> <span class="o">=</span> <span class="n">ffn_layer</span><span class="p">(</span><span class="n">att_inputs</span><span class="p">)</span>  <span class="c1"># [B, L, hidden_units]</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="n">hidden_layer</span><span class="p">)</span>  <span class="c1"># [B, L, 1]</span>
+
+<span class="c1"># 应用mask并进行加权求和（注意：不使用softmax归一化）</span>
+<span class="n">attention_weights</span> <span class="o">=</span> <span class="n">scores</span> <span class="o">*</span> <span class="n">mask</span>  <span class="c1"># [B, L, 1]</span>
+<span class="n">user_interest</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">keys</span> <span class="o">*</span> <span class="n">attention_weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, H]</span>
+</pre></div>
+</div>
+<p>这种设计的关键在于：通过<code class="docutils literal notranslate"><span class="pre">[query,</span> <span class="pre">keys,</span> <span class="pre">query-keys,</span> <span class="pre">query*keys]</span></code>四种交互方式，模型能够从多个角度衡量历史行为与候选广告的相关性，同时不使用softmax归一化以保留兴趣强度信息。</p>
 </section>
 <section id="id4">
 <h2><span class="section-number">3.3.2. </span>兴趣的演化建模<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
@@ -385,6 +413,33 @@ DIEN） <span id="id5">(<a class="reference internal" href="../chapter_reference
 是Sigmoid函数，这里用于计算两个向量的点积并映射到(0,1)区间。</p></li>
 </ul>
 <p>这个辅助损失会与模型最终的CTR预测损失<span class="math notranslate nohighlight">\(L_{target}\)</span>加在一起共同优化：<span class="math notranslate nohighlight">\(L = L_{target} + \alpha L_{aux}\)</span>。这个额外的监督信号，在每个时间步都对GRU的学习进行指导，使其产出的隐状态<span class="math notranslate nohighlight">\(\boldsymbol{h}_t\)</span>能够更精准地表达用户的潜在兴趣。</p>
+<p><strong>核心代码</strong></p>
+<p>辅助损失的计算通过预测下一个行为来监督兴趣状态的学习：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 兴趣提取层的辅助损失计算</span>
+<span class="c1"># interest_states: [batch_size, seq_len, hidden_units]</span>
+<span class="c1"># pos_behaviors: [batch_size, seq_len, embedding_dim] 正样本行为</span>
+<span class="c1"># neg_behaviors: [batch_size, seq_len, embedding_dim] 负样本行为</span>
+
+<span class="c1"># 用t时刻的兴趣预测t+1时刻的行为</span>
+<span class="n">current_interests</span> <span class="o">=</span> <span class="n">interest_states</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>      <span class="c1"># [B, T-1, H]</span>
+<span class="n">next_pos_behaviors</span> <span class="o">=</span> <span class="n">pos_behaviors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span>        <span class="c1"># [B, T-1, D]</span>
+<span class="n">next_neg_behaviors</span> <span class="o">=</span> <span class="n">neg_behaviors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span>        <span class="c1"># [B, T-1, D]</span>
+
+<span class="c1"># 拼接兴趣和行为，送入MLP预测</span>
+<span class="n">pos_input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">current_interests</span><span class="p">,</span> <span class="n">next_pos_behaviors</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">neg_input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">current_interests</span><span class="p">,</span> <span class="n">next_neg_behaviors</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 预测正负样本的概率</span>
+<span class="n">pos_probs</span> <span class="o">=</span> <span class="n">auxiliary_mlp</span><span class="p">(</span><span class="n">pos_input</span><span class="p">)</span>  <span class="c1"># [B, T-1, 1]</span>
+<span class="n">neg_probs</span> <span class="o">=</span> <span class="n">auxiliary_mlp</span><span class="p">(</span><span class="n">neg_input</span><span class="p">)</span>  <span class="c1"># [B, T-1, 1]</span>
+
+<span class="c1"># 二元交叉熵损失</span>
+<span class="n">aux_loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pos_probs</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">neg_probs</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>这种设计确保GRU的隐状态不仅能记录历史信息，还能有效预测未来行为，从而学到更有意义的兴趣表示。</p>
 <p><strong>第二阶段：兴趣演化层 (Interest Evolving Layer)</strong></p>
 <p>经过第一阶段，我们得到了一个更能代表用户内在兴趣的<strong>兴趣状态序列</strong>
 <span class="math notranslate nohighlight">\(\boldsymbol{h}_1, \boldsymbol{h}_2, \dots, \boldsymbol{h}_T\)</span>。第二阶段的目标，就是对这个兴趣序列的演化过程进行建模。</p>
@@ -402,6 +457,50 @@ Gate）上融入了注意力机制。注意力得分<span class="math notranslat
 <span class="eqno">(3.3.5)<a class="headerlink" href="#equation-chapter-2-ranking-3-sequence-4" title="Permalink to this equation">¶</a></span>\[\boldsymbol{h}_{t}' = (1 - \boldsymbol{\tilde{u}}_t') \circ \boldsymbol{h}_{t-1}' + \boldsymbol{\tilde{u}}_t' \circ \boldsymbol{\tilde{h}}_{t}'\]</div>
 <p>其中<span class="math notranslate nohighlight">\(\circ\)</span>表示元素级乘积（element-wise product）。</p>
 <p>通过这种方式，AUGRU在兴趣演化的每一步，都会参考当前的候选广告，来判断历史兴趣的相关性。与候选广告越相关的兴趣，其对应的<span class="math notranslate nohighlight">\(a_t\)</span>越大，其信息在更新门中的权重也越大，从而能更顺畅地在序列中传递；反之，不相关的兴趣（漂移）其影响力就会被削弱。这使得模型能够聚焦于与当前推荐任务最相关的兴趣演化路径。</p>
+<p><strong>核心代码</strong></p>
+<p>AUGRU的核心在于用注意力分数调整GRU的更新门：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># AUGRU的前向传播</span>
+<span class="c1"># interest_states: [batch_size, seq_len, hidden_units]</span>
+<span class="c1"># target_item_embedding: [batch_size, embedding_dim]</span>
+
+<span class="c1"># 1. 计算双线性注意力分数</span>
+<span class="c1"># h_t * W * e_a</span>
+<span class="n">h_W</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">interest_states</span><span class="p">,</span> <span class="n">bilinear_weight</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">[[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+<span class="n">target_expanded</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">target_item_embedding</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">attention_scores</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">h_W</span> <span class="o">*</span> <span class="n">target_expanded</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># [B, T]</span>
+<span class="n">attention_scores</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attention_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, T]</span>
+
+<span class="c1"># 2. 逐步处理序列</span>
+<span class="n">hidden_state</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">hidden_units</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seq_len</span><span class="p">):</span>
+    <span class="n">current_input</span> <span class="o">=</span> <span class="n">interest_states</span><span class="p">[:,</span> <span class="n">t</span><span class="p">,</span> <span class="p">:]</span>     <span class="c1"># [B, H]</span>
+    <span class="n">current_attention</span> <span class="o">=</span> <span class="n">attention_scores</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span>   <span class="c1"># [B]</span>
+
+    <span class="c1"># 标准GRU计算</span>
+    <span class="n">update_gate</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span>
+        <span class="n">dense_input_update</span><span class="p">(</span><span class="n">current_input</span><span class="p">)</span> <span class="o">+</span> <span class="n">dense_hidden_update</span><span class="p">(</span><span class="n">hidden_state</span><span class="p">)</span>
+    <span class="p">)</span>  <span class="c1"># [B, H]</span>
+
+    <span class="n">reset_gate</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span>
+        <span class="n">dense_input_reset</span><span class="p">(</span><span class="n">current_input</span><span class="p">)</span> <span class="o">+</span> <span class="n">dense_hidden_reset</span><span class="p">(</span><span class="n">hidden_state</span><span class="p">)</span>
+    <span class="p">)</span>  <span class="c1"># [B, H]</span>
+
+    <span class="n">candidate_state</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span>
+        <span class="n">dense_input_candidate</span><span class="p">(</span><span class="n">current_input</span><span class="p">)</span> <span class="o">+</span>
+        <span class="n">dense_hidden_candidate</span><span class="p">(</span><span class="n">reset_gate</span> <span class="o">*</span> <span class="n">hidden_state</span><span class="p">)</span>
+    <span class="p">)</span>  <span class="c1"># [B, H]</span>
+
+    <span class="c1"># 关键：用注意力分数缩放更新门</span>
+    <span class="n">attention_expanded</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">current_attention</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">attention_expanded</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">attention_expanded</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">hidden_units</span><span class="p">])</span>
+    <span class="n">attention_update_gate</span> <span class="o">=</span> <span class="n">attention_expanded</span> <span class="o">*</span> <span class="n">update_gate</span>  <span class="c1"># [B, H]</span>
+
+    <span class="c1"># 更新隐藏状态</span>
+    <span class="n">hidden_state</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">attention_update_gate</span><span class="p">)</span> <span class="o">*</span> <span class="n">hidden_state</span> <span class="o">+</span> \
+                   <span class="n">attention_update_gate</span> <span class="o">*</span> <span class="n">candidate_state</span>
+</pre></div>
+</div>
+<p>AUGRU通过注意力分数动态调整更新门，使得与目标广告相关的兴趣能够顺利传递，而不相关的兴趣（漂移）被抑制，从而更精准地捕捉兴趣演化路径。</p>
 </section>
 <section id="id6">
 <h2><span class="section-number">3.3.3. </span>从行为序列到会话序列<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
@@ -442,6 +541,59 @@ Layer)</strong>：最后一步与DIN的思想一脉相承。模型会根据当�
 </li>
 </ol>
 <p>DSIN通过引入“会话”这一更符合用户实际行为模式的中间单元，将复杂的长序列建模问题分解为“<strong>会话内信息聚合</strong>”（通过自注意力）和“<strong>会话间信息传递</strong>”（通过Bi-LSTM）两个更清晰的子问题。这种分层建模思想，使得模型能够对用户兴趣进行更精细的刻画。</p>
+<p><strong>核心代码</strong></p>
+<p>DSIN的三个核心组件实现了分层的会话建模：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. 会话兴趣提取：使用多头自注意力聚合会话内信息</span>
+<span class="c1"># session_embeddings: [batch_size, sess_max_count, sess_max_len, embedding_dim]</span>
+
+<span class="n">session_interests</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">sess_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sess_max_count</span><span class="p">):</span>
+    <span class="c1"># 获取单个会话的embedding</span>
+    <span class="n">session_emb</span> <span class="o">=</span> <span class="n">session_embeddings</span><span class="p">[:,</span> <span class="n">sess_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>  <span class="c1"># [B, L, D]</span>
+
+    <span class="c1"># 多头自注意力捕获会话内物品之间的关系</span>
+    <span class="n">attention_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MultiHeadAttention</span><span class="p">(</span>
+        <span class="n">num_heads</span><span class="o">=</span><span class="n">att_head_num</span><span class="p">,</span>
+        <span class="n">key_dim</span><span class="o">=</span><span class="n">att_embedding_size</span><span class="p">,</span>
+        <span class="n">dropout</span><span class="o">=</span><span class="n">dropout_rate</span>
+    <span class="p">)(</span><span class="n">session_emb</span><span class="p">,</span> <span class="n">session_emb</span><span class="p">)</span>  <span class="c1"># [B, L, d_model]</span>
+
+    <span class="c1"># 平均池化得到会话级表示</span>
+    <span class="n">session_interest</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">attention_output</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, d_model]</span>
+    <span class="n">session_interests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">session_interest</span><span class="p">)</span>
+
+<span class="n">session_interests</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">session_interests</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, K, d_model]</span>
+
+<span class="c1"># 2. 会话兴趣交互：使用双向LSTM建模会话间的时序关系</span>
+<span class="n">session_interactions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Bidirectional</span><span class="p">(</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span>
+        <span class="n">d_model</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">dropout</span><span class="o">=</span><span class="n">dropout_rate</span>
+    <span class="p">)</span>
+<span class="p">)(</span><span class="n">session_interests</span><span class="p">)</span>  <span class="c1"># [B, K, d_model*2]</span>
+
+<span class="c1"># 3. 会话兴趣激活：基于目标物品激活相关会话</span>
+<span class="c1"># 扩展目标物品embedding以匹配会话维度</span>
+<span class="n">target_expanded</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">target_item_embedding</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, 1, D]</span>
+<span class="n">target_repeated</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">target_expanded</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">sess_max_count</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>  <span class="c1"># [B, K, D]</span>
+
+<span class="c1"># 拼接会话特征和目标物品</span>
+<span class="n">combined_features</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">session_interactions</span><span class="p">,</span> <span class="n">target_repeated</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span>
+<span class="p">)</span>  <span class="c1"># [B, K, d_model*2 + D]</span>
+
+<span class="c1"># 计算注意力权重</span>
+<span class="n">attention_scores</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">)(</span><span class="n">combined_features</span><span class="p">)</span>
+<span class="n">attention_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attention_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B, K, 1]</span>
+
+<span class="c1"># 加权聚合会话特征</span>
+<span class="n">activated_features</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span>
+    <span class="n">session_interactions</span> <span class="o">*</span> <span class="n">attention_weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>  <span class="c1"># [B, d_model*2]</span>
+</pre></div>
+</div>
+<p>这种设计体现了“分层建模”的思想：先用自注意力在会话内聚合，再用BiLSTM在会话间传递，最后用注意力激活相关会话，从而实现对用户行为的细粒度刻画。</p>
 <p>本节介绍了序列建模的三个关键模型：DIN通过注意力机制解决用户兴趣多样性问题，DIEN进一步建模兴趣的时序演化过程，DSIN则引入会话概念进行分层建模。这些模型体现了序列建模的核心思想：动态性（根据任务调整兴趣表示）、序列性（利用时间顺序信息）和聚焦性（针对任务筛选相关信息）。随着技术发展，未来的序列建模方法将结合更多先进技术来更好地理解用户动态需求。</p>
 <p><strong>代码实践</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">compare_models</span>
@@ -452,11 +604,11 @@ Layer)</strong>：最后一步与DIN的思想一脉相承。模型会根据当�
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+--------+------------+</span>
 <span class="o">|</span> <span class="n">模型</span>   <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">val_user</span> <span class="o">|</span>
 <span class="o">+========+========+========+============+</span>
-<span class="o">|</span> <span class="n">din</span>    <span class="o">|</span> <span class="mf">0.5582</span> <span class="o">|</span> <span class="mf">0.545</span>  <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">din</span>    <span class="o">|</span> <span class="mf">0.5555</span> <span class="o">|</span> <span class="mf">0.5337</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+--------+--------+--------+------------+</span>
-<span class="o">|</span> <span class="n">dien</span>   <span class="o">|</span> <span class="mf">0.5747</span> <span class="o">|</span> <span class="mf">0.5607</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">dien</span>   <span class="o">|</span> <span class="mf">0.5852</span> <span class="o">|</span> <span class="mf">0.5587</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+--------+--------+--------+------------+</span>
-<span class="o">|</span> <span class="n">dsin</span>   <span class="o">|</span> <span class="mf">0.5237</span> <span class="o">|</span> <span class="mf">0.5562</span> <span class="o">|</span>         <span class="mi">99</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">dsin</span>   <span class="o">|</span> <span class="mf">0.5391</span> <span class="o">|</span> <span class="mf">0.5407</span> <span class="o">|</span>         <span class="mi">99</span> <span class="o">|</span>
 <span class="o">+--------+--------+--------+------------+</span>
 </pre></div>
 </div>

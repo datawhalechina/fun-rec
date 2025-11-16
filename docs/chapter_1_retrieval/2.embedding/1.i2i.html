@@ -324,10 +324,10 @@ Bag of
 Words）。Skip-Gram模型通过给定的中心词来预测其周围的上下文词，而CBOW模型则相反，通过上下文词来预测中心词。在推荐系统中，Skip-Gram模型由于其更好的性能表现而被更广泛地采用。</p>
 <section id="skip-gram">
 <h3><span class="section-number">2.2.1.1.1. </span>Skip-Gram模型详解<a class="headerlink" href="#skip-gram" title="Permalink to this heading">¶</a></h3>
-<figure class="align-default" id="id15">
+<figure class="align-default" id="id16">
 <span id="w2v-skip-gram"></span><a class="reference internal image-reference" href="../../_images/w2v_skip_gram.svg"><img alt="../../_images/w2v_skip_gram.svg" src="../../_images/w2v_skip_gram.svg" width="300px" /></a>
 <figcaption>
-<p><span class="caption-number">图2.2.1 </span><span class="caption-text">Word2Vec Skip-Gram模型示意图</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图2.2.1 </span><span class="caption-text">Word2Vec Skip-Gram模型示意图</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>在Skip-Gram模型中，给定文本序列中位置<span class="math notranslate nohighlight">\(t\)</span>的中心词<span class="math notranslate nohighlight">\(w_t\)</span>，模型的目标是最大化其上下文窗口内所有词语的出现概率。具体而言，对于窗口大小为<span class="math notranslate nohighlight">\(m\)</span>的情况，模型要预测<span class="math notranslate nohighlight">\(w_{t-m}, w_{t-m+1}, \ldots, w_{t-1}, w_{t+1}, \ldots, w_{t+m}\)</span>这些上下文词的概率。</p>
@@ -367,7 +367,23 @@ Sampling）技术。这种方法将原本的多分类问题转化为多个二分
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-1-i2i-2">
 <span class="eqno">(2.2.3)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-1-i2i-2" title="Permalink to this equation">¶</a></span>\[\mathcal{L} = \sum_{s \in \mathcal{S}} \sum_{l_{i} \in s} \sum_{-m \leq j \leq m, j \neq 0} \log P(l_{i+j} | l_{i})\]</div>
 <p>其中<span class="math notranslate nohighlight">\(l_i\)</span>表示物品，<span class="math notranslate nohighlight">\(m\)</span>是上下文窗口大小，<span class="math notranslate nohighlight">\(P(l_{i+j} | l_{i})\)</span>采用与Word2Vec相同的softmax形式计算。</p>
-<p><strong>代码实践</strong></p>
+<p><strong>核心代码</strong></p>
+<p>Item2Vec的实现可以直接调用gensim库 <span id="id8">(<a class="reference internal" href="../../chapter_references/references.html#id100" title="Řehůřek, R., &amp; Sojka, P. (2010 , May). Software Framework for Topic Modelling with Large Corpora. Proceedings of the LREC 2010 Workshop on New Challenges for NLP Frameworks (pp. 45–50). Valletta, Malta: ELRA.">Řehůřek and Sojka, 2010</a>)</span>
+的Word2Vec模型。核心在于将用户交互序列作为训练语料：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_hist_movie_id_list</span><span class="p">):</span>
+    <span class="c1"># train_hist_movie_id_list: 用户交互序列列表</span>
+    <span class="c1"># 每个元素是一个用户的物品ID序列</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span>
+        <span class="n">train_hist_movie_id_list</span><span class="p">,</span>
+        <span class="n">vector_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_config</span><span class="p">[</span><span class="s2">&quot;EmbDim&quot;</span><span class="p">],</span>      <span class="c1"># 嵌入维度</span>
+        <span class="n">window</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_config</span><span class="p">[</span><span class="s2">&quot;Window&quot;</span><span class="p">],</span>           <span class="c1"># 上下文窗口大小</span>
+        <span class="n">min_count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_config</span><span class="p">[</span><span class="s2">&quot;MinCount&quot;</span><span class="p">],</span>      <span class="c1"># 最小出现次数</span>
+        <span class="n">workers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_config</span><span class="p">[</span><span class="s2">&quot;Workers&quot;</span><span class="p">],</span>         <span class="c1"># 并行线程数</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>这里的<code class="docutils literal notranslate"><span class="pre">train_hist_movie_id_list</span></code>就是前面提到的数据集<span class="math notranslate nohighlight">\(\mathcal{S}\)</span>，其中每个用户的交互历史被视为一个“句子”，物品ID对应“词语”。训练完成后，每个物品都得到一个稠密的向量表示。</p>
+<p><strong>训练和评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
 <span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;item2vec&#39;</span><span class="p">)</span>
@@ -376,7 +392,7 @@ Sampling）技术。这种方法将原本的多分类问题转化为多个二分
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0148</span> <span class="o">|</span>       <span class="mf">0.0082</span> <span class="o">|</span>    <span class="mf">0.0064</span> <span class="o">|</span>   <span class="mf">0.0041</span> <span class="o">|</span>         <span class="mf">0.0015</span> <span class="o">|</span>        <span class="mf">0.0016</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0066</span> <span class="o">|</span>       <span class="mf">0.0033</span> <span class="o">|</span>    <span class="mf">0.0025</span> <span class="o">|</span>   <span class="mf">0.0014</span> <span class="o">|</span>         <span class="mf">0.0007</span> <span class="o">|</span>        <span class="mf">0.0007</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -388,14 +404,14 @@ Sampling）技术。这种方法将原本的多分类问题转化为多个二分
 <p>EGES（Enhanced Graph Embedding with Side
 Information）:cite:<cite>wang2018billion</cite>
 正是为了解决这些核心挑战而提出的。该方法通过两个关键创新来改进传统的序列建模：一是基于会话构建更精细的商品关系图来更好地反映用户行为模式，二是融合商品的辅助信息来解决冷启动问题。</p>
-<section id="id8">
-<h3><span class="section-number">2.2.1.3.1. </span>构建商品关系图<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
+<section id="id9">
+<h3><span class="section-number">2.2.1.3.1. </span>构建商品关系图<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
 <p>EGES的第一个创新是将物品序列的概念从简单的用户交互扩展为更精细的会话级序列。考虑到用户行为的复杂性和计算效率，研究者设置了一小时的时间窗口，只选择窗口内的用户行为构建商品关系图。</p>
 <p>具体构建过程如图所示：当两个商品在同一会话（时间窗口内）的用户行为序列中连续出现时，在它们之间建立一条有向边，边的权重等于这种商品转移模式在所有用户行为历史中出现的频率。相比于传统方法将整个用户历史视为一个序列，这种基于会话的图构建方法能够更准确地捕捉用户在特定时间段内的连续兴趣转移模式。</p>
-<figure class="align-default" id="id16">
+<figure class="align-default" id="id17">
 <span id="eges-item-graph"></span><a class="reference internal image-reference" href="../../_images/eges_item_graph.png"><img alt="../../_images/eges_item_graph.png" src="../../_images/eges_item_graph.png" style="width: 500px;" /></a>
 <figcaption>
-<p><span class="caption-number">图2.2.2 </span><span class="caption-text">商品图构建过程</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图2.2.2 </span><span class="caption-text">商品图构建过程</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>在构建好的商品图上，EGES采用带权随机游走策略生成训练序列。从一个节点出发，转移概率由边权重决定：</p>
@@ -406,8 +422,8 @@ Information）:cite:<cite>wang2018billion</cite>
 \end{cases}\end{split}\]</div>
 <p>其中<span class="math notranslate nohighlight">\(M_{ij}\)</span>表示节点<span class="math notranslate nohighlight">\(v_i\)</span>到节点<span class="math notranslate nohighlight">\(v_j\)</span>的边权重，<span class="math notranslate nohighlight">\(N_+(v_i)\)</span>表示节点<span class="math notranslate nohighlight">\(v_i\)</span>的邻居集合。通过这种随机游走过程，可以生成大量的商品序列用于后续的Embedding学习。</p>
 </section>
-<section id="id9">
-<h3><span class="section-number">2.2.1.3.2. </span>融合辅助信息解决稀疏性问题<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
+<section id="id10">
+<h3><span class="section-number">2.2.1.3.2. </span>融合辅助信息解决稀疏性问题<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h3>
 <p>基于上述商品图和随机游走策略，我们可以采用类似Word2Vec的方法学习商品的向量表示。然而，这种纯粹基于行为序列的方法面临一个关键挑战：对于用户交互稀少的商品，由于缺乏足够的共现信息，很难学习到高质量的Embedding表示。</p>
 <p>为了解决这种稀疏性问题，EGES方法的第二个创新是引入商品的辅助信息（如类别、品牌、价格区间等）来增强商品的向量表示。</p>
 <p>GES的核心思想是将商品本身的Embedding与其各种属性的Embedding进行平均聚合：</p>
@@ -415,36 +431,67 @@ Information）:cite:<cite>wang2018billion</cite>
 <span class="eqno">(2.2.5)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-1-i2i-4" title="Permalink to this equation">¶</a></span>\[H_v=\frac{1}{n+1} \sum_{s=0}^n{W_v^s}\]</div>
 <p>其中<span class="math notranslate nohighlight">\(W_v^s\)</span>表示商品<span class="math notranslate nohighlight">\(v\)</span>的第<span class="math notranslate nohighlight">\(s\)</span>种属性的向量表示，<span class="math notranslate nohighlight">\(W_v^0\)</span>表示商品ID的向量表示。这种方法虽然有效缓解了稀疏性问题，但存在一个明显的局限：它假设所有类型的辅助信息对商品表示的贡献是相等的，这显然不符合实际情况。</p>
 <p><strong>EGES的核心创新</strong>在于认识到不同类型的辅助信息应该有不同的重要性。对于手机，品牌可能比价格更重要；对于日用品，价格可能比品牌更关键。</p>
-<figure class="align-default" id="id17">
+<figure class="align-default" id="id18">
 <span id="eges-model"></span><a class="reference internal image-reference" href="../../_images/eges_model.png"><img alt="../../_images/eges_model.png" src="../../_images/eges_model.png" style="width: 400px;" /></a>
 <figcaption>
-<p><span class="caption-number">图2.2.3 </span><span class="caption-text">EGES模型架构</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图2.2.3 </span><span class="caption-text">EGES模型架构</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>对于具有<span class="math notranslate nohighlight">\(n\)</span>种辅助信息的商品<span class="math notranslate nohighlight">\(v\)</span>，EGES为其维护<span class="math notranslate nohighlight">\(n+1\)</span>个向量表示：一个商品ID的向量表示，以及<span class="math notranslate nohighlight">\(n\)</span>个属性的向量表示。商品的最终向量表示通过加权聚合得到：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-1-i2i-5">
 <span class="eqno">(2.2.6)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-1-i2i-5" title="Permalink to this equation">¶</a></span>\[H_v = \frac{\sum_{j=0}^n e^{a_v^j} W_v^j}{\sum_{j=0}^n e^{a_v^j}}\]</div>
 <p>其中<span class="math notranslate nohighlight">\(a_v^j\)</span>是可学习的权重参数。这种设计的精妙之处在于，不同类型的辅助信息对不同商品的重要性是不同的——对于手机，品牌可能比价格更重要；对于日用品，价格可能比品牌更关键。</p>
+<p><strong>核心代码</strong></p>
+<p>EGES的核心在于商品特定注意力层（ItemSpecificAttentionLayer），它为每个商品学习一组特征权重：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">item_indices</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    参数:</span>
+<span class="sd">        inputs: 特征嵌入 [batch_size, n+1, emb_dim]</span>
+<span class="sd">        item_indices: 商品索引 [batch_size]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 获取每个商品对应的权重参数 a_v^j</span>
+    <span class="n">batch_attention_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attention_weights</span><span class="p">,</span> <span class="n">item_indices</span><span class="p">)</span>
+
+    <span class="c1"># 计算 e^(a_v^j)</span>
+    <span class="n">exp_attention</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">batch_attention_weights</span><span class="p">)</span>  <span class="c1"># [batch_size, n+1]</span>
+
+    <span class="c1"># 归一化权重: e^(a_v^j) / sum(e^(a_v^j))</span>
+    <span class="n">attention_sum</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">exp_attention</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">normalized_attention</span> <span class="o">=</span> <span class="n">exp_attention</span> <span class="o">/</span> <span class="n">attention_sum</span>
+
+    <span class="c1"># 应用权重到特征嵌入</span>
+    <span class="n">normalized_attention</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">normalized_attention</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">weighted_embedding</span> <span class="o">=</span> <span class="n">inputs</span> <span class="o">*</span> <span class="n">normalized_attention</span>  <span class="c1"># [batch_size, n+1, emb_dim]</span>
+
+    <span class="c1"># 求和得到最终的商品表示 H_v</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">weighted_embedding</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [batch_size, emb_dim]</span>
+
+    <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">normalized_attention</span>
+</pre></div>
+</div>
+<p>这里的<code class="docutils literal notranslate"><span class="pre">attention_weights</span></code>是一个形状为<span class="math notranslate nohighlight">\(|V| \times (n+1)\)</span>的参数矩阵，其中<span class="math notranslate nohighlight">\(|V|\)</span>是商品总数，<span class="math notranslate nohighlight">\(n+1\)</span>是特征数量（商品ID
++
+<span class="math notranslate nohighlight">\(n\)</span>种辅助信息）。对于每个商品，模型会学习到一组特定的权重，自动发现哪些特征对该商品更重要。这种商品特定的注意力机制是EGES相比简单平均聚合的关键优势。</p>
 <p><strong>冷启动商品的处理</strong>：对于新上架且没有任何用户交互历史的商品，EGES提供了有效的冷启动解决方案。由于这类商品缺乏行为数据，无法通过随机游走生成训练序列，因此既不存在基于ID的向量表示，也没有经过训练的注意力权重参数<span class="math notranslate nohighlight">\(a_v^j\)</span>。</p>
 <p>在这种情况下，系统采用简单而有效的mean
 pooling策略：直接对该商品的所有辅助信息向量（类别、品牌、价格区间等）进行平均聚合来构建商品表示。虽然这种方法无法体现不同属性的差异化重要性，但能够有效利用商品的内容特征，从而支持基于向量相似度的商品召回（I2I召回）。</p>
 </section>
-<section id="id10">
-<h3><span class="section-number">2.2.1.3.3. </span>训练优化<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h3>
+<section id="id11">
+<h3><span class="section-number">2.2.1.3.3. </span>训练优化<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
 <p>EGES采用与Word2Vec类似的负采样策略，但损失函数经过了优化：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-1-i2i-6">
 <span class="eqno">(2.2.7)<a class="headerlink" href="#equation-chapter-1-retrieval-2-embedding-1-i2i-6" title="Permalink to this equation">¶</a></span>\[L(v,u,y) = -[y\log(\sigma(H_v^TZ_u)) + (1-y)\log(1-\sigma(H_v^TZ_u))]\]</div>
 <p>其中<span class="math notranslate nohighlight">\(y\)</span>是标签（1表示正样本，0表示负样本），<span class="math notranslate nohighlight">\(H_v\)</span>是商品<span class="math notranslate nohighlight">\(v\)</span>的向量表示，<span class="math notranslate nohighlight">\(Z_u\)</span>是上下文节点<span class="math notranslate nohighlight">\(u\)</span>的向量表示。</p>
 <p>通过这种方式，即使是刚上架、没有任何用户交互的新商品，也能通过其属性信息获得有意义的向量表示，从而被纳入推荐候选集。</p>
 <p>EGES在淘宝的实际部署效果显著：在包含十亿级训练样本的大规模数据集上，相比传统方法在推荐准确率上有了显著的提升，同时有效解决了新商品的冷启动问题。</p>
-<p><strong>代码实践</strong></p>
+<p><strong>训练和评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;eges&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0169</span> <span class="o">|</span>       <span class="mf">0.0123</span> <span class="o">|</span>    <span class="mf">0.0102</span> <span class="o">|</span>   <span class="mf">0.0088</span> <span class="o">|</span>         <span class="mf">0.0017</span> <span class="o">|</span>        <span class="mf">0.0025</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0136</span> <span class="o">|</span>       <span class="mf">0.0061</span> <span class="o">|</span>    <span class="mf">0.0064</span> <span class="o">|</span>   <span class="mf">0.0041</span> <span class="o">|</span>         <span class="mf">0.0014</span> <span class="o">|</span>        <span class="mf">0.0012</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -453,22 +500,22 @@ pooling策略：直接对该商品的所有辅助信息向量（类别、品牌�
 <section id="airbnb">
 <h2><span class="section-number">2.2.1.4. </span>Airbnb：将业务目标融入序列<a class="headerlink" href="#airbnb" title="Permalink to this heading">¶</a></h2>
 <p>Airbnb作为全球最大的短租平台，面临着与传统电商不同的挑战。房源不是标准化商品，用户的预订行为远比点击浏览稀疏，而且地理位置成为了一个关键因素。更重要的是，Airbnb需要的不仅仅是相似性，而是能够真正促进最终预订转化的推荐。</p>
-<section id="id11">
-<h3><span class="section-number">2.2.1.4.1. </span>面向业务的序列构建<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
+<section id="id12">
+<h3><span class="section-number">2.2.1.4.1. </span>面向业务的序列构建<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
 <p>Airbnb重新定义了“序列”的概念
-<span id="id12">(<a class="reference internal" href="../../chapter_references/references.html#id19" title="Grbovic, M., &amp; Cheng, H. (2018). Real-time personalization using embeddings for search ranking at airbnb. Proceedings of the 24th ACM SIGKDD international conference on knowledge discovery &amp; data mining (pp. 311–320).">Grbovic and Cheng, 2018</a>)</span>，采用基于会话的序列构建策略。具体而言：</p>
+<span id="id13">(<a class="reference internal" href="../../chapter_references/references.html#id19" title="Grbovic, M., &amp; Cheng, H. (2018). Real-time personalization using embeddings for search ranking at airbnb. Proceedings of the 24th ACM SIGKDD international conference on knowledge discovery &amp; data mining (pp. 311–320).">Grbovic and Cheng, 2018</a>)</span>，采用基于会话的序列构建策略。具体而言：</p>
 <p><strong>会话切分机制</strong>：系统不再简单地将用户交互过的所有房源串联，而是基于用户的点击会话（Click
 Sessions）构建序列。当用户连续点击间隔超过30分钟时，系统会自动开始一个新的会话。这种时间窗口的设计能够更准确地捕捉用户在特定搜索场景下的连贯意图。</p>
 <p><strong>行为权重差异化</strong>：Airbnb引入了重要的业务洞察——用户行为的信号强度存在显著差异。最终的预订行为相比于简单的点击浏览，包含了更强烈的用户偏好信号，因此在模型训练中应当给予更高的权重。</p>
 </section>
-<section id="id13">
-<h3><span class="section-number">2.2.1.4.2. </span>全局上下文机制<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h3>
+<section id="id14">
+<h3><span class="section-number">2.2.1.4.2. </span>全局上下文机制<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h3>
 <p>为了强化模型对最终转化行为的学习，Airbnb设计了全局上下文机制。在传统的Skip-Gram模型中，只有在滑动窗口内的物品才被视为上下文，但这种局部窗口无法充分利用最终预订这一强烈的正向信号。因此，Airbnb让用户最终预订的房源（booked
 listing）与序列中的每一个浏览房源都形成正样本对进行训练，无论它们在序列中的距离有多远。</p>
-<figure class="align-default" id="id18">
+<figure class="align-default" id="id19">
 <span id="airbnb-global-context"></span><a class="reference internal image-reference" href="../../_images/airbnb_global_context.png"><img alt="../../_images/airbnb_global_context.png" src="../../_images/airbnb_global_context.png" style="width: 500px;" /></a>
 <figcaption>
-<p><span class="caption-number">图2.2.4 </span><span class="caption-text">Airbnb预订房源全局上下文</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图2.2.4 </span><span class="caption-text">Airbnb预订房源全局上下文</span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>针对有预订行为的会话（booked
@@ -478,8 +525,8 @@ sessions），Airbnb修改了优化目标函数，增加了全局上下文项：
 <p>在这个公式中，前两项是标准的Skip-Gram目标函数：第一项最大化正样本对<span class="math notranslate nohighlight">\((l,c)\)</span>的相似度，其中<span class="math notranslate nohighlight">\(l\)</span>是目标房源，<span class="math notranslate nohighlight">\(c\)</span>是滑动窗口内的上下文房源；第二项最小化负样本对的相似度。关键的创新在于第三项<span class="math notranslate nohighlight">\(\log \frac{1}{1 + e^{-v_{l_b}^T v_l}}\)</span>，这里<span class="math notranslate nohighlight">\(l_b\)</span>表示用户在该会话中最终预订的房源。</p>
 <p>通过这种全局上下文机制，预订房源为序列中的每个房源都提供了额外的学习信号，使得模型能够更有效地捕捉“什么样的房源组合最终会导致预订”这一关键转化模式。</p>
 </section>
-<section id="id14">
-<h3><span class="section-number">2.2.1.4.3. </span>市场感知的负采样<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h3>
+<section id="id15">
+<h3><span class="section-number">2.2.1.4.3. </span>市场感知的负采样<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h3>
 <p>Airbnb的另一个创新是改进了负采样策略。传统方法从整个物品库中随机选择负样本，但Airbnb观察到用户通常只会在同一个市场（城市或地区）内进行预订。如果负样本来自不同的地理位置，模型就容易学到地理位置这种“简单特征”，而忽略了房源本身的特点。</p>
 <p>因此，Airbnb增加了“同市场负采样”策略，一部分负样本从与正样本相同的地理市场中选择：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-embedding-1-i2i-8">
@@ -510,15 +557,15 @@ sessions），Airbnb修改了优化目标函数，增加了全局上下文项：
 </ul>
 </li>
 <li><a class="reference internal" href="#eges">2.2.1.3. EGES：用属性信息增强序列</a><ul>
-<li><a class="reference internal" href="#id8">2.2.1.3.1. 构建商品关系图</a></li>
-<li><a class="reference internal" href="#id9">2.2.1.3.2. 融合辅助信息解决稀疏性问题</a></li>
-<li><a class="reference internal" href="#id10">2.2.1.3.3. 训练优化</a></li>
+<li><a class="reference internal" href="#id9">2.2.1.3.1. 构建商品关系图</a></li>
+<li><a class="reference internal" href="#id10">2.2.1.3.2. 融合辅助信息解决稀疏性问题</a></li>
+<li><a class="reference internal" href="#id11">2.2.1.3.3. 训练优化</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#airbnb">2.2.1.4. Airbnb：将业务目标融入序列</a><ul>
-<li><a class="reference internal" href="#id11">2.2.1.4.1. 面向业务的序列构建</a></li>
-<li><a class="reference internal" href="#id13">2.2.1.4.2. 全局上下文机制</a></li>
-<li><a class="reference internal" href="#id14">2.2.1.4.3. 市场感知的负采样</a></li>
+<li><a class="reference internal" href="#id12">2.2.1.4.1. 面向业务的序列构建</a></li>
+<li><a class="reference internal" href="#id14">2.2.1.4.2. 全局上下文机制</a></li>
+<li><a class="reference internal" href="#id15">2.2.1.4.3. 市场感知的负采样</a></li>
 </ul>
 </li>
 </ul>

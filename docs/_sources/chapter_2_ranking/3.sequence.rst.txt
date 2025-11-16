@@ -61,6 +61,42 @@ Unit）**\ ，其本质就是\ **注意力机制**\ 。如上图右侧所示，D
 
 一个值得注意的细节是，DIN计算出的注意力权重\ :math:`\boldsymbol{w}_{j}`\ 没有经过Softmax归一化。这意味着\ :math:`\sum \boldsymbol{w}_{j}`\ 不一定等于1。这样设计的目的是为了保留用户兴趣的绝对强度。例如，如果一个用户的历史行为大部分都与某个广告高度相关，那么加权和之后的向量模长就会比较大，反之则较小。这种设计使得模型不仅能捕捉兴趣的“方向”，还能感知兴趣的“强度”。
 
+**核心代码**
+
+DIN的注意力机制通过将候选广告与历史行为进行多角度交互来计算权重：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # DIN注意力层的核心计算
+   # query: 候选广告 [batch_size, 1, embedding_dim]
+   # keys: 历史行为序列 [batch_size, seq_len, embedding_dim]
+
+   query = tf.squeeze(query, axis=1)  # [B, H]
+   length = tf.shape(keys)[-2]
+   query = tf.expand_dims(query, axis=1)  # [B, 1, H]
+
+   # 构建多角度交互特征：query, keys, query-keys, query*keys
+   att_inputs = tf.concat([
+       tf.tile(query, [1, length, 1]),  # 重复query以匹配序列长度
+       keys,                             # 历史行为
+       query - keys,                     # 差异特征
+       query * keys                      # 元素积特征
+   ], axis=-1)  # [B, L, 4*H]
+
+   # 通过前馈网络计算注意力分数
+   hidden_layer = ffn_layer(att_inputs)  # [B, L, hidden_units]
+   scores = tf.keras.layers.Dense(1)(hidden_layer)  # [B, L, 1]
+
+   # 应用mask并进行加权求和（注意：不使用softmax归一化）
+   attention_weights = scores * mask  # [B, L, 1]
+   user_interest = tf.reduce_sum(keys * attention_weights, axis=1)  # [B, H]
+
+这种设计的关键在于：通过\ ``[query, keys, query-keys, query*keys]``\ 四种交互方式，模型能够从多个角度衡量历史行为与候选广告的相关性，同时不使用softmax归一化以保留兴趣强度信息。
+
 兴趣的演化建模
 --------------
 
@@ -114,6 +150,41 @@ DIEN的做法很巧妙：既然我们说 :math:`t`
 
 这个辅助损失会与模型最终的CTR预测损失\ :math:`L_{target}`\ 加在一起共同优化：\ :math:`L = L_{target} + \alpha L_{aux}`\ 。这个额外的监督信号，在每个时间步都对GRU的学习进行指导，使其产出的隐状态\ :math:`\boldsymbol{h}_t`\ 能够更精准地表达用户的潜在兴趣。
 
+**核心代码**
+
+辅助损失的计算通过预测下一个行为来监督兴趣状态的学习：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 兴趣提取层的辅助损失计算
+   # interest_states: [batch_size, seq_len, hidden_units]
+   # pos_behaviors: [batch_size, seq_len, embedding_dim] 正样本行为
+   # neg_behaviors: [batch_size, seq_len, embedding_dim] 负样本行为
+
+   # 用t时刻的兴趣预测t+1时刻的行为
+   current_interests = interest_states[:, :-1, :]      # [B, T-1, H]
+   next_pos_behaviors = pos_behaviors[:, 1:, :]        # [B, T-1, D]
+   next_neg_behaviors = neg_behaviors[:, 1:, :]        # [B, T-1, D]
+
+   # 拼接兴趣和行为，送入MLP预测
+   pos_input = tf.concat([current_interests, next_pos_behaviors], axis=-1)
+   neg_input = tf.concat([current_interests, next_neg_behaviors], axis=-1)
+
+   # 预测正负样本的概率
+   pos_probs = auxiliary_mlp(pos_input)  # [B, T-1, 1]
+   neg_probs = auxiliary_mlp(neg_input)  # [B, T-1, 1]
+
+   # 二元交叉熵损失
+   aux_loss = -tf.reduce_mean(
+       tf.math.log(pos_probs + 1e-8) + tf.math.log(1 - neg_probs + 1e-8)
+   )
+
+这种设计确保GRU的隐状态不仅能记录历史信息，还能有效预测未来行为，从而学到更有意义的兴趣表示。
+
 **第二阶段：兴趣演化层 (Interest Evolving Layer)**
 
 经过第一阶段，我们得到了一个更能代表用户内在兴趣的\ **兴趣状态序列**
@@ -138,6 +209,58 @@ Gate）上融入了注意力机制。注意力得分\ :math:`a_t`\ 由\ :math:`t
 其中\ :math:`\circ`\ 表示元素级乘积（element-wise product）。
 
 通过这种方式，AUGRU在兴趣演化的每一步，都会参考当前的候选广告，来判断历史兴趣的相关性。与候选广告越相关的兴趣，其对应的\ :math:`a_t`\ 越大，其信息在更新门中的权重也越大，从而能更顺畅地在序列中传递；反之，不相关的兴趣（漂移）其影响力就会被削弱。这使得模型能够聚焦于与当前推荐任务最相关的兴趣演化路径。
+
+**核心代码**
+
+AUGRU的核心在于用注意力分数调整GRU的更新门：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # AUGRU的前向传播
+   # interest_states: [batch_size, seq_len, hidden_units]
+   # target_item_embedding: [batch_size, embedding_dim]
+
+   # 1. 计算双线性注意力分数
+   # h_t * W * e_a
+   h_W = tf.tensordot(interest_states, bilinear_weight, axes=[[2], [0]])
+   target_expanded = tf.expand_dims(target_item_embedding, axis=1)
+   attention_scores = tf.reduce_sum(h_W * target_expanded, axis=2)  # [B, T]
+   attention_scores = tf.nn.softmax(attention_scores, axis=1)  # [B, T]
+
+   # 2. 逐步处理序列
+   hidden_state = tf.zeros([batch_size, hidden_units])
+   for t in range(seq_len):
+       current_input = interest_states[:, t, :]     # [B, H]
+       current_attention = attention_scores[:, t]   # [B]
+       
+       # 标准GRU计算
+       update_gate = tf.nn.sigmoid(
+           dense_input_update(current_input) + dense_hidden_update(hidden_state)
+       )  # [B, H]
+       
+       reset_gate = tf.nn.sigmoid(
+           dense_input_reset(current_input) + dense_hidden_reset(hidden_state)
+       )  # [B, H]
+       
+       candidate_state = tf.nn.tanh(
+           dense_input_candidate(current_input) + 
+           dense_hidden_candidate(reset_gate * hidden_state)
+       )  # [B, H]
+       
+       # 关键：用注意力分数缩放更新门
+       attention_expanded = tf.expand_dims(current_attention, axis=1)
+       attention_expanded = tf.tile(attention_expanded, [1, hidden_units])
+       attention_update_gate = attention_expanded * update_gate  # [B, H]
+       
+       # 更新隐藏状态
+       hidden_state = (1 - attention_update_gate) * hidden_state + \
+                      attention_update_gate * candidate_state
+
+AUGRU通过注意力分数动态调整更新门，使得与目标广告相关的兴趣能够顺利传递，而不相关的兴趣（漂移）被抑制，从而更精准地捕捉兴趣演化路径。
 
 从行为序列到会话序列
 --------------------
@@ -192,6 +315,67 @@ DSIN的架构如上图所示，其建模过程可以清晰地分为几个层次�
 
 DSIN通过引入“会话”这一更符合用户实际行为模式的中间单元，将复杂的长序列建模问题分解为“**会话内信息聚合**”（通过自注意力）和“**会话间信息传递**”（通过Bi-LSTM）两个更清晰的子问题。这种分层建模思想，使得模型能够对用户兴趣进行更精细的刻画。
 
+**核心代码**
+
+DSIN的三个核心组件实现了分层的会话建模：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 1. 会话兴趣提取：使用多头自注意力聚合会话内信息
+   # session_embeddings: [batch_size, sess_max_count, sess_max_len, embedding_dim]
+
+   session_interests = []
+   for sess_idx in range(sess_max_count):
+       # 获取单个会话的embedding
+       session_emb = session_embeddings[:, sess_idx, :, :]  # [B, L, D]
+       
+       # 多头自注意力捕获会话内物品之间的关系
+       attention_output = tf.keras.layers.MultiHeadAttention(
+           num_heads=att_head_num,
+           key_dim=att_embedding_size,
+           dropout=dropout_rate
+       )(session_emb, session_emb)  # [B, L, d_model]
+       
+       # 平均池化得到会话级表示
+       session_interest = tf.reduce_mean(attention_output, axis=1)  # [B, d_model]
+       session_interests.append(session_interest)
+
+   session_interests = tf.stack(session_interests, axis=1)  # [B, K, d_model]
+
+   # 2. 会话兴趣交互：使用双向LSTM建模会话间的时序关系
+   session_interactions = tf.keras.layers.Bidirectional(
+       tf.keras.layers.LSTM(
+           d_model // 2,
+           return_sequences=True,
+           dropout=dropout_rate
+       )
+   )(session_interests)  # [B, K, d_model*2]
+
+   # 3. 会话兴趣激活：基于目标物品激活相关会话
+   # 扩展目标物品embedding以匹配会话维度
+   target_expanded = tf.expand_dims(target_item_embedding, axis=1)  # [B, 1, D]
+   target_repeated = tf.tile(target_expanded, [1, sess_max_count, 1])  # [B, K, D]
+
+   # 拼接会话特征和目标物品
+   combined_features = tf.concat(
+       [session_interactions, target_repeated], axis=-1
+   )  # [B, K, d_model*2 + D]
+
+   # 计算注意力权重
+   attention_scores = tf.keras.layers.Dense(1, activation='tanh')(combined_features)
+   attention_weights = tf.nn.softmax(attention_scores, axis=1)  # [B, K, 1]
+
+   # 加权聚合会话特征
+   activated_features = tf.reduce_sum(
+       session_interactions * attention_weights, axis=1
+   )  # [B, d_model*2]
+
+这种设计体现了“分层建模”的思想：先用自注意力在会话内聚合，再用BiLSTM在会话间传递，最后用注意力激活相关会话，从而实现对用户行为的细粒度刻画。
+
 本节介绍了序列建模的三个关键模型：DIN通过注意力机制解决用户兴趣多样性问题，DIEN进一步建模兴趣的时序演化过程，DSIN则引入会话概念进行分层建模。这些模型体现了序列建模的核心思想：动态性（根据任务调整兴趣表示）、序列性（利用时间顺序信息）和聚焦性（针对任务筛选相关信息）。随着技术发展，未来的序列建模方法将结合更多先进技术来更好地理解用户动态需求。
 
 **代码实践**
@@ -217,10 +401,10 @@ DSIN通过引入“会话”这一更符合用户实际行为模式的中间单�
     +--------+--------+--------+------------+
     | 模型   |    auc |   gauc |   val_user |
     +========+========+========+============+
-    | din    | 0.5582 | 0.545  |        928 |
+    | din    | 0.5555 | 0.5337 |        928 |
     +--------+--------+--------+------------+
-    | dien   | 0.5747 | 0.5607 |        928 |
+    | dien   | 0.5852 | 0.5587 |        928 |
     +--------+--------+--------+------------+
-    | dsin   | 0.5237 | 0.5562 |         99 |
+    | dsin   | 0.5391 | 0.5407 |         99 |
     +--------+--------+--------+------------+
 

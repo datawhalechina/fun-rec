@@ -94,7 +94,53 @@ FM的真正巧妙之处在于一个数学变换技巧。原本\ :math:`O(n^2)`\ 
 
 这样的分解揭示了一个重要原理：即使是复杂的特征交互模式，也可以通过合适的向量表示和简单的内积运算来实现。
 
-**代码实践**
+**核心代码**
+
+FM召回的双塔实现关键在于如何将数学推导转化为实际的向量表示。用户塔构建了包含常数项和特征聚合的向量：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 用户塔：V_user = [1; ∑(v_u * x_u)]
+   user_concat = Concatenate(axis=1)(user_embeddings)  # [batch_size, num_user_features, embedding_dim]
+   user_embedding_sum = SumPooling()(user_concat)  # [batch_size, embedding_dim]
+
+   # 构建用户向量：[1; ∑(v_u * x_u)]
+   ones_vector = OnesLayer()(user_embedding_sum)  # [batch_size, 1]
+   user_vector = Concatenate(axis=1)([ones_vector, user_embedding_sum])
+
+物品塔则更为复杂，需要计算一阶线性项和FM交互项：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 物品塔：V_item = [∑w_t*x_t + FM_interaction; ∑(v_t * x_t)]
+   item_concat = Concatenate(axis=1)(item_embeddings)  # [batch_size, num_item_features, embedding_dim]
+   item_embedding_sum = SumPooling()(item_concat)  # [batch_size, embedding_dim]
+
+   # 计算一阶线性项：∑(w_t * x_t)
+   item_linear_weights = Dense(1, use_bias=False)(item_embedding_sum)
+
+   # 计算FM二阶交互项：0.5 * ((∑v_t*x_t)² - ∑(v_t²*x_t²))
+   sum_squared = SquareLayer()(item_embedding_sum)
+   item_squared = SquareLayer()(item_concat)
+   squared_sum = SumPooling()(item_squared)
+   fm_interaction_vector = Subtract()([sum_squared, squared_sum])
+   fm_interaction_scalar = SumScalarLayer()(ScaleLayer(0.5)(fm_interaction_vector))
+
+   # 组合为物品向量
+   first_term = Add()([item_linear_weights, fm_interaction_scalar])
+   item_vector = Concatenate(axis=1)([first_term, item_embedding_sum])
+
+最终通过内积计算匹配分数：\ ``fm_score = Dot(axes=1)([item_vector, user_vector])``\ 。这种设计使得物品向量可以离线预计算，用户向量实时计算，从而支持高效的召回检索。
+
+**训练和评估**
 
 .. raw:: latex
 
@@ -117,7 +163,7 @@ FM的真正巧妙之处在于一个数学变换技巧。原本\ :math:`O(n^2)`\ 
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0624 |       0.0394 |    0.0327 |   0.0254 |         0.0062 |        0.0079 |
+    |        0.0123 |       0.0073 |    0.0071 |   0.0055 |         0.0012 |        0.0015 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 
 
@@ -177,7 +223,54 @@ DSSM将召回任务视为一个极端多分类问题，将物料库中的所有�
 
 这里的温度系数\ :math:`\tau`\ 看起来是个简单的除法操作，但实际上它对模型的训练效果有着深远的影响。从数学角度来看，温度系数本质上是在缩放logits，进而改变Softmax函数的输出分布形状。当我们设置\ :math:`\tau < 1`\ 时，相似度的差异会被放大，这意味着模型会对高分样本给出更高的概率，预测变得更加“确定”；相反，当\ :math:`\tau > 1`\ 时，分布会变得更加平滑，模型的预测也更加保守。
 
-**代码实践**
+**核心代码**
+
+DSSM的实现核心在于构建独立的用户塔和物品塔，每个塔都是一个深度神经网络：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 拼接用户侧和物品侧特征
+   user_feature = concat_group_embedding(
+       group_embedding_feature_dict, "user", axis=1, flatten=True
+   )  # B x (N*D)
+   item_feature = concat_group_embedding(
+       group_embedding_feature_dict, "item", axis=1, flatten=True
+   )  # B x (N*D)
+
+   # 构建用户塔和物品塔（深度神经网络）
+   user_tower = DNNs(
+       units=dnn_units, activation="tanh", dropout_rate=dropout_rate, use_bn=True
+   )(user_feature)
+   item_tower = DNNs(
+       units=dnn_units, activation="tanh", dropout_rate=dropout_rate, use_bn=True
+   )(item_feature)
+
+关键的向量归一化和相似度计算：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # L2归一化：确保训练与检索的一致性
+   user_embedding = tf.keras.layers.Lambda(lambda x: tf.nn.l2_normalize(x, axis=1))(
+       user_tower
+   )
+   item_embedding = tf.keras.layers.Lambda(lambda x: tf.nn.l2_normalize(x, axis=1))(
+       item_tower
+   )
+
+   # 计算余弦相似度（归一化向量的点积）
+   cosine_similarity = tf.keras.layers.Dot(axes=1)([user_embedding, item_embedding])
+
+这种设计使得用户和物品的表示完全独立，支持离线预计算物品向量并存储在ANN索引中，实现毫秒级的召回响应。
+
+**训练和评估**
 
 .. raw:: latex
 
@@ -198,7 +291,7 @@ DSSM将召回任务视为一个极端多分类问题，将物料库中的所有�
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |         0.046 |        0.007 |    0.0157 |   0.0039 |         0.0046 |        0.0014 |
+    |        0.0161 |       0.0131 |    0.0083 |   0.0074 |         0.0016 |        0.0026 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 
 
@@ -250,7 +343,74 @@ YouTubeDNN的成功不仅来自于模型设计，更来自于一系列精心设�
 
 YouTubeDNN的成功在于建立了一套可扩展、可工程化的推荐系统范式——训练时使用复杂的多分类目标和丰富的用户特征，服务时通过预计算物品向量和实时计算用户向量，配合高效的ANN检索完成召回。这种设计实现了训练复杂度和服务效率的有效平衡，至今仍被广泛借鉴。
 
-**代码实践**
+**核心代码**
+
+YouTubeDNN的用户塔设计体现了“非对称”的思想，它整合了多种用户特征和历史行为序列：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 整合用户特征和历史行为序列
+   user_feature_embedding = concat_group_embedding(
+       group_embedding_feature_dict, "user_dnn"
+   )  # B x (D * N)
+
+   if "raw_hist_seq" in group_embedding_feature_dict:
+       hist_seq_embedding = concat_group_embedding(
+           group_embedding_feature_dict, "raw_hist_seq"
+       )  # B x D
+       user_dnn_inputs = tf.concat(
+           [user_feature_embedding, hist_seq_embedding], axis=1
+       )  # B x (D * N + D)
+   else:
+       user_dnn_inputs = user_feature_embedding
+
+   # 构建用户塔：输出归一化的用户向量
+   user_dnn_output = DNNs(
+       units=dnn_units + [emb_dim], activation="relu", use_bn=False
+   )(user_dnn_inputs)
+   user_dnn_output = L2NormalizeLayer(axis=-1)(user_dnn_output)
+
+物品塔则采用简化设计，直接使用物品Embedding表：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 物品Embedding表（从特征列配置中获取）
+   item_embedding_table = embedding_table_dict[label_name]
+
+   # 为评估构建物品模型
+   output_item_embedding = SqueezeLayer(axis=1)(
+       item_embedding_table(input_layer_dict[label_name])
+   )
+   output_item_embedding = L2NormalizeLayer(axis=-1)(output_item_embedding)
+
+训练时采用Sampled
+Softmax优化，将百万级的多分类问题转化为高效的采样学习：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 构建采样softmax层
+   sampled_softmax_layer = SampledSoftmaxLayer(item_vocab_size, neg_sample, emb_dim)
+   output = sampled_softmax_layer([
+       item_embedding_table.embeddings, 
+       user_dnn_output, 
+       input_layer_dict[label_name]
+   ])
+
+这种设计的核心优势在于：用户塔可以根据业务需求灵活扩展特征和模型复杂度，而物品塔保持简洁高效，易于离线预计算和实时检索。
+
+**训练和评估**
 
 .. raw:: latex
 
@@ -271,6 +431,6 @@ YouTubeDNN的成功在于建立了一套可扩展、可工程化的推荐系统�
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0099 |       0.0041 |    0.0038 |    0.002 |          0.001 |        0.0008 |
+    |        0.0303 |       0.0219 |    0.0169 |   0.0142 |          0.003 |        0.0044 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 

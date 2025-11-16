@@ -360,6 +360,47 @@ Show Source
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-mf-4">
 <span class="eqno">(2.1.24)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-mf-4" title="Permalink to this equation">¶</a></span>\[\min_{P,Q} \frac{1}{2} \sum_{(u,i)\in \mathcal{K}} \left( r_{ui} - p_u^T q_i \right)^2 + \lambda \left( \|p_u\|^2 + \|q_i\|^2 \right)\]</div>
 <p>这样可以避免模型过度拟合训练数据，提高在新数据上的表现。</p>
+<p><strong>核心代码</strong></p>
+<p>FunkSVD的核心在于学习用户和物品的隐向量表示。在实现中，我们使用Embedding层来表示这些隐向量，并通过内积计算预测评分：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 用户的隐向量表示</span>
+<span class="n">user_factors</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span>
+    <span class="n">user_vocab_size</span><span class="p">,</span>
+    <span class="n">embedding_dim</span><span class="p">,</span>
+    <span class="n">embeddings_initializer</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+    <span class="n">embeddings_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.02</span><span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;user_factors&quot;</span><span class="p">,</span>
+<span class="p">)(</span><span class="n">user_id_input</span><span class="p">)</span>
+<span class="n">user_factors</span> <span class="o">=</span> <span class="n">Flatten</span><span class="p">()(</span><span class="n">user_factors</span><span class="p">)</span>
+
+<span class="c1"># 物品的隐向量表示</span>
+<span class="n">item_factors</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span>
+    <span class="n">item_vocab_size</span><span class="p">,</span>
+    <span class="n">embedding_dim</span><span class="p">,</span>
+    <span class="n">embeddings_initializer</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+    <span class="n">embeddings_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.02</span><span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;item_factors&quot;</span><span class="p">,</span>
+<span class="p">)(</span><span class="n">item_id_input</span><span class="p">)</span>
+<span class="n">item_factors</span> <span class="o">=</span> <span class="n">Flatten</span><span class="p">()(</span><span class="n">item_factors</span><span class="p">)</span>
+
+<span class="c1"># 预测：计算用户向量和物品向量的内积</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">Dot</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="mi">1</span><span class="p">)([</span><span class="n">user_factors</span><span class="p">,</span> <span class="n">item_factors</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>这里的<code class="docutils literal notranslate"><span class="pre">embedding_dim</span></code>对应公式中的隐含因子数量<span class="math notranslate nohighlight">\(K\)</span>。<code class="docutils literal notranslate"><span class="pre">user_factors</span></code>对应<span class="math notranslate nohighlight">\(p_u\)</span>，<code class="docutils literal notranslate"><span class="pre">item_factors</span></code>对应<span class="math notranslate nohighlight">\(q_i\)</span>，而<code class="docutils literal notranslate"><span class="pre">Dot</span></code>操作计算的就是<span class="math notranslate nohighlight">\(p_u^T q_i\)</span>。通过训练，模型会自动学习最优的隐向量表示，使预测评分尽可能接近真实评分。</p>
+<p><strong>训练和评估</strong></p>
+<p>FunkSVD 在 MovieLens 数据集上的应用</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
+
+<span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;funksvd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
+<span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
+<span class="o">+===============+==============+===========+==========+================+===============+</span>
+<span class="o">|</span>        <span class="mf">0.0002</span> <span class="o">|</span>            <span class="mi">0</span> <span class="o">|</span>    <span class="mf">0.0001</span> <span class="o">|</span>        <span class="mi">0</span> <span class="o">|</span>              <span class="mi">0</span> <span class="o">|</span>             <span class="mi">0</span> <span class="o">|</span>
+<span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
+</pre></div>
+</div>
 </section>
 <section id="biassvd">
 <h2><span class="section-number">2.1.3.3. </span>BiasSVD: 改进模型<a class="headerlink" href="#biassvd" title="Permalink to this heading">¶</a></h2>
@@ -379,20 +420,60 @@ Show Source
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-mf-8">
 <span class="eqno">(2.1.28)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-mf-8" title="Permalink to this equation">¶</a></span>\[b_i \leftarrow b_i + \eta \left( e_{ui} - \lambda b_i \right)\]</div>
 <p>这种改进看似简单，但效果显著。通过分离出系统性偏差，模型能够更准确地捕捉用户和物品之间的真实交互模式，从而提供更精准的推荐。</p>
-<p><strong>代码实践</strong></p>
-<p>FunkSVD 在 MovieLens 数据集上的应用</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
+<p><strong>核心代码</strong></p>
+<p>BiasSVD在FunkSVD的基础上增加了偏置项。在实现中，我们为用户和物品分别添加偏置Embedding，并在预测时将所有项相加：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 用户的隐向量表示 + 用户偏置</span>
+<span class="n">user_factors</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span>
+    <span class="n">user_vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span>
+    <span class="n">embeddings_initializer</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+    <span class="n">embeddings_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.02</span><span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;user_factors&quot;</span><span class="p">,</span>
+<span class="p">)(</span><span class="n">user_id_input</span><span class="p">)</span>
+<span class="n">user_factors</span> <span class="o">=</span> <span class="n">Flatten</span><span class="p">()(</span><span class="n">user_factors</span><span class="p">)</span>
 
-<span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;funksvd&#39;</span><span class="p">)</span>
+<span class="n">user_bias</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span>
+    <span class="n">user_vocab_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">embeddings_initializer</span><span class="o">=</span><span class="s2">&quot;zeros&quot;</span><span class="p">,</span>
+    <span class="n">embeddings_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.02</span><span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;user_bias&quot;</span><span class="p">,</span>
+<span class="p">)(</span><span class="n">user_id_input</span><span class="p">)</span>
+<span class="n">user_bias</span> <span class="o">=</span> <span class="n">Flatten</span><span class="p">()(</span><span class="n">user_bias</span><span class="p">)</span>
+
+<span class="c1"># 物品的隐向量表示 + 物品偏置</span>
+<span class="n">item_factors</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span>
+    <span class="n">item_vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span>
+    <span class="n">embeddings_initializer</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+    <span class="n">embeddings_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.02</span><span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;item_factors&quot;</span><span class="p">,</span>
+<span class="p">)(</span><span class="n">item_id_input</span><span class="p">)</span>
+<span class="n">item_factors</span> <span class="o">=</span> <span class="n">Flatten</span><span class="p">()(</span><span class="n">item_factors</span><span class="p">)</span>
+
+<span class="n">item_bias</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span>
+    <span class="n">item_vocab_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">embeddings_initializer</span><span class="o">=</span><span class="s2">&quot;zeros&quot;</span><span class="p">,</span>
+    <span class="n">embeddings_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.02</span><span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;item_bias&quot;</span><span class="p">,</span>
+<span class="p">)(</span><span class="n">item_id_input</span><span class="p">)</span>
+<span class="n">item_bias</span> <span class="o">=</span> <span class="n">Flatten</span><span class="p">()(</span><span class="n">item_bias</span><span class="p">)</span>
+
+<span class="c1"># 计算各个部分</span>
+<span class="n">interaction</span> <span class="o">=</span> <span class="n">Dot</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="mi">1</span><span class="p">)([</span><span class="n">user_factors</span><span class="p">,</span> <span class="n">item_factors</span><span class="p">])</span>  <span class="c1"># 交互项</span>
+<span class="n">ones_input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">))(</span><span class="n">interaction</span><span class="p">)</span>
+<span class="n">global_bias</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">use_bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="s2">&quot;zeros&quot;</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;global_bias&quot;</span><span class="p">)(</span><span class="n">ones_input</span><span class="p">)</span>  <span class="c1"># 全局偏置</span>
+
+<span class="c1"># BiasSVD 预测：global_bias + user_bias + item_bias + interaction</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">Add</span><span class="p">()([</span><span class="n">global_bias</span><span class="p">,</span> <span class="n">user_bias</span><span class="p">,</span> <span class="n">item_bias</span><span class="p">,</span> <span class="n">interaction</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
-<span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
-<span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0022</span> <span class="o">|</span>       <span class="mf">0.0012</span> <span class="o">|</span>    <span class="mf">0.0012</span> <span class="o">|</span>   <span class="mf">0.0009</span> <span class="o">|</span>         <span class="mf">0.0002</span> <span class="o">|</span>        <span class="mf">0.0002</span> <span class="o">|</span>
-<span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
-</pre></div>
-</div>
+<p>与FunkSVD相比，BiasSVD的关键区别在于：</p>
+<ul class="simple">
+<li><p>用户和物品都增加了独立的偏置Embedding（<code class="docutils literal notranslate"><span class="pre">user_bias</span></code>和<code class="docutils literal notranslate"><span class="pre">item_bias</span></code>）</p></li>
+<li><p>添加了全局偏置项（<code class="docutils literal notranslate"><span class="pre">global_bias</span></code>），对应公式中的<span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+<li><p>最终预测使用<code class="docutils literal notranslate"><span class="pre">Add</span></code>层将四个部分相加：<span class="math notranslate nohighlight">\(\mu + b_u + b_i + p_u^T q_i\)</span></p></li>
+</ul>
+<p>偏置项的初始化使用<code class="docutils literal notranslate"><span class="pre">&quot;zeros&quot;</span></code>，因为它们代表的是相对于平均水平的偏移。这种设计使得模型能够自动学习不同用户的打分习惯和不同物品的受欢迎程度。</p>
+<p><strong>训练和评估</strong></p>
 <p>BiasSVD 在 MovieLens 数据集上的应用</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;biassvd&#39;</span><span class="p">)</span>
 </pre></div>
@@ -400,7 +481,7 @@ Show Source
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0005</span> <span class="o">|</span>       <span class="mf">0.0003</span> <span class="o">|</span>    <span class="mf">0.0004</span> <span class="o">|</span>   <span class="mf">0.0003</span> <span class="o">|</span>              <span class="mi">0</span> <span class="o">|</span>        <span class="mf">0.0001</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0081</span> <span class="o">|</span>       <span class="mf">0.0065</span> <span class="o">|</span>    <span class="mf">0.0037</span> <span class="o">|</span>   <span class="mf">0.0032</span> <span class="o">|</span>         <span class="mf">0.0008</span> <span class="o">|</span>        <span class="mf">0.0013</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>

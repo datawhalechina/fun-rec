@@ -73,24 +73,29 @@ DNN网络，遍历创建各个任务独立的DNN塔，最后输出多个塔的�
            share_dnn_units=[128, 64],
            task_tower_dnn_units=[128, 64],
            ):
+       # 输入层：将原始特征映射为 Keras 输入
        input_layer_dict = build_input_layer(feature_columns)
-       # 构建特征嵌入表字典
-       group_embedding_feature_dict = build_group_feature_embedding_table_dict(feature_columns, input_layer_dict, prefix="embedding/")
 
-       # 连接不同组的嵌入向量作为各个网络的输入
-       dnn_inputs = concat_group_embedding(group_embedding_feature_dict, 'dnn')
+       # 嵌入层：为各特征组创建嵌入表，得到组内嵌入向量
+       embedding_table_dict = build_group_feature_embedding_table_dict(
+           feature_columns, input_layer_dict, prefix="embedding/"
+       )
 
-       # 构建DNN层
-       shared_bottom_feature = DNNs(share_dnn_units)(dnn_inputs)
-       
-       task_output_list = []
+       # 合并嵌入：将多组嵌入拼接为共享 DNN 的输入
+       dnn_inputs = concat_group_embedding(embedding_table_dict, 'dnn')
+
+       # 共享底座：所有任务共享的特征抽取网络（Shared Bottom）
+       shared_feature = DNNs(share_dnn_units)(dnn_inputs)
+
+       # 任务塔：在共享特征上为每个任务构建独立塔并输出概率
+       task_outputs = []
        for task_name in task_name_list:
-           task_output_logit = DNNs(task_tower_dnn_units + [1])(shared_bottom_feature)
-           task_output_prob = PredictLayer(name="task_" + task_name)(task_output_logit)
-           task_output_list.append(task_output_prob)
+           task_logit = DNNs(task_tower_dnn_units + [1])(shared_feature)
+           task_prob = PredictLayer(name=f"task_{task_name}")(task_logit)
+           task_outputs.append(task_prob)
 
-       # 构建模型
-       model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=task_output_list)
+       # 构建多任务模型：共享底座 + 多任务塔输出
+       model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=task_outputs)
        return model
 
 **训练和评估**
@@ -116,7 +121,7 @@ DNN网络，遍历创建各个任务独立的DNN塔，最后输出多个塔的�
     +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
     |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   val_user_is_click |   val_user_is_like |   val_user_long_view |
     +================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+
-    |         0.5891 |        0.4198 |          0.4359 |      0.4816 |           0.572 |         0.4343 |           0.4488 |        0.485 |                 928 |                530 |                  925 |
+    |           0.61 |         0.431 |          0.4364 |      0.4925 |          0.5727 |         0.4433 |           0.4438 |       0.4866 |                 928 |                530 |                  925 |
     +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 
 
@@ -179,39 +184,43 @@ MMoE模型构建代码如下，先组装输入到MoE网络中的特征dnn_inputs
            gate_dnn_units=[128, 64],
            task_tower_dnn_units=[128, 64],
            ):
+       # 输入层：原始特征 → Keras 输入
        input_layer_dict = build_input_layer(feature_columns)
-       # 构建特征嵌入表字典
-       group_embedding_feature_dict = build_group_feature_embedding_table_dict(feature_columns, input_layer_dict, prefix="embedding/")
 
-       # 连接不同组的嵌入向量作为各个网络的输入
-       dnn_inputs = concat_group_embedding(group_embedding_feature_dict, 'dnn')
+       # 嵌入层：为各特征组创建嵌入表，得到组内嵌入向量
+       embedding_table_dict = build_group_feature_embedding_table_dict(
+           feature_columns, input_layer_dict, prefix="embedding/"
+       )
 
-       # 创建多个专家
-       expert_output_list = []
-       for i in range(expert_nums):
-           expert_output = DNNs(expert_dnn_units, name=f"expert_{str(i)}")(dnn_inputs)
-           expert_output_list.append(expert_output)
-       expert_concat = tf.keras.layers.Lambda(lambda x: tf.stack(x, axis=1))(expert_output_list) # (None, expert_num, dims)
+       # 合并嵌入：拼接为专家与门控的共同输入
+       dnn_inputs = concat_group_embedding(embedding_table_dict, 'dnn')
 
-       # 定义不同任务的专家门控网络
-       task_tower_input_list = []
-       for i in range(len(task_name_list)):
-           gate_output = DNNs(gate_dnn_units, name=f"task_{str(i)}_gates")(dnn_inputs) 
-           gate_output = tf.keras.layers.Dense(expert_nums, use_bias=False, activation='softmax', name=f"task_{i}_softmax")(gate_output)
-           gate_output = tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1))(gate_output) # (None,expert_num, 1)
-           gate_expert_output = tf.keras.layers.Lambda(lambda x: x[0] * x[1])([gate_output, expert_concat])
-           gate_expert_output = tf.keras.layers.Lambda(lambda x: tf.reduce_sum(x, axis=1, keepdims=False))(gate_expert_output)
-           task_tower_input_list.append(gate_expert_output)
+       # 共享专家：多个并行 DNN（专家）供所有任务共享
+       expert_outputs = [DNNs(expert_dnn_units, name=f"expert_{i}")(dnn_inputs)
+                         for i in range(expert_nums)]
+       # 形状 [B, E, D]：按专家维度堆叠，便于后续加权求和
+       experts = tf.keras.layers.Lambda(lambda xs: tf.stack(xs, axis=1))(expert_outputs)
 
-       # 不同任务融合多个专家的门控
-       task_output_list = []
-       for i in range(len(task_name_list)):
-           task_output_logit = DNNs(task_tower_dnn_units + [1])(task_tower_input_list[i])
-           task_output_prob = PredictLayer(name="task_" + task_name_list[i])(task_output_logit)
-           task_output_list.append(task_output_prob)
+       # 任务门控：每个任务产生 softmax 权重，对专家加权融合
+       task_features = []
+       for idx, task_name in enumerate(task_name_list):
+           gate_hidden = DNNs(gate_dnn_units, name=f"task_{idx}_gate_mlp")(dnn_inputs)
+           gate_weights = tf.keras.layers.Dense(expert_nums, use_bias=False,
+                                                activation='softmax',
+                                                name=f"task_{idx}_gate_softmax")(gate_hidden)  # [B, E]
+           # 加权融合：einsum('be,bed->bd') == sum_e w_e * expert_e
+           task_mix = tf.keras.layers.Lambda(lambda x: tf.einsum('be,bed->bd', x[0], x[1]))([gate_weights, experts])
+           task_features.append(task_mix)
 
-       # 构建模型
-       model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=task_output_list)
+       # 任务塔：基于融合特征为每个任务建塔并输出概率
+       task_outputs = []
+       for task_name, task_feat in zip(task_name_list, task_features):
+           task_logit = DNNs(task_tower_dnn_units + [1])(task_feat)
+           task_prob = PredictLayer(name=f"task_{task_name}")(task_logit)
+           task_outputs.append(task_prob)
+
+       # 构建模型：共享专家 + 任务门控 + 任务塔
+       model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=task_outputs)
        return model
 
 **训练和评估**
@@ -235,7 +244,7 @@ MMoE模型构建代码如下，先组装输入到MoE网络中的特征dnn_inputs
     +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
     |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   val_user_is_click |   val_user_is_like |   val_user_long_view |
     +================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+
-    |         0.5911 |        0.4112 |          0.4496 |       0.484 |           0.576 |         0.4449 |           0.4567 |       0.4926 |                 928 |                530 |                  925 |
+    |         0.6036 |        0.4203 |          0.4586 |      0.4942 |          0.5728 |         0.4362 |           0.4759 |        0.495 |                 928 |                530 |                  925 |
     +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 
 
@@ -317,65 +326,66 @@ CGC门控的计算如下：
 .. code:: python
 
    def cgc_net(
-           input_list, 
-           task_num, 
-           task_expert_num, 
-           shared_expert_num, 
+           input_list,
+           task_num,
+           task_expert_num,
+           shared_expert_num,
            task_expert_dnn_units,
-           shared_expert_dnn_units, 
+           shared_expert_dnn_units,
            task_gate_dnn_units,
            shared_gate_dnn_units,
-           leval_name=None, 
+           leval_name=None,
            is_last=False):
-       """cgc结构
-       input_list, 每个task都有一个输入，这些task的输入都是共享的，为了方便处理，给每个task都复制了一份
-       is_last主要是判断是否是最后一层cgc，如果是的话，就不需要把share部分添加到输出中了
+       """CGC（共享专家 + 任务门控）核心结构（简化版）
+       - 每个任务：拥有若干 Task-Experts；
+       - 全局：拥有若干 Shared-Experts；
+       - 每个任务 Gate 产生 softmax 权重，对其 Task-Experts 与 Shared-Experts 加权融合；
+       - 若非最后一层：再用 Shared-Gate 融合所有任务的 Task-Experts 与 Shared-Experts，供下一层共享使用。
+       input_list：为方便处理，给每个任务复制一份相同输入，最后一个为共享输入。
        """
 
-       # 创建每个任务的task expert
+       # 任务专家：每个任务创建 task_expert_num 个专家
        task_expert_list = []
        for i in range(task_num):
-           task_i_expert_list = []
-           for j in range(task_expert_num):
-               expert_dnn = DNNs(task_expert_dnn_units, name=f"{leval_name}_task_{str(i)}_expert_{str(j)}")(input_list[i])
-               task_i_expert_list.append(expert_dnn)
-           task_expert_list.append(task_i_expert_list)
+           task_expert_list.append([
+               DNNs(task_expert_dnn_units, name=f"{leval_name}_task_{i}_expert_{j}")(input_list[i])
+               for j in range(task_expert_num)
+           ])
 
-       # 创建所有任务的shared expert 
-       shared_expert_list = []
-       for i in range(shared_expert_num):
-           expert_dnn = DNNs(shared_expert_dnn_units, name=f"{leval_name}_shared_expert_{str(i)}")(input_list[-1])
-           shared_expert_list.append(expert_dnn)
+       # 共享专家：创建 shared_expert_num 个专家（共享输入使用 input_list[-1]）
+       shared_expert_list = [
+           DNNs(shared_expert_dnn_units, name=f"{leval_name}_shared_expert_{i}")(input_list[-1])
+           for i in range(shared_expert_num)
+       ]
 
-       # 创建每个任务的融合门控
-       task_gate_list = []
+       # 任务门控与融合：对当前任务的（Task + Shared）专家集合进行 softmax 加权求和
+       cgc_outputs = []
        fusion_expert_num = task_expert_num + shared_expert_num
        for i in range(task_num):
-           gate_dnn = DNNs(task_gate_dnn_units, name=f"{leval_name}_task_{str(i)}_gate")(input_list[i])
-           gate_dnn = tf.keras.layers.Dense(fusion_expert_num, use_bias=False, activation='softmax')(gate_dnn)
-           gate_dnn = tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1))(gate_dnn) # (None, gate_num, 1)
-           task_gate_list.append(gate_dnn)
-
-       # cgc输出结果
-       cgc_output_list = []
-       for i in range(task_num):
            cur_experts = task_expert_list[i] + shared_expert_list
-           expert_concat = tf.keras.layers.Lambda(lambda x: tf.stack(x, axis=1))(cur_experts) # None, gate_num, dim
-           cur_gate = task_gate_list[i]
-           task_gate_fusion_dnn = tf.keras.layers.Lambda(lambda x: tf.reduce_sum(x[0] * x[1], axis=1, keepdims=False))([cur_gate, expert_concat]) # None, dim
-           cgc_output_list.append(task_gate_fusion_dnn)
-       
-       # 如果不是最后一层还需要更新shared expert下一层的输入，也就是当前层需要融合所有task和shared expert
+           experts = tf.keras.layers.Lambda(lambda xs: tf.stack(xs, axis=1))(cur_experts)  # [B, E, D]
+
+           gate_hidden = DNNs(task_gate_dnn_units, name=f"{leval_name}_task_{i}_gate")(input_list[i])
+           gate_weights = tf.keras.layers.Dense(fusion_expert_num, use_bias=False, activation='softmax')(gate_hidden)  # [B, E]
+
+           # 加权融合：einsum('be,bed->bd') == sum_e w_e * expert_e
+           fused = tf.keras.layers.Lambda(lambda x: tf.einsum('be,bed->bd', x[0], x[1]))([gate_weights, experts])
+           cgc_outputs.append(fused)
+
+       # 若非最后一层：共享门控融合所有任务专家与共享专家，作为下一层共享输入
        if not is_last:
-           cur_experts = list(itertools.chain.from_iterable(task_expert_list)) + shared_expert_list
+           # 展平所有任务的专家 + 共享专家
+           all_task_experts = [e for task in task_expert_list for e in task]
+           cur_experts = all_task_experts + shared_expert_list
+           experts_all = tf.keras.layers.Lambda(lambda xs: tf.stack(xs, axis=1))(cur_experts)  # [B, E_all, D]
            cur_expert_num = len(cur_experts)
-           expert_concat = tf.keras.layers.Lambda(lambda x: tf.stack(x, axis=1))(cur_experts) # None, cur_expert_num, dim
-           shared_gate_dnn = DNNs(shared_gate_dnn_units, name=f"{leval_name}_shared_gate")(input_list[-1])
-           shared_gate_dnn = tf.keras.layers.Dense(cur_expert_num, use_bias=False, activation='softmax')(shared_gate_dnn) # None, cur_expert_num
-           shared_gate = tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, -1))(shared_gate_dnn) # None, cur_expert_num, 1
-           shared_gate_fusion_output = tf.keras.layers.Lambda(lambda x: tf.reduce_sum(x[0] * x[1], axis=1, keepdims=False))([shared_gate, expert_concat])
-           cgc_output_list.append(shared_gate_fusion_output)
-       return cgc_output_list
+
+           shared_gate_hidden = DNNs(shared_gate_dnn_units, name=f"{leval_name}_shared_gate")(input_list[-1])
+           shared_gate_weights = tf.keras.layers.Dense(cur_expert_num, use_bias=False, activation='softmax')(shared_gate_hidden)  # [B, E_all]
+           shared_fused = tf.keras.layers.Lambda(lambda x: tf.einsum('be,bed->bd', x[0], x[1]))([shared_gate_weights, experts_all])
+           cgc_outputs.append(shared_fused)
+
+       return cgc_outputs
 
 CGC解决了知识分离的核心问题，但其本质是单层结构，表征学习深度有限。受深度神经网络逐层抽象特征的启发，PLE
 (Progressive Layered Extraction)
@@ -436,47 +446,39 @@ CGC解决了知识分离的核心问题，但其本质是单层结构，表征�
            shared_gate_dnn_units=[128, 64],
            task_tower_dnn_units=[128, 64],
            ):
+       # 1) 输入与嵌入：构建输入层/分组嵌入，拼接为 PLE 的共享输入
        input_layer_dict = build_input_layer(feature_columns)
-       # 构建特征嵌入表字典
-       group_embedding_feature_dict = build_group_feature_embedding_table_dict(feature_columns, input_layer_dict, prefix="embedding/")
-
-       # 连接不同组的嵌入向量作为各个网络的输入
+       group_embedding_feature_dict = build_group_feature_embedding_table_dict(
+           feature_columns, input_layer_dict, prefix="embedding/"
+       )
        dnn_inputs = concat_group_embedding(group_embedding_feature_dict, 'dnn')
 
+       # 2) 级联 PLE（CGC）层：每层包含“任务专家 + 共享专家 + 门控”，最后一层仅输出任务特征
        task_num = len(task_name_list)
-       ple_input_list = [dnn_inputs] * (task_num + 1)
+       ple_input_list = [dnn_inputs] * (task_num + 1)  # 前 task_num 为各任务输入，末尾为共享输入
        for i in range(ple_level_nums):
-           if i == ple_level_nums - 1:
-               cgc_output_list = cgc_net(ple_input_list, 
-                                           task_num, 
-                                           task_expert_num, 
-                                           shared_expert_num, 
-                                           task_expert_dnn_units,
-                                           shared_expert_dnn_units, 
-                                           task_gate_dnn_units,
-                                           shared_gate_dnn_units,
-                                           leval_name=f"cgc_level_{str(i)}", is_last=True) 
-           else:
-               cgc_output_list = cgc_net(ple_input_list, 
-                                           task_num, 
-                                           task_expert_num, 
-                                           shared_expert_num, 
-                                           task_expert_dnn_units,
-                                           shared_expert_dnn_units, 
-                                           task_gate_dnn_units,
-                                           shared_gate_dnn_units,
-                                           leval_name=f"cgc_level_{str(i)}",
-                                           is_last=False) 
-               ple_input_list = cgc_output_list
+           is_last = (i == ple_level_nums - 1)
+           ple_input_list = cgc_net(
+               ple_input_list,
+               task_num,
+               task_expert_num,
+               shared_expert_num,
+               task_expert_dnn_units,
+               shared_expert_dnn_units,
+               task_gate_dnn_units,
+               shared_gate_dnn_units,
+               leval_name=f"cgc_level_{i}",
+               is_last=is_last
+           )
 
-       # 不同任务融合多个专家的门控
+       # 3) 任务塔与输出：将各任务特征送入塔 DNN，得到每个任务的概率输出
        task_output_list = []
        for i in range(task_num):
-           task_output_logit = DNNs(task_tower_dnn_units + [1])(cgc_output_list[i])
-           task_output_prob = PredictLayer(name="task_" + task_name_list[i])(task_output_logit)
-           task_output_list.append(task_output_prob)
+           task_logit = DNNs(task_tower_dnn_units + [1])(ple_input_list[i])
+           task_prob = PredictLayer(name="task_" + task_name_list[i])(task_logit)
+           task_output_list.append(task_prob)
 
-       # 构建模型
+       # 4) 构建模型：输入为所有原始输入层，输出为各任务概率
        model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=task_output_list)
        return model
 
@@ -501,6 +503,6 @@ CGC解决了知识分离的核心问题，但其本质是单层结构，表征�
     +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
     |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   val_user_is_click |   val_user_is_like |   val_user_long_view |
     +================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+
-    |         0.5985 |        0.4461 |          0.4286 |      0.4911 |          0.5744 |         0.4388 |           0.4388 |        0.484 |                 928 |                530 |                  925 |
+    |         0.5975 |        0.4191 |          0.4474 |       0.488 |           0.574 |         0.4434 |           0.4561 |       0.4912 |                 928 |                530 |                  925 |
     +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 

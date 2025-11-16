@@ -332,6 +332,36 @@ Deep模型给了一个不错的思路。这个模型的想法很直接：既然�
 <p>Wide部分的关键在于其输入的特征向量<span class="math notranslate nohighlight">\(\mathbf{x}\)</span>。它不仅包含原始特征，更重要的是包含了大量<strong>人工设计的交叉特征（Cross-product
 Features）</strong>。交叉特征可以将多个独立的特征组合成一个新的特征，用于捕捉特定的共现模式。例如，在应用商店的推荐场景中，我们可以创建一个交叉特征<code class="docutils literal notranslate"><span class="pre">AND(installed_app=photo_editor,</span> <span class="pre">impression_app=filter_pack)</span></code>，它代表用户已经安装了“照片编辑器”应用，并且现在看到了“滤镜包”应用的推荐。</p>
 <p>通过这种方式，Wide部分能够直接、快速地学习到“照片编辑器用户对滤镜包应用有更高的安装意愿”这类强关联规则，正是“记忆能力”的直接体现。</p>
+<p><strong>核心代码</strong></p>
+<p>Wide部分的关键在于处理交叉特征。对于每一对需要交叉的特征，模型会创建一个专门的权重来记住它们的共现模式：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 遍历所有需要交叉的特征对</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cross_feature_columns</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cross_feature_columns</span><span class="p">)):</span>
+        <span class="n">fc_i</span> <span class="o">=</span> <span class="n">cross_feature_columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">fc_j</span> <span class="o">=</span> <span class="n">cross_feature_columns</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+        <span class="c1"># 获取两个特征的输入</span>
+        <span class="n">feat_i</span> <span class="o">=</span> <span class="n">input_layer_dict</span><span class="p">[</span><span class="n">fc_i</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>  <span class="c1"># [B, 1]</span>
+        <span class="n">feat_j</span> <span class="o">=</span> <span class="n">input_layer_dict</span><span class="p">[</span><span class="n">fc_j</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>  <span class="c1"># [B, 1]</span>
+
+        <span class="c1"># 为每个特征对创建独立的权重表</span>
+        <span class="n">cross_vocab_size</span> <span class="o">=</span> <span class="n">fc_i</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">*</span> <span class="n">fc_j</span><span class="o">.</span><span class="n">vocab_size</span>
+        <span class="n">cross_embedding</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span>
+            <span class="n">input_dim</span><span class="o">=</span><span class="n">cross_vocab_size</span><span class="p">,</span>
+            <span class="n">output_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># 标量权重，直接记住这对特征的影响</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;cross_</span><span class="si">{</span><span class="n">fc_i</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">fc_j</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 将特征对组合成单一索引并查找权重</span>
+        <span class="n">combined_index</span> <span class="o">=</span> <span class="n">feat_i</span> <span class="o">*</span> <span class="n">fc_j</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">+</span> <span class="n">feat_j</span>
+        <span class="n">cross_weight</span> <span class="o">=</span> <span class="n">cross_embedding</span><span class="p">(</span><span class="n">combined_index</span><span class="p">)</span>  <span class="c1"># 查表得到这对特征的权重</span>
+        <span class="n">cross_weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cross_weight</span><span class="p">)</span>
+
+<span class="c1"># 所有交叉特征权重相加</span>
+<span class="n">cross_logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add_n</span><span class="p">(</span><span class="n">cross_weights</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这段代码的设计体现了Wide部分的本质：为每个特征组合分配一个独立的权重，通过查表操作直接“记住”历史数据中的共现模式。</p>
 <p><strong>学习复杂关系：Deep部分</strong></p>
 <p>Deep部分是一个标准的前馈神经网络（DNN），它负责模型的“泛化能力”。与Wide部分依赖人工特征工程不同，Deep部分可以自动学习特征之间的高阶、非线性关系。</p>
 <p>它的工作流程如下：首先，对于那些高维稀疏的类别特征（如用户ID、物品ID），通过一个<strong>嵌入层（Embedding
@@ -340,6 +370,31 @@ Layer）</strong>将它们映射为低维、稠密的向量。这些嵌入向量
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-1-wide-and-deep-1">
 <span class="eqno">(3.1.2)<a class="headerlink" href="#equation-chapter-2-ranking-1-wide-and-deep-1" title="Permalink to this equation">¶</a></span>\[a^{(l+1)}=f(W^{(l)}a^{(l)}+b^{(l)})\]</div>
 <p>其中，<span class="math notranslate nohighlight">\(a^{(l)}\)</span>是第<span class="math notranslate nohighlight">\(l\)</span>层的激活值，<span class="math notranslate nohighlight">\(W^{(l)}\)</span>和<span class="math notranslate nohighlight">\(b^{(l)}\)</span>是该层的权重和偏置，<span class="math notranslate nohighlight">\(f\)</span>是激活函数（如ReLU）。通过逐层抽象，DNN能够发掘出数据中隐藏的复杂模式，从而对未曾见过的特征组合也能做出合理的预测。</p>
+<p><strong>核心代码</strong></p>
+<p>Deep部分的实现分为两个关键步骤：首先将类别特征映射为稠密向量，然后通过多层神经网络学习高阶特征交互：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. 特征嵌入：将稀疏的类别特征转换为稠密向量</span>
+<span class="n">group_feature_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">group_name</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">group_embedding_feature_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">group_feature_dict</span><span class="p">[</span><span class="n">group_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span>
+        <span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="n">group_name</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>  <span class="c1"># B x (N * D) - 拼接所有特征的嵌入向量</span>
+
+<span class="c1"># 2. 深度神经网络：逐层学习特征的非线性组合</span>
+<span class="n">deep_logits</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">group_name</span><span class="p">,</span> <span class="n">group_feature</span> <span class="ow">in</span> <span class="n">group_feature_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="c1"># 构建多层神经网络</span>
+    <span class="n">deep_out</span> <span class="o">=</span> <span class="n">DNNs</span><span class="p">(</span>
+        <span class="n">units</span><span class="o">=</span><span class="n">dnn_units</span><span class="p">,</span>  <span class="c1"># 例如 [64, 32]</span>
+        <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">,</span>  <span class="c1"># ReLU激活函数</span>
+        <span class="n">dropout_rate</span><span class="o">=</span><span class="n">dnn_dropout_rate</span>
+    <span class="p">)(</span><span class="n">group_feature</span><span class="p">)</span>
+
+    <span class="c1"># 输出层：将深度特征映射为预测分数</span>
+    <span class="n">deep_logit</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">)(</span><span class="n">deep_out</span><span class="p">)</span>
+    <span class="n">deep_logits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">deep_logit</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这种设计使得模型能够自动学习特征的语义表示，例如将“物品A”相关的特征映射到向量空间的相近位置，从而实现对未见过的特征组合的泛化预测。</p>
 <p><strong>两者结合</strong></p>
 <p>Wide &amp;
 Deep模型通过联合训练，将两部分的输出结合起来进行最终的预测。其预测概率如下：</p>
@@ -356,6 +411,28 @@ Deep模型通过联合训练，将两部分的输出结合起来进行最终的�
 <span id="id3">(<a class="reference internal" href="../chapter_references/references.html#id69" title="Duchi, J., Hazan, E., &amp; Singer, Y. (2011). Adaptive subgradient methods for online learning and stochastic optimization. Journal of machine learning research, 12(7).">Duchi <em>et al.</em>, 2011</a>)</span> 或Adam <span id="id4">(<a class="reference internal" href="../chapter_references/references.html#id70" title="Kingma, D. P., &amp; Ba, J. (2014). Adam: a method for stochastic optimization. arXiv preprint arXiv:1412.6980.">Kingma and Ba, 2014</a>)</span>
 这样的优化器。</p></li>
 </ul>
+<p><strong>核心代码</strong></p>
+<p>联合训练的核心是将Wide和Deep两部分的输出进行融合：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Wide部分：线性特征 + 交叉特征</span>
+<span class="n">linear_logit</span> <span class="o">=</span> <span class="n">get_linear_logits</span><span class="p">(</span><span class="n">input_layer_dict</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
+<span class="n">cross_logit</span> <span class="o">=</span> <span class="n">get_cross_logits</span><span class="p">(</span><span class="n">input_layer_dict</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
+
+<span class="c1"># Deep部分：多个特征组的深度网络输出</span>
+<span class="n">deep_logits</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">group_name</span><span class="p">,</span> <span class="n">group_feature</span> <span class="ow">in</span> <span class="n">group_feature_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">deep_out</span> <span class="o">=</span> <span class="n">DNNs</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">dnn_units</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="o">=</span><span class="n">dnn_dropout_rate</span><span class="p">)(</span>
+        <span class="n">group_feature</span>
+    <span class="p">)</span>
+    <span class="n">deep_logit</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">)(</span><span class="n">deep_out</span><span class="p">)</span>
+    <span class="n">deep_logits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">deep_logit</span><span class="p">)</span>
+
+<span class="c1"># 联合训练：将Wide和Deep的输出相加</span>
+<span class="n">wide_deep_logits</span> <span class="o">=</span> <span class="n">add_tensor_func</span><span class="p">(</span><span class="n">deep_logits</span> <span class="o">+</span> <span class="p">[</span><span class="n">linear_logit</span><span class="p">,</span> <span class="n">cross_logit</span><span class="p">])</span>
+
+<span class="c1"># 最终预测：通过sigmoid函数输出点击概率</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;sigmoid&quot;</span><span class="p">)(</span><span class="n">wide_deep_logits</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Wide &amp;
 Deep模型的意义不只是提供了一个新的网络结构，更重要的是给出了一个思路：怎么把记忆能力和泛化能力结合起来。该模型不仅成为了许多推荐业务的基线模型，更为后续精排模型的发展提供了重要的参考。</p>
 <p><strong>代码实践</strong></p>
@@ -367,7 +444,7 @@ Deep模型的意义不只是提供了一个新的网络结构，更重要的是�
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+------------+</span>
 <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">val_user</span> <span class="o">|</span>
 <span class="o">+========+========+============+</span>
-<span class="o">|</span> <span class="mf">0.6001</span> <span class="o">|</span> <span class="mf">0.5766</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="mf">0.6038</span> <span class="o">|</span> <span class="mf">0.5754</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+--------+--------+------------+</span>
 </pre></div>
 </div>

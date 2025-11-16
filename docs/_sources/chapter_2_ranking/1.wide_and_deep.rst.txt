@@ -40,6 +40,44 @@ Features）**\ 。交叉特征可以将多个独立的特征组合成一个新�
 
 通过这种方式，Wide部分能够直接、快速地学习到“照片编辑器用户对滤镜包应用有更高的安装意愿”这类强关联规则，正是“记忆能力”的直接体现。
 
+**核心代码**
+
+Wide部分的关键在于处理交叉特征。对于每一对需要交叉的特征，模型会创建一个专门的权重来记住它们的共现模式：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 遍历所有需要交叉的特征对
+   for i in range(len(cross_feature_columns)):
+       for j in range(i + 1, len(cross_feature_columns)):
+           fc_i = cross_feature_columns[i]
+           fc_j = cross_feature_columns[j]
+           
+           # 获取两个特征的输入
+           feat_i = input_layer_dict[fc_i.name]  # [B, 1]
+           feat_j = input_layer_dict[fc_j.name]  # [B, 1]
+           
+           # 为每个特征对创建独立的权重表
+           cross_vocab_size = fc_i.vocab_size * fc_j.vocab_size
+           cross_embedding = Embedding(
+               input_dim=cross_vocab_size,
+               output_dim=1,  # 标量权重，直接记住这对特征的影响
+               name=f"cross_{fc_i.name}_{fc_j.name}"
+           )
+           
+           # 将特征对组合成单一索引并查找权重
+           combined_index = feat_i * fc_j.vocab_size + feat_j
+           cross_weight = cross_embedding(combined_index)  # 查表得到这对特征的权重
+           cross_weights.append(cross_weight)
+
+   # 所有交叉特征权重相加
+   cross_logits = tf.add_n(cross_weights)
+
+这段代码的设计体现了Wide部分的本质：为每个特征组合分配一个独立的权重，通过查表操作直接“记住”历史数据中的共现模式。
+
 **学习复杂关系：Deep部分**
 
 Deep部分是一个标准的前馈神经网络（DNN），它负责模型的“泛化能力”。与Wide部分依赖人工特征工程不同，Deep部分可以自动学习特征之间的高阶、非线性关系。
@@ -52,6 +90,39 @@ Layer）**\ 将它们映射为低维、稠密的向量。这些嵌入向量能�
 .. math::  a^{(l+1)}=f(W^{(l)}a^{(l)}+b^{(l)}) 
 
 其中，\ :math:`a^{(l)}`\ 是第\ :math:`l`\ 层的激活值，\ :math:`W^{(l)}`\ 和\ :math:`b^{(l)}`\ 是该层的权重和偏置，\ :math:`f`\ 是激活函数（如ReLU）。通过逐层抽象，DNN能够发掘出数据中隐藏的复杂模式，从而对未曾见过的特征组合也能做出合理的预测。
+
+**核心代码**
+
+Deep部分的实现分为两个关键步骤：首先将类别特征映射为稠密向量，然后通过多层神经网络学习高阶特征交互：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 1. 特征嵌入：将稀疏的类别特征转换为稠密向量
+   group_feature_dict = {}
+   for group_name, _ in group_embedding_feature_dict.items():
+       group_feature_dict[group_name] = concat_group_embedding(
+           group_embedding_feature_dict, group_name, axis=1, flatten=True
+       )  # B x (N * D) - 拼接所有特征的嵌入向量
+
+   # 2. 深度神经网络：逐层学习特征的非线性组合
+   deep_logits = []
+   for group_name, group_feature in group_feature_dict.items():
+       # 构建多层神经网络
+       deep_out = DNNs(
+           units=dnn_units,  # 例如 [64, 32]
+           activation="relu",  # ReLU激活函数
+           dropout_rate=dnn_dropout_rate
+       )(group_feature)
+       
+       # 输出层：将深度特征映射为预测分数
+       deep_logit = tf.keras.layers.Dense(1, activation=None)(deep_out)
+       deep_logits.append(deep_logit)
+
+这种设计使得模型能够自动学习特征的语义表示，例如将“物品A”相关的特征映射到向量空间的相近位置，从而实现对未见过的特征组合的泛化预测。
 
 **两者结合**
 
@@ -72,6 +143,35 @@ Deep模型通过联合训练，将两部分的输出结合起来进行最终的�
 -  **Deep部分**\ 的参数是稠密的，更适合使用像AdaGrad
    :cite:`duchi2011adaptive` 或Adam :cite:`kingma2014adam`
    这样的优化器。
+
+**核心代码**
+
+联合训练的核心是将Wide和Deep两部分的输出进行融合：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # Wide部分：线性特征 + 交叉特征
+   linear_logit = get_linear_logits(input_layer_dict, feature_columns)
+   cross_logit = get_cross_logits(input_layer_dict, feature_columns)
+
+   # Deep部分：多个特征组的深度网络输出
+   deep_logits = []
+   for group_name, group_feature in group_feature_dict.items():
+       deep_out = DNNs(units=dnn_units, activation="relu", dropout_rate=dnn_dropout_rate)(
+           group_feature
+       )
+       deep_logit = tf.keras.layers.Dense(1, activation=None)(deep_out)
+       deep_logits.append(deep_logit)
+
+   # 联合训练：将Wide和Deep的输出相加
+   wide_deep_logits = add_tensor_func(deep_logits + [linear_logit, cross_logit])
+
+   # 最终预测：通过sigmoid函数输出点击概率
+   output = tf.keras.layers.Dense(1, activation="sigmoid")(wide_deep_logits)
 
 Wide &
 Deep模型的意义不只是提供了一个新的网络结构，更重要的是给出了一个思路：怎么把记忆能力和泛化能力结合起来。该模型不仅成为了许多推荐业务的基线模型，更为后续精排模型的发展提供了重要的参考。
@@ -99,6 +199,6 @@ Deep模型的意义不只是提供了一个新的网络结构，更重要的是�
     +--------+--------+------------+
     |    auc |   gauc |   val_user |
     +========+========+============+
-    | 0.6001 | 0.5766 |        928 |
+    | 0.6038 | 0.5754 |        928 |
     +--------+--------+------------+
 

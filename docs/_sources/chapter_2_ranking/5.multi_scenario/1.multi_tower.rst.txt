@@ -73,106 +73,59 @@ HMoE核心代码如下，其中包括了是否共享门控和融合打分权重�
 
 .. code:: python
 
-   def build_hmoe_model(feature_columns,
-                        num_domains,
-                        domain_feature_name,
-                        share_gate=False,
-                        share_domain_w=False,
-                        shared_expert_nums=5,
-                        shared_expert_dnn_units=[256,128],
-                        gate_dnn_units=[256,128],
-                        domain_tower_units=[128,64],
-                        domain_weight_units=[128,64],
-                        linear_logits=False
-                        ):
-       # 构建输入层字典
-       input_layer_dict = build_input_layer(feature_columns)
-       domain_input = input_layer_dict[domain_feature_name]
-       # 构建特征嵌入表字典
-       group_embedding_feature_dict = build_group_feature_embedding_table_dict(feature_columns, input_layer_dict, prefix="embedding/")
+   # 构建dnn的输入
+   dnn_inputs = concat_group_embedding(group_embedding_feature_dict, 'dnn')
 
-       # 连接不同组的嵌入向量作为各个网络的输入
-       dnn_inputs = concat_group_embedding(group_embedding_feature_dict, 'dnn')
+   # 创建多个专家
+   expert_output_list = [
+       DNNs(shared_expert_dnn_units, name=f"expert_{i}")(dnn_inputs)
+       for i in range(shared_expert_nums)
+   ]
+   expert_concat = tf.keras.layers.Lambda(lambda x: tf.stack(x, axis=1))(expert_output_list)  # (None, expert_num, dims)
 
-       # 创建多个专家
-       expert_output_list = []
-       for i in range(shared_expert_nums):
-           expert_output = DNNs(shared_expert_dnn_units, name=f"expert_{str(i)}")(dnn_inputs)
-           expert_output_list.append(expert_output)
-       expert_concat = tf.keras.layers.Lambda(lambda x: tf.stack(x, axis=1))(expert_output_list) # (None, expert_num, dims)
+   # 每域独立 Gate 融合专家输出
+   domain_tower_input_list = []
+   for i in range(num_domains):
+       gate_output = DNNs(gate_dnn_units, name=f"gate_{i}")(dnn_inputs)
+       gate_output = tf.keras.layers.Dense(shared_expert_nums, use_bias=False, activation='softmax', name=f"gate_{i}_softmax")(gate_output)
+       gate_output = tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1))(gate_output)  # (None, expert_num, 1)
+       gate_expert_output = tf.keras.layers.Lambda(lambda x: x[0] * x[1])([gate_output, expert_concat])
+       gate_expert_output = tf.keras.layers.Lambda(lambda x: tf.reduce_sum(x, axis=1, keepdims=False))(gate_expert_output)
+       domain_tower_input_list.append(gate_expert_output)
 
-       if share_gate:
-           # 共享Gate
-           domain_tower_input_list = []
-           gate_output = DNNs(gate_dnn_units, name=f"shared_gates")(dnn_inputs) 
-           gate_output = tf.keras.layers.Dense(shared_expert_nums, use_bias=False, activation='softmax', name=f"domain_{i}_softmax")(gate_output)
-           gate_output = tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1))(gate_output) # (None,expert_num, 1)
-           gate_expert_output = tf.keras.layers.Lambda(lambda x: x[0] * x[1])([gate_output, expert_concat])
-           gate_expert_output = tf.keras.layers.Lambda(lambda x: tf.reduce_sum(x, axis=1, keepdims=False))(gate_expert_output)
-           for _ in range(num_domains):
-               domain_tower_input_list.append(gate_expert_output)
-       else:
-           domain_tower_input_list = []
-           for i in range(num_domains):
-               gate_output = DNNs(gate_dnn_units, name=f"domain_{str(i)}_gates")(dnn_inputs) 
-               gate_output = tf.keras.layers.Dense(shared_expert_nums, use_bias=False, activation='softmax', name=f"domain_{i}_softmax")(gate_output)
-               gate_output = tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1))(gate_output) # (None,expert_num, 1)
-               gate_expert_output = tf.keras.layers.Lambda(lambda x: x[0] * x[1])([gate_output, expert_concat])
-               gate_expert_output = tf.keras.layers.Lambda(lambda x: tf.reduce_sum(x, axis=1, keepdims=False))(gate_expert_output)
-               for _ in range(num_domains):
-                   domain_tower_input_list.append(gate_expert_output)
+   # 定义每个域的塔（Tower）
+   domain_tower_output_list = []
+   for i in range(num_domains):
+       domain_dnn_input = domain_tower_input_list[i]
+       task_output = DNNs(domain_tower_units, name=f"tower_{i}")(domain_dnn_input)
+       domain_tower_output_list.append(task_output)
 
-       # 定义domain tower
-       domain_tower_output_list = []
-       for i in range(num_domains):
-           domain_dnn_input = domain_tower_input_list[i]
-           task_output = DNNs(domain_tower_units)(domain_dnn_input)
-           domain_tower_output_list.append(task_output)
+   # 域间权重（参数化，可选预处理）
+   if domain_weight_units is not None:
+       domain_weight_input = DNNs(domain_weight_units, name="domain_weight_dnn")(dnn_inputs)
+   else:
+       domain_weight_input = dnn_inputs
+   domain_weight = tf.keras.layers.Dense(num_domains, activation='softmax', name="domain_weight")(domain_weight_input)  # (None, num_domains)
 
-       # 定义domain权重
-       domain_weight_list = []
-       if share_domain_w:
-           # 共享domain权重
-           domain_weight = DNNs(domain_weight_units)(dnn_inputs)
-           for i in range(num_domains):
-              domain_weight_list.append(domain_weight) 
-       else:
-           for i in range(num_domains):
-               domain_weight = DNNs(domain_weight_units)(dnn_inputs)
-               domain_weight = tf.keras.layers.Lambda(lambda x: tf.nn.softmax(x, axis=1))(domain_weight)
-               domain_weight_list.append(domain_weight)
+   # 融合domain信息（own + cross with stop_gradient）
+   mixed_output_list = []
+   for i in range(num_domains):
+       wi = tf.keras.layers.Lambda(lambda w: w[:, i:i+1])(domain_weight)
+       weighted_output = tf.keras.layers.Lambda(lambda x: x[0] * x[1])([domain_tower_output_list[i], wi])
+       for j in range(num_domains):
+           if i == j:
+               continue
+           grad_output = tf.keras.layers.Lambda(lambda x: tf.stop_gradient(x))(domain_tower_output_list[j])
+           wj = tf.keras.layers.Lambda(lambda w: w[:, j:j+1])(domain_weight)
+           weighted_output = tf.keras.layers.Add()([
+               weighted_output,
+               tf.keras.layers.Multiply()([wj, grad_output])
+           ])
+       mixed_output_list.append(weighted_output)
 
-       # 融合domain信息
-       domain_output_list = []
-       for i in range(num_domains):
-           domain_weight = domain_weight_list[i]
-           domain_tower_output = domain_tower_output_list[i]
-           weighted_output = tf.keras.layers.Lambda(lambda x: x[0] * x[1])([domain_weight, domain_tower_output])
-           for j in  range(num_domains):
-               if i == j:
-                   continue
-               grad_output = tf.keras.layers.Lambda(lambda x: tf.stop_gradient(x))(domain_tower_output_list[j])
-               weighted_output = tf.keras.layers.Add()([
-                   weighted_output,
-                   tf.keras.layers.Multiply()([domain_weight_list[i][:, j:j+1], grad_output])
-               ])
-           dummy_domain = tf.keras.layers.Lambda(lambda x: tf.ones_like(x[0]) * tf.cast(x[1], tf.int32))([domain_input, i])
-           domain_mask = tf.keras.layers.Lambda(lambda x: tf.squeeze(tf.equal(x[0], x[1]), axis=-1))([domain_input, dummy_domain])
-           domain_output = tf.keras.layers.Lambda(lambda x: tf.boolean_mask(x[0], x[1]))([weighted_output, domain_mask])
-           domain_output_list.append(domain_output)
-       # 将所有domain的数据拼接成batch
-       final_domain_output = tf.keras.layers.Concatenate(axis=0)(domain_output_list)
-       dnn_logits = PredictLayer(activation=None, name="dnn_logits")(final_domain_output)
-
-       if linear_logits:
-           linear_logits = get_linear_logits(input_layer_dict, feature_columns)
-           final_logits = dnn_logits + linear_logits
-       else:
-           final_logits = dnn_logits
-
-       # 构建模型
-       model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=final_logits)
-       return model
+   # 将所有domain的数据拼接成batch并输出 logits
+   final_domain_output = tf.keras.layers.Concatenate(axis=0)(mixed_output_list)
+   dnn_logits = PredictLayer(activation=None, name="dnn_logits")(final_domain_output)
 
 **代码实践**
 
@@ -197,7 +150,7 @@ HMoE核心代码如下，其中包括了是否共享门控和融合打分权重�
     +--------+--------+------------+
     |    auc |   gauc |   val_user |
     +========+========+============+
-    | 0.5814 | 0.5475 |        217 |
+    | 0.5972 | 0.5471 |        217 |
     +--------+--------+------------+
 
 
@@ -262,6 +215,10 @@ STAR Topology Fully-Connected Network的具体实现如下：
 .. code:: python
 
    class StarTopologyFCN(tf.keras.layers.Layer):
+       """
+       星型拓扑 FCN（简化版）
+       - 核心思想：中心共享参数 + 各域的轻量适配器（增量参数），
+       """
        def __init__(self,
                     num_domain,
                     hidden_units,
@@ -269,67 +226,76 @@ STAR Topology Fully-Connected Network的具体实现如下：
                     dropout=0.,
                     l2_reg=0.,
                     **kwargs):
-           self.num_domain = num_domain
-           self.hidden_units = hidden_units
-           self.activation_list = [tf.keras.layers.Activation(activation) for _ in hidden_units]
-           self.dropout_list = [tf.keras.layers.Dropout(dropout) for _ in hidden_units]
-           self.l2_reg = l2_reg
            super(StarTopologyFCN, self).__init__( **kwargs)
+           self.num_domain = num_domain
+           self.hidden_units = list(hidden_units)
+           self.activation = tf.keras.activations.get(activation)
+           self.dropout = tf.keras.layers.Dropout(dropout)
+           self.l2_reg = l2_reg
 
        def build(self, input_shape):
+           # inputs 形状为 (x, domain_index)，这里只取特征 x 的维度
            input_shape = input_shape[0]
+           input_dim = input_shape[-1]
+           layer_dims = [input_dim] + self.hidden_units
 
-           self.shared_bias = [
+           # 共享参数（星型中心）：每一层的共享权重 / 共享偏置
+           self.shared_kernels = [
                self.add_weight(
-                   name=f"shared_bias_{i}",
-                   shape=[1, i],
-                   initializer=tf.keras.initializers.Zeros(),
-                   trainable=True
-               ) for i in self.hidden_units
-           ]
-           self.domain_bias_list = [
-               tf.keras.layers.Embedding(
-                   self.num_domain,
-                   output_dim=i,
-                   embeddings_initializer=tf.keras.initializers.Zeros()
-               ) for i in self.hidden_units
-           ]
-
-           hidden_units = self.hidden_units.copy()
-           hidden_units.insert(0, input_shape[-1])
-           self.shared_weights = [
-               self.add_weight(
-                   name=f"shared_weight_{i}",
-                   shape=[1, hidden_units[i], hidden_units[i+1]],
+                   name=f"shared_kernel_{i}",
+                   shape=(layer_dims[i], layer_dims[i+1]),
                    initializer="glorot_uniform",
                    regularizer=tf.keras.regularizers.l2(self.l2_reg),
-                   trainable=True
-               ) for i in range(len(hidden_units) - 1)
+                   trainable=True,
+               ) for i in range(len(self.hidden_units))
            ]
-           self.domain_weights_list = [
+           self.shared_biases = [
+               self.add_weight(
+                   name=f"shared_bias_{i}",
+                   shape=(layer_dims[i+1],),
+                   initializer="zeros",
+                   trainable=True,
+               ) for i in range(len(self.hidden_units))
+           ]
+
+           # 域适配器（辐射边）：用 Embedding 为每个域生成增量参数（kernel / bias）
+           self.domain_kernel_embs = [
                tf.keras.layers.Embedding(
                    self.num_domain,
-                   hidden_units[i] * hidden_units[i + 1],
+                   layer_dims[i] * layer_dims[i+1],
                    embeddings_initializer="glorot_uniform",
-                   embeddings_regularizer=tf.keras.regularizers.l2(self.l2_reg)
-               ) for i in range(len(hidden_units) - 1)
+                   embeddings_regularizer=tf.keras.regularizers.l2(self.l2_reg),
+               ) for i in range(len(self.hidden_units))
+           ]
+           self.domain_bias_embs = [
+               tf.keras.layers.Embedding(
+                   self.num_domain,
+                   layer_dims[i+1],
+                   embeddings_initializer="zeros",
+               ) for i in range(len(self.hidden_units))
            ]
 
        def call(self, inputs, training=None):
-           inputs, domain_index = inputs
-           output = tf.expand_dims(inputs, axis=1)
+           # x: [B, Din]；domain_index: [B]
+           x, domain_index = inputs
            for i in range(len(self.hidden_units)):
-               domain_weight = tf.reshape(self.domain_weights_list[i](domain_index),
-                                          [-1] + self.shared_weights[i].shape.as_list()[1:])
-               weight = self.shared_weights[i] * domain_weight
-               domain_bias = tf.reshape(self.domain_bias_list[i](domain_index), [-1] + self.shared_bias[i].shape.as_list()[1:])
-               bias = self.shared_bias[i] + domain_bias
+               # 取出域增量参数并重塑到矩阵形状
+               delta_w = self.domain_kernel_embs[i](domain_index)                      # [B, Din*Dout]
+               delta_w = tf.reshape(delta_w, (-1,) + self.shared_kernels[i].shape.as_list())  # [B, Din, Dout]
+               # 星型融合：共享权重 + 域增量（也可改为乘法，视实验而定）
+               w = self.shared_kernels[i] + delta_w                                    # [B, Din, Dout]
+               delta_b = self.domain_bias_embs[i](domain_index)                        # [B, Dout]
+               b = self.shared_biases[i] + delta_b                                     # [B, Dout]
 
-               fc = tf.matmul(output, weight) + tf.expand_dims(bias, 1)
-               output = self.activation_list[i](fc, training=training)
-               output = self.dropout_list[i](output, training=training)
+               # 线性层（按样本/域使用其专属参数）
+               x = tf.expand_dims(x, axis=1)                                           # [B, 1, Din]
+               x = tf.matmul(x, w) + tf.expand_dims(b, 1)                              # [B, 1, Dout]
+               x = tf.squeeze(x, axis=1)                                               # [B, Dout]
 
-           return tf.squeeze(output, axis=1)
+               # 激活 + Dropout（保持轻量）
+               x = self.activation(x)
+               x = self.dropout(x, training=training)
+           return x
 
 **Partitioned Normalization**
 
@@ -365,71 +331,44 @@ Partitioned Normalization的具体实现如下：
 .. code:: python
 
    class PartitionedNormalization(tf.keras.layers.Layer):
-       def __init__(self,
-                    num_domain,
-                    name=None,
-                    **kwargs):
-
-           self.bn_list = [tf.keras.layers.BatchNormalization(center=False, scale=False, name=f"bn_{i}") for i in range(num_domain)]
-
+       """
+       领域分区归一化（简化版）
+       - 核心思想：按 domain 将 batch 切分，对每个子批次单独做 BN，
+         再把结果写回原位置，避免跨域统计混淆。
+       - 实现要点：掩码取出 -> 逐域 BN -> scatter 回填。
+       """
+       def __init__(self, num_domain, name=None, **kwargs):
            super(PartitionedNormalization, self).__init__(name=name)
+           self.num_domain = num_domain
+           # 每个域一个 BN（带缩放与中心化），更直观体现“分区归一化”
+           self.bn_list = [
+               tf.keras.layers.BatchNormalization(center=True, scale=True, name=f"bn_{i}")
+               for i in range(num_domain)
+           ]
 
-       def build(self, input_shape):
-           assert len(input_shape) == 2 and len(input_shape[1]) <= 2
-           dim = input_shape[0][-1]
-
-           self.global_gamma = self.add_weight(
-               name="global_gamma",
-               shape=[dim],
-               initializer=tf.keras.initializers.Constant(0.5),
-               trainable=True
-           )
-           self.global_beta = self.add_weight(
-               name="global_beta",
-               shape=[dim],
-               initializer=tf.keras.initializers.Zeros(),
-               trainable=True
-           )
-           self.domain_gamma = self.add_weight(
-                   name="domain_gamma",
-                   shape=[len(self.bn_list), dim],
-                   initializer=tf.keras.initializers.Constant(0.5),
-                   trainable=True
-               )
-           self.domain_beta = self.add_weight(
-                   name="domain_beta",
-                   shape=[len(self.bn_list), dim],
-                   initializer=tf.keras.initializers.Zeros(),
-                   trainable=True
-               )
-
-       def generate_grid_tensor(self, indices, dim):
+       def _grid_indices(self, rows, dim):
            y = tf.range(dim)
-           x_grid, y_grid = tf.meshgrid(indices, y)
+           x_grid, y_grid = tf.meshgrid(rows, y)
            return tf.transpose(tf.stack([x_grid, y_grid], axis=-1), [1, 0, 2])
 
        def call(self, inputs, training=None):
-           inputs, domain_index = inputs
-           domain_index = tf.cast(tf.reshape(domain_index, [-1]), "int32")
-           dim = inputs.shape.as_list()[-1]
+           # x: [B, D]；domain_index: [B]
+           x, domain_index = inputs
+           domain_index = tf.cast(tf.reshape(domain_index, [-1]), tf.int32)
+           dim = tf.shape(x)[-1]
 
-           output = inputs
-           # compute each domain's BN individually
+           y = x
            for i, bn in enumerate(self.bn_list):
                mask = tf.equal(domain_index, i)
-               single_bn = self.bn_list[i](tf.boolean_mask(inputs, mask), training=training)
-               single_bn = (self.global_gamma + self.domain_gamma[i]) * single_bn + (self.global_beta + self.domain_beta[i])
+               def update():
+                   xi = tf.boolean_mask(x, mask)                    # 取该域样本
+                   yi = bn(xi, training=training)                   # 用该域统计做 BN
+                   rows = tf.boolean_mask(tf.range(tf.shape(x)[0]), mask)
+                   grid = self._grid_indices(rows, dim)             # 生成 (row, col) 坐标
+                   return tf.reshape(tf.tensor_scatter_nd_update(y, grid, yi), tf.shape(y))
 
-               # get current domain samples' indices
-               indices = tf.boolean_mask(tf.range(tf.shape(inputs)[0]), mask)
-               indices = self.generate_grid_tensor(indices, dim)
-               output = tf.cond(
-                   tf.reduce_any(mask),
-                   lambda: tf.reshape(tf.tensor_scatter_nd_update(output, indices, single_bn), [-1, dim]),
-                   lambda: output
-               )
-
-           return output
+               y = tf.cond(tf.reduce_any(mask), update, lambda: y)
+           return y
 
 **辅助网络**
 
@@ -449,50 +388,35 @@ STAR模型的实现代码如下：
 
 .. code:: python
 
-   def build_star_model(
-                       feature_columns, 
-                       num_domains, 
-                       domain_feature_name,
-                       star_dnn_units=[128, 64],
-                       aux_dnn_units=[128, 64],
-                       star_fcn_activation='relu',
-                       dropout=0.2,
-                       l2_reg=1e-5,
-                       linear_logits=False):
-       # 构建输入层字典
-       input_layer_dict = build_input_layer(feature_columns)
-       domain_input = input_layer_dict[domain_feature_name]
+   # 核心思路：主干 Star FCN + 辅助 DNN，两者按域归一化后融合
+   # 1) 输入层：构建所有特征的输入，并取出域特征（用于分域）
+   input_layer_dict = build_input_layer(feature_columns)
+   domain_input = input_layer_dict[domain_feature_name]
 
-       # 构建特征嵌入表字典
-       group_embedding_feature_dict = build_group_feature_embedding_table_dict(feature_columns, input_layer_dict, prefix="embedding/")
+   # 2) 获取 dnn 组与 domain 组的表示
+   dnn_inputs = concat_group_embedding(group_embedding_feature_dict, 'dnn')          # [B, dnn_dim]
+   domain_embeddings = concat_group_embedding(group_embedding_feature_dict, 'domain') # [B, domain_dim]
 
-       # 连接不同组的嵌入向量作为各个网络的输入
-       domain_embeddings = concat_group_embedding(group_embedding_feature_dict, 'domain')
-       dnn_inputs = concat_group_embedding(group_embedding_feature_dict, 'dnn')
-
-       fcn_inputs = PartitionedNormalization(num_domain=num_domains, name="fcn_pn_layer")([dnn_inputs, domain_input])
-
-       fcn_output = StarTopologyFCN(num_domains, star_dnn_units, star_fcn_activation,
+   # 3) 主干分支（Star FCN）：对 dnn 
+   fcn_inputs = PartitionedNormalization(num_domain=num_domains, name="fcn_pn_layer")(
+       [dnn_inputs, domain_input]
+   )
+   fcn_output = StarTopologyFCN(num_domains, star_dnn_units, star_fcn_activation,
                                    dropout, l2_reg, name="star_fcn_layer")([fcn_inputs, domain_input])
+   fcn_logit = PredictLayer(activation=None, name='fcn_logits')(fcn_output)
 
-       fcn_logit = PredictLayer(activation=None, name='fcn_logits')(fcn_output)
-       
-       aux_inputs = concat_func([domain_embeddings, dnn_inputs], axis=-1)
-       aux_inputs = PartitionedNormalization(num_domain=num_domains, name="aux_pn_layer")([aux_inputs, domain_input])
+   # 4) 辅助分支（Aux DNN）：将域嵌入与 dnn 输入拼接，进行轻量 DNN
+   aux_inputs = concat_func([domain_embeddings, dnn_inputs], axis=-1)                 # [B, domain_dim + dnn_dim]
+   aux_inputs = PartitionedNormalization(num_domain=num_domains, name="aux_pn_layer")(
+       [aux_inputs, domain_input]
+   )
+   aux_output = DNNs(aux_dnn_units, dropout_rate=dropout)(aux_inputs)
+   aux_logit = PredictLayer(activation=None, name='aux_logits')(aux_output)
 
-       aux_output = DNNs(aux_dnn_units, dropout_rate=dropout)(aux_inputs)
-       aux_logit = PredictLayer(activation=None, name='aux_logits')(aux_output)
+   # 5) 融合：主干与辅助分支的 logit 相加，得到最终的表征
+   final_logits = add_tensor_func([fcn_logit, aux_logit])
 
-       if linear_logits:
-           linear_logits = get_linear_logits(input_layer_dict, feature_columns)
-           final_logits = add_tensor_func([linear_logits, fcn_logit, aux_logit])
-       else:
-           final_logits = add_tensor_func([fcn_logit, aux_logit])
-
-       final_prediction = PredictLayer(activation=None, name='final_prediction')(final_logits)
-       
-       model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=final_prediction)
-       return model
+   final_prediction = PredictLayer(activation=None, name='final_prediction')(final_logits)
 
 **代码实践**
 
@@ -515,6 +439,6 @@ STAR模型的实现代码如下：
     +--------+--------+------------+
     |    auc |   gauc |   val_user |
     +========+========+============+
-    | 0.6446 | 0.6142 |        693 |
+    | 0.6648 | 0.6244 |        693 |
     +--------+--------+------------+
 

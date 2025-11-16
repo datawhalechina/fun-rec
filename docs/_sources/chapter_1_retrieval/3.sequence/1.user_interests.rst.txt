@@ -104,6 +104,52 @@ Interest，B2I）动态路由：将用户的历史行为视为行为胶囊，将
 :math:`\{\boldsymbol{u}_j, j=1,...,K_{u}^\prime\}`
 作为该用户的多兴趣表示。
 
+**核心代码**
+
+MIND的核心在于胶囊网络的动态路由实现。在每次迭代中，模型首先通过softmax计算路由权重，然后通过双线性变换聚合行为向量，最后使用squash函数进行非线性压缩：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 动态路由的核心循环
+   for i in range(self.iteration_times):  # 通常迭代3次
+       # 1. 计算路由权重 w_ij
+       routing_logits_with_padding = tf.where(mask, mask_routing_logits, pad)
+       weight = tf.nn.softmax(routing_logits_with_padding)  # [B, k_max, max_len]
+       
+       # 2. 通过共享的双线性映射矩阵 S 变换行为嵌入
+       behavior_embdding_mapping = tf.tensordot(
+           behavior_embddings, self.bilinear_mapping_matrix, axes=1
+       )  # [B, max_len, out_units]
+       
+       # 3. 加权聚合形成兴趣胶囊
+       Z = tf.matmul(weight, behavior_embdding_mapping)  # [B, k_max, out_units]
+       interest_capsules = squash(Z)  # 非线性压缩到 [0, 1)
+       
+       # 4. 更新路由系数：基于兴趣胶囊与行为的一致性
+       delta_routing_logits = tf.reduce_sum(
+           tf.matmul(interest_capsules, tf.transpose(behavior_embdding_mapping, perm=[0, 2, 1])),
+           axis=0, keepdims=True
+       )
+       self.routing_logits.assign_add(delta_routing_logits)
+
+这里的squash函数实现了向量长度的非线性压缩，确保输出向量的模长在\ :math:`[0, 1)`\ 区间内：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   def squash(inputs):
+       """非线性压缩函数，将向量长度映射到 [0, 1) 区间"""
+       vec_squared_norm = tf.reduce_sum(tf.square(inputs), axis=-1, keepdims=True)
+       scalar_factor = vec_squared_norm / (1 + vec_squared_norm) / tf.sqrt(vec_squared_norm + 1e-9)
+       return scalar_factor * inputs
+
 **标签感知的注意力机制**
 
 多兴趣提取层生成了用户的多个兴趣向量，但在训练阶段，我们需要确定哪个兴趣向量与当前的目标商品最相关。因为在训练时，我们拥有‘正确答案’（即用户实际点击的下一个商品），所以可以利用这个‘标签’信息，来反向监督模型，让模型学会在多个兴趣向量中，挑出与正确答案最相关的那一个。这相当于在训练阶段给模型一个明确的指引。MIND模型设计了标签感知注意力层来解决这个问题。
@@ -121,7 +167,36 @@ Interest，B2I）动态路由：将用户的历史行为视为行为胶囊，将
 通过标签感知得到用户向量\ :math:`v_u`\ 后，MIND模型的训练目标就是让用户向量与其真实交互的商品尽可能“匹配”。具体来说，模型会最大化用户与正样本商品的相似度，同时最小化与负样本的相似度。由于商品库通常非常庞大，直接计算所有商品的概率分布在计算上不现实，因此MIND采用了和YouTubeDNN相同的策略——使用Sampled
 Softmax损失函数，通过随机采样一小部分负样本来近似全局的归一化计算。
 
-**代码实践**
+标签感知注意力的实现比较直观，核心是使用目标商品向量作为查询，计算与各个兴趣向量的相似度：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   def call(self, inputs, training=None, **kwargs):
+       keys = inputs[0]  # 多个兴趣胶囊向量 [batch_size, k_max, dim]
+       query = inputs[1]  # 目标商品向量 [batch_size, dim]
+       
+       # 计算每个兴趣向量与目标商品的相似度
+       weight = tf.reduce_sum(keys * query, axis=-1, keepdims=True)  # [batch_size, k_max, 1]
+       
+       # 通过幂次运算控制注意力集中度
+       weight = tf.pow(weight, self.pow_p)
+       
+       # 如果 pow_p 很大（>= 100），直接选择最相似的兴趣
+       if self.pow_p >= 100:
+           idx = tf.argmax(weight, axis=1, output_type=tf.int32)
+           output = tf.gather_nd(keys, idx)
+       else:
+           # 否则使用 softmax 进行加权聚合
+           weight = tf.nn.softmax(weight, axis=1)
+           output = tf.reduce_sum(keys * weight, axis=1)  # [batch_size, dim]
+       
+       return output
+
+**训练和评估**
 
 .. raw:: latex
 
@@ -144,7 +219,7 @@ Softmax损失函数，通过随机采样一小部分负样本来近似全局的�
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0084 |       0.0013 |    0.0031 |   0.0009 |         0.0008 |        0.0003 |
+    |        0.0036 |       0.0008 |    0.0012 |   0.0003 |         0.0004 |        0.0002 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 
 
@@ -222,6 +297,70 @@ LSTM的引入主要是为了处理在线购物中的一个常见问题：用户�
 
 这里\ :math:`\hat{\boldsymbol{h}}_{k}^{u}`\ 是多头注意力输出\ :math:`\hat{X}^{u}`\ 中第\ :math:`k`\ 个位置的隐藏状态，\ :math:`\alpha_{k}`\ 是对应的注意力权重。最终得到融合个性化信息的短期兴趣表示\ :math:`\boldsymbol{s}_{t}^{u} \in \mathbb{R}^{d \times 1}`\ 。
 
+**核心代码**
+
+SDM的短期兴趣建模采用了三层架构，逐步从原始序列中提取用户的即时兴趣：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 1. 序列信息学习层：使用LSTM处理序列依赖
+   lstm_layer = tf.keras.layers.LSTM(
+       emb_dim, 
+       return_sequences=True,  # 返回所有时间步的输出
+       recurrent_initializer='glorot_uniform'
+   )
+   sequence_output = lstm_layer(short_history_item_emb)  # [batch_size, seq_len, dim]
+
+   # 2. 多兴趣提取层：多头自注意力捕捉序列内的复杂关系
+   norm_sequence_output = tf.keras.layers.LayerNormalization()(sequence_output)
+   sequence_output = tf.keras.layers.MultiHeadAttention(
+       num_heads=num_heads,
+       key_dim=emb_dim // num_heads,
+       dropout=0.1
+   )(norm_sequence_output, sequence_output)  # [batch_size, seq_len, dim]
+
+   short_term_output = tf.keras.layers.LayerNormalization()(sequence_output)
+
+   # 3. 用户个性化注意力层：使用用户画像作为查询向量
+   user_attention = UserAttention(name='user_attention_short')
+   short_term_interest = user_attention(
+       user_embedding,  # [batch_size, 1, dim] 用户画像作为查询
+       short_term_output  # [batch_size, seq_len, dim] 序列作为键和值
+   )  # [batch_size, 1, dim]
+
+个性化注意力层的实现通过用户画像与序列特征的点积来计算注意力权重：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   class UserAttention(tf.keras.layers.Layer):
+       """用户注意力层，使用用户基础表示作为查询向量"""
+       
+       def call(self, query_vector, key_vectors):
+           # 计算注意力分数：query · key^T
+           attention_scores = tf.matmul(
+               query_vector,  # [batch_size, 1, dim]
+               tf.transpose(key_vectors, [0, 2, 1])  # [batch_size, dim, seq_len]
+           )  # [batch_size, 1, seq_len]
+           
+           attention_scores = tf.squeeze(attention_scores, axis=1)
+           attention_weights = tf.nn.softmax(attention_scores, axis=-1)
+           
+           # 加权求和得到上下文向量
+           context_vector = tf.matmul(
+               tf.expand_dims(attention_weights, axis=1),
+               key_vectors
+           )  # [batch_size, 1, dim]
+           
+           return context_vector
+
 **捕捉长期兴趣**
 
 长期行为包含丰富的用户偏好信息，但与短期行为的建模方式不同。SDM从特征维度对长期行为进行聚合，将历史行为按不同特征分成多个子集
@@ -260,6 +399,49 @@ LSTM的引入主要是为了处理在线购物中的一个常见问题：用户�
 
 其中\ :math:`\boldsymbol{W}^{p}`\ 是权重矩阵，\ :math:`\boldsymbol{b}`\ 是偏置向量。
 
+**核心代码**
+
+长期兴趣的建模采用特征维度聚合的方式，对每个特征维度分别应用注意力机制：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 从不同特征维度对长期行为进行聚合
+   long_history_features = group_embedding_feature_dict['raw_hist_seq_long']
+
+   long_term_interests = []
+   for name, long_history_feature in long_history_features.items():
+       # 为每个特征维度生成 mask
+       long_history_mask = tf.keras.layers.Lambda(
+           lambda x: tf.expand_dims(
+               tf.cast(tf.not_equal(x, 0), dtype=tf.float32), axis=-1
+           )
+       )(input_layer_dict[name])  # [batch_size, max_len_long, 1]
+       
+       # 应用 mask 到特征嵌入
+       long_history_item_emb = tf.keras.layers.Lambda(lambda x: x[0] * x[1])(
+           [long_history_feature, long_history_mask]
+       )  # [batch_size, max_len_long, dim]
+       
+       # 对每个特征维度应用用户注意力
+       user_attention = UserAttention(name=f'user_attention_long_{name}')
+       long_term_interests.append(
+           user_attention(user_embedding, long_history_item_emb)
+       )  # [batch_size, 1, dim]
+
+   # 拼接所有特征维度的表示
+   long_term_interests_concat = tf.keras.layers.Concatenate(axis=-1)(
+       long_term_interests
+   )  # [batch_size, 1, dim * len(long_history_features)]
+
+   # 通过全连接层融合
+   long_term_interest = tf.keras.layers.Dense(emb_dim, activation='tanh')(
+       long_term_interests_concat
+   )  # [batch_size, 1, dim]
+
 **长短期兴趣融合**
 
 有了长短期兴趣表示后，关键问题是如何有效融合这两部分信息。用户的长期行为虽然丰富，但通常只有一小部分与当前决策相关。简单的拼接或加权求和难以准确提取相关信息。
@@ -279,7 +461,77 @@ SDM设计了门控融合机制，类似LSTM中的门控思想
 
 门控网络接收三个输入：用户画像\ :math:`\boldsymbol{e}_{u}`\ 、短期兴趣\ :math:`\boldsymbol{s}_{t}^{u}`\ 和长期兴趣\ :math:`\boldsymbol{p}^{u}`\ ，输出的门控向量每个元素值介于0到1之间，决定了对应维度上长短期兴趣的贡献比例。这让模型能够在不同兴趣维度上分别选择保留长期或短期信息，避免简单平均可能带来的信息损失，使模型能够精确捕捉长期行为中与当前兴趣最相关的部分。
 
-**代码实践**
+**核心代码**
+
+门控融合机制通过学习三个权重矩阵来决定如何融合长短期兴趣：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   class GatedFusion(tf.keras.layers.Layer):
+       """门控融合层，用于融合长期和短期兴趣"""
+       
+       def build(self, input_shape):
+           dim = input_shape[0][-1]
+           # 为用户画像、短期兴趣、长期兴趣分别学习权重矩阵
+           self.W1 = self.add_weight(
+               shape=(dim, dim), initializer='glorot_uniform', trainable=True, name='W1'
+           )
+           self.W2 = self.add_weight(
+               shape=(dim, dim), initializer='glorot_uniform', trainable=True, name='W2'
+           )
+           self.W3 = self.add_weight(
+               shape=(dim, dim), initializer='glorot_uniform', trainable=True, name='W3'
+           )
+           self.b = self.add_weight(
+               shape=(dim,), initializer='zeros', trainable=True, name='bias'
+           )
+           super(GatedFusion, self).build(input_shape)
+       
+       def call(self, inputs):
+           user_embedding, short_term, long_term = inputs
+           
+           # 计算门控向量：G = sigmoid(W1·e_u + W2·s_t + W3·p_u + b)
+           gate = tf.sigmoid(
+               tf.matmul(user_embedding, self.W1) + 
+               tf.matmul(short_term, self.W2) + 
+               tf.matmul(long_term, self.W3) + 
+               self.b
+           )  # [batch_size, 1, dim]
+           
+           # 门控融合：o_t = (1 - G) ⊙ p_u + G ⊙ s_t
+           output = (1 - gate) * long_term + gate * short_term
+           
+           return output
+
+整个SDM模型的最终实现将三个模块串联起来：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 短期兴趣建模
+   short_term_interest = build_short_term_interest(
+       short_history_item_emb, user_embedding
+   )  # [batch_size, 1, dim]
+
+   # 长期兴趣建模
+   long_term_interest = build_long_term_interest(
+       long_history_features, user_embedding
+   )  # [batch_size, 1, dim]
+
+   # 门控融合
+   gated_fusion = GatedFusion(name='gated_fusion')
+   final_interest = gated_fusion(
+       [user_embedding, short_term_interest, long_term_interest]
+   )  # [batch_size, 1, dim]
+
+**训练和评估**
 
 .. raw:: latex
 
@@ -300,6 +552,6 @@ SDM设计了门控融合机制，类似LSTM中的门控思想
     +---------------+--------------+-----------+----------+----------------+---------------+
     |   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
     +===============+==============+===========+==========+================+===============+
-    |        0.0079 |       0.0028 |    0.0027 |   0.0012 |         0.0008 |        0.0006 |
+    |        0.0058 |       0.0051 |    0.0046 |   0.0044 |         0.0006 |         0.001 |
     +---------------+--------------+-----------+----------+----------------+---------------+
 

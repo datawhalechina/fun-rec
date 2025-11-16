@@ -398,7 +398,49 @@ s_{t+1} &amp; 1\leq t&lt;n\\
 <span class="eqno">(2.3.23)<a class="headerlink" href="#equation-chapter-1-retrieval-3-sequence-2-generateive-recall-6" title="Permalink to this equation">¶</a></span>\[-\sum_{\mathcal{S}^{u}\in\mathcal{S}}\sum_{t\in[1,2,\dots,n]}\left[\log(\sigma(r_{o_t,t}))+\sum_{j\not\in \mathcal{S}^{u}}\log(1-\sigma(r_{j,t}))\right]\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\sigma\)</span> 是sigmoid函数，<span class="math notranslate nohighlight">\(r_{o_t,t}\)</span>
 是正样本分数，<span class="math notranslate nohighlight">\(r_{j,t}\)</span> 是负样本分数。</p>
-<p><strong>代码实践</strong></p>
+<p><strong>核心代码</strong></p>
+<p>SASRec的核心在于将位置编码与序列嵌入相结合，然后通过多层Transformer模块处理：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 位置编码与序列嵌入相加</span>
+<span class="n">position_embedding</span> <span class="o">=</span> <span class="n">PositionEncodingLayer</span><span class="p">(</span>
+    <span class="n">dims</span><span class="o">=</span><span class="n">emb_dim</span><span class="p">,</span>
+    <span class="n">max_len</span><span class="o">=</span><span class="n">max_seq_len</span><span class="p">,</span>
+    <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">initializer</span><span class="o">=</span><span class="s1">&#39;glorot_uniform&#39;</span><span class="p">,</span>
+<span class="p">)(</span><span class="n">sequence_embedding</span><span class="p">)</span>
+<span class="n">sequence_embedding</span> <span class="o">=</span> <span class="n">add_tensor_func</span><span class="p">([</span><span class="n">sequence_embedding</span><span class="p">,</span> <span class="n">position_embedding</span><span class="p">])</span>
+
+<span class="c1"># 多头注意力层，使用因果掩码确保只看到历史信息</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mha_num</span><span class="p">):</span>
+    <span class="n">sequence_embedding_norm</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LayerNormalization</span><span class="p">()(</span>
+        <span class="n">sequence_embedding</span>
+    <span class="p">)</span>
+    <span class="n">sequence_embedding_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MultiHeadAttention</span><span class="p">(</span>
+        <span class="n">num_heads</span><span class="o">=</span><span class="n">nums_heads</span><span class="p">,</span>
+        <span class="n">key_dim</span><span class="o">=</span><span class="n">emb_dim</span><span class="p">,</span>
+        <span class="n">dropout</span><span class="o">=</span><span class="n">dropout</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_block&quot;</span><span class="p">,</span>
+    <span class="p">)(</span><span class="n">sequence_embedding_norm</span><span class="p">,</span> <span class="n">sequence_embedding</span><span class="p">,</span> <span class="n">use_causal_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># 残差连接</span>
+    <span class="n">sequence_embedding</span> <span class="o">=</span> <span class="n">add_tensor_func</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">sequence_embedding</span><span class="p">,</span> <span class="n">sequence_embedding_output</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">sequence_embedding</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LayerNormalization</span><span class="p">()(</span><span class="n">sequence_embedding</span><span class="p">)</span>
+
+    <span class="c1"># 前馈网络层</span>
+    <span class="n">sequence_embedding</span> <span class="o">=</span> <span class="n">DNNs</span><span class="p">(</span>
+        <span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="n">emb_dim</span><span class="p">,</span> <span class="n">emb_dim</span><span class="p">],</span>
+        <span class="n">dropout_rate</span><span class="o">=</span><span class="n">dropout</span><span class="p">,</span>
+        <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_dnn&quot;</span><span class="p">,</span>
+    <span class="p">)(</span><span class="n">sequence_embedding</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>关键的设计点包括：(1) <code class="docutils literal notranslate"><span class="pre">use_causal_mask=True</span></code>
+确保预测第<span class="math notranslate nohighlight">\(t\)</span>个位置时只能看到前<span class="math notranslate nohighlight">\(t-1\)</span>个位置；(2)
+残差连接和层归一化稳定训练；(3)
+前馈网络增强非线性表达能力。最后取序列最后一个位置的输出表示用户当前兴趣，用于预测下一个物品。</p>
+<p><strong>训练和评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
 <span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;sasrec&#39;</span><span class="p">)</span>
@@ -407,7 +449,7 @@ s_{t+1} &amp; 1\leq t&lt;n\\
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+</span>
-<span class="o">|</span>        <span class="mf">0.0197</span> <span class="o">|</span>       <span class="mf">0.0093</span> <span class="o">|</span>    <span class="mf">0.0095</span> <span class="o">|</span>   <span class="mf">0.0061</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0154</span> <span class="o">|</span>       <span class="mf">0.0076</span> <span class="o">|</span>    <span class="mf">0.0066</span> <span class="o">|</span>   <span class="mf">0.0041</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+</span>
 </pre></div>
 </div>
@@ -461,15 +503,96 @@ Normalization（层归一化），<span class="math notranslate nohighlight">\(\
 步骤放弃了传统的Softmax归一化，而使用了不一样的聚合方式。传统Transformer使用Softmax注意力虽然在语言任务中表现优异，但在推荐场景下存在信息丢失的问题。在推荐场景中，用户兴趣的“强度”是一个至关重要的信号。传统的Softmax注意力机制会将所有历史行为的注意力权重归一化，使其总和为1。这本质上是在计算一种<strong>相对重要性</strong>，而非<strong>绝对相关性</strong>，从而扭曲了真实的偏好强度。例如，假设目标是推荐一部科幻电影。用户A的历史记录中有10部科幻片和1部喜剧片，而用户B只有1部科幻片和1部喜剧片。对于用户A，其对科幻的强烈偏好是一个非常强的信号。然而，Softmax归一化可能会迫使这10部科幻片瓜分注意力权重，从而削弱“大量观看科幻”这一整体信号的强度，使其与用户B的信号差异不再显著。相比之下，HSTU的点向聚合（通过SiLU激活）独立计算每个历史物品的相关性得分，不进行跨项归一化。这使得模型能够保留偏好的原始强度——用户A历史中的科幻片可以共同产生一个非常高的激活总分，这对于准确预估点击率、观看时长等具体数值至关重要，而不仅仅是进行排序。</p>
 <p><strong>训练与召回</strong></p>
 <p>HSTU的完整工作流程包含训练和召回两个阶段。在训练阶段，模型基于前面描述的输入输出格式进行标准的Transformer训练——通过预测用户行为序列中的下一个正向交互物品来学习用户偏好模式和物品间的依赖关系。在召回阶段，经过多层HSTU编码器处理后，模型将用户的完整行为事件序列转换为能够概括用户历史、捕捉当前兴趣的实时动态表示<span class="math notranslate nohighlight">\(u_i\)</span>。拥有了用户表示向量<span class="math notranslate nohighlight">\(u_i\)</span>后，召回过程就转变为一个标准的向量检索问题——将<span class="math notranslate nohighlight">\(u_i\)</span>与物品语料库中所有物品的Embedding向量进行高效的相似度计算，通过近似最近邻（ANN）搜索从海量物品池中快速检索出与用户当前兴趣最匹配的Top-K个物品，形成召回列表。</p>
-<p>总而言之，如果说SASRec是将推荐序列视为一句由‘单词’（物品ID）组成的句子，那么HSTU则是将推荐场景中的所有信息（用户属性、行为、物品、上下文）都看作一种更复杂的‘语言’，并为此设计了一套全新的‘语法规则’（HSTU单元）来理解和生成这种语言。它的核心创新在于<strong>丰富了模型的输入</strong>，从而实现了对用户行为更深层次的理解。</p>
-<p><strong>代码实践</strong></p>
+<p>总而言之，如果说SASRec是将推荐序列视为一句由’单词’（物品ID）组成的句子，那么HSTU则是将推荐场景中的所有信息（用户属性、行为、物品、上下文）都看作一种更复杂的’语言’，并为此设计了一套全新的’语法规则’（HSTU单元）来理解和生成这种语言。它的核心创新在于<strong>丰富了模型的输入</strong>，从而实现了对用户行为更深层次的理解。</p>
+<p><strong>核心代码</strong></p>
+<p>HSTU的核心在于其定制的注意力机制，它通过SiLU激活和门控机制实现了点向聚合，避免了传统Softmax的归一化：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">HstuLayer</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;HSTU层实现点向聚合的注意力机制&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_units</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">attention_type</span><span class="o">=</span><span class="s1">&#39;dot_product&#39;</span><span class="p">,</span>
+                 <span class="n">dropout_rate</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">causality</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">HstuLayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_units</span> <span class="o">=</span> <span class="n">num_units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span> <span class="o">=</span> <span class="n">num_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attention_type</span> <span class="o">=</span> <span class="n">attention_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout_rate</span> <span class="o">=</span> <span class="n">dropout_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">causality</span> <span class="o">=</span> <span class="n">causality</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">):</span>
+        <span class="c1"># 点向投影：同时产生Q、K、V（这里简化为独立投影）</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_dense</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_units</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;query_projection&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key_dense</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_units</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;key_projection&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_dense</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_units</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;value_projection&#39;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">silu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;SiLU (Swish) 激活函数，用于点向聚合&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">input_interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">queries</span> <span class="o">=</span> <span class="n">keys</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">queries</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># 点向投影：线性变换生成Q、K、V</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_dense</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>  <span class="c1"># (N, T_q, C)</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_dense</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>       <span class="c1"># (N, T_k, C)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_dense</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>     <span class="c1"># (N, T_k, C)</span>
+
+        <span class="c1"># 分割多头</span>
+        <span class="n">Q_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="p">[</span><span class="n">batch_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">num_units</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">])</span>
+        <span class="n">K_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="p">[</span><span class="n">batch_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">num_units</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">])</span>
+        <span class="n">V_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="p">[</span><span class="n">batch_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">num_units</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">])</span>
+
+        <span class="c1"># 应用SiLU激活（HSTU特色）</span>
+        <span class="n">Q_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">V_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">silu</span><span class="p">(</span><span class="n">Q_</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">silu</span><span class="p">(</span><span class="n">K_</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">silu</span><span class="p">(</span><span class="n">V_</span><span class="p">)</span>
+
+        <span class="c1"># 点向聚合：计算注意力但不使用Softmax归一化</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Q_</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">K_</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>  <span class="c1"># (h*N, T_q, T_k)</span>
+
+        <span class="c1"># 因果掩码（用于序列预测）</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">causality</span><span class="p">:</span>
+            <span class="n">diag_vals</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
+            <span class="n">tril</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">band_part</span><span class="p">(</span><span class="n">diag_vals</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">causality_mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">tril</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                                    <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">outputs</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">paddings</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">causality_mask</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">32</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">causality_mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">paddings</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+
+        <span class="c1"># 这里不使用Softmax，而是直接应用激活（保留强度信息）</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">silu</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>  <span class="c1"># 点向聚合的核心：用SiLU代替Softmax</span>
+
+        <span class="c1"># 加权求和（点向转换）</span>
+        <span class="n">attention_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">V_</span><span class="p">)</span>
+
+        <span class="c1"># 合并多头</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">attention_output</span><span class="p">,</span>
+                           <span class="p">[</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_units</span><span class="p">])</span>
+
+        <span class="c1"># 残差连接</span>
+        <span class="n">outputs</span> <span class="o">+=</span> <span class="n">queries</span>
+
+        <span class="k">return</span> <span class="n">outputs</span>
+</pre></div>
+</div>
+<p>HSTU的关键设计在于用SiLU激活代替Softmax归一化。传统Softmax会将注意力权重归一化使其和为1，这抹平了不同用户兴趣强度的差异。而HSTU通过
+<code class="docutils literal notranslate"><span class="pre">weights</span> <span class="pre">=</span> <span class="pre">self.silu(outputs)</span></code>
+保持了原始的相关性强度，使得历史行为丰富的用户能够产生更强的激活信号，更准确地反映用户的真实偏好强度。</p>
+<p><strong>训练和评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;hstu&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+</span>
-<span class="o">|</span>        <span class="mf">0.0167</span> <span class="o">|</span>       <span class="mf">0.0076</span> <span class="o">|</span>    <span class="mf">0.0073</span> <span class="o">|</span>   <span class="mf">0.0044</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0174</span> <span class="o">|</span>       <span class="mf">0.0073</span> <span class="o">|</span>    <span class="mf">0.0075</span> <span class="o">|</span>   <span class="mf">0.0042</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+</span>
 </pre></div>
 </div>

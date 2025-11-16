@@ -394,53 +394,61 @@ Softmax 函数。Softmax 在此扮演两个关键角色：</p>
 <span class="math notranslate nohighlight">\(pv_j\)</span>，然后作为关键输入送入PRM的输入层。</p></li>
 </ol>
 <p>PRM核心代码如下：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_prm_model</span><span class="p">(</span><span class="n">feature_columns</span><span class="p">,</span>
-                    <span class="n">max_seq_len</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-                    <span class="n">transformer_blocks</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                    <span class="n">nums_head</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                    <span class="n">dropout_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-                    <span class="n">intermediate_dim</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
-                    <span class="n">pos_emb_trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                  <span class="p">):</span>
-    <span class="n">input_layer_dict</span> <span class="o">=</span> <span class="n">build_input_layer</span><span class="p">(</span><span class="n">feature_columns</span><span class="p">)</span>
-    <span class="n">group_embedding_feature_dict</span> <span class="o">=</span> <span class="n">build_group_feature_embedding_table_dict</span><span class="p">(</span><span class="n">feature_columns</span><span class="p">,</span> <span class="n">input_layer_dict</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;embedding/&quot;</span><span class="p">)</span>
-    <span class="n">user_part_embedding</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span><span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="s1">&#39;user_part&#39;</span><span class="p">)</span> <span class="c1"># BxD</span>
-    <span class="c1"># 复制成序列长度份数</span>
-    <span class="n">user_part_embedding</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))(</span><span class="n">user_part_embedding</span><span class="p">)</span> <span class="c1"># [None, max_len, dim]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 模型输入层</span>
+<span class="n">input_layer_dict</span> <span class="o">=</span> <span class="n">build_input_layer</span><span class="p">(</span><span class="n">feature_columns</span><span class="p">)</span>
 
-    <span class="n">item_part_embedding</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span><span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="s1">&#39;item_part&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># Bxmax_seq_lenxK</span>
-    <span class="n">pv_embeddings</span> <span class="o">=</span> <span class="n">input_layer_dict</span><span class="p">[</span><span class="s1">&#39;pv_emb&#39;</span><span class="p">]</span> <span class="c1"># Bxmax_seq_lenxD</span>
-    <span class="n">item_embeddings</span> <span class="o">=</span> <span class="n">input_layer_dict</span><span class="p">[</span><span class="s1">&#39;item_emb&#39;</span><span class="p">]</span> <span class="c1"># Bxmax_seq_lenxD</span>
+<span class="c1"># 用户侧Embedding：将用户相关特征的embedding拼接为一个向量，形状为 [B, D]</span>
+<span class="n">user_part_embedding</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span><span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="s1">&#39;user_part&#39;</span><span class="p">)</span>  <span class="c1"># BxD</span>
 
-    <span class="n">page_embedding</span> <span class="o">=</span> <span class="n">concat_func</span><span class="p">([</span><span class="n">user_part_embedding</span><span class="p">,</span> <span class="n">item_part_embedding</span><span class="p">,</span> <span class="n">pv_embeddings</span><span class="p">,</span> <span class="n">item_embeddings</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># [None, max_len, dim]</span>
+<span class="c1"># 将用户向量扩展到序列维度，使每个时间步（或位置）都携带同一用户上下文</span>
+<span class="c1"># tf.expand_dims(x, axis=1)：在第1维增加一个长度为1的维度 -&gt; [B, 1, D]</span>
+<span class="c1"># tf.tile(..., [1, max_seq_len, 1])：沿序列维复制 max_seq_len 次 -&gt; [B, max_len, D]</span>
+<span class="n">user_part_embedding</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="p">)(</span><span class="n">user_part_embedding</span><span class="p">)</span>  <span class="c1"># [B, max_len, D]</span>
 
-    <span class="n">position_embedding</span> <span class="o">=</span> <span class="n">PositionEncodingLayer</span><span class="p">(</span>
-        <span class="n">dims</span><span class="o">=</span><span class="n">feature_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">emb_dim</span><span class="p">,</span>
-        <span class="n">max_len</span><span class="o">=</span><span class="n">max_seq_len</span><span class="p">,</span>
-        <span class="n">trainable</span><span class="o">=</span><span class="n">pos_emb_trainable</span><span class="p">,</span>
-        <span class="n">initializer</span><span class="o">=</span><span class="s1">&#39;glorot_uniform&#39;</span><span class="p">)(</span><span class="n">page_embedding</span><span class="p">)</span>
+<span class="c1"># 物品侧Embedding：拼接序列中的物品特征，形成每个位置的物品表示，形状为 [B, max_len, K]</span>
+<span class="n">item_part_embedding</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span>
+    <span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="s1">&#39;item_part&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>  <span class="c1"># Bxmax_seq_lenxK</span>
 
-    <span class="n">enc_inputs</span> <span class="o">=</span> <span class="n">add_func</span><span class="p">([</span><span class="n">page_embedding</span><span class="p">,</span> <span class="n">position_embedding</span><span class="p">])</span>
+<span class="c1"># 用户对item的个性化Embedding，Item Embedding，形状均为 [B, max_len, D]</span>
+<span class="n">pv_embeddings</span> <span class="o">=</span> <span class="n">input_layer_dict</span><span class="p">[</span><span class="s1">&#39;pv_emb&#39;</span><span class="p">]</span>   <span class="c1"># Bxmax_seq_lenxD</span>
+<span class="n">item_embeddings</span> <span class="o">=</span> <span class="n">input_layer_dict</span><span class="p">[</span><span class="s1">&#39;item_emb&#39;</span><span class="p">]</span>  <span class="c1"># Bxmax_seq_lenxD</span>
 
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">transformer_blocks</span><span class="p">):</span>
-        <span class="n">enc_inputs</span> <span class="o">=</span> <span class="n">TransformerEncoder</span><span class="p">(</span>
-                                        <span class="n">intermediate_dim</span><span class="p">,</span>
-                                        <span class="n">nums_head</span><span class="p">,</span>
-                                        <span class="n">dropout_rate</span><span class="p">,</span>
-                                        <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">,</span>
-                                        <span class="n">normalize_first</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                        <span class="n">is_residual</span><span class="o">=</span><span class="kc">True</span>
-                                    <span class="p">)(</span><span class="n">enc_inputs</span><span class="p">)</span>
+<span class="c1"># 页面级序列表示：将用户上下文、物品侧特征、用户对item的个性化Embedding、Item Embedding拼接</span>
+<span class="n">page_embedding</span> <span class="o">=</span> <span class="n">concat_func</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">user_part_embedding</span><span class="p">,</span> <span class="n">item_part_embedding</span><span class="p">,</span> <span class="n">pv_embeddings</span><span class="p">,</span> <span class="n">item_embeddings</span><span class="p">],</span>
+    <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span>
+<span class="p">)</span>  <span class="c1"># [B, max_len, dim]</span>
 
-    <span class="n">enc_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">intermediate_dim</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">)(</span><span class="n">enc_inputs</span><span class="p">)</span>
-    <span class="n">enc_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="n">enc_output</span><span class="p">)</span>
-    <span class="n">flat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">()(</span><span class="n">enc_output</span><span class="p">)</span>
-    <span class="n">score_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Activation</span><span class="p">(</span><span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">)(</span><span class="n">flat</span><span class="p">)</span>
+<span class="c1"># 位置编码：为每个时间步（位置）加入位置信息，帮助 Transformer 捕捉顺序关系</span>
+<span class="n">position_embedding</span> <span class="o">=</span> <span class="n">PositionEncodingLayer</span><span class="p">(</span>
+    <span class="n">dims</span><span class="o">=</span><span class="n">feature_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">emb_dim</span><span class="p">,</span>
+    <span class="n">max_len</span><span class="o">=</span><span class="n">max_seq_len</span><span class="p">,</span>
+    <span class="n">trainable</span><span class="o">=</span><span class="n">pos_emb_trainable</span><span class="p">,</span>
+    <span class="n">initializer</span><span class="o">=</span><span class="s1">&#39;glorot_uniform&#39;</span>
+<span class="p">)(</span><span class="n">page_embedding</span><span class="p">)</span>
 
-    <span class="c1"># 构建模型</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">input_layer_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">score_output</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">model</span>
+<span class="c1"># 将内容编码与位置编码相加，形成 Transformer 的最终输入</span>
+<span class="n">enc_inputs</span> <span class="o">=</span> <span class="n">add_func</span><span class="p">([</span><span class="n">page_embedding</span><span class="p">,</span> <span class="n">position_embedding</span><span class="p">])</span>
+
+<span class="c1"># Transformer 编码层堆叠：</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">transformer_blocks</span><span class="p">):</span>
+    <span class="n">enc_inputs</span> <span class="o">=</span> <span class="n">TransformerEncoder</span><span class="p">(</span>
+        <span class="n">intermediate_dim</span><span class="p">,</span>
+        <span class="n">nums_head</span><span class="p">,</span>
+        <span class="n">dropout_rate</span><span class="p">,</span>
+        <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">,</span>
+        <span class="n">normalize_first</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">is_residual</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)(</span><span class="n">enc_inputs</span><span class="p">)</span>
+
+<span class="c1"># 打分头：对序列中所有位置都映射成一个概率</span>
+<span class="n">enc_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">intermediate_dim</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">)(</span><span class="n">enc_inputs</span><span class="p">)</span>
+<span class="n">enc_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="n">enc_output</span><span class="p">)</span>
+<span class="n">flat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">()(</span><span class="n">enc_output</span><span class="p">)</span>
+<span class="n">score_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Activation</span><span class="p">(</span><span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">)(</span><span class="n">flat</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>代码实践</strong></p>
@@ -452,7 +460,7 @@ Softmax 函数。Softmax 在此扮演两个关键角色：</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------+---------+--------------+-------------+------------+-----------+--------------+-------------+------------+-----------+--------+--------+</span>
 <span class="o">|</span>   <span class="nb">map</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="nb">map</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">new_map</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">new_map</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">new_p</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">new_p</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">old_map</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">old_map</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">old_p</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">old_p</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">p</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>    <span class="n">p</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+==========+=========+==============+=============+============+===========+==============+=============+============+===========+========+========+</span>
-<span class="o">|</span>   <span class="mf">0.2136</span> <span class="o">|</span>  <span class="mf">0.1967</span> <span class="o">|</span>       <span class="mf">0.2136</span> <span class="o">|</span>      <span class="mf">0.1967</span> <span class="o">|</span>     <span class="mf">0.0756</span> <span class="o">|</span>    <span class="mf">0.0866</span> <span class="o">|</span>       <span class="mf">0.2954</span> <span class="o">|</span>      <span class="mf">0.2824</span> <span class="o">|</span>     <span class="mf">0.0936</span> <span class="o">|</span>    <span class="mf">0.1196</span> <span class="o">|</span> <span class="mf">0.0756</span> <span class="o">|</span> <span class="mf">0.0866</span> <span class="o">|</span>
+<span class="o">|</span>   <span class="mf">0.2179</span> <span class="o">|</span>  <span class="mf">0.1993</span> <span class="o">|</span>       <span class="mf">0.2179</span> <span class="o">|</span>      <span class="mf">0.1993</span> <span class="o">|</span>     <span class="mf">0.0792</span> <span class="o">|</span>    <span class="mf">0.0866</span> <span class="o">|</span>       <span class="mf">0.2954</span> <span class="o">|</span>      <span class="mf">0.2824</span> <span class="o">|</span>     <span class="mf">0.0936</span> <span class="o">|</span>    <span class="mf">0.1196</span> <span class="o">|</span> <span class="mf">0.0792</span> <span class="o">|</span> <span class="mf">0.0866</span> <span class="o">|</span>
 <span class="o">+----------+---------+--------------+-------------+------------+-----------+--------------+-------------+------------+-----------+--------+--------+</span>
 </pre></div>
 </div>
@@ -551,27 +559,31 @@ Reward)</strong>：衡量排列中物品被点击的总概率，确保排列具�
 <span class="sd">    Returns:</span>
 <span class="sd">        候选排列集合 (对应Output: Candidate list set S)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">S</span> <span class="o">=</span> <span class="p">[()]</span>  <span class="c1"># 候选列表集合，初始包含空序列</span>
-    <span class="n">R</span> <span class="o">=</span> <span class="p">{}</span>    <span class="c1"># 估计奖励集合</span>
-
+    <span class="c1"># 候选序列集合 S：每个元素是一个排列（元组），初始为“空序列”占位</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="p">[()]</span>
+    <span class="c1"># 奖励字典 R：记录每个候选排列的估计奖励，用于排序与截断</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># 逐步扩展排列长度，从 1 到 max_length（每次在尾部追加一个物品）</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># 当前步的候选快照（上一轮的前 k 个），作为本轮的扩展基准</span>
         <span class="n">St</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
+        <span class="c1"># 重置本轮的候选与奖励（只保留当前轮生成的候选）</span>
         <span class="n">S</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">R</span> <span class="o">=</span> <span class="p">{}</span>
-
+        <span class="c1"># 遍历每个已有的部分排列 O，尝试将未出现的物品 ci 追加到末尾</span>
         <span class="k">for</span> <span class="n">O</span> <span class="ow">in</span> <span class="n">St</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">ci</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">ci</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">O</span><span class="p">:</span>
+                    <span class="c1"># 生成新排列 Ot：在 O 的基础上追加一个物品 ci</span>
                     <span class="n">Ot</span> <span class="o">=</span> <span class="n">O</span> <span class="o">+</span> <span class="p">(</span><span class="n">ci</span><span class="p">,)</span>
-
+                    <span class="c1"># 计算该排列的估计奖励：融合 CTR（点击倾向）与 NEXT（序列连贯性）两种信号</span>
                     <span class="n">r</span> <span class="o">=</span> <span class="n">calculate_estimated_reward</span><span class="p">(</span><span class="n">Ot</span><span class="p">,</span> <span class="n">ctr_scores</span><span class="p">,</span> <span class="n">next_scores</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-
+                    <span class="c1"># 记录奖励并加入候选集合，稍后按奖励进行 Beam 截断</span>
                     <span class="n">R</span><span class="p">[</span><span class="n">Ot</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
                     <span class="n">S</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ot</span><span class="p">)</span>
-
+        <span class="c1"># Beam Search 截断：按奖励从高到低排序，仅保留前 beam_size 个候选</span>
         <span class="n">S</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">R</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="n">beam_size</span><span class="p">]</span>
-
+    <span class="c1"># 返回最终的候选序列集合（长度不超过 beam_size 的最优排列）</span>
     <span class="k">return</span> <span class="n">S</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">calculate_estimated_reward</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">ctr_scores</span><span class="p">,</span> <span class="n">next_scores</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
@@ -587,57 +599,29 @@ Reward)</strong>：衡量排列中物品被点击的总概率，确保排列具�
 <span class="sd">    Returns:</span>
 <span class="sd">        估计奖励值</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 若当前序列为空，则无曝光与点击，奖励为 0</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">O</span><span class="p">:</span>
         <span class="k">return</span> <span class="mf">0.0</span>
-
+    <span class="c1"># r_pv：最终页面曝光概率（序列完整浏览的概率），初始化为 1</span>
     <span class="n">r_pv</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="c1"># r_ipv：期望点击次数（或累计点击指标），初始化为 0</span>
     <span class="n">r_ipv</span> <span class="o">=</span> <span class="mf">0.0</span>
-
+    <span class="c1"># p_expose：当前位置的曝光链概率（上一位置是否继续浏览的概率）</span>
     <span class="n">p_expose</span> <span class="o">=</span> <span class="mf">1.0</span>
-
+    <span class="c1"># 遍历序列中的每个物品 ci，累计曝光与点击指标</span>
     <span class="k">for</span> <span class="n">ci</span> <span class="ow">in</span> <span class="n">O</span><span class="p">:</span>
+        <span class="c1"># p_ctr_ci：该位置物品的点击概率；p_next_ci：继续浏览到下一个位置的概率</span>
         <span class="n">p_ctr_ci</span> <span class="o">=</span> <span class="n">ctr_scores</span><span class="p">[</span><span class="n">ci</span><span class="p">]</span>
         <span class="n">p_next_ci</span> <span class="o">=</span> <span class="n">next_scores</span><span class="p">[</span><span class="n">ci</span><span class="p">]</span>
-
+        <span class="c1"># 累加期望点击：当前曝光概率 * 当前物品的点击概率</span>
         <span class="n">r_ipv</span> <span class="o">=</span> <span class="n">r_ipv</span> <span class="o">+</span> <span class="n">p_expose</span> <span class="o">*</span> <span class="n">p_ctr_ci</span>
-
+        <span class="c1"># 更新下一位置的曝光链：乘以继续浏览概率</span>
         <span class="n">p_expose</span> <span class="o">*=</span> <span class="n">p_next_ci</span>
-
+    <span class="c1"># 最终页面曝光概率为链式乘积后的结果</span>
     <span class="n">r_pv</span> <span class="o">=</span> <span class="n">p_expose</span>
-
+    <span class="c1"># 线性融合：alpha 权重控制曝光目标（PV），beta 权重控制点击目标（IPV）</span>
     <span class="n">r_sum</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">r_pv</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">r_ipv</span>
-
     <span class="k">return</span> <span class="n">r_sum</span>
-
-<span class="c1"># 使用示例保持不变</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_ctr_score</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;获取物品的CTR分数&quot;&quot;&quot;</span>
-    <span class="c1"># 这里应该调用预训练的CTR模型</span>
-    <span class="k">pass</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">get_next_score</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;获取物品的Next分数&quot;&quot;&quot;</span>
-    <span class="c1"># 这里应该调用预训练的Next模型</span>
-    <span class="k">pass</span>
-
-<span class="c1"># 完整的FPSA调用</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">run_fpsa</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">beam_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-    <span class="c1"># 预计算所有物品的CTR和Next分数</span>
-    <span class="n">ctr_scores</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">:</span> <span class="n">get_ctr_score</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">}</span>
-    <span class="n">next_scores</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">:</span> <span class="n">get_next_score</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">}</span>
-
-    <span class="c1"># 运行FPSA算法</span>
-    <span class="n">candidates</span> <span class="o">=</span> <span class="n">fpsa_algorithm</span><span class="p">(</span>
-        <span class="n">items</span><span class="o">=</span><span class="n">items</span><span class="p">,</span>
-        <span class="n">ctr_scores</span><span class="o">=</span><span class="n">ctr_scores</span><span class="p">,</span>
-        <span class="n">next_scores</span><span class="o">=</span><span class="n">next_scores</span><span class="p">,</span>
-        <span class="n">beam_size</span><span class="o">=</span><span class="n">beam_size</span><span class="p">,</span>
-        <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># 可调节的融合系数</span>
-        <span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">candidates</span>
 </pre></div>
 </div>
 <p>算法的关键特点：</p>

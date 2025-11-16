@@ -119,53 +119,61 @@ PRM核心代码如下：
 
 .. code:: python
 
-   def build_prm_model(feature_columns,
-                       max_seq_len=30,
-                       transformer_blocks=2,
-                       nums_head=1,
-                       dropout_rate=0.1,
-                       intermediate_dim=64,
-                       pos_emb_trainable=True,
-                     ):
-       input_layer_dict = build_input_layer(feature_columns)
-       group_embedding_feature_dict = build_group_feature_embedding_table_dict(feature_columns, input_layer_dict, prefix="embedding/")
-       user_part_embedding = concat_group_embedding(group_embedding_feature_dict, 'user_part') # BxD
-       # 复制成序列长度份数
-       user_part_embedding = tf.keras.layers.Lambda(lambda x: tf.tile(tf.expand_dims(x, axis=1),
-           [1, max_seq_len, 1]))(user_part_embedding) # [None, max_len, dim]
+   # 模型输入层
+   input_layer_dict = build_input_layer(feature_columns)
 
-       item_part_embedding = concat_group_embedding(group_embedding_feature_dict, 'item_part', axis=-1, flatten=False) # Bxmax_seq_lenxK
-       pv_embeddings = input_layer_dict['pv_emb'] # Bxmax_seq_lenxD
-       item_embeddings = input_layer_dict['item_emb'] # Bxmax_seq_lenxD
+   # 用户侧Embedding：将用户相关特征的embedding拼接为一个向量，形状为 [B, D]
+   user_part_embedding = concat_group_embedding(group_embedding_feature_dict, 'user_part')  # BxD
 
-       page_embedding = concat_func([user_part_embedding, item_part_embedding, pv_embeddings, item_embeddings], axis=-1) # [None, max_len, dim]
+   # 将用户向量扩展到序列维度，使每个时间步（或位置）都携带同一用户上下文
+   # tf.expand_dims(x, axis=1)：在第1维增加一个长度为1的维度 -> [B, 1, D]
+   # tf.tile(..., [1, max_seq_len, 1])：沿序列维复制 max_seq_len 次 -> [B, max_len, D]
+   user_part_embedding = tf.keras.layers.Lambda(
+       lambda x: tf.tile(tf.expand_dims(x, axis=1), [1, max_seq_len, 1])
+   )(user_part_embedding)  # [B, max_len, D]
 
-       position_embedding = PositionEncodingLayer(
-           dims=feature_columns[0].emb_dim, 
-           max_len=max_seq_len, 
-           trainable=pos_emb_trainable, 
-           initializer='glorot_uniform')(page_embedding)
+   # 物品侧Embedding：拼接序列中的物品特征，形成每个位置的物品表示，形状为 [B, max_len, K]
+   item_part_embedding = concat_group_embedding(
+       group_embedding_feature_dict, 'item_part', axis=-1, flatten=False
+   )  # Bxmax_seq_lenxK
 
-       enc_inputs = add_func([page_embedding, position_embedding])
+   # 用户对item的个性化Embedding，Item Embedding，形状均为 [B, max_len, D]
+   pv_embeddings = input_layer_dict['pv_emb']   # Bxmax_seq_lenxD
+   item_embeddings = input_layer_dict['item_emb']  # Bxmax_seq_lenxD
 
-       for _ in range(transformer_blocks):
-           enc_inputs = TransformerEncoder(        
-                                           intermediate_dim,
-                                           nums_head,
-                                           dropout_rate,
-                                           activation="relu",
-                                           normalize_first=True, 
-                                           is_residual=True
-                                       )(enc_inputs)
+   # 页面级序列表示：将用户上下文、物品侧特征、用户对item的个性化Embedding、Item Embedding拼接
+   page_embedding = concat_func(
+       [user_part_embedding, item_part_embedding, pv_embeddings, item_embeddings],
+       axis=-1
+   )  # [B, max_len, dim]
 
-       enc_output = tf.keras.layers.Dense(intermediate_dim, activation='tanh')(enc_inputs)
-       enc_output = tf.keras.layers.Dense(1)(enc_output)
-       flat = tf.keras.layers.Flatten()(enc_output)
-       score_output = tf.keras.layers.Activation(activation='softmax')(flat)
+   # 位置编码：为每个时间步（位置）加入位置信息，帮助 Transformer 捕捉顺序关系
+   position_embedding = PositionEncodingLayer(
+       dims=feature_columns[0].emb_dim,
+       max_len=max_seq_len,
+       trainable=pos_emb_trainable,
+       initializer='glorot_uniform'
+   )(page_embedding)
 
-       # 构建模型
-       model = tf.keras.Model(inputs=list(input_layer_dict.values()), outputs=score_output)
-       return model
+   # 将内容编码与位置编码相加，形成 Transformer 的最终输入
+   enc_inputs = add_func([page_embedding, position_embedding])
+
+   # Transformer 编码层堆叠：
+   for _ in range(transformer_blocks):
+       enc_inputs = TransformerEncoder(
+           intermediate_dim,
+           nums_head,
+           dropout_rate,
+           activation="relu",
+           normalize_first=True,
+           is_residual=True
+       )(enc_inputs)
+
+   # 打分头：对序列中所有位置都映射成一个概率
+   enc_output = tf.keras.layers.Dense(intermediate_dim, activation='tanh')(enc_inputs)
+   enc_output = tf.keras.layers.Dense(1)(enc_output)
+   flat = tf.keras.layers.Flatten()(enc_output)
+   score_output = tf.keras.layers.Activation(activation='softmax')(flat)
 
 **代码实践**
 
@@ -190,7 +198,7 @@ PRM核心代码如下：
     +----------+---------+--------------+-------------+------------+-----------+--------------+-------------+------------+-----------+--------+--------+
     |   map@10 |   map@5 |   new_map@10 |   new_map@5 |   new_p@10 |   new_p@5 |   old_map@10 |   old_map@5 |   old_p@10 |   old_p@5 |   p@10 |    p@5 |
     +==========+=========+==============+=============+============+===========+==============+=============+============+===========+========+========+
-    |   0.2136 |  0.1967 |       0.2136 |      0.1967 |     0.0756 |    0.0866 |       0.2954 |      0.2824 |     0.0936 |    0.1196 | 0.0756 | 0.0866 |
+    |   0.2179 |  0.1993 |       0.2179 |      0.1993 |     0.0792 |    0.0866 |       0.2954 |      0.2824 |     0.0936 |    0.1196 | 0.0792 | 0.0866 |
     +----------+---------+--------------+-------------+------------+-----------+--------------+-------------+------------+-----------+--------+--------+
 
 
@@ -313,27 +321,31 @@ FPSA算法的核心创新在于将用户的浏览行为建模为一个\ **序列
        Returns:
            候选排列集合 (对应Output: Candidate list set S)
        """
-       S = [()]  # 候选列表集合，初始包含空序列
-       R = {}    # 估计奖励集合
-       
+       # 候选序列集合 S：每个元素是一个排列（元组），初始为“空序列”占位
+       S = [()]
+       # 奖励字典 R：记录每个候选排列的估计奖励，用于排序与截断
+       R = {}
+       # 逐步扩展排列长度，从 1 到 max_length（每次在尾部追加一个物品）
        for i in range(1, max_length + 1):
+           # 当前步的候选快照（上一轮的前 k 个），作为本轮的扩展基准
            St = S.copy()
-           
+           # 重置本轮的候选与奖励（只保留当前轮生成的候选）
            S = []
            R = {}
-           
+           # 遍历每个已有的部分排列 O，尝试将未出现的物品 ci 追加到末尾
            for O in St:
                for ci in items:
                    if ci not in O:
+                       # 生成新排列 Ot：在 O 的基础上追加一个物品 ci
                        Ot = O + (ci,)
-                       
+                       # 计算该排列的估计奖励：融合 CTR（点击倾向）与 NEXT（序列连贯性）两种信号
                        r = calculate_estimated_reward(Ot, ctr_scores, next_scores, alpha, beta)
-                       
+                       # 记录奖励并加入候选集合，稍后按奖励进行 Beam 截断
                        R[Ot] = r
                        S.append(Ot)
-           
+           # Beam Search 截断：按奖励从高到低排序，仅保留前 beam_size 个候选
            S = sorted(S, key=lambda x: R[x], reverse=True)[:beam_size]
-       
+       # 返回最终的候选序列集合（长度不超过 beam_size 的最优排列）
        return S
 
    def calculate_estimated_reward(O, ctr_scores, next_scores, alpha, beta):
@@ -349,57 +361,29 @@ FPSA算法的核心创新在于将用户的浏览行为建模为一个\ **序列
        Returns:
            估计奖励值
        """
+       # 若当前序列为空，则无曝光与点击，奖励为 0
        if not O:
            return 0.0
-       
+       # r_pv：最终页面曝光概率（序列完整浏览的概率），初始化为 1
        r_pv = 1.0
+       # r_ipv：期望点击次数（或累计点击指标），初始化为 0
        r_ipv = 0.0
-       
+       # p_expose：当前位置的曝光链概率（上一位置是否继续浏览的概率）
        p_expose = 1.0
-       
+       # 遍历序列中的每个物品 ci，累计曝光与点击指标
        for ci in O:
+           # p_ctr_ci：该位置物品的点击概率；p_next_ci：继续浏览到下一个位置的概率
            p_ctr_ci = ctr_scores[ci]
            p_next_ci = next_scores[ci]
-           
+           # 累加期望点击：当前曝光概率 * 当前物品的点击概率
            r_ipv = r_ipv + p_expose * p_ctr_ci
-           
+           # 更新下一位置的曝光链：乘以继续浏览概率
            p_expose *= p_next_ci
-       
+       # 最终页面曝光概率为链式乘积后的结果
        r_pv = p_expose
-       
+       # 线性融合：alpha 权重控制曝光目标（PV），beta 权重控制点击目标（IPV）
        r_sum = alpha * r_pv + beta * r_ipv
-       
        return r_sum
-
-   # 使用示例保持不变
-   def get_ctr_score(item):
-       """获取物品的CTR分数"""
-       # 这里应该调用预训练的CTR模型
-       pass
-
-   def get_next_score(item):
-       """获取物品的Next分数"""
-       # 这里应该调用预训练的Next模型
-       pass
-
-   # 完整的FPSA调用
-   def run_fpsa(items, beam_size=5, max_length=10):
-       # 预计算所有物品的CTR和Next分数
-       ctr_scores = {item: get_ctr_score(item) for item in items}
-       next_scores = {item: get_next_score(item) for item in items}
-       
-       # 运行FPSA算法
-       candidates = fpsa_algorithm(
-           items=items,
-           ctr_scores=ctr_scores,
-           next_scores=next_scores,
-           beam_size=beam_size,
-           max_length=max_length,
-           alpha=0.5,  # 可调节的融合系数
-           beta=0.5
-       )
-       
-       return candidates
 
 算法的关键特点：
 

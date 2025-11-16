@@ -76,6 +76,35 @@ Network的输出 :math:`\mathbf{x}_{L_1}` 和Deep Network的输出
 DCN用Cross
 Network明确地学习高阶特征交叉，再配合DNN学习复杂的非线性关系，这样就能更好地处理特征组合问题。
 
+**核心代码**
+
+DCN的核心在于Cross Network的交叉层计算。每一层都保持与原始输入
+:math:`\mathbf{x}_0` 的交叉：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # Cross Network的交叉层：x_{l+1} = x_0 * (x_l^T * w_l) + b_l + x_l
+   # 输入 x_0: [batch_size, feature_dim]
+
+   x_l = x_0  # 初始化为原始输入
+   for i in range(num_cross_layers):
+       # 计算 x_l^T * w_l：得到一个标量权重
+       xlw = tf.matmul(x_l, w_l)  # [B, 1]
+       
+       # 计算 x_0 * (x_l^T * w_l)：交叉项
+       cross_term = tf.multiply(x_0, xlw)  # [B, D]
+       
+       # 残差连接：x_{l+1} = cross_term + b_l + x_l
+       x_l = cross_term + b_l + x_l  # [B, D]
+
+这个设计的巧妙之处在于：通过残差连接保留了原始信息，通过与
+:math:`\mathbf{x}_0`
+的持续交叉实现了高阶特征组合，且参数量仅与输入维度线性相关。
+
 xDeepFM: 向量级别的特征交互
 ---------------------------
 
@@ -161,6 +190,49 @@ Pooling），得到一个池化后的向量
 表示DNN的输出，\ :math:`\mathbf{b}` 是可学习参数。
 
 通过CIN网络，\ **xDeepFM把向量级别的显式交互和元素级别的隐式交互结合到了一起**\ ，为高阶特征交互提供了一个更好的解决方案。
+
+**核心代码**
+
+CIN的核心在于向量级别的特征交互计算。每一层都通过哈达玛积实现上一层输出与原始输入的交叉：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # CIN层的向量级别交互
+   # inputs: [batch_size, field_num, embed_dim]
+
+   cin_layers = [inputs]  # X^0：原始输入
+   pooled_outputs = []
+
+   for layer_size in cin_layer_sizes:
+       # 获取上一层输出 X^{k-1} 和原始输入 X^0
+       x_k_minus_1 = cin_layers[-1]  # [B, H_{k-1}, D]
+       x_0 = cin_layers[0]  # [B, m, D]
+       
+       # 扩展维度以便进行广播计算
+       x_k_minus_1_expand = tf.expand_dims(x_k_minus_1, axis=2)  # [B, H_{k-1}, 1, D]
+       x_0_expand = tf.expand_dims(x_0, axis=1)  # [B, 1, m, D]
+       
+       # 向量级别的哈达玛积交互
+       z_k = tf.multiply(x_k_minus_1_expand, x_0_expand)  # [B, H_{k-1}, m, D]
+       
+       # 压缩：通过线性变换将 H_{k-1}*m 个交互向量压缩为 H_k 个
+       z_k_reshape = tf.reshape(z_k, [batch_size, -1, embed_dim])  # [B, H_{k-1}*m, D]
+       x_k = dense_layer(tf.transpose(z_k_reshape, [0, 2, 1]))  # [B, D, H_k]
+       x_k = tf.transpose(x_k, [0, 2, 1])  # [B, H_k, D]
+       
+       cin_layers.append(x_k)
+       
+       # 求和池化：将向量维度聚合为标量
+       pooled_outputs.append(tf.reduce_sum(x_k, axis=-1))  # [B, H_k]
+
+   # 拼接所有层的输出
+   cin_output = tf.concat(pooled_outputs, axis=1)  # [B, sum(H_k)]
+
+CIN通过保持向量结构的交互方式，既实现了显式的高阶特征组合，又避免了参数量的过快增长。
 
 AutoInt: 自注意力的自适应交互
 -----------------------------
@@ -265,6 +337,45 @@ DCN 和 xDeepFM 不同，AutoInt
 AutoInt 的一个好处是比较好解释，通过看注意力权重矩阵
 :math:`\alpha^{(h)}`\ ，我们能直接看出模型觉得哪些特征组合重要。这种用自注意力做高阶特征交互的方法，不仅让模型表达能力更强，还提供了一种更灵活的学习方式。
 
+**核心代码**
+
+AutoInt的核心在于多头自注意力机制，它能够自适应地学习特征之间的交互关系：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 多头自注意力层的前向传播
+   # inputs: [batch_size, num_features, embed_dim]
+
+   head_outputs = []
+   for i in range(num_heads):
+       # 计算Query、Key、Value矩阵
+       query = tf.einsum('bfe,ea->bfa', inputs, query_weights[i])  # [B, N, d']
+       key = tf.einsum('bfe,ea->bfa', inputs, key_weights[i])      # [B, N, d']
+       value = tf.einsum('bfe,ea->bfa', inputs, value_weights[i])  # [B, N, d']
+       
+       # 计算注意力得分：Query和Key的点积
+       attention_score = tf.matmul(query, key, transpose_b=True)  # [B, N, N]
+       
+       # Softmax归一化得到注意力权重
+       attention_weights = tf.nn.softmax(attention_score, axis=-1)  # [B, N, N]
+       
+       # 加权求和：用注意力权重对Value进行聚合
+       head_output = tf.matmul(attention_weights, value)  # [B, N, d']
+       head_outputs.append(head_output)
+
+   # 拼接多个注意力头的输出
+   multi_head_output = tf.concat(head_outputs, axis=-1)  # [B, N, d'*H]
+
+   # 残差连接：保留原始信息
+   residual_input = tf.tensordot(inputs, residual_weights, axes=[[2], [0]])
+   output = tf.keras.layers.ReLU()(multi_head_output + residual_input)
+
+通过堆叠多层这样的自注意力层，AutoInt能够显式地构建任意高阶的特征交互，且交互模式完全由数据驱动学习得到。
+
 **代码实践**
 
 .. raw:: latex
@@ -288,10 +399,10 @@ AutoInt 的一个好处是比较好解释，通过看注意力权重矩阵
     +---------+--------+--------+------------+
     | 模型    |    auc |   gauc |   val_user |
     +=========+========+========+============+
-    | dcn     | 0.5996 | 0.5746 |        928 |
+    | dcn     | 0.5968 | 0.574  |        928 |
     +---------+--------+--------+------------+
-    | xdeepfm | 0.6012 | 0.5749 |        928 |
+    | xdeepfm | 0.5964 | 0.5741 |        928 |
     +---------+--------+--------+------------+
-    | autoint | 0.6087 | 0.5743 |        928 |
+    | autoint | 0.5988 | 0.571  |        928 |
     +---------+--------+--------+------------+
 

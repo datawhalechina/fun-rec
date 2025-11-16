@@ -393,6 +393,39 @@ Interest，B2I）动态路由：将用户的历史行为视为行为胶囊，将
 <p>以上四个步骤会重复进行固定的次数（通常为3次），最终输出收敛后的兴趣胶囊向量集合
 <span class="math notranslate nohighlight">\(\{\boldsymbol{u}_j, j=1,...,K_{u}^\prime\}\)</span>
 作为该用户的多兴趣表示。</p>
+<p><strong>核心代码</strong></p>
+<p>MIND的核心在于胶囊网络的动态路由实现。在每次迭代中，模型首先通过softmax计算路由权重，然后通过双线性变换聚合行为向量，最后使用squash函数进行非线性压缩：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 动态路由的核心循环</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iteration_times</span><span class="p">):</span>  <span class="c1"># 通常迭代3次</span>
+    <span class="c1"># 1. 计算路由权重 w_ij</span>
+    <span class="n">routing_logits_with_padding</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">mask_routing_logits</span><span class="p">,</span> <span class="n">pad</span><span class="p">)</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">routing_logits_with_padding</span><span class="p">)</span>  <span class="c1"># [B, k_max, max_len]</span>
+
+    <span class="c1"># 2. 通过共享的双线性映射矩阵 S 变换行为嵌入</span>
+    <span class="n">behavior_embdding_mapping</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
+        <span class="n">behavior_embddings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bilinear_mapping_matrix</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>  <span class="c1"># [B, max_len, out_units]</span>
+
+    <span class="c1"># 3. 加权聚合形成兴趣胶囊</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">behavior_embdding_mapping</span><span class="p">)</span>  <span class="c1"># [B, k_max, out_units]</span>
+    <span class="n">interest_capsules</span> <span class="o">=</span> <span class="n">squash</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>  <span class="c1"># 非线性压缩到 [0, 1)</span>
+
+    <span class="c1"># 4. 更新路由系数：基于兴趣胶囊与行为的一致性</span>
+    <span class="n">delta_routing_logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">interest_capsules</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">behavior_embdding_mapping</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])),</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">routing_logits</span><span class="o">.</span><span class="n">assign_add</span><span class="p">(</span><span class="n">delta_routing_logits</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这里的squash函数实现了向量长度的非线性压缩，确保输出向量的模长在<span class="math notranslate nohighlight">\([0, 1)\)</span>区间内：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">squash</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;非线性压缩函数，将向量长度映射到 [0, 1) 区间&quot;&quot;&quot;</span>
+    <span class="n">vec_squared_norm</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">scalar_factor</span> <span class="o">=</span> <span class="n">vec_squared_norm</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">vec_squared_norm</span><span class="p">)</span> <span class="o">/</span> <span class="n">tf</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">vec_squared_norm</span> <span class="o">+</span> <span class="mf">1e-9</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">scalar_factor</span> <span class="o">*</span> <span class="n">inputs</span>
+</pre></div>
+</div>
 <p><strong>标签感知的注意力机制</strong></p>
 <p>多兴趣提取层生成了用户的多个兴趣向量，但在训练阶段，我们需要确定哪个兴趣向量与当前的目标商品最相关。因为在训练时，我们拥有‘正确答案’（即用户实际点击的下一个商品），所以可以利用这个‘标签’信息，来反向监督模型，让模型学会在多个兴趣向量中，挑出与正确答案最相关的那一个。这相当于在训练阶段给模型一个明确的指引。MIND模型设计了标签感知注意力层来解决这个问题。</p>
 <p>该注意力机制以目标商品向量作为查询，以用户的多个兴趣向量作为键和值。具体计算过程如下：</p>
@@ -404,7 +437,30 @@ Interest，B2I）动态路由：将用户的历史行为视为行为胶囊，将
 <p>参数<span class="math notranslate nohighlight">\(p\)</span>控制注意力分布：当<span class="math notranslate nohighlight">\(p\)</span>接近0时，所有兴趣向量获得均等关注；随着<span class="math notranslate nohighlight">\(p\)</span>增大，注意力逐渐集中于与目标商品最相似的兴趣向量；当<span class="math notranslate nohighlight">\(p\)</span>趋于无穷时，机制退化为硬注意力，只选择相似度最高的兴趣向量。实验表明，使用较大的<span class="math notranslate nohighlight">\(p\)</span>值能够加快模型收敛速度。</p>
 <p>通过标签感知得到用户向量<span class="math notranslate nohighlight">\(v_u\)</span>后，MIND模型的训练目标就是让用户向量与其真实交互的商品尽可能“匹配”。具体来说，模型会最大化用户与正样本商品的相似度，同时最小化与负样本的相似度。由于商品库通常非常庞大，直接计算所有商品的概率分布在计算上不现实，因此MIND采用了和YouTubeDNN相同的策略——使用Sampled
 Softmax损失函数，通过随机采样一小部分负样本来近似全局的归一化计算。</p>
-<p><strong>代码实践</strong></p>
+<p>标签感知注意力的实现比较直观，核心是使用目标商品向量作为查询，计算与各个兴趣向量的相似度：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># 多个兴趣胶囊向量 [batch_size, k_max, dim]</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># 目标商品向量 [batch_size, dim]</span>
+
+    <span class="c1"># 计算每个兴趣向量与目标商品的相似度</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">keys</span> <span class="o">*</span> <span class="n">query</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># [batch_size, k_max, 1]</span>
+
+    <span class="c1"># 通过幂次运算控制注意力集中度</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pow_p</span><span class="p">)</span>
+
+    <span class="c1"># 如果 pow_p 很大（&gt;= 100），直接选择最相似的兴趣</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pow_p</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gather_nd</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># 否则使用 softmax 进行加权聚合</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">keys</span> <span class="o">*</span> <span class="n">weight</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [batch_size, dim]</span>
+
+    <span class="k">return</span> <span class="n">output</span>
+</pre></div>
+</div>
+<p><strong>训练和评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
 <span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;mind&#39;</span><span class="p">)</span>
@@ -413,7 +469,7 @@ Softmax损失函数，通过随机采样一小部分负样本来近似全局的�
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0084</span> <span class="o">|</span>       <span class="mf">0.0013</span> <span class="o">|</span>    <span class="mf">0.0031</span> <span class="o">|</span>   <span class="mf">0.0009</span> <span class="o">|</span>         <span class="mf">0.0008</span> <span class="o">|</span>        <span class="mf">0.0003</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0036</span> <span class="o">|</span>       <span class="mf">0.0008</span> <span class="o">|</span>    <span class="mf">0.0012</span> <span class="o">|</span>   <span class="mf">0.0003</span> <span class="o">|</span>         <span class="mf">0.0004</span> <span class="o">|</span>        <span class="mf">0.0002</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -466,6 +522,57 @@ Softmax损失函数，通过随机采样一小部分负样本来近似全局的�
 \boldsymbol{s}_{t}^{u} &amp;=\sum_{k=1}^{t} \alpha_{k} \hat{\boldsymbol{h}}_{k}^{u}
 \end{aligned}\end{split}\]</div>
 <p>这里<span class="math notranslate nohighlight">\(\hat{\boldsymbol{h}}_{k}^{u}\)</span>是多头注意力输出<span class="math notranslate nohighlight">\(\hat{X}^{u}\)</span>中第<span class="math notranslate nohighlight">\(k\)</span>个位置的隐藏状态，<span class="math notranslate nohighlight">\(\alpha_{k}\)</span>是对应的注意力权重。最终得到融合个性化信息的短期兴趣表示<span class="math notranslate nohighlight">\(\boldsymbol{s}_{t}^{u} \in \mathbb{R}^{d \times 1}\)</span>。</p>
+<p><strong>核心代码</strong></p>
+<p>SDM的短期兴趣建模采用了三层架构，逐步从原始序列中提取用户的即时兴趣：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. 序列信息学习层：使用LSTM处理序列依赖</span>
+<span class="n">lstm_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span>
+    <span class="n">emb_dim</span><span class="p">,</span>
+    <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># 返回所有时间步的输出</span>
+    <span class="n">recurrent_initializer</span><span class="o">=</span><span class="s1">&#39;glorot_uniform&#39;</span>
+<span class="p">)</span>
+<span class="n">sequence_output</span> <span class="o">=</span> <span class="n">lstm_layer</span><span class="p">(</span><span class="n">short_history_item_emb</span><span class="p">)</span>  <span class="c1"># [batch_size, seq_len, dim]</span>
+
+<span class="c1"># 2. 多兴趣提取层：多头自注意力捕捉序列内的复杂关系</span>
+<span class="n">norm_sequence_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LayerNormalization</span><span class="p">()(</span><span class="n">sequence_output</span><span class="p">)</span>
+<span class="n">sequence_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MultiHeadAttention</span><span class="p">(</span>
+    <span class="n">num_heads</span><span class="o">=</span><span class="n">num_heads</span><span class="p">,</span>
+    <span class="n">key_dim</span><span class="o">=</span><span class="n">emb_dim</span> <span class="o">//</span> <span class="n">num_heads</span><span class="p">,</span>
+    <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span>
+<span class="p">)(</span><span class="n">norm_sequence_output</span><span class="p">,</span> <span class="n">sequence_output</span><span class="p">)</span>  <span class="c1"># [batch_size, seq_len, dim]</span>
+
+<span class="n">short_term_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LayerNormalization</span><span class="p">()(</span><span class="n">sequence_output</span><span class="p">)</span>
+
+<span class="c1"># 3. 用户个性化注意力层：使用用户画像作为查询向量</span>
+<span class="n">user_attention</span> <span class="o">=</span> <span class="n">UserAttention</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;user_attention_short&#39;</span><span class="p">)</span>
+<span class="n">short_term_interest</span> <span class="o">=</span> <span class="n">user_attention</span><span class="p">(</span>
+    <span class="n">user_embedding</span><span class="p">,</span>  <span class="c1"># [batch_size, 1, dim] 用户画像作为查询</span>
+    <span class="n">short_term_output</span>  <span class="c1"># [batch_size, seq_len, dim] 序列作为键和值</span>
+<span class="p">)</span>  <span class="c1"># [batch_size, 1, dim]</span>
+</pre></div>
+</div>
+<p>个性化注意力层的实现通过用户画像与序列特征的点积来计算注意力权重：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">UserAttention</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;用户注意力层，使用用户基础表示作为查询向量&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_vector</span><span class="p">,</span> <span class="n">key_vectors</span><span class="p">):</span>
+        <span class="c1"># 计算注意力分数：query · key^T</span>
+        <span class="n">attention_scores</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span>
+            <span class="n">query_vector</span><span class="p">,</span>  <span class="c1"># [batch_size, 1, dim]</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">key_vectors</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>  <span class="c1"># [batch_size, dim, seq_len]</span>
+        <span class="p">)</span>  <span class="c1"># [batch_size, 1, seq_len]</span>
+
+        <span class="n">attention_scores</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">attention_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">attention_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attention_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># 加权求和得到上下文向量</span>
+        <span class="n">context_vector</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">attention_weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">key_vectors</span>
+        <span class="p">)</span>  <span class="c1"># [batch_size, 1, dim]</span>
+
+        <span class="k">return</span> <span class="n">context_vector</span>
+</pre></div>
+</div>
 <p><strong>捕捉长期兴趣</strong></p>
 <p>长期行为包含丰富的用户偏好信息，但与短期行为的建模方式不同。SDM从特征维度对长期行为进行聚合，将历史行为按不同特征分成多个子集
 (<a class="reference internal" href="#sdm-model-architecture"><span class="std std-numref">图2.3.2</span></a> 左上角)：</p>
@@ -491,6 +598,42 @@ Softmax损失函数，通过随机采样一小部分负样本来近似全局的�
 \boldsymbol{p}^{u} &amp;=\tanh \left(\boldsymbol{W}^{p} \boldsymbol{z}^{u}+\boldsymbol{b}\right)
 \end{aligned}\end{split}\]</div>
 <p>其中<span class="math notranslate nohighlight">\(\boldsymbol{W}^{p}\)</span>是权重矩阵，<span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span>是偏置向量。</p>
+<p><strong>核心代码</strong></p>
+<p>长期兴趣的建模采用特征维度聚合的方式，对每个特征维度分别应用注意力机制：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 从不同特征维度对长期行为进行聚合</span>
+<span class="n">long_history_features</span> <span class="o">=</span> <span class="n">group_embedding_feature_dict</span><span class="p">[</span><span class="s1">&#39;raw_hist_seq_long&#39;</span><span class="p">]</span>
+
+<span class="n">long_term_interests</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">long_history_feature</span> <span class="ow">in</span> <span class="n">long_history_features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="c1"># 为每个特征维度生成 mask</span>
+    <span class="n">long_history_mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">not_equal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span>
+        <span class="p">)</span>
+    <span class="p">)(</span><span class="n">input_layer_dict</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>  <span class="c1"># [batch_size, max_len_long, 1]</span>
+
+    <span class="c1"># 应用 mask 到特征嵌入</span>
+    <span class="n">long_history_item_emb</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])(</span>
+        <span class="p">[</span><span class="n">long_history_feature</span><span class="p">,</span> <span class="n">long_history_mask</span><span class="p">]</span>
+    <span class="p">)</span>  <span class="c1"># [batch_size, max_len_long, dim]</span>
+
+    <span class="c1"># 对每个特征维度应用用户注意力</span>
+    <span class="n">user_attention</span> <span class="o">=</span> <span class="n">UserAttention</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;user_attention_long_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">long_term_interests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">user_attention</span><span class="p">(</span><span class="n">user_embedding</span><span class="p">,</span> <span class="n">long_history_item_emb</span><span class="p">)</span>
+    <span class="p">)</span>  <span class="c1"># [batch_size, 1, dim]</span>
+
+<span class="c1"># 拼接所有特征维度的表示</span>
+<span class="n">long_term_interests_concat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Concatenate</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)(</span>
+    <span class="n">long_term_interests</span>
+<span class="p">)</span>  <span class="c1"># [batch_size, 1, dim * len(long_history_features)]</span>
+
+<span class="c1"># 通过全连接层融合</span>
+<span class="n">long_term_interest</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">emb_dim</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">)(</span>
+    <span class="n">long_term_interests_concat</span>
+<span class="p">)</span>  <span class="c1"># [batch_size, 1, dim]</span>
+</pre></div>
+</div>
 <p><strong>长短期兴趣融合</strong></p>
 <p>有了长短期兴趣表示后，关键问题是如何有效融合这两部分信息。用户的长期行为虽然丰富，但通常只有一小部分与当前决策相关。简单的拼接或加权求和难以准确提取相关信息。</p>
 <p>SDM设计了门控融合机制，类似LSTM中的门控思想
@@ -502,14 +645,71 @@ Softmax损失函数，通过随机采样一小部分负样本来近似全局的�
 \end{aligned}\end{split}\]</div>
 <p>这里<span class="math notranslate nohighlight">\(\boldsymbol{G}_{t}^{u} \in \mathbb{R}^{d \times 1}\)</span>是门控向量，<span class="math notranslate nohighlight">\(\odot\)</span>表示逐元素乘法，<span class="math notranslate nohighlight">\(\boldsymbol{W}^{1}\)</span>、<span class="math notranslate nohighlight">\(\boldsymbol{W}^{2}\)</span>、<span class="math notranslate nohighlight">\(\boldsymbol{W}^{3}\)</span>是权重矩阵。</p>
 <p>门控网络接收三个输入：用户画像<span class="math notranslate nohighlight">\(\boldsymbol{e}_{u}\)</span>、短期兴趣<span class="math notranslate nohighlight">\(\boldsymbol{s}_{t}^{u}\)</span>和长期兴趣<span class="math notranslate nohighlight">\(\boldsymbol{p}^{u}\)</span>，输出的门控向量每个元素值介于0到1之间，决定了对应维度上长短期兴趣的贡献比例。这让模型能够在不同兴趣维度上分别选择保留长期或短期信息，避免简单平均可能带来的信息损失，使模型能够精确捕捉长期行为中与当前兴趣最相关的部分。</p>
-<p><strong>代码实践</strong></p>
+<p><strong>核心代码</strong></p>
+<p>门控融合机制通过学习三个权重矩阵来决定如何融合长短期兴趣：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">GatedFusion</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;门控融合层，用于融合长期和短期兴趣&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">):</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="n">input_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># 为用户画像、短期兴趣、长期兴趣分别学习权重矩阵</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_weight</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span> <span class="n">initializer</span><span class="o">=</span><span class="s1">&#39;glorot_uniform&#39;</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;W1&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_weight</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span> <span class="n">initializer</span><span class="o">=</span><span class="s1">&#39;glorot_uniform&#39;</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;W2&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_weight</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span> <span class="n">initializer</span><span class="o">=</span><span class="s1">&#39;glorot_uniform&#39;</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;W3&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_weight</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,),</span> <span class="n">initializer</span><span class="o">=</span><span class="s1">&#39;zeros&#39;</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;bias&#39;</span>
+        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GatedFusion</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">input_shape</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="n">user_embedding</span><span class="p">,</span> <span class="n">short_term</span><span class="p">,</span> <span class="n">long_term</span> <span class="o">=</span> <span class="n">inputs</span>
+
+        <span class="c1"># 计算门控向量：G = sigmoid(W1·e_u + W2·s_t + W3·p_u + b)</span>
+        <span class="n">gate</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">user_embedding</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">W1</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">short_term</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">W2</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">long_term</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">W3</span><span class="p">)</span> <span class="o">+</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+        <span class="p">)</span>  <span class="c1"># [batch_size, 1, dim]</span>
+
+        <span class="c1"># 门控融合：o_t = (1 - G) ⊙ p_u + G ⊙ s_t</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">gate</span><span class="p">)</span> <span class="o">*</span> <span class="n">long_term</span> <span class="o">+</span> <span class="n">gate</span> <span class="o">*</span> <span class="n">short_term</span>
+
+        <span class="k">return</span> <span class="n">output</span>
+</pre></div>
+</div>
+<p>整个SDM模型的最终实现将三个模块串联起来：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 短期兴趣建模</span>
+<span class="n">short_term_interest</span> <span class="o">=</span> <span class="n">build_short_term_interest</span><span class="p">(</span>
+    <span class="n">short_history_item_emb</span><span class="p">,</span> <span class="n">user_embedding</span>
+<span class="p">)</span>  <span class="c1"># [batch_size, 1, dim]</span>
+
+<span class="c1"># 长期兴趣建模</span>
+<span class="n">long_term_interest</span> <span class="o">=</span> <span class="n">build_long_term_interest</span><span class="p">(</span>
+    <span class="n">long_history_features</span><span class="p">,</span> <span class="n">user_embedding</span>
+<span class="p">)</span>  <span class="c1"># [batch_size, 1, dim]</span>
+
+<span class="c1"># 门控融合</span>
+<span class="n">gated_fusion</span> <span class="o">=</span> <span class="n">GatedFusion</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;gated_fusion&#39;</span><span class="p">)</span>
+<span class="n">final_interest</span> <span class="o">=</span> <span class="n">gated_fusion</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">user_embedding</span><span class="p">,</span> <span class="n">short_term_interest</span><span class="p">,</span> <span class="n">long_term_interest</span><span class="p">]</span>
+<span class="p">)</span>  <span class="c1"># [batch_size, 1, dim]</span>
+</pre></div>
+</div>
+<p><strong>训练和评估</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;sdm&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0079</span> <span class="o">|</span>       <span class="mf">0.0028</span> <span class="o">|</span>    <span class="mf">0.0027</span> <span class="o">|</span>   <span class="mf">0.0012</span> <span class="o">|</span>         <span class="mf">0.0008</span> <span class="o">|</span>        <span class="mf">0.0006</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0058</span> <span class="o">|</span>       <span class="mf">0.0051</span> <span class="o">|</span>    <span class="mf">0.0046</span> <span class="o">|</span>   <span class="mf">0.0044</span> <span class="o">|</span>         <span class="mf">0.0006</span> <span class="o">|</span>         <span class="mf">0.001</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
