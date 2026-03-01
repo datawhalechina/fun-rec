@@ -1,5 +1,7 @@
 <div align=center>
-  <h1>FunRec Recommendation System</h1>
+  <img src="imgs/wheat.png" width="100%"/>
+  <h3>Deep Recommendation Algorithms in Practice（wheat-book）</h3>
+  <p>From Cascade Architecture to Generative Paradigm</p>
 </div>
 <div align="center">
 
@@ -7,66 +9,52 @@ English | [中文](./README.md)
 
 </div>
 
-> **Note: This project is still under development and is being updated frequently. Pull Requests are not accepted at this time.**
-> If you have any suggestions or encounter any issues, please feel free to provide feedback via [Issue](https://github.com/datawhalechina/fun-rec/issues).
+This book systematically covers the full technical evolution of recommendation systems, from classical cascade architectures to the generative paradigm. It is organized into two parts: the first covers candidate retrieval techniques including collaborative filtering, embedding-based retrieval, and sequential retrieval, along with ranking and re-ranking methods such as feature crossing, multi-objective modeling, and multi-scenario modeling; the second focuses on frontier generative recommendation, encompassing LLM foundations, Scaling Law architecture exploration, end-to-end generative modeling, chain-of-thought reasoning, and diffusion-based recommendation, culminating in a hands-on production-grade system project. Ideal for readers with a machine learning background who want to systematically master both the theory and engineering practice of recommendation algorithms.
 
-This tutorial is a comprehensive guide to recommendation systems, primarily aimed at students with basic knowledge of machine learning who want to deepen their understanding of recommendation algorithms. The tutorial covers four perspectives: theoretical foundation, core algorithms, engineering practice, and interview preparation, providing a complete learning loop from theory to practice to job hunting.
+## 📖 Table of Contents
 
-## 📚 Tutorial Content Overview
+**Part I: Cascade Architecture**
 
-### 🎯 **Recommendation System Overview**
-From the basic concepts of recommendation systems, this tutorial comprehensively introduces the significance, application scenarios, technical architecture, and related technical stacks of recommendation systems, helping beginners establish a comprehensive understanding and understanding of recommendation systems.
+- **1. Introduction to Recommendation Systems**
+  - What is a Recommendation System? / Book Overview
+- **2. Fast Candidate Retrieval**
+  - Collaborative Filtering: Item-based CF / User-based CF / Matrix Factorization
+  - Embedding-based Retrieval: I2I / U2I
+  - Sequential Retrieval: User Interest Representation / Full-history Modeling & Streaming Index
+- **3. Precise Preference Prediction**
+  - Memorization & Generalization
+  - Feature Crossing: 2nd-order / Higher-order
+  - Sequential Modeling: Local Activation Attention / Interest Evolution Modeling / Behavior-to-Session Modeling
+  - Multi-objective Modeling: Architecture Evolution / Task Dependency Modeling / Multi-loss Optimization
+  - Multi-scenario Modeling: Multi-tower Architecture / Dynamic Weight Modeling
+- **4. Re-ranking & Diversity Modeling**
+  - Greedy-based Re-ranking: Maximum Marginal Relevance / Determinantal Point Process
+  - Personalized Re-ranking: Transformer Re-ranking Model / Permutation-based Re-ranking Model
 
-### 🔍 **Retrieval Model**
-Explain the retrieval algorithms in recommendation systems, including:
-- **Collaborative Filtering**：Classic user collaborative filtering and item collaborative filtering algorithms
-- **Embedding-based Retrieval**：Retrieval methods based on embedding
-- **Sequential Retrieval**：Retrieval strategies considering user behavior sequences
+**Part II: Generative Paradigm**
 
-### 🎯 **Ranking Model**
-Systematically introduce the core technologies of ranking algorithms in recommendation systems:
-
-- **Memorization & Generalization**：Classic models such as Wide & Deep
-- **Feature Crossing**：Automated feature crossing methods
-- **Sequential Modeling**：User behavior sequence modeling techniques
-- **Multi-objective Modeling**：Multi-task learning in recommendation
-- **Multi-scenario Modeling**：Cross-domain recommendation and scenario adaptation
-
-### 🔄 **Re-ranking Model**
-Discuss the re-ranking techniques in recommendation systems:
-- **Greedy Re-ranking**：Simple and efficient re-ranking strategies
-- **Personalized Re-ranking**：Consider user-specific re-ranking methods
-
-### 🚀 **Challenges & Trends** 
-Explore the latest trends and challenges in recommendation systems:
-
-- **Model Debiasing**：Solve the bias problems in recommendation systems
-- **Cold Start Problem**：Recommendation strategies for new users and new items
-- **Generative Recommendation**：Recommendation methods based on generative models
-
-### 💼 **Projects**
-Provide complete practical experience of recommendation systems through real competition cases:
-- Problem Understanding and Data Analysis
-- Baseline Construction and Optimization
-- Multi-retrieval Strategy Design
-- Feature Engineering and Ranking Model
-
-### 🎤 **Interview Preparation**
-Organize the core knowledge points in the interview for recommendation algorithm engineers:
-- Machine Learning Fundamentals
-- Core Algorithms of Recommendation Models
-- Latest Technologies Development Trends
-- Practical Applications in Business Scenarios 
-- HR Interview Skills
-
-## 🎯 **Learning Objectives**
-
-Through this tutorial, you will be able to:
-- 🔧 **Master Core Algorithms**：Deeply understand the core principles of algorithms in each phase of recommendation systems
-
-- 💻 **Gain Practical Experience**：Obtain end-to-end recommendation system development experience through project practice
-- 📈 **Keep Up with the Latest Technologies**：Understand the latest trends and technologies in recommendation systems
-- 🎯 **Pass the Technical Interview**：Have the competitiveness for recommendation algorithm engineer positions
+- **5. Foundations of Generative Recommendation**
+  - Evolution of Recommendation Paradigms: Discriminative Modeling / Generative Core Ideas / Essential Differences
+  - Building Blocks of Generative Architectures: Transformer / Diffusion Models
+  - Fundamentals of LLM Modeling: Three-stage Paradigm / From LLM to Generative Recommendation
+  - Tokenizer Techniques for Recommendation: Paradigm Evolution / End-to-end Discretization / Industrial Solutions / Key Challenges
+- **6. Scaling Law Architecture Exploration**
+  - HSTU Architecture Evolution: First Scaling Law Exploration / Engineering Breakthrough / Hybrid Paradigm Breakthrough
+  - Hardware-aware Architecture Design: HW-Aware Unified Architecture / Unified Sequence & Feature Interaction Modeling
+- **7. End-to-End Generative Modeling**
+  - OneRec Architecture Evolution: OneRec-V1 Pioneering Exploration / OneRec-V2 Efficiency & Performance Breakthrough
+  - Query Completion & Product Retrieval: OneSug Query Completion / OneSearch Product Retrieval
+  - Auction Mechanisms & Multi-scenario Advertising: EGA Unified Auction & Generation / GPR Pretrained Ad Generation
+- **8. Reasoning-enhanced Recommendation**
+  - Unifying Collaborative and Linguistic Semantics: Item Index Learning / Semantic Alignment Training / PLUM Framework
+  - OneRec-Think Reasoning Framework: Item Alignment / Reasoning Activation / Reasoning Enhancement / Think-Ahead Architecture
+  - Exploration of Autonomous Reasoning: RecZero / RecOne / Future Directions
+- **9. Diffusion-based Recommendation**
+  - Fundamentals of Diffusion Models: Diffusion Taxonomy / Forward Noising & Reverse Denoising / Training & Sampling / Conditional Generation
+  - Diffusion-based Data Augmentation: DiffuASR Sequential Augmentation / Diff-MSR Cross-scenario Augmentation
+  - Feature Enhancement & Diversity Optimization: AsymDiffRec Feature Enhancement / DMSG Diversity Optimization
+- **10. Production-grade Recommendation System**
+  - Project Background & Goals / System Architecture Design / Offline Pipeline / Online Pipeline / Frontend & Interaction / Deployment & Operations
 
 We also establish a **FunRec learning community (WeChat group + knowledge planet)**, where the WeChat group is convenient for daily communication and discussion, and the knowledge planet is convenient for content retention. Some early recorded videos related to technology are also on Bilibili [All technical sharing content is on Bilibili](https://space.bilibili.com/431850986/channel/collectiondetail?sid=339597). Since the WeChat group's QR code is only valid for 7 days, just add the following WeChat Code, with remark: **Fun-Rec**, you will be added into a Fun-Rec discussion group. If you think the WeChat group is too noisy, it is recommended to add the knowledge planet directly!
 
@@ -89,7 +77,7 @@ We also establish a **FunRec learning community (WeChat group + knowledge planet
       <td>
          <a href="https://github.com/bokang-ugent"><img width="70" height="70" src="https://github.com/bokang-ugent.png?s=40" alt="pic"></a><br>
          <a href="https://bokang.io">Bo Kang</a> 
-        <p><br> PhD, Ghent University <br> Co-founder of nobl.ai </p>
+        <p><br> Visiting Professor, Ghent University <br> Co-founder of nobl.ai </p>
       </td>
     </tr>
   </tbody>

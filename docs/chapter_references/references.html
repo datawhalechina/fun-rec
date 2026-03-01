@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     
-    <title>参考文献 &#8212; FunRec 推荐系统 0.0.1 documentation</title>
+    <title>参考文献 &#8212; 深度推荐算法实践:从级联架构到生成式范式 1.0.0 documentation</title>
 
     <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
@@ -27,7 +27,7 @@
     <script src="../_static/d2l.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="7.1. Word2vec" href="../chapter_appendix/word2vec.html" /> 
+    <link rel="prev" title="10.7. 本章总结" href="../chapter_10_projects/7.summary.html" /> 
   </head>
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
@@ -85,9 +85,7 @@ Show Source
           <!-- Title -->
       <span class="mdl-layout-title">
           <a class="title" href="../index.html">
-              <span class="title-text">
-                  FunRec 推荐系统
-              </span>
+              <img class="logo" src="../_static/logo_with_text.png" alt="深度推荐算法实践:从级联架构到生成式范式"/>
           </a>
       </span>
     
@@ -109,29 +107,27 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.3. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
@@ -150,32 +146,67 @@ Show Source
 <li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/6.summary.html">3.6. 本章总结</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排多样性建模</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.1. 模型去偏</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.2. 冷启动问题</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.3. 生成式推荐</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.4. 本章小结</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_5_gr_basic/index.html">5. 生成式推荐基础</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/1.gr_intro.html">5.1. 推荐范式的演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/2.gr_arch_base.html">5.2. 生成式架构的基石</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/3.llm_base.html">5.3. LLM建模的基本流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/4.codebook.html">5.4. 推荐中的Tokenizer技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/5.summary.html">5.5. 本章总结</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_5_projects/index.html">6. 项目实践</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">7. Appendix</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">7.1. Word2vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/1.recommendation.html">7.1. OneRec的架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/2.search.html">7.2. 查询补全与商品检索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/3.ad.html">7.3. 竞价机制与多场景广告</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/4.summary.html">7.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_8_thinking/index.html">8. 会思考的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/1.semantic_alignment.html">8.1. 协同语义与语言语义的统一</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/2.reasoning_framework.html">8.2. OneRec-Think的思考框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/3.autonomous_reasoning.html">8.3. 自主推理的探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/4.summary.html">8.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_9_diffusion/index.html">9. 基于扩散的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/1.basics.html">9.1. 推荐中的扩散模型基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/2.augmentation.html">9.2. 基于扩散的数据增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/3.application.html">9.3. 特征增强与多样性优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/4.summary.html">9.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_10_projects/index.html">10. 生产级推荐系统构建</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/1.intro.html">10.1. 项目背景与目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/2.architecture.html">10.2. 系统架构设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/3.offline_pipeline.html">10.3. 离线流水线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/4.online_pipeline.html">10.4. 在线流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/5.frontend.html">10.5. 前端与交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/6.deployment.html">10.6. 部署与运维</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/7.summary.html">10.7. 本章总结</a></li>
 </ul>
 </li>
 </ul>
@@ -196,9 +227,7 @@ Show Source
           <!-- Title -->
       <span class="mdl-layout-title">
           <a class="title" href="../index.html">
-              <span class="title-text">
-                  FunRec 推荐系统
-              </span>
+              <img class="logo" src="../_static/logo_with_text.png" alt="深度推荐算法实践:从级联架构到生成式范式"/>
           </a>
       </span>
     
@@ -220,29 +249,27 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 召回模型</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 基于物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 基于用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.summary.html">2.1.4. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/3.summary.html">2.2.3. 总结</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.generateive_recall.html">2.3.2. 生成式召回方法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/3.summary.html">2.3.3. 总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精排模型</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
@@ -261,32 +288,67 @@ Show Source
 <li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/6.summary.html">3.6. 本章总结</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排模型</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排多样性建模</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_4_trends/index.html">5. 难点及热点研究</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/1.debias.html">5.1. 模型去偏</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/2.cold_start.html">5.2. 冷启动问题</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/3.generative.html">5.3. 生成式推荐</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_4_trends/4.summary.html">5.4. 本章小结</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_5_gr_basic/index.html">5. 生成式推荐基础</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/1.gr_intro.html">5.1. 推荐范式的演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/2.gr_arch_base.html">5.2. 生成式架构的基石</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/3.llm_base.html">5.3. LLM建模的基本流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/4.codebook.html">5.4. 推荐中的Tokenizer技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/5.summary.html">5.5. 本章总结</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_5_projects/index.html">6. 项目实践</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/1.understanding.html">6.1. 赛题理解</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/2.baseline.html">6.2. Baseline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/3.analysis.html">6.3. 数据分析</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/4.recall.html">6.4. 多路召回</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/5.feature_engineering.html">6.5. 特征工程</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_5_projects/6.ranking.html">6.6. 排序模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_appendix/index.html">7. Appendix</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_appendix/word2vec.html">7.1. Word2vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/1.recommendation.html">7.1. OneRec的架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/2.search.html">7.2. 查询补全与商品检索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/3.ad.html">7.3. 竞价机制与多场景广告</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/4.summary.html">7.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_8_thinking/index.html">8. 会思考的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/1.semantic_alignment.html">8.1. 协同语义与语言语义的统一</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/2.reasoning_framework.html">8.2. OneRec-Think的思考框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/3.autonomous_reasoning.html">8.3. 自主推理的探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/4.summary.html">8.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_9_diffusion/index.html">9. 基于扩散的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/1.basics.html">9.1. 推荐中的扩散模型基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/2.augmentation.html">9.2. 基于扩散的数据增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/3.application.html">9.3. 特征增强与多样性优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/4.summary.html">9.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_10_projects/index.html">10. 生产级推荐系统构建</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/1.intro.html">10.1. 项目背景与目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/2.architecture.html">10.2. 系统架构设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/3.offline_pipeline.html">10.3. 离线流水线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/4.online_pipeline.html">10.4. 在线流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/5.frontend.html">10.5. 前端与交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/6.deployment.html">10.6. 部署与运维</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/7.summary.html">10.7. 本章总结</a></li>
 </ul>
 </li>
 </ul>
@@ -311,21 +373,41 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Abdollahpouri et al., 2017<span class="fn-bracket">]</span></span>
 <p>Abdollahpouri, H., Burke, R., &amp; Mobasher, B. (2017). Controlling popularity bias in learning-to-rank recommendation. <em>Proceedings of the eleventh ACM conference on recommender systems</em> (pp. 42–46).</p>
 </div>
+<div class="citation" id="id59" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bao et al., 2025<span class="fn-bracket">]</span></span>
+<p>Bao, K., Zhang, J., Wang, W., Zhang, Y., Yang, Z., Luo, Y., … Tian, Q. (2025). A bi-step grounding paradigm for large language models in recommendation systems. <em>ACM Transactions on Recommender Systems</em>, <em>3</em>(4), 1–27.</p>
+</div>
+<div class="citation" id="id112" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bao et al., 2023<span class="fn-bracket">]</span></span>
+<p>Bao, K., Zhang, J., Zhang, Y., Wang, W., Feng, F., &amp; He, X. (2023). Tallrec: an effective and efficient tuning framework to align large language model with recommendation. <em>Proceedings of the 17th ACM conference on recommender systems</em> (pp. 1007–1014).</p>
+</div>
 <div class="citation" id="id18" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Barkan &amp; Koenigstein, 2016<span class="fn-bracket">]</span></span>
 <p>Barkan, O., &amp; Koenigstein, N. (2016). Item2vec: neural item embedding for collaborative filtering. <em>2016 IEEE 26th international workshop on machine learning for signal processing (MLSP)</em> (pp. 1–6).</p>
+</div>
+<div class="citation" id="id105" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bin et al., 2025<span class="fn-bracket">]</span></span>
+<p>Bin, X., Cui, J., Yan, W., Zhao, Z., Han, X., Yan, C., … Liu, Z. (2025). Real-time indexing for large-scale recommendation by streaming vector quantization retriever. <em>arXiv preprint arXiv:2501.08695</em>.</p>
+</div>
+<div class="citation" id="id109" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Cao &amp; Lio, 2024<span class="fn-bracket">]</span></span>
+<p>Cao, P., &amp; Lio, P. (2024). Genrec: generative sequential recommendation with large language models. <em>arXiv preprint arXiv:2407.21191</em>.</p>
 </div>
 <div class="citation" id="id56" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Carbonell &amp; Goldstein, 1998<span class="fn-bracket">]</span></span>
 <p>Carbonell, J., &amp; Goldstein, J. (1998). The use of mmr, diversity-based reranking for reordering documents and producing summaries. <em>Proceedings of the 21st annual international ACM SIGIR conference on Research and development in information retrieval</em> (pp. 335–336).</p>
 </div>
-<div class="citation" id="id87" role="doc-biblioentry">
+<div class="citation" id="id90" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Caruana, 1997<span class="fn-bracket">]</span></span>
 <p>Caruana, R. (1997). Multitask learning. <em>Machine learning</em>, <em>28</em>(1), 41–75.</p>
 </div>
 <div class="citation" id="id61" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Chang et al., 2023<span class="fn-bracket">]</span></span>
 <p>Chang, J., Zhang, C., Hui, Y., Leng, D., Niu, Y., Song, Y., &amp; Gai, K. (2023). Pepnet: parameter and embedding personalized network for infusing with personalized prior information. <em>Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data Mining</em> (pp. 3795–3804).</p>
+</div>
+<div class="citation" id="id85" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Chen et al., 2025<span class="fn-bracket">]</span></span>
+<p>Chen, B., Guo, X., Wang, S., Liang, Z., Lv, Y., Ma, Y., … others. (2025). Onesearch: a preliminary exploration of the unified end-to-end generative framework for e-commerce search. <em>arXiv preprint arXiv:2509.03236</em>.</p>
 </div>
 <div class="citation" id="id71" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Chen et al., 2023<span class="fn-bracket">]</span></span>
@@ -335,7 +417,7 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Chen et al., 2018a<span class="fn-bracket">]</span></span>
 <p>Chen, L., Zhang, G., &amp; Zhou, E. (2018). Fast greedy map inference for determinantal point process to improve recommendation diversity. <em>Advances in Neural Information Processing Systems</em>, <em>31</em>.</p>
 </div>
-<div class="citation" id="id93" role="doc-biblioentry">
+<div class="citation" id="id96" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Chen et al., 2018b<span class="fn-bracket">]</span></span>
 <p>Chen, Z., Badrinarayanan, V., Lee, C.-Y., &amp; Rabinovich, A. (2018). Gradnorm: gradient normalization for adaptive loss balancing in deep multitask networks. <em>International conference on machine learning</em> (pp. 794–803).</p>
 </div>
@@ -347,9 +429,17 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Covington et al., 2016<span class="fn-bracket">]</span></span>
 <p>Covington, P., Adams, J., &amp; Sargin, E. (2016). Deep neural networks for youtube recommendations. <em>Proceedings of the 10th ACM conference on recommender systems</em> (pp. 191–198).</p>
 </div>
+<div class="citation" id="id111" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Cui et al., 2022<span class="fn-bracket">]</span></span>
+<p>Cui, Z., Ma, J., Zhou, C., Zhou, J., &amp; Yang, H. (2022). M6-rec: generative pretrained language models are open-ended recommender systems. <em>arXiv preprint arXiv:2205.08084</em>.</p>
+</div>
 <div class="citation" id="id84" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Deng et al., 2025<span class="fn-bracket">]</span></span>
 <p>Deng, J., Wang, S., Cai, K., Ren, L., Hu, Q., Ding, W., … Zhou, G. (2025). Onerec: unifying retrieve and rank with generative recommender and iterative preference alignment. <em>arXiv preprint arXiv:2502.18965</em>.</p>
+</div>
+<div class="citation" id="id135" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Dhariwal &amp; Nichol, 2021<span class="fn-bracket">]</span></span>
+<p>Dhariwal, P., &amp; Nichol, A. (2021). Diffusion models beat gans on image synthesis. <em>Advances in neural information processing systems</em>, <em>34</em>, 8780–8794.</p>
 </div>
 <div class="citation" id="id68" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Dobrovolny et al., 2021<span class="fn-bracket">]</span></span>
@@ -359,7 +449,7 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Duchi et al., 2011<span class="fn-bracket">]</span></span>
 <p>Duchi, J., Hazan, E., &amp; Singer, Y. (2011). Adaptive subgradient methods for online learning and stochastic optimization. <em>Journal of machine learning research</em>, <em>12</em>(7).</p>
 </div>
-<div class="citation" id="id86" role="doc-biblioentry">
+<div class="citation" id="id89" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Feng et al., 2021<span class="fn-bracket">]</span></span>
 <p>Feng, Y., Gong, Y., Sun, F., Ge, J., &amp; Ou, W. (2021). Revisit recommender system in the permutation prospective. <em>arXiv preprint arXiv:2102.12057</em>.</p>
 </div>
@@ -379,6 +469,10 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Funk, 2006<span class="fn-bracket">]</span></span>
 <p>Funk, S. (2006). Netflix update: try this at home. <em>Blog</em>. URL: <a class="reference external" href="https://sifter.org/simon/journal/20061211.html">https://sifter.org/simon/journal/20061211.html</a></p>
 </div>
+<div class="citation" id="id113" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Geng et al., 2022<span class="fn-bracket">]</span></span>
+<p>Geng, S., Liu, S., Fu, Z., Ge, Y., &amp; Zhang, Y. (2022). Recommendation as language processing (rlp): a unified pretrain, personalized prompt &amp; predict paradigm (p5). <em>Proceedings of the 16th ACM conference on recommender systems</em> (pp. 299–315).</p>
+</div>
 <div class="citation" id="id66" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Goldberg et al., 1992<span class="fn-bracket">]</span></span>
 <p>Goldberg, D., Nichols, D., Oki, B. M., &amp; Terry, D. (1992). Using collaborative filtering to weave an information tapestry. <em>Communications of the ACM</em>, <em>35</em>(12), 61–70.</p>
@@ -395,13 +489,33 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Guo et al., 2019<span class="fn-bracket">]</span></span>
 <p>Guo, H., Yu, J., Liu, Q., Tang, R., &amp; Zhang, Y. (2019). Pal: a position-bias aware learning framework for ctr prediction in live recommender systems. <em>Proceedings of the 13th ACM Conference on Recommender Systems</em> (pp. 452–456).</p>
 </div>
+<div class="citation" id="id150" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Guo et al., 2025<span class="fn-bracket">]</span></span>
+<p>Guo, X., Chen, B., Wang, S., Yang, Y., Lei, C., Ding, Y., &amp; Li, H. (2025). Onesug: the unified end-to-end generative framework for e-commerce query suggestion. <em>arXiv preprint arXiv:2506.06913</em>.</p>
+</div>
 <div class="citation" id="id83" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Han et al., 2025<span class="fn-bracket">]</span></span>
 <p>Han, R., Yin, B., Chen, S., Jiang, H., Jiang, F., Li, X., … others. (2025). Mtgr: industrial-scale generative recommendation framework in meituan. <em>arXiv preprint arXiv:2505.18654</em>.</p>
 </div>
+<div class="citation" id="id131" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>He et al., 2025<span class="fn-bracket">]</span></span>
+<p>He, R., Heldt, L., Hong, L., Keshavan, R., Mao, S., Mehta, N., … others. (2025). Plum: adapting pre-trained language models for industrial-scale generative recommendations. <em>arXiv preprint arXiv:2510.07784</em>.</p>
+</div>
 <div class="citation" id="id47" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>He &amp; Chua, 2017<span class="fn-bracket">]</span></span>
 <p>He, X., &amp; Chua, T.-S. (2017). Neural factorization machines for sparse predictive analytics. <em>Proceedings of the 40th International ACM SIGIR conference on Research and Development in Information Retrieval</em> (pp. 355–364).</p>
+</div>
+<div class="citation" id="id117" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Ho et al., 2020<span class="fn-bracket">]</span></span>
+<p>Ho, J., Jain, A., &amp; Abbeel, P. (2020). Denoising diffusion probabilistic models. <em>Advances in neural information processing systems</em>, <em>33</em>, 6840–6851.</p>
+</div>
+<div class="citation" id="id136" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Ho &amp; Salimans, 2022<span class="fn-bracket">]</span></span>
+<p>Ho, J., &amp; Salimans, T. (2022). Classifier-free diffusion guidance. <em>arXiv preprint arXiv:2207.12598</em>.</p>
+</div>
+<div class="citation" id="id148" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Hou et al., 2024<span class="fn-bracket">]</span></span>
+<p>Hou, Y., Yu, W., Yin, Z., Cai, C., Liu, Z., &amp; Wang, E. (2024). Collaborative filtering with diffusion models. <em>Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval</em> (pp. 1–10).</p>
 </div>
 <div class="citation" id="id21" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Hu et al., 2018<span class="fn-bracket">]</span></span>
@@ -423,17 +537,29 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Jiang et al., 2019<span class="fn-bracket">]</span></span>
 <p>Jiang, R., Chiappa, S., Lattimore, T., György, A., &amp; Kohli, P. (2019). Degenerate feedback loops in recommender systems. <em>Proceedings of the 2019 AAAI/ACM Conference on AI, Ethics, and Society</em> (pp. 383–390).</p>
 </div>
+<div class="citation" id="id114" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Jiang et al., 2025<span class="fn-bracket">]</span></span>
+<p>Jiang, Y., Ren, X., Xia, L., Luo, D., Lin, K., &amp; Huang, C. (2025). Recgpt: a foundation model for sequential recommendation. <em>arXiv preprint arXiv:2506.06270</em>.</p>
+</div>
 <div class="citation" id="id39" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Kang &amp; McAuley, 2018<span class="fn-bracket">]</span></span>
 <p>Kang, W.-C., &amp; McAuley, J. (2018). Self-attentive sequential recommendation. <em>2018 IEEE international conference on data mining (ICDM)</em> (pp. 197–206).</p>
 </div>
-<div class="citation" id="id92" role="doc-biblioentry">
+<div class="citation" id="id121" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Kaplan et al., 2020<span class="fn-bracket">]</span></span>
+<p>Kaplan, J., McCandlish, S., Henighan, T., Brown, T. B., Chess, B., Child, R., … Amodei, D. (2020). Scaling laws for neural language models. <em>arXiv preprint arXiv:2001.08361</em>.</p>
+</div>
+<div class="citation" id="id95" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Kendall et al., 2018<span class="fn-bracket">]</span></span>
 <p>Kendall, A., Gal, Y., &amp; Cipolla, R. (2018). Multi-task learning using uncertainty to weigh losses for scene geometry and semantics. <em>Proceedings of the IEEE conference on computer vision and pattern recognition</em> (pp. 7482–7491).</p>
 </div>
 <div class="citation" id="id70" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Kingma &amp; Ba, 2014<span class="fn-bracket">]</span></span>
 <p>Kingma, D. P., &amp; Ba, J. (2014). Adam: a method for stochastic optimization. <em>arXiv preprint arXiv:1412.6980</em>.</p>
+</div>
+<div class="citation" id="id133" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Kong et al., 2025<span class="fn-bracket">]</span></span>
+<p>Kong, X., Jiang, J., Liu, B., Xu, Z., Zhu, H., Xu, J., … Wang, X. (2025). Think before recommendation: autonomous reasoning-enhanced recommender. <em>arXiv preprint arXiv:2501.xxxxx</em>.</p>
 </div>
 <div class="citation" id="id11" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Koren et al., 2009<span class="fn-bracket">]</span></span>
@@ -447,7 +573,7 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Li et al., 2019<span class="fn-bracket">]</span></span>
 <p>Li, C., Liu, Z., Wu, M., Xu, Y., Zhao, H., Huang, P., … Lee, D. L. (2019). Multi-interest network with dynamic routing for recommendation at tmall. <em>Proceedings of the 28th ACM international conference on information and knowledge management</em> (pp. 2615–2623).</p>
 </div>
-<div class="citation" id="id95" role="doc-biblioentry">
+<div class="citation" id="id98" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Li et al., 2020<span class="fn-bracket">]</span></span>
 <p>Li, P., Li, R., Da, Q., Zeng, A.-X., &amp; Zhang, L. (2020). Improving multi-scenario learning to rank in e-commerce by exploiting task relationships in the label space. <em>Proceedings of the 29th ACM International Conference on Information &amp; Knowledge Management</em> (pp. 2605–2612).</p>
 </div>
@@ -455,7 +581,7 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Lian et al., 2018<span class="fn-bracket">]</span></span>
 <p>Lian, J., Zhou, X., Zhang, F., Chen, Z., Xie, X., &amp; Sun, G. (2018). Xdeepfm: combining explicit and implicit feature interactions for recommender systems. <em>Proceedings of the 24th ACM SIGKDD international conference on knowledge discovery &amp; data mining</em> (pp. 1754–1763).</p>
 </div>
-<div class="citation" id="id94" role="doc-biblioentry">
+<div class="citation" id="id97" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Lin et al., 2019<span class="fn-bracket">]</span></span>
 <p>Lin, X., Zhen, H.-L., Li, Z., Zhang, Q.-F., &amp; Kwong, S. (2019). Pareto multi-task learning. <em>Advances in neural information processing systems</em>, <em>32</em>.</p>
 </div>
@@ -467,13 +593,29 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Liu et al., 2017<span class="fn-bracket">]</span></span>
 <p>Liu, D. C., Rogers, S., Shiau, R., Kislyuk, D., Ma, K. C., Zhong, Z., … Jing, Y. (2017). Related pins at pinterest: the evolution of a real-world recommender system. <em>Proceedings of the 26th international conference on world wide web companion</em> (pp. 583–592).</p>
 </div>
+<div class="citation" id="id138" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Liu et al., 2023<span class="fn-bracket">]</span></span>
+<p>Liu, Q., Yan, F., Zhao, X., Du, Z., Guo, H., Tang, R., &amp; Tian, F. (2023). Diffusion augmentation for sequential recommendation. <em>Proceedings of the 32nd ACM International conference on information and knowledge management</em> (pp. 1576–1586).</p>
+</div>
+<div class="citation" id="id132" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Liu et al., 2025<span class="fn-bracket">]</span></span>
+<p>Liu, Z., Wang, S., Wang, X., Zhang, R., Deng, J., Bao, H., … others. (2025). Onerec-think: in-text reasoning for generative recommendation. <em>arXiv preprint arXiv:2510.11639</em>.</p>
+</div>
+<div class="citation" id="id149" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Luo, 2022<span class="fn-bracket">]</span></span>
+<p>Luo, C. (2022). Understanding diffusion models: a unified perspective. <em>arXiv preprint arXiv:2208.11970</em>.</p>
+</div>
 <div class="citation" id="id38" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Lv et al., 2019<span class="fn-bracket">]</span></span>
 <p>Lv, F., Jin, T., Yu, C., Sun, F., Lin, Q., Yang, K., &amp; Ng, W. (2019). Sdm: sequential deep matching model for online large-scale recommender system. <em>Proceedings of the 28th ACM international conference on information and knowledge management</em> (pp. 2635–2643).</p>
 </div>
-<div class="citation" id="id90" role="doc-biblioentry">
+<div class="citation" id="id93" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Ma et al., 2018<span class="fn-bracket">]</span></span>
 <p>Ma, X., Zhao, L., Huang, G., Wang, Z., Hu, Z., Zhu, X., &amp; Gai, K. (2018). Entire space multi-task model: an effective approach for estimating post-click conversion rate. <em>The 41st International ACM SIGIR Conference on Research &amp; Development in Information Retrieval</em> (pp. 1137–1140).</p>
+</div>
+<div class="citation" id="id145" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Ma et al., 2024<span class="fn-bracket">]</span></span>
+<p>Ma, Z., Xu, F., Gu, W., Song, Y., &amp; Wen, Z. (2024). Multi-modal diffused collaborative filtering for recommendation. <em>arXiv preprint arXiv:2404.06415</em>.</p>
 </div>
 <div class="citation" id="id73" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Marlin et al., 2012<span class="fn-bracket">]</span></span>
@@ -483,15 +625,31 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Mikolov et al., 2013<span class="fn-bracket">]</span></span>
 <p>Mikolov, T., Sutskever, I., Chen, K., Corrado, G. S., &amp; Dean, J. (2013). Distributed representations of words and phrases and their compositionality. <em>Advances in neural information processing systems</em>, <em>26</em>.</p>
 </div>
+<div class="citation" id="id126" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Mudigere et al., 2022<span class="fn-bracket">]</span></span>
+<p>Mudigere, D., Hao, Y., Huang, J., Jia, Z., Tulloch, A., Sridharan, S., … others. (2022). Software-hardware co-design for fast and scalable training of deep learning recommendation models. <em>Proceedings of the 49th Annual International Symposium on Computer Architecture</em> (pp. 993–1011).</p>
+</div>
+<div class="citation" id="id120" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Ouyang et al., 2022<span class="fn-bracket">]</span></span>
+<p>Ouyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C., Mishkin, P., … others. (2022). Training language models to follow instructions with human feedback. <em>Advances in neural information processing systems</em>, <em>35</em>, 27730–27744.</p>
+</div>
+<div class="citation" id="id116" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Peebles &amp; Xie, 2023<span class="fn-bracket">]</span></span>
+<p>Peebles, W., &amp; Xie, S. (2023). Scalable diffusion models with transformers. <em>Proceedings of the IEEE/CVF international conference on computer vision</em> (pp. 4195–4205).</p>
+</div>
 <div class="citation" id="id57" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Pei et al., 2019<span class="fn-bracket">]</span></span>
 <p>Pei, C., Zhang, Y., Zhang, Y., Sun, F., Lin, X., Sun, H., … others. (2019). Personalized re-ranking for recommendation. <em>Proceedings of the 13th ACM conference on recommender systems</em> (pp. 3–11).</p>
+</div>
+<div class="citation" id="id106" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Pi et al., 2020<span class="fn-bracket">]</span></span>
+<p>Pi, Q., Zhu, X., Zhou, G., Zhang, Y., Wang, Z., Ren, L., … Gai, K. (2020). Search-based user interest modeling with lifelong sequential behavior data for click-through rate prediction. <em>Proceedings of the 29th ACM International Conference on Information &amp; Knowledge Management</em> (pp. 2685–2692).</p>
 </div>
 <div class="citation" id="id41" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Qu et al., 2016<span class="fn-bracket">]</span></span>
 <p>Qu, Y., Cai, H., Ren, K., Zhang, W., Yu, Y., Wen, Y., &amp; Wang, J. (2016). Product-based neural networks for user response prediction. <em>2016 IEEE 16th international conference on data mining (ICDM)</em> (pp. 1149–1154).</p>
 </div>
-<div class="citation" id="id85" role="doc-biblioentry">
+<div class="citation" id="id88" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Rafailov et al., 2023<span class="fn-bracket">]</span></span>
 <p>Rafailov, R., Sharma, A., Mitchell, E., Manning, C. D., Ermon, S., &amp; Finn, C. (2023). Direct preference optimization: your language model is secretly a reward model. <em>Advances in neural information processing systems</em>, <em>36</em>, 53728–53741.</p>
 </div>
@@ -519,6 +677,10 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Richardson et al., 2007<span class="fn-bracket">]</span></span>
 <p>Richardson, M., Dominowska, E., &amp; Ragno, R. (2007). Predicting clicks: estimating the click-through rate for new ads. <em>Proceedings of the 16th international conference on World Wide Web</em> (pp. 521–530).</p>
 </div>
+<div class="citation" id="id118" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Rombach et al., 2022<span class="fn-bracket">]</span></span>
+<p>Rombach, R., Blattmann, A., Lorenz, D., Esser, P., &amp; Ommer, B. (2022). High-resolution image synthesis with latent diffusion models. <em>Proceedings of the IEEE/CVF conference on computer vision and pattern recognition</em> (pp. 10684–10695).</p>
+</div>
 <div class="citation" id="id17" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Rong, 2014<span class="fn-bracket">]</span></span>
 <p>Rong, X. (2014). Word2vec parameter learning explained. <em>arXiv preprint arXiv:1411.2738</em>.</p>
@@ -526,6 +688,10 @@ Show Source
 <div class="citation" id="id37" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Sabour et al., 2017<span class="fn-bracket">]</span></span>
 <p>Sabour, S., Frosst, N., &amp; Hinton, G. E. (2017). Dynamic routing between capsules. <em>Advances in neural information processing systems</em>, <em>30</em>.</p>
+</div>
+<div class="citation" id="id154" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Salimans &amp; Ho, 2022<span class="fn-bracket">]</span></span>
+<p>Salimans, T., &amp; Ho, J. (2022). Progressive distillation for fast sampling of diffusion models. <em>arXiv preprint arXiv:2202.00512</em>.</p>
 </div>
 <div class="citation" id="id4" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Sarwar et al., 2001<span class="fn-bracket">]</span></span>
@@ -535,6 +701,10 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Schnabel et al., 2016<span class="fn-bracket">]</span></span>
 <p>Schnabel, T., Swaminathan, A., Singh, A., Chandak, N., &amp; Joachims, T. (2016). Recommendations as treatments: debiasing learning and evaluation. <em>international conference on machine learning</em> (pp. 1670–1679).</p>
 </div>
+<div class="citation" id="id119" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Song et al., 2020<span class="fn-bracket">]</span></span>
+<p>Song, J., Meng, C., &amp; Ermon, S. (2020). Denoising diffusion implicit models. <em>arXiv preprint arXiv:2010.02502</em>.</p>
+</div>
 <div class="citation" id="id44" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Song et al., 2019<span class="fn-bracket">]</span></span>
 <p>Song, W., Shi, C., Xiao, Z., Duan, Z., Xu, Y., Zhang, M., &amp; Tang, J. (2019). Autoint: automatic feature interaction learning via self-attentive neural networks. <em>Proceedings of the 28th ACM international conference on information and knowledge management</em> (pp. 1161–1170).</p>
@@ -543,23 +713,51 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Steck, 2013<span class="fn-bracket">]</span></span>
 <p>Steck, H. (2013). Evaluation of recommendations: rating-prediction and ranking. <em>Proceedings of the 7th ACM conference on Recommender systems</em> (pp. 213–220).</p>
 </div>
-<div class="citation" id="id97" role="doc-biblioentry">
+<div class="citation" id="id100" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Swietojanski et al., 2016<span class="fn-bracket">]</span></span>
 <p>Swietojanski, P., Li, J., &amp; Renals, S. (2016). Learning hidden unit contributions for unsupervised acoustic model adaptation. <em>IEEE/ACM Transactions on Audio, Speech, and Language Processing</em>, <em>24</em>(8), 1450–1463.</p>
 </div>
+<div class="citation" id="id152" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Tomasi et al., 2025<span class="fn-bracket">]</span></span>
+<p>Tomasi, F., Fabbri, F., Carter, J., Kalomiris, E., Lalmas, M., &amp; Dai, Z. (2025). Prompt-to-slate: diffusion models for prompt-conditioned slate generation. <em>Proceedings of the Nineteenth ACM Conference on Recommender Systems</em> (pp. 401–410).</p>
+</div>
+<div class="citation" id="id107" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Oord et al., 2018<span class="fn-bracket">]</span></span>
+<p>van den Oord, A., Vinyals, O., &amp; Kavukcuoglu, K. (2018). <em>Neural Discrete Representation Learning</em>.</p>
+</div>
+<div class="citation" id="id87" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>VanDenOord et al., 2017<span class="fn-bracket">]</span></span>
+<p>Van Den Oord, A., Vinyals, O., &amp; others. (2017). Neural discrete representation learning. <em>Advances in neural information processing systems</em>, <em>30</em>.</p>
+</div>
 <div class="citation" id="id40" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>Vaswani et al., 2017<span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span>Vaswani et al., 2017a<span class="fn-bracket">]</span></span>
 <p>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … Polosukhin, I. (2017). Attention is all you need. <em>Advances in neural information processing systems</em>, <em>30</em>.</p>
+</div>
+<div class="citation" id="id127" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Vaswani et al., 2017b<span class="fn-bracket">]</span></span>
+<p>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … Polosukhin, I. (2017). Attention is all you need. <em>Proceedings of the 31st International Conference on Neural Information Processing Systems</em> (pp. 6000–6010).</p>
 </div>
 <div class="citation" id="id43" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Wang et al., 2017<span class="fn-bracket">]</span></span>
 <p>Wang, R., Fu, B., Fu, G., &amp; Wang, M. (2017). Deep &amp; cross network for ad click predictions. <em>Proceedings of the ADKDD'17</em> (pp. 1–7).</p>
 </div>
+<div class="citation" id="id137" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Wang et al., 2023a<span class="fn-bracket">]</span></span>
+<p>Wang, W., Xu, Y., Feng, F., Lin, X., He, X., &amp; Chua, T.-S. (2023). Diffusion recommender model. <em>Proceedings of the 46th international ACM SIGIR conference on research and development in information retrieval</em> (pp. 832–841).</p>
+</div>
 <div class="citation" id="id78" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>Wang et al., 2023<span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span>Wang et al., 2023b<span class="fn-bracket">]</span></span>
 <p>Wang, Y., Ma, W., Zhang, M., Liu, Y., &amp; Ma, S. (2023). A survey on the fairness of recommender systems. <em>ACM Transactions on Information Systems</em>, <em>41</em>(3), 1–43.</p>
 </div>
-<div class="citation" id="id91" role="doc-biblioentry">
+<div class="citation" id="id141" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Wang et al., 2024<span class="fn-bracket">]</span></span>
+<p>Wang, Y., Gao, C., Guo, W., Li, Y., &amp; Wang, D. (2024). Diff-msr: a diffusion model enhanced paradigm for cold-start multi-scenario recommendation. <em>arXiv preprint arXiv:2312.10613</em>.</p>
+</div>
+<div class="citation" id="id122" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Wei et al., 2021<span class="fn-bracket">]</span></span>
+<p>Wei, J., Bosma, M., Zhao, V. Y., Guu, K., Yu, A. W., Lester, B., … Le, Q. V. (2021). Finetuned language models are zero-shot learners. <em>arXiv preprint arXiv:2109.01652</em>.</p>
+</div>
+<div class="citation" id="id94" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Wen et al., 2020<span class="fn-bracket">]</span></span>
 <p>Wen, H., Zhang, J., Wang, Y., Lv, F., Bao, W., Lin, Q., &amp; Yang, K. (2020). Entire space multi-task modeling via post-click behavior decomposition for conversion rate prediction. <em>Proceedings of the 43rd International ACM SIGIR conference on research and development in Information Retrieval</em> (pp. 2377–2386).</p>
 </div>
@@ -567,25 +765,61 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Xiao et al., 2017<span class="fn-bracket">]</span></span>
 <p>Xiao, J., Ye, H., He, X., Zhang, H., Wu, F., &amp; Chua, T.-S. (2017). Attentional factorization machines: learning the weight of feature interactions via attention networks. <em>arXiv preprint arXiv:1708.04617</em>.</p>
 </div>
+<div class="citation" id="id115" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Yan et al., 2025<span class="fn-bracket">]</span></span>
+<p>Yan, H., Xu, L., Sun, J., Ou, N., Luo, W., Tan, X., … Chu, X. (2025). Intsr: an integrated generative framework for search and recommendation. <em>arXiv preprint arXiv:2509.21179</em>.</p>
+</div>
+<div class="citation" id="id104" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Yan et al., 2024<span class="fn-bracket">]</span></span>
+<p>Yan, J., Jiang, L., Cui, J., Zhao, Z., Bin, X., Zhang, F., &amp; Liu, Z. (2024). Trinity: syncretizing multi-/long-tail/long-term interests all in one. <em>arXiv preprint arXiv:2402.02842</em>.</p>
+</div>
 <div class="citation" id="id7" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Yang et al., 2020<span class="fn-bracket">]</span></span>
 <p>Yang, X., Zhu, Y., Zhang, Y., Wang, X., &amp; Yuan, Q. (2020). Large scale product graph construction for recommendation in e-commerce. <em>arXiv preprint arXiv:2010.05525</em>.</p>
+</div>
+<div class="citation" id="id139" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Yang et al., 2023<span class="fn-bracket">]</span></span>
+<p>Yang, Z., Wu, J., Wang, Z., Wang, X., Yuan, Y., &amp; He, X. (2023). Generate what you prefer: reshaping sequential recommendation via guided diffusion. <em>Advances in Neural Information Processing Systems</em>.</p>
 </div>
 <div class="citation" id="id24" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Yi et al., 2019<span class="fn-bracket">]</span></span>
 <p>Yi, X., Yang, J., Hong, L., Cheng, D. Z., Heldt, L., Kumthekar, A., … Chi, E. (2019). Sampling-bias-corrected neural modeling for large corpus item recommendations. <em>Proceedings of the 13th ACM conference on recommender systems</em> (pp. 269–277).</p>
 </div>
-<div class="citation" id="id59" role="doc-biblioentry">
+<div class="citation" id="id146" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Yu et al., 2023<span class="fn-bracket">]</span></span>
+<p>Yu, P., Jiang, Z., Shao, D., Xie, R., Sun, F., Zhu, Z., … Lin, L. (2023). Ld4mrec: simplifying and powering diffusion model for multimedia recommendation. <em>Proceedings of the 31st ACM International Conference on Multimedia</em>.</p>
+</div>
+<div class="citation" id="id60" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Zeghidour et al., 2021<span class="fn-bracket">]</span></span>
 <p>Zeghidour, N., Luebs, A., Omran, A., Skoglund, J., &amp; Tagliasacchi, M. (2021). Soundstream: an end-to-end neural audio codec. <em>IEEE/ACM Transactions on Audio, Speech, and Language Processing</em>, <em>30</em>, 495–507.</p>
 </div>
-<div class="citation" id="id60" role="doc-biblioentry">
+<div class="citation" id="id108" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Zhai et al., 2024<span class="fn-bracket">]</span></span>
 <p>Zhai, J., Liao, L., Liu, X., Wang, Y., Li, R., Cao, X., … others. (2024). Actions speak louder than words: trillion-parameter sequential transducers for generative recommendations. <em>arXiv preprint arXiv:2402.17152</em>.</p>
 </div>
-<div class="citation" id="id99" role="doc-biblioentry">
+<div class="citation" id="id102" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Zhang et al., 2022<span class="fn-bracket">]</span></span>
 <p>Zhang, Q., Liao, X., Liu, Q., Xu, J., &amp; Zheng, B. (2022). Leaving no one behind: a multi-scenario multi-task meta learning approach for advertiser modeling. <em>Proceedings of the Fifteenth ACM International Conference on Web Search and Data Mining</em> (pp. 1368–1376).</p>
+</div>
+<div class="citation" id="id110" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Zhang et al., 2025a<span class="fn-bracket">]</span></span>
+<p>Zhang, W., Wu, C., Li, X., Wang, Y., Dong, K., Wang, Y., … Tang, R. (2025). Llmtreerec: unleashing the power of large language models for cold-start recommendations. <em>Proceedings of the 31st International Conference on Computational Linguistics</em> (pp. 886–896).</p>
+</div>
+<div class="citation" id="id129" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Zhang et al., 2025b<span class="fn-bracket">]</span></span>
+<p>Zhang, Z., Pei, H., Guo, J., Wang, T., Feng, Y., Sun, H., … Sun, A. (2025). Onetrans: unified feature interaction and sequence modeling with one transformer in industrial recommender. <em>arXiv preprint arXiv:2510.26104</em>.</p>
+</div>
+<div class="citation" id="id140" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Zhao et al., 2025<span class="fn-bracket">]</span></span>
+<p>Zhao, C., Yang, E., Liang, Y., Lan, P., Liu, Y., Zhao, J., … Wang, X. (2025). Graph representation learning via causal diffusion for out-of-distribution recommendation. <em>Proceedings of the ACM on Web Conference 2025</em> (pp. 334–346).</p>
+</div>
+<div class="citation" id="id130" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Zheng et al., 2024<span class="fn-bracket">]</span></span>
+<p>Zheng, B., Hou, Y., Lu, H., Chen, Y., Zhao, W. X., Chen, M., &amp; Wen, J.-R. (2024). Adapting large language models by integrating collaborative semantics for recommendation. <em>2024 IEEE 40th International Conference on Data Engineering (ICDE)</em> (pp. 1435–1448).</p>
+</div>
+<div class="citation" id="id151" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Zhou et al., 2025<span class="fn-bracket">]</span></span>
+<p>Zhou, G., Deng, J., Zhang, J., Cai, K., Ren, L., Luo, Q., … others. (2025). Onerec technical report. <em>arXiv preprint arXiv:2506.13695</em>.</p>
 </div>
 <div class="citation" id="id53" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Zhou et al., 2019<span class="fn-bracket">]</span></span>
@@ -595,7 +829,19 @@ Show Source
 <span class="label"><span class="fn-bracket">[</span>Zhou et al., 2018<span class="fn-bracket">]</span></span>
 <p>Zhou, G., Zhu, X., Song, C., Fan, Y., Zhu, H., Ma, X., … Gai, K. (2018). Deep interest network for click-through rate prediction. <em>Proceedings of the 24th ACM SIGKDD international conference on knowledge discovery &amp; data mining</em> (pp. 1059–1068).</p>
 </div>
-<div class="citation" id="id100" role="doc-biblioentry">
+<div class="citation" id="id128" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Zhu et al., 2025a<span class="fn-bracket">]</span></span>
+<p>Zhu, J., Fan, Z., Zhu, X., Jiang, Y., Wang, H., Han, X., … others. (2025). Rankmixer: scaling up ranking models in industrial recommenders. <em>Proceedings of the 34th ACM International Conference on Information and Knowledge Management</em> (pp. 6309–6316).</p>
+</div>
+<div class="citation" id="id147" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Zhu et al., 2024<span class="fn-bracket">]</span></span>
+<p>Zhu, Y., Ma, C., Gao, C., Zhao, Y., Li, Z., &amp; Yu, Y. (2024). Giffcf: a generative diffusion-based approach for graph collaborative filtering. <em>Proceedings of the ACM Web Conference 2024</em> (pp. 1–12).</p>
+</div>
+<div class="citation" id="id153" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Zhu et al., 2025b<span class="fn-bracket">]</span></span>
+<p>Zhu, Y., Jiang, G., Chen, J., Zhang, F., Yang, X., &amp; Liu, Z. (2025). Asymmetric diffusion recommendation model. <em>Proceedings of the 34th ACM International Conference on Information and Knowledge Management</em> (pp. 5535–5539).</p>
+</div>
+<div class="citation" id="id103" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>v Rehr uv rek &amp; Sojka, 2010<span class="fn-bracket">]</span></span>
 <p>Řehůřek, R., &amp; Sojka, P. (2010 , May). Software Framework for Topic Modelling with Large Corpora. <em>Proceedings of the LREC 2010 Workshop on New Challenges for NLP Frameworks</em> (pp. 45–50). Valletta, Malta: ELRA.</p>
 </div>
@@ -611,11 +857,11 @@ Show Source
 
       <div class="clearer"></div>
     </div><div class="pagenation">
-     <a id="button-prev" href="../chapter_appendix/word2vec.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+     <a id="button-prev" href="../chapter_10_projects/7.summary.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
          <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
          <div class="pagenation-text">
             <span class="pagenation-direction">Previous</span>
-            <div>7.1. Word2vec</div>
+            <div>10.7. 本章总结</div>
          </div>
      </a>
   </div>

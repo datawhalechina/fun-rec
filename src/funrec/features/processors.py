@@ -3,12 +3,13 @@
 """
 
 import logging
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List, Tuple, Optional
 
 logger = logging.getLogger(__name__)
 
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 from .feature_column import FeatureColumn
 from ..data.data_utils import read_pkl_data
@@ -216,6 +217,8 @@ def prepare_features(
     features_config: Dict[str, Any],
     train_data: Dict[str, Any],
     test_data: Dict[str, Any],
+    dataset_config: Optional[Dict[str, Any]] = None,
+    verbose: bool = True,
 ) -> Tuple[List[FeatureColumn], Dict[str, Dict[str, Any]]]:
     """
     准备特征列和处理后的数据
@@ -224,7 +227,7 @@ def prepare_features(
         features_config: 特征配置字典
         train_data: 训练数据字典
         test_data: 测试数据字典
-
+        dataset_config: 数据集配置字典
     Returns:
         Tuple of (feature_columns, processed_data)
     """
@@ -233,8 +236,8 @@ def prepare_features(
     if not features_config or not features_config.get("features"):
         feature_dict = None
         dataset_name = features_config.get("dataset_name") if features_config else None
-        if dataset_name and dataset_name in DATASET_CONFIG:
-            dataset_config = DATASET_CONFIG[dataset_name]
+        dataset_config = dataset_config or DATASET_CONFIG.get(dataset_name, None)
+        if dataset_config is not None:
             try:
                 feature_dict = read_pkl_data(dataset_config["dict_path"])
             except Exception:
@@ -280,12 +283,12 @@ def prepare_features(
     if not dataset_name:
         raise ValueError("dataset_name must be specified in features config")
 
-    if dataset_name not in DATASET_CONFIG:
+    if (dataset_config is None) and (dataset_name not in DATASET_CONFIG):
         raise ValueError(f"Dataset {dataset_name} not found in DATASET_CONFIG")
 
     # Load feature dictionary
     # 加载特征字典
-    dataset_config = DATASET_CONFIG[dataset_name]
+    dataset_config = dataset_config or DATASET_CONFIG[dataset_name]
     feature_dict = read_pkl_data(dataset_config["dict_path"])
 
     # 获取embedding维度
@@ -297,8 +300,7 @@ def prepare_features(
 
     # 获取序列最大长度
     max_seq_len = features_config.get("max_seq_len", 50)
-
-    for feat_def in feature_definitions:
+    for feat_def in tqdm(feature_definitions, disable=not verbose):
         feature_name = feat_def["name"]
 
         # 确定特征类型和参数

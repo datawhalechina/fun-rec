@@ -464,6 +464,9 @@ class SequenceMeanPoolingLayer(tf.keras.layers.Layer):
         })
         return config
 
+    def compute_mask(self, inputs, mask=None):
+        return None
+
 
 class BiasOnly(tf.keras.layers.Layer):
     def __init__(self, units):

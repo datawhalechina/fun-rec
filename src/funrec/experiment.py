@@ -91,7 +91,7 @@ def compare_models(
             train_data, test_data = load_data(cfg.data)
             # 2) 准备特征
             feature_columns, processed_data = prepare_features(
-                cfg.features, train_data, test_data
+                cfg.features, train_data, test_data, verbose=False
             )
             # 3) 训练
             model_tuple = train_model(cfg.training, feature_columns, processed_data)

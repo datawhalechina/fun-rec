@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>7.1. OneRec的架构演进 &#8212; 深度推荐算法实践:从级联架构到生成式范式 1.0.0 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7.2. 查询补全与商品检索" href="2.search.html" />
+    <link rel="prev" title="7. 端到端生成式建模" href="index.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">7. </span>端到端生成式建模</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">7.1. </span>OneRec的架构演进</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_7_gr_e2e/1.recommendation.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://funrec-notebooks.s3.eu-west-3.amazonaws.com/fun-rec.zip">
+                  <i class="fas fa-download"></i>
+                  Jupyter 记事本
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
+                  <i class="fab fa-github"></i>
+                  GitHub
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo_with_text.png" alt="深度推荐算法实践:从级联架构到生成式范式"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/6.summary.html">3.6. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排多样性建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_5_gr_basic/index.html">5. 生成式推荐基础</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/1.gr_intro.html">5.1. 推荐范式的演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/2.gr_arch_base.html">5.2. 生成式架构的基石</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/3.llm_base.html">5.3. LLM建模的基本流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/4.codebook.html">5.4. 推荐中的Tokenizer技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/5.summary.html">5.5. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 端到端生成式建模</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.1. OneRec的架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.search.html">7.2. 查询补全与商品检索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.ad.html">7.3. 竞价机制与多场景广告</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.summary.html">7.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_8_thinking/index.html">8. 会思考的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/1.semantic_alignment.html">8.1. 协同语义与语言语义的统一</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/2.reasoning_framework.html">8.2. OneRec-Think的思考框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/3.autonomous_reasoning.html">8.3. 自主推理的探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/4.summary.html">8.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_9_diffusion/index.html">9. 基于扩散的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/1.basics.html">9.1. 推荐中的扩散模型基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/2.augmentation.html">9.2. 基于扩散的数据增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/3.application.html">9.3. 特征增强与多样性优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/4.summary.html">9.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_10_projects/index.html">10. 生产级推荐系统构建</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/1.intro.html">10.1. 项目背景与目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/2.architecture.html">10.2. 系统架构设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/3.offline_pipeline.html">10.3. 离线流水线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/4.online_pipeline.html">10.4. 在线流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/5.frontend.html">10.5. 前端与交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/6.deployment.html">10.6. 部署与运维</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/7.summary.html">10.7. 本章总结</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo_with_text.png" alt="深度推荐算法实践:从级联架构到生成式范式"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/6.summary.html">3.6. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排多样性建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_5_gr_basic/index.html">5. 生成式推荐基础</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/1.gr_intro.html">5.1. 推荐范式的演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/2.gr_arch_base.html">5.2. 生成式架构的基石</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/3.llm_base.html">5.3. LLM建模的基本流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/4.codebook.html">5.4. 推荐中的Tokenizer技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/5.summary.html">5.5. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 端到端生成式建模</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.1. OneRec的架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.search.html">7.2. 查询补全与商品检索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.ad.html">7.3. 竞价机制与多场景广告</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.summary.html">7.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_8_thinking/index.html">8. 会思考的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/1.semantic_alignment.html">8.1. 协同语义与语言语义的统一</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/2.reasoning_framework.html">8.2. OneRec-Think的思考框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/3.autonomous_reasoning.html">8.3. 自主推理的探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/4.summary.html">8.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_9_diffusion/index.html">9. 基于扩散的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/1.basics.html">9.1. 推荐中的扩散模型基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/2.augmentation.html">9.2. 基于扩散的数据增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/3.application.html">9.3. 特征增强与多样性优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/4.summary.html">9.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_10_projects/index.html">10. 生产级推荐系统构建</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/1.intro.html">10.1. 项目背景与目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/2.architecture.html">10.2. 系统架构设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/3.offline_pipeline.html">10.3. 离线流水线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/4.online_pipeline.html">10.4. 在线流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/5.frontend.html">10.5. 前端与交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/6.deployment.html">10.6. 部署与运维</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/7.summary.html">10.7. 本章总结</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="onerec">
+<span id="id1"></span><h1><span class="section-number">7.1. </span>OneRec的架构演进<a class="headerlink" href="#onerec" title="Permalink to this heading">¶</a></h1>
+<p>如前所述，传统多阶段级联架构存在计算碎片化、优化目标冲突、与 AI
+前沿技术脱节等结构性缺陷。在推荐场景下，这些问题尤为突出：大量资源消耗在通信和存储而非模型计算，GPU
+利用率远低于大语言模型；各阶段目标分散，模型结构差异导致建模不一致；级联架构阻碍了
+Scaling Law、强化学习对齐等先进技术的应用。</p>
+<p>为解决这些问题，快手团队提出了 <strong>OneRec</strong>
+框架，将推荐系统重新定义为端到端的生成式任务：模型根据用户上下文直接“生成”推荐序列，而非从候选集中“挑选”物品。本节将介绍
+OneRec-V1 的技术体系、其部署中暴露的关键瓶颈，以及 OneRec-V2
+如何突破这些瓶颈。</p>
+<section id="onerec-v1">
+<h2><span class="section-number">7.1.1. </span>OneRec-V1：开创性探索<a class="headerlink" href="#onerec-v1" title="Permalink to this heading">¶</a></h2>
+<section id="id">
+<h3><span class="section-number">7.1.1.1. </span>语义 ID 设计<a class="headerlink" href="#id" title="Permalink to this heading">¶</a></h3>
+<p>生成式推荐面临的首要挑战是：如何让模型“说出”一个物品？在传统推荐系统中，物品通过原子
+ID（如视频 ID）来标识，但快手平台拥有数十亿量级的物品，直接生成原子 ID
+会导致 Softmax 层的计算量爆炸。OneRec-V1 采用<strong>语义 ID（Semantic
+ID）</strong>来解决这一难题 <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id84" title="Deng, J., Wang, S., Cai, K., Ren, L., Hu, Q., Ding, W., … Zhou, G. (2025). Onerec: unifying retrieve and rank with generative recommender and iterative preference alignment. arXiv preprint arXiv:2502.18965.">Deng <em>et al.</em>, 2025</a>)</span>。</p>
+<p>语义 ID
+的核心思想是将物品映射到一个有限且可控的词表空间。具体而言，每个视频被编码为
+<span class="math notranslate nohighlight">\(L_t = 3\)</span> 个语义 Token，词表大小为
+<span class="math notranslate nohighlight">\(N_t\)</span>，这使得总的编码空间为
+<span class="math notranslate nohighlight">\(N_t^{L_t}\)</span>。这个编码空间远大于实际物品数量，确保了所有物品都能被覆盖，同时较大的词表引入了更多参数，有助于提升模型性能。</p>
+<p>语义 ID 的生成过程分为两个阶段：</p>
+<p><strong>阶段一：协同感知的多模态表示学习</strong>。每个视频包含丰富的多模态信息，包括标题、标签、语音转文字（ASR）、图像转文字（OCR）、封面图和采样帧。这些信息通过视觉语言模型（如
+miniCPM-V-8B）处理后，生成 1280 个 Token 向量。为了实现高效处理，采用
+QFormer 模块将这些向量压缩为 4 个可学习的查询向量。</p>
+<p>然而，仅依赖内容特征生成的语义 ID 无法捕捉协同过滤信号。为此，OneRec-V1
+引入了<strong>物品对对比学习</strong>：从用户行为中提取高协同相似度的物品对（如同一用户正向点击的物品），通过对比损失拉近这些物品对的表示，使语义
+ID 能够同时编码内容语义和行为模式：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-0">
+<span class="eqno">(7.1.1)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-0" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{I2I} = -\frac{1}{|\mathcal{B}|} \sum_{(i,j) \in \mathcal{B}} \log \frac{\exp(\text{sim}(\tilde{\mathbf{M}}_i, \tilde{\mathbf{M}}_j) / \tau)}{\sum_{(i',j') \in \mathcal{B}} \exp(\text{sim}(\tilde{\mathbf{M}}_i, \tilde{\mathbf{M}}_{j'}) / \tau)}\]</div>
+<p>同时，为防止表示退化，还加入了标题生成的辅助任务，确保表示保留内容理解能力。</p>
+<p><strong>阶段二：RQ-Kmeans
+层次化量化</strong>。获得协同感知的多模态表示后，采用残差量化
+K-means（RQ-Kmeans）将连续表示离散化为语义 ID。不同于端到端训练的
+RQ-VAE，RQ-Kmeans 直接在残差上应用 K-means 聚类构建码本：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-1">
+<span class="eqno">(7.1.2)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-1" title="Permalink to this equation">¶</a></span>\[\mathcal{R}^{(1)} = \{\tilde{\mathbf{M}}_i\}, \quad \mathcal{C}^{(l)} = \text{K-means}(\mathcal{R}^{(l)}, N_t)\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-2">
+<span class="eqno">(7.1.3)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-2" title="Permalink to this equation">¶</a></span>\[s_i^l = \arg\min_k \|\mathcal{R}_i^{(l)} - \mathbf{c}_k^{(l)}\|, \quad \mathcal{R}_i^{(l+1)} = \mathcal{R}_i^{(l)} - \mathbf{c}_{s_i^l}^{(l)}\]</div>
+<p>经过 3 层量化，每个视频 <span class="math notranslate nohighlight">\(m\)</span> 获得由粗到细的语义标识符序列
+<span class="math notranslate nohighlight">\(\{s_m^1, s_m^2, s_m^3\}\)</span>，这将成为生成式推荐模型的输出目标。</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">7.1.1.2. </span>模型架构设计<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
+<p>OneRec-V1 采用经典的 <strong>Encoder-Decoder
+架构</strong>实现端到端生成。编码器负责处理和编码用户的多尺度特征，解码器则基于编码器输出的上下文表示，以自回归方式生成目标物品的语义
+ID 序列。</p>
+<figure class="align-default" id="id7">
+<span id="onerec-encoder-decoder"></span><a class="reference internal image-reference" href="../_images/onerec_encoder_decoder.png"><img alt="../_images/onerec_encoder_decoder.png" src="../_images/onerec_encoder_decoder.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">图7.1.1 </span><span class="caption-text">Onerec-V1模型结构图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><strong>编码器设计</strong></p>
+<p>编码器的设计体现了对用户兴趣多时间尺度特性的深刻理解：</p>
+<ol class="arabic simple">
+<li><p><strong>用户静态特征通路（User Static Pathway）</strong>：处理用户
+ID、年龄、性别等基础画像信息，经过两层密集层变换后得到表示
+<span class="math notranslate nohighlight">\(\mathbf{h}_u \in \mathbb{R}^{1 \times d_{model}}\)</span>。</p></li>
+<li><p><strong>短期行为通路（Short-term Pathway）</strong>：处理用户最近 20
+次交互（<span class="math notranslate nohighlight">\(L_s=20\)</span>）。每个交互包含丰富的上下文信息：物品
+ID（可以是原子 ID <code class="docutils literal notranslate"><span class="pre">vid</span></code> 或语义 ID <code class="docutils literal notranslate"><span class="pre">sid</span></code>）、作者
+ID、标签、时间戳、播放时长、物品时长，以及各类交互标签（点赞、关注、转发、不喜欢等）。这些特征拼接后经过非线性变换得到
+<span class="math notranslate nohighlight">\(\mathbf{h}_s \in \mathbb{R}^{L_s \times d_{model}}\)</span>。</p></li>
+<li><p><strong>正反馈行为通路（Positive-feedback Pathway）</strong>：处理用户 256
+次高参与度交互（<span class="math notranslate nohighlight">\(L_p=256\)</span>），特征构成与短期通路类似，得到
+<span class="math notranslate nohighlight">\(\mathbf{h}_p \in \mathbb{R}^{L_p \times d_{model}}\)</span>。</p></li>
+<li><p><strong>超长期历史通路（Lifelong Pathway）</strong>：这是 OneRec-V1
+的一大创新。用户可能有多达 10
+万条历史交互记录，直接处理会导致计算量爆炸。OneRec-V1
+采用<strong>分层压缩策略</strong>：首先通过分层 K-means
+聚类对历史序列进行压缩（动态调整聚类数为
+<span class="math notranslate nohighlight">\(\lfloor\sqrt[3]{|D|}\rfloor\)</span>），选择最接近中心的代表物品；然后使用
+QFormer 模块，通过 128 个可学习查询向量对压缩后的 2000
+长度序列进行交叉注意力处理，最终得到紧凑表示
+<span class="math notranslate nohighlight">\(\mathbf{h}_l \in \mathbb{R}^{128 \times d_{model}}\)</span>。</p></li>
+</ol>
+<p>四个通路的输出被拼接成完整的上下文序列，通过 <span class="math notranslate nohighlight">\(L_{enc}\)</span> 层
+Transformer 编码器处理：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-3">
+<span class="eqno">(7.1.4)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-3" title="Permalink to this equation">¶</a></span>\[\mathbf{z}^{(1)} = [\mathbf{h}_u; \mathbf{h}_s; \mathbf{h}_p; \mathbf{h}_l] + \mathbf{e}_{pos}\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-4">
+<span class="eqno">(7.1.5)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-4" title="Permalink to this equation">¶</a></span>\[\mathbf{z}^{(i+1)} = \mathbf{z}^{(i)} + \text{SelfAttn}(\text{RMSNorm}(\mathbf{z}^{(i)})), \quad \mathbf{z}^{(i+1)} = \mathbf{z}^{(i+1)} + \text{FFN}(\text{RMSNorm}(\mathbf{z}^{(i+1)}))\]</div>
+<p>最终编码器输出
+<span class="math notranslate nohighlight">\(\mathbf{z}_{enc} \in \mathbb{R}^{(1+L_s+L_p+128) \times d_{model}}\)</span>
+提供全面的用户上下文表示。</p>
+<p><strong>解码器设计</strong></p>
+<p>解码器负责基于上下文表示生成目标物品。对于每个目标物品
+<span class="math notranslate nohighlight">\(m\)</span>，解码器输入由起始 Token <code class="docutils literal notranslate"><span class="pre">[BOS]</span></code> 和该物品的语义 ID
+序列组成。每层解码器包含三个关键组件：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-5">
+<span class="eqno">(7.1.6)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-5" title="Permalink to this equation">¶</a></span>\[\mathbf{d}_m^{(i+1)} = \mathbf{d}_m^{(i)} + \text{CausalSelfAttn}(\mathbf{d}_m^{(i)})\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-6">
+<span class="eqno">(7.1.7)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-6" title="Permalink to this equation">¶</a></span>\[\mathbf{d}_m^{(i+1)} = \mathbf{d}_m^{(i+1)} + \text{CrossAttn}(\mathbf{d}_m^{(i+1)}, \mathbf{z}_{enc}, \mathbf{z}_{enc})\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-7">
+<span class="eqno">(7.1.8)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-7" title="Permalink to this equation">¶</a></span>\[\mathbf{d}_m^{(i+1)} = \mathbf{d}_m^{(i+1)} + \text{MoE}(\text{RMSNorm}(\mathbf{d}_m^{(i+1)}))\]</div>
+<p>其中因果自注意力捕获已生成 Token
+间的依赖，交叉注意力让解码器关注编码器的上下文，混合专家前馈网络（MoE
+FFN）采用 top-k
+路由策略，在增强模型容量的同时保持计算效率。模型通过最小化下一个 Token
+预测的交叉熵损失进行训练：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-8">
+<span class="eqno">(7.1.9)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-8" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{NTP} = -\sum_{j=0}^{L_t-1} \log P(s_m^{j+1} | [s_{[BOS]}, s_m^1, s_m^2, ..., s_m^j])\]</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.1.1.3. </span>奖励系统设计<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
+<p>预训练模型仅通过 <span class="math notranslate nohighlight">\(\mathcal{L}_{NTP}\)</span>
+拟合历史曝光数据的分布，而这些曝光数据来自传统推荐系统。这导致模型本质上在“模仿”过去系统的行为，<strong>性能上限被传统推荐系统所束缚</strong>。为了突破这一天花板，OneRec-V1
+引入了基于奖励系统的强化学习后训练，包含三个层次的奖励设计：</p>
+<p><strong>用户偏好对齐</strong></p>
+<p>在推荐系统中，定义“好的推荐”远比判断数学题的对错复杂。传统方法通过人工调整权重将多个目标（点击率
+CTR、点赞率 LTR、观看时长 VTR
+等）的预测值融合成一个分数，但这种方式既缺乏精准性也缺乏个性化，且容易导致目标间的优化冲突。</p>
+<p>OneRec-V1 提出使用神经网络学习个性化的 <strong>P-Score (Preference
+Score)</strong>。模型基于 SIM（Search-based Interest
+Model）架构，为每个目标构建独立的塔，各塔使用对应目标的标签计算二元交叉熵损失作为辅助任务。各塔的隐状态连同用户和物品表示被输入最终
+MLP 层，输出 P-Score：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-9">
+<span class="eqno">(7.1.10)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-9" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{P-Score}} = \sum_{xtr \in S_o} w^{xtr} \mathcal{L}_{\text{P-Score}}^{xtr}, \quad S_o = \{\text{ctr, lvtr, ltr, vtr}, ...\}\]</div>
+<p>通过调整权重 <span class="math notranslate nohighlight">\(w^{xtr}\)</span>，可以让 P-Score
+偏向各个目标，最终在所有目标上都实现 AUC
+提升。这种方法能够接收具体用户信息，为该用户动态调整偏好分数，而不会影响其他用户体验。</p>
+<p><strong>生成格式规范化</strong></p>
+<p>生成式推荐中，语义 ID 序列的编码空间 <span class="math notranslate nohighlight">\(N_t^{L_t}\)</span>
+远大于实际物品数量。这确保了物品覆盖且引入更多参数提升性能，但也可能导致推理时生成<strong>无法映射到实际物品
+ID
+的非法序列</strong>。引入强化学习后，这个问题会急剧恶化，这源于<strong>挤压效应（Squeezing
+Effect）</strong>：</p>
+<p>预训练模型已学会生成大部分合法
+Token。当对负优势物品应用强化学习时，模型会将概率质量压缩到当前认为的最优输出
+<span class="math notranslate nohighlight">\(o^*\)</span>，导致部分合法 Token 的概率被挤压到与非法 Token
+相近的水平，模型难以区分。</p>
+<p>为解决此问题，OneRec-V1
+引入<strong>格式奖励</strong>：从生成样本中随机选择部分进行合法性强化学习，对合法样本设置优势为
+1，对非法样本直接丢弃以避免挤压效应。</p>
+<p><strong>工业场景对齐</strong></p>
+<p>传统推荐系统通过在级联架构的某一阶段应用算法处理生态健康、冷启动、商业化等问题，但由于阶段间不一致，容易陷入“打补丁”的恶性循环。OneRec
+的端到端特性使得<strong>只需将优化目标融入奖励系统，通过强化学习进行针对性优化</strong>。</p>
+<p>以快手平台的病毒式内容农场为例：当病毒内容占比超过最优比例 <span class="math notranslate nohighlight">\(f\)</span>
+时，对其 P-Score 奖励进行降权：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-10">
+<span class="eqno">(7.1.11)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-10" title="Permalink to this equation">¶</a></span>\[\begin{split}r_i' = \begin{cases} r_i &amp; \text{if } o_i \notin I_{\text{viral}} \\ \alpha r_i &amp; \text{if } o_i \in I_{\text{viral}} \end{cases}, \quad \alpha \in (0, 1)\end{split}\]</div>
+<p>实验表明，SIR 有效降低了病毒内容曝光 9.59%，同时核心指标保持稳定。</p>
+</section>
+<section id="ecpo">
+<h3><span class="section-number">7.1.1.4. </span>ECPO 算法<a class="headerlink" href="#ecpo" title="Permalink to this heading">¶</a></h3>
+<p>OneRec-V1 使用 <strong>ECPO（Early Clipped
+GRPO）</strong>算法进行偏好对齐。对于用户 <span class="math notranslate nohighlight">\(u\)</span>，使用旧策略模型生成
+<span class="math notranslate nohighlight">\(G\)</span> 个物品，每个物品通过 P-Score 模型获得奖励
+<span class="math notranslate nohighlight">\(r_i\)</span>。优化目标为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-11">
+<span class="eqno">(7.1.12)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-11" title="Permalink to this equation">¶</a></span>\[\mathcal{J}_{ECPO}(\theta) = \mathbb{E}\left[\frac{1}{G}\sum_{i=1}^G \min\left(\frac{\pi_{\theta}(o_i|u)}{\pi_{\theta_{old}}'(o_i|u)}A_i, \text{clip}\left(\frac{\pi_{\theta}(o_i|u)}{\pi_{\theta_{old}}'(o_i|u)}, 1-\epsilon, 1+\epsilon\right)A_i\right)\right]\]</div>
+<p>其中优势函数
+<span class="math notranslate nohighlight">\(A_i = (r_i - \text{mean}(\{r_1,...,r_G\})) / \text{std}(\{r_1,...,r_G\})\)</span>，旧策略经过早期裁剪修正：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-12">
+<span class="eqno">(7.1.13)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-12" title="Permalink to this equation">¶</a></span>\[\pi_{\theta_{old}}'(o_i|u) = \max\left(\frac{\text{sg}(\pi_\theta(o_i|u))}{1+\epsilon+\delta}, \pi_{\theta_{old}}(o_i|u)\right), \quad \delta &gt; 0\]</div>
+<p>ECPO 相比原始 GRPO
+的关键改进在于：<strong>对负优势样本的策略比率进行预先裁剪</strong>。在 GRPO
+中，负优势样本的策略比率可以任意大，容易导致梯度爆炸；ECPO 通过引入
+<span class="math notranslate nohighlight">\(\delta\)</span>
+参数限制负优势样本的最大比率，在保持训练稳定性的同时允许负优势发挥作用。</p>
+<p>OneRec-V1
+在快手的线上部署中验证了端到端生成式推荐的可行性，各项核心指标均取得显著提升。然而，在进一步扩展模型规模时，发现了两个关键瓶颈：一是
+Encoder-Decoder
+架构存在严重的<strong>计算资源分配失衡</strong>，绝大部分计算被消耗在上下文编码上，而真正产生梯度的目标
+Token 解码占比极低；二是基于奖励模型的强化学习面临采样效率低和 reward
+hacking 的风险。随着 OneRec
+大规模部署后真实用户反馈变得可观测，这些瓶颈催生了 OneRec-V2 的诞生。</p>
+</section>
+</section>
+<section id="onerec-v2">
+<h2><span class="section-number">7.1.2. </span>OneRec-V2：效率与性能突破<a class="headerlink" href="#onerec-v2" title="Permalink to this heading">¶</a></h2>
+<p>OneRec-V2 从架构和算法两个维度进行了系统性优化：架构上提出 Lazy
+Decoder-Only
+架构解决计算效率问题，算法上引入基于真实用户反馈的强化学习突破奖励模型的局限
+<span id="id5">(<a class="reference internal" href="../chapter_references/references.html#id151" title="Zhou, G., Deng, J., Zhang, J., Cai, K., Ren, L., Luo, Q., … others. (2025). Onerec technical report. arXiv preprint arXiv:2506.13695.">Zhou <em>et al.</em>, 2025</a>)</span>。</p>
+<section id="lazy-decoder-only">
+<h3><span class="section-number">7.1.2.1. </span>Lazy Decoder-Only 架构<a class="headerlink" href="#lazy-decoder-only" title="Permalink to this heading">¶</a></h3>
+<p>Lazy Decoder-Only
+架构的设计哲学是：<strong>将计算资源集中到真正对损失贡献梯度的目标物品 Token
+上</strong>。这一架构包含两个核心组件：</p>
+<figure class="align-default" id="id8">
+<span id="onerec-lazy-decoder-only"></span><a class="reference internal image-reference" href="../_images/onerec_lazy_decoder_only.png"><img alt="../_images/onerec_lazy_decoder_only.png" src="../_images/onerec_lazy_decoder_only.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">图7.1.2 </span><span class="caption-text">Onerec Lazy Decoder-Only模型结构图</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><strong>Context Processor 设计</strong></p>
+<p>Context Processor 将异构的用户特征统一转换为适合解码器消费的键值对。这是
+Lazy Decoder-Only 架构效率提升的关键所在。</p>
+<p>具体而言，所有用户特征首先被拼接成一个统一的上下文序列，序列中的每个
+Token 被映射到维度：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-13">
+<span class="eqno">(7.1.14)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-13" title="Permalink to this equation">¶</a></span>\[d_{context} = S_{kv} \cdot L_{kv} \cdot G_{kv} \cdot d_{head}\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(d_{head}\)</span> 是注意力头维度，<span class="math notranslate nohighlight">\(G_{kv}\)</span>
+是键值头分组数，<span class="math notranslate nohighlight">\(S_{kv}\)</span> 是键值分离系数（<span class="math notranslate nohighlight">\(S_{kv}=1\)</span>
+表示键和值共享表示，<span class="math notranslate nohighlight">\(S_{kv}=2\)</span> 表示分离），<span class="math notranslate nohighlight">\(L_{kv}\)</span>
+是键值层数。</p>
+<p>Context Processor 将上下文表示沿特征维度切分成 <span class="math notranslate nohighlight">\(L_{kv}\)</span>
+组，每组经过 RMSNorm 归一化后生成对应的键值对：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-14">
+<span class="eqno">(7.1.15)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-14" title="Permalink to this equation">¶</a></span>\[\begin{split}\mathbf{k}_l = \text{RMSNorm}_{k,l}(\mathbf{C}_{l \cdot S_{kv}}), \quad \mathbf{v}_l = \begin{cases} \text{RMSNorm}_{v,l}(\mathbf{C}_{l \cdot S_{kv} + 1}), &amp; S_{kv} = 2 \\ \mathbf{k}_l, &amp; S_{kv} = 1 \end{cases}\end{split}\]</div>
+<p>这种设计的巧妙之处在于：<strong>这些键值对对于同一上下文在整个前向传播过程中保持不变</strong>，因此可以被多个解码器层共享，而无需在每一层重新计算。实验表明，即使采用极致的共享策略（<span class="math notranslate nohighlight">\(L_{kv}=1, S_{kv}=1\)</span>），模型性能也不会受到明显影响。</p>
+<p><strong>Lazy Decoder Block 设计</strong></p>
+<p>与传统 Decoder-Only
+架构将所有输入拼接成一个长序列进行自注意力处理不同，Lazy Decoder-Only
+架构<strong>不将上下文信息作为序列的一部分</strong>，而是将其视为<strong>静态的条件信息</strong>，仅通过交叉注意力访问。这里“Lazy（惰性）”的含义是：只在目标
+Token 位置计算损失，而不对整个序列的每个位置都计算下一 Token 预测损失。</p>
+<p>在训练时，目标物品的前两个语义 ID 加上一个 <code class="docutils literal notranslate"><span class="pre">[BOS]</span></code> Token
+组成输入序列（仅 3 个 Token！）：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-15">
+<span class="eqno">(7.1.16)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-15" title="Permalink to this equation">¶</a></span>\[\mathbf{h}^{(0)} = \text{Embed}([\text{BOS}, s^1, s^2]) \in \mathbb{R}^{3 \times d_{model}}\]</div>
+<p>这个紧凑的序列通过 <span class="math notranslate nohighlight">\(N_{layer}\)</span> 层 Lazy Decoder Block
+处理，每层包含三个步骤：</p>
+<ol class="arabic simple">
+<li><p><strong>Lazy Cross-Attention</strong>：让解码器隐藏状态关注 Context Processor
+提供的键值对。“惰性”体现在两个方面：(1)
+<strong>无键值投影</strong>，直接使用预先计算好的键值对，当前层使用第
+<span class="math notranslate nohighlight">\(l_{kv} = \lfloor l \cdot L_{kv} / N_{layer} \rfloor\)</span>
+组键值对；(2)
+<strong>分组查询注意力（GQA）</strong>，多个查询头共享同一组键值头，极大降低内存占用。</p></li>
+<li><p><strong>Causal Self-Attention</strong>：在目标物品的语义 ID Token
+之间进行自回归建模。</p></li>
+<li><p><strong>Feed-Forward Network</strong>：对注意力输出进行非线性变换，在更深层可用
+MoE 替代。</p></li>
+</ol>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-16">
+<span class="eqno">(7.1.17)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-16" title="Permalink to this equation">¶</a></span>\[\mathbf{h}_{cross}^{(l)} = \mathbf{h}^{(l-1)} + \text{CrossAttn}(\text{RMSNorm}(\mathbf{h}^{(l-1)}), \mathbf{k}_{l_{kv}}, \mathbf{v}_{l_{kv}})\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-17">
+<span class="eqno">(7.1.18)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-17" title="Permalink to this equation">¶</a></span>\[\mathbf{h}_{self}^{(l)} = \mathbf{h}_{cross}^{(l)} + \text{SelfAttn}(\text{RMSNorm}(\mathbf{h}_{cross}^{(l)}))\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-18">
+<span class="eqno">(7.1.19)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-18" title="Permalink to this equation">¶</a></span>\[\mathbf{h}^{(l)} = \mathbf{h}_{self}^{(l)} + \text{FFN}^{(l)}(\text{RMSNorm}(\mathbf{h}_{self}^{(l)}))\]</div>
+<p><strong>效率提升量化</strong></p>
+<p>通过这种设计，Lazy Decoder-Only 架构实现了<strong>接近 100%
+的计算资源集中在目标 Token 上</strong>：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>架构</p></th>
+<th class="head"><p>参数量</p></th>
+<th class="head"><p>计算量 (GFLOPs)</p></th>
+<th class="head"><p>收敛损失</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Encoder-Decoder (1:1)</p></td>
+<td><p>1B</p></td>
+<td><p>296.36</p></td>
+<td><p>3.28</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lazy Decoder-Only</p></td>
+<td><p>1B</p></td>
+<td><p>18.89</p></td>
+<td><p>3.27</p></td>
+</tr>
+</tbody>
+</table>
+<p>换言之，Lazy Decoder-Only
+架构在保持相近的模型性能的前提下，将计算开销降低了
+<strong>94%</strong>，训练资源节约了 <strong>90%</strong>。</p>
+</section>
+<section id="scaling-law">
+<h3><span class="section-number">7.1.2.2. </span>Scaling Law 验证<a class="headerlink" href="#scaling-law" title="Permalink to this heading">¶</a></h3>
+<p>Lazy Decoder-Only 架构展现出优秀的可扩展性。OneRec-V2 成功将模型规模从
+0.1B 扩展到 8B 参数，并观察到清晰的 Scaling Law：模型损失 <span class="math notranslate nohighlight">\(L\)</span>
+随参数量 <span class="math notranslate nohighlight">\(N\)</span> 的增长呈现幂律衰减：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-19">
+<span class="eqno">(7.1.20)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-19" title="Permalink to this equation">¶</a></span>\[\hat{L}(N) = E + \frac{A}{N^\alpha}\]</div>
+<p>拟合参数为
+<span class="math notranslate nohighlight">\(E=3.13, A=3660, \alpha=0.489\)</span>。这意味着随着模型规模增大，推荐效果呈现可预测的持续改进。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>模型规模</p></th>
+<th class="head"><p>参数量</p></th>
+<th class="head"><p>收敛损失</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Dense</p></td>
+<td><p>0.1B</p></td>
+<td><p>3.57</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dense</p></td>
+<td><p>0.5B</p></td>
+<td><p>3.33</p></td>
+</tr>
+<tr class="row-even"><td><p>Dense</p></td>
+<td><p>1B</p></td>
+<td><p>3.27</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dense</p></td>
+<td><p>2B</p></td>
+<td><p>3.23</p></td>
+</tr>
+<tr class="row-even"><td><p>Dense</p></td>
+<td><p>4B</p></td>
+<td><p>3.20</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dense</p></td>
+<td><p>8B</p></td>
+<td><p>3.19</p></td>
+</tr>
+<tr class="row-even"><td><p>MoE</p></td>
+<td><p>4B (0.5B 激活)</p></td>
+<td><p>3.22</p></td>
+</tr>
+</tbody>
+</table>
+<p>通过引入 MoE，一个总参数 4B 但每次仅激活 0.5B 的稀疏模型，收敛损失为
+3.22，优于 2B 密集模型（损失 3.23），而计算开销与 0.5B
+密集模型相当。这为在计算预算受限的情况下提升模型性能提供了有效途径。</p>
+</section>
+<section id="id6">
+<h3><span class="section-number">7.1.2.3. </span>用户反馈强化学习<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
+<p>OneRec-V2
+利用大规模部署后获得的真实用户反馈信号进行强化学习，从根本上解决奖励模型的局限性。在短视频推荐场景中，每个视频的播放时长是最密集的反馈信号，且与最重要的在线指标（如
+App Stay Time 和 7 日留存 LT7）高度相关。</p>
+<p>然而，原始播放时长存在固有偏差：长视频天然倾向于累积更长的播放时长，无论用户兴趣如何。为解决这一偏差，OneRec-V2
+提出<strong>时长感知奖励塑形（Duration-Aware Reward Shaping）</strong>：</p>
+<ol class="arabic">
+<li><p><strong>对数分桶</strong>：由于视频时长呈长尾分布，采用对数策略将历史视频划分到不同桶中：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-20">
+<span class="eqno">(7.1.21)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-20" title="Permalink to this equation">¶</a></span>\[\mathcal{F}(d) = \lfloor \log_{\beta}(d + \epsilon) \rfloor\]</div>
+</li>
+<li><p><strong>分桶内百分位计算</strong>：对于目标视频 <span class="math notranslate nohighlight">\(i\)</span>，计算其播放时长
+<span class="math notranslate nohighlight">\(p_i\)</span> 在对应时长桶内用户历史分布中的百分位排名：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-21">
+<span class="eqno">(7.1.22)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-21" title="Permalink to this equation">¶</a></span>\[q_i = \frac{|\{p_j \in P_{u,b} | p_j \le p_i\}|}{|P_{u,b}|}\]</div>
+</li>
+<li><p><strong>优势值分配</strong>：选择排名前 25%
+的视频作为正样本（<span class="math notranslate nohighlight">\(A_i = +1\)</span>），明确负反馈（如“不喜欢”）的视频作为负样本（<span class="math notranslate nohighlight">\(A_i = -1\)</span>），其他样本过滤（<span class="math notranslate nohighlight">\(A_i = 0\)</span>）：</p></li>
+</ol>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-22">
+<span class="eqno">(7.1.23)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-22" title="Permalink to this equation">¶</a></span>\[\begin{split}A_i = \begin{cases} +1, &amp; q_i &gt; \tau_B \text{ and } neg_i = 0 \\ -1, &amp; neg_i = 1 \\ 0, &amp; \text{otherwise} \end{cases}\end{split}\]</div>
+<p>这种策略有效过滤出高质量正样本，同时纳入直接负反馈信号，生成更准确的用户偏好信号。</p>
+</section>
+<section id="gbpo">
+<h3><span class="section-number">7.1.2.4. </span>GBPO 算法<a class="headerlink" href="#gbpo" title="Permalink to this heading">¶</a></h3>
+<p>在使用真实用户反馈进行强化学习时，OneRec-V2 发现传统的裁剪方法（如
+PPO、GRPO、ECPO）无法完全解决梯度不稳定问题。问题的根源在于：对于策略比率为
+1
+的样本（如来自传统推荐管线的曝光样本），传统方法认为这些样本是稳定的而不进行裁剪，但实际上负样本仍可能导致梯度爆炸。</p>
+<p>从梯度角度分析，对于策略比率为 1 的 Token <span class="math notranslate nohighlight">\(i\)</span>：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-23">
+<span class="eqno">(7.1.24)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-23" title="Permalink to this equation">¶</a></span>\[\frac{\partial \mathcal{J}_{ECPO}^i(\theta)}{\partial \theta} = -A_i \cdot \frac{1}{\pi_\theta} \frac{\partial \pi_\theta}{\partial \theta}\]</div>
+<p>这表明当前 Token 概率 <span class="math notranslate nohighlight">\(\pi_\theta\)</span>
+越小，梯度越大。对于正样本，较小概率意味着更大的提升空间，较大梯度是合理的；但对于负样本，较小概率意味着抑制空间有限，过大梯度容易导致过拟合甚至崩溃。</p>
+<p>观察到 BCE 损失对负样本有更稳定的梯度特性后，OneRec-V2 提出
+<strong>GBPO（Gradient-Bounded Policy Optimization）</strong>，用 BCE
+损失的稳定梯度来界定 RL 梯度：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-24">
+<span class="eqno">(7.1.25)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-24" title="Permalink to this equation">¶</a></span>\[\mathcal{J}_{GBPO}(\theta) = -\mathbb{E}\left[\frac{1}{G}\sum_{i=1}^G \frac{\pi_\theta(o_i|u)}{\pi_{\theta_{old}}'(o_i|u)} \cdot A_i\right]\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-25">
+<span class="eqno">(7.1.26)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-25" title="Permalink to this equation">¶</a></span>\[\begin{split}\pi_{\theta_{old}}'(o_i|u) = \begin{cases} \max(\pi_{\theta_{old}}, \text{sg}(\pi_\theta)), &amp; A_i \ge 0 \\ \max(\pi_{\theta_{old}}, 1 - \text{sg}(\pi_\theta)), &amp; A_i &lt; 0 \end{cases}\end{split}\]</div>
+<p>GBPO 相比传统裁剪方法有两个优势：(1)
+<strong>完整样本利用</strong>，保留所有样本的梯度，鼓励模型进行更多样化的探索；(2)
+<strong>有界梯度稳定化</strong>，用 BCE 损失的梯度界定 RL 梯度，增强训练稳定性。</p>
+</section>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">7.1. OneRec的架构演进</a><ul>
+<li><a class="reference internal" href="#onerec-v1">7.1.1. OneRec-V1：开创性探索</a><ul>
+<li><a class="reference internal" href="#id">7.1.1.1. 语义 ID 设计</a></li>
+<li><a class="reference internal" href="#id3">7.1.1.2. 模型架构设计</a></li>
+<li><a class="reference internal" href="#id4">7.1.1.3. 奖励系统设计</a></li>
+<li><a class="reference internal" href="#ecpo">7.1.1.4. ECPO 算法</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#onerec-v2">7.1.2. OneRec-V2：效率与性能突破</a><ul>
+<li><a class="reference internal" href="#lazy-decoder-only">7.1.2.1. Lazy Decoder-Only 架构</a></li>
+<li><a class="reference internal" href="#scaling-law">7.1.2.2. Scaling Law 验证</a></li>
+<li><a class="reference internal" href="#id6">7.1.2.3. 用户反馈强化学习</a></li>
+<li><a class="reference internal" href="#gbpo">7.1.2.4. GBPO 算法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>7. 端到端生成式建模</div>
+         </div>
+     </a>
+     <a id="button-next" href="2.search.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>7.2. 查询补全与商品检索</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

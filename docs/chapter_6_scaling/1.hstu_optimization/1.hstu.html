@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>6.1.1. Scaling Law的首次探索 &#8212; 深度推荐算法实践:从级联架构到生成式范式 1.0.0 documentation</title>
+
+    <link rel="stylesheet" href="../../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/d2l.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6.1.2. 生成式推荐的工程突破" href="2.gen_rank.html" />
+    <link rel="prev" title="6.1. HSTU架构演进" href="index.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="../index.html"><span class="section-number">6. </span>Scaling Law架构探索</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">6.1. </span>HSTU架构演进</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">6.1.1. </span>Scaling Law的首次探索</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../../_sources/chapter_6_scaling/1.hstu_optimization/1.hstu.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://funrec-notebooks.s3.eu-west-3.amazonaws.com/fun-rec.zip">
+                  <i class="fas fa-download"></i>
+                  Jupyter 记事本
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
+                  <i class="fab fa-github"></i>
+                  GitHub
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../../index.html">
+              <img class="logo" src="../../_static/logo_with_text.png" alt="深度推荐算法实践:从级联架构到生成式范式"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/6.summary.html">3.6. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_3_rerank/index.html">4. 重排多样性建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_5_gr_basic/index.html">5. 生成式推荐基础</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_gr_basic/1.gr_intro.html">5.1. 推荐范式的演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_gr_basic/2.gr_arch_base.html">5.2. 生成式架构的基石</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_gr_basic/3.llm_base.html">5.3. LLM建模的基本流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_gr_basic/4.codebook.html">5.4. 推荐中的Tokenizer技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_gr_basic/5.summary.html">5.5. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. Scaling Law架构探索</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">6.1. HSTU架构演进</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.1.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.mtgr.html">6.1.3. 混合范式的突破</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../3.summary.html">6.3. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_7_gr_e2e/1.recommendation.html">7.1. OneRec的架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_7_gr_e2e/2.search.html">7.2. 查询补全与商品检索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_7_gr_e2e/3.ad.html">7.3. 竞价机制与多场景广告</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_7_gr_e2e/4.summary.html">7.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_8_thinking/index.html">8. 会思考的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_8_thinking/1.semantic_alignment.html">8.1. 协同语义与语言语义的统一</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_8_thinking/2.reasoning_framework.html">8.2. OneRec-Think的思考框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_8_thinking/3.autonomous_reasoning.html">8.3. 自主推理的探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_8_thinking/4.summary.html">8.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_9_diffusion/index.html">9. 基于扩散的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_9_diffusion/1.basics.html">9.1. 推荐中的扩散模型基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_9_diffusion/2.augmentation.html">9.2. 基于扩散的数据增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_9_diffusion/3.application.html">9.3. 特征增强与多样性优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_9_diffusion/4.summary.html">9.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_10_projects/index.html">10. 生产级推荐系统构建</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/1.intro.html">10.1. 项目背景与目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/2.architecture.html">10.2. 系统架构设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/3.offline_pipeline.html">10.3. 离线流水线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/4.online_pipeline.html">10.4. 在线流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/5.frontend.html">10.5. 前端与交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/6.deployment.html">10.6. 部署与运维</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/7.summary.html">10.7. 本章总结</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../../index.html">
+              <img class="logo" src="../../_static/logo_with_text.png" alt="深度推荐算法实践:从级联架构到生成式范式"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_2_ranking/6.summary.html">3.6. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_3_rerank/index.html">4. 重排多样性建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_5_gr_basic/index.html">5. 生成式推荐基础</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_gr_basic/1.gr_intro.html">5.1. 推荐范式的演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_gr_basic/2.gr_arch_base.html">5.2. 生成式架构的基石</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_gr_basic/3.llm_base.html">5.3. LLM建模的基本流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_gr_basic/4.codebook.html">5.4. 推荐中的Tokenizer技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_5_gr_basic/5.summary.html">5.5. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. Scaling Law架构探索</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">6.1. HSTU架构演进</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.1.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.mtgr.html">6.1.3. 混合范式的突破</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../3.summary.html">6.3. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_7_gr_e2e/1.recommendation.html">7.1. OneRec的架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_7_gr_e2e/2.search.html">7.2. 查询补全与商品检索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_7_gr_e2e/3.ad.html">7.3. 竞价机制与多场景广告</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_7_gr_e2e/4.summary.html">7.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_8_thinking/index.html">8. 会思考的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_8_thinking/1.semantic_alignment.html">8.1. 协同语义与语言语义的统一</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_8_thinking/2.reasoning_framework.html">8.2. OneRec-Think的思考框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_8_thinking/3.autonomous_reasoning.html">8.3. 自主推理的探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_8_thinking/4.summary.html">8.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_9_diffusion/index.html">9. 基于扩散的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_9_diffusion/1.basics.html">9.1. 推荐中的扩散模型基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_9_diffusion/2.augmentation.html">9.2. 基于扩散的数据增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_9_diffusion/3.application.html">9.3. 特征增强与多样性优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_9_diffusion/4.summary.html">9.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_10_projects/index.html">10. 生产级推荐系统构建</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/1.intro.html">10.1. 项目背景与目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/2.architecture.html">10.2. 系统架构设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/3.offline_pipeline.html">10.3. 离线流水线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/4.online_pipeline.html">10.4. 在线流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/5.frontend.html">10.5. 前端与交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/6.deployment.html">10.6. 部署与运维</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_10_projects/7.summary.html">10.7. 本章总结</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="scaling-law">
+<span id="hstu"></span><h1><span class="section-number">6.1.1. </span>Scaling Law的首次探索<a class="headerlink" href="#scaling-law" title="Permalink to this heading">¶</a></h1>
+<p>过去十年，深度学习在计算机视觉和自然语言处理领域取得了令人瞩目的成就。ResNet将网络深度从几十层扩展到上千层，Transformer模型参数量突破万亿规模，涌现出惊人的智能行为。这些突破背后有一个共同规律：<strong>在合适的架构下，模型性能会随着计算量、数据量、参数量的增加而持续提升，遵循可预测的幂律关系</strong>
+<span id="id1">(<a class="reference internal" href="../../chapter_references/references.html#id40" title="Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.">Vaswani <em>et al.</em>, 2017</a>)</span>，这就是著名的scaling law。</p>
+<p>推荐系统却成了一个令人困惑的例外。尽管工业界投入了巨大的工程资源，精心设计数千个特征、搭建复杂的Deep
+Learning Recommendation Model（DLRM） <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id126" title="Mudigere, D., Hao, Y., Huang, J., Jia, Z., Tulloch, A., Sridharan, S., … others. (2022). Software-hardware co-design for fast and scalable training of deep learning recommendation models. Proceedings of the 49th Annual International Symposium on Computer Architecture (pp. 993–1011).">Mudigere <em>et al.</em>, 2022</a>)</span>
+架构、每天处理数十亿用户的海量数据，但性能提升总是很快遇到瓶颈。增加模型参数、扩大训练数据，往往只能换来微小的指标改善，有时甚至毫无收益。</p>
+<p>问题出在哪里？传统DLRM面临三个根本性限制：</p>
+<p>首先是<strong>特征瓶颈</strong>。DLRM依赖手工设计的数值型特征（如点击率、平均观看时长等统计特征）来压缩历史信息。当增加模型容量时，这些预聚合的特征成为信息瓶颈：模型能力提升了，但输入信息的丰富度没有提升。</p>
+<p>其次是<strong>架构碎片化</strong>。DLRM由异构的模块组成（FM、DCN、DIN、MMoE等），每个模块针对特定类型的特征交互优化。增加某个模块的容量往往只能带来局部改善，难以产生系统性的提升。</p>
+<p>最后是<strong>训练范式的限制</strong>。传统DLRM采用的是<strong>item-level建模</strong>：对每个候选项独立计算评分<span class="math notranslate nohighlight">\(\text{score}(u, i_j)\)</span>，每个训练样本只对应一个<span class="math notranslate nohighlight">\((user, item, action)\)</span>三元组。这意味着模型每次只能从单个交互中学习一个监督信号，增加模型容量不会增加每个样本提供的信息量。而且，这种范式的计算成本随候选集规模线性增长，独立评分机制也无法捕捉候选之间的关联。</p>
+<p>这三个限制共同作用，让传统DLRM难以实现持续的规模化收益。突破这个困境，需要的不仅是工程优化，而是<strong>范式的转变</strong>。</p>
+<section id="id3">
+<h2><span class="section-number">6.1.1.1. </span>范式转变：从物品序列到行为序列<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
+<p>Meta的研究团队获得了一个关键洞察：<strong>如果把用户的行为历史看作一种特殊的“语言”，会发生什么？</strong></p>
+<p>在自然语言处理中，GPT等语言模型的成功建立在一个简洁而强大的范式上：给定前文<span class="math notranslate nohighlight">\([w_1, w_2, \ldots, w_t]\)</span>，自回归地预测下一个词<span class="math notranslate nohighlight">\(w_{t+1}\)</span>。这个过程可以持续进行，生成任意长度的文本序列。语言模型之所以能够scale，关键在于统一的序列表示让所有信息都编码在token序列中，自回归训练方式让每个样本提供多个监督信号，而Transformer架构
+<span id="id4">(<a class="reference internal" href="../../chapter_references/references.html#id127" title="Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … Polosukhin, I. (2017). Attention is all you need. Proceedings of the 31st International Conference on Neural Information Processing Systems (pp. 6000–6010).">Vaswani <em>et al.</em>, 2017</a>)</span>
+则提供了强大的序列建模能力和参数效率。</p>
+<p>那么，能否将推荐问题也formulate成这样的序列任务？这个想法乍看之下很自然，毕竟sequential
+recommendation并不是新概念，GRU4Rec、SASRec等方法早已将用户的交互历史建模为序列。但这些方法都只关注用户与物品的交互，而忽略了推荐系统中最关键的信息：<strong>用户的行为反馈</strong>。传统方法只建模物品序列<span class="math notranslate nohighlight">\([\Phi_0, \Phi_1, \ldots, \Phi_{i-1}]\)</span>，预测下一个物品<span class="math notranslate nohighlight">\(\Phi_i\)</span>，却没有考虑用户对每个物品的响应。</p>
+<p>Meta团队提出的Generative
+Recommender（GR）范式，将推荐过程视为两个交织的随机过程：推荐系统展示内容<span class="math notranslate nohighlight">\(\Phi_i\)</span>，用户产生行为反馈<span class="math notranslate nohighlight">\(a_i\)</span>（如点击、点赞、观看时长等）。因此，完整的推荐数据流应该表示为交替出现的内容和行为序列：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-1-hstu-optimization-1-hstu-0">
+<span class="eqno">(6.1.1)<a class="headerlink" href="#equation-chapter-6-scaling-1-hstu-optimization-1-hstu-0" title="Permalink to this equation">¶</a></span>\[[\Phi_0, a_0, \Phi_1, a_1, \ldots, \Phi_{n_c-1}, a_{n_c-1}]\]</div>
+<p>这个看似简单的改变，带来了深刻的影响。现在要建模的不再是<span class="math notranslate nohighlight">\(p(\Phi_i | \Phi_0, \ldots, \Phi_{i-1})\)</span>，而是完整的联合分布<span class="math notranslate nohighlight">\(p(\Phi_0, a_0, \Phi_1, a_1, \ldots, \Phi_{n_c-1}, a_{n_c-1})\)</span>。根据概率链式法则，这个联合分布可以分解为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-1-hstu-optimization-1-hstu-1">
+<span class="eqno">(6.1.2)<a class="headerlink" href="#equation-chapter-6-scaling-1-hstu-optimization-1-hstu-1" title="Permalink to this equation">¶</a></span>\[p(\Phi_0) \cdot p(a_0|\Phi_0) \cdot p(\Phi_1|\Phi_0, a_0) \cdot p(a_1|\Phi_0, a_0, \Phi_1) \cdots\]</div>
+<p>这个分解立即揭示了推荐系统的两个核心任务。<strong>排序任务（Ranking）</strong>对应于<span class="math notranslate nohighlight">\(p(a_i | \Phi_0, a_0, \ldots, \Phi_i)\)</span>的建模，即给定用户历史和当前候选物品<span class="math notranslate nohighlight">\(\Phi_i\)</span>，预测用户会产生什么样的行为<span class="math notranslate nohighlight">\(a_i\)</span>。注意这是一个<strong>target-aware</strong>的建模方式，即模型在看到候选物品后才预测行为。<strong>召回任务（Retrieval）</strong>则对应于<span class="math notranslate nohighlight">\(p(\Phi_i | \Phi_0, a_0, \ldots, a_{i-1})\)</span>的建模，即给定用户的历史交互，预测下一个应该推荐的物品，这更接近传统sequential
+recommendation的设定。</p>
+<p>但要让这个框架真正发挥作用，还需要解决一个关键问题：<strong>如何将推荐系统中五花八门的特征统一到这个序列框架中？</strong></p>
+<figure class="align-default" id="id13">
+<span id="dlrm-vs-gr-features-training"></span><a class="reference internal image-reference" href="../../_images/dlrms_vs_grs_training_v2.png"><img alt="../../_images/dlrms_vs_grs_training_v2.png" src="../../_images/dlrms_vs_grs_training_v2.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">图6.1.1 </span><span class="caption-text">DLRM与GR的特征和训练方式对比</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="id5">
+<h2><span class="section-number">6.1.1.2. </span>统一异构特征空间<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
+<p>传统DLRM的一个显著特点是特征的异构性和碎片化。一个典型的工业级推荐模型可能使用上千个特征，包括类别型（Sparse）特征和数值型（Dense）特征。</p>
+<p>类别型特征如用户ID、物品ID、创作者ID、话题标签、城市、语言等，其基数往往极高，可以达到数十亿。数值型特征如点击率、平均观看时长、各种统计计数、时间衰减权重等，是经过精心工程设计的聚合特征，往往capture了重要的信号。在传统DLRM中，这些特征通过embedding
+lookup、特征交叉、MLP等不同的模块处理，最终concatenate到一起。这种碎片化的处理方式虽然灵活，却带来了参数效率问题。</p>
+<p>Generative
+Recommender要将这些异构特征统一到序列中，需要巧妙的设计。对于类别型特征，核心思路是时间轴对齐和压缩合并。</p>
+<p>首先，识别出变化最频繁的特征作为“主时间线”。在推荐场景中，这通常是用户的交互历史，即用户点击、点赞、评论的物品序列，最能反映用户兴趣的动态演化。</p>
+<p>接下来，处理变化较慢的特征，比如用户关注的创作者列表、加入的兴趣社区、常用的城市等。对这些慢变序列，采用一个简单而有效的压缩策略：<strong>对于每个连续的相同值段，只保留第一次出现的记录</strong>。举个例子，假设用户在一个月内关注的创作者序列是<code class="docutils literal notranslate"><span class="pre">[张三,</span> <span class="pre">张三,</span> <span class="pre">张三,</span> <span class="pre">李四,</span> <span class="pre">李四,</span> <span class="pre">王五,</span> <span class="pre">王五,</span> <span class="pre">王五]</span></code>，压缩后变成<code class="docutils literal notranslate"><span class="pre">[张三,</span> <span class="pre">李四,</span> <span class="pre">王五]</span></code>。这种压缩不会显著增加序列长度，因为这些特征本身就变化缓慢。</p>
+<p>最后，将压缩后的序列按时间戳合并到主时间线中，得到一个统一的类别型特征序列。</p>
+<p>对于数值型特征，则需要更深刻的洞察。数值型特征的变化频率极高，几乎每次交互都可能导致某些统计特征更新。如果完全序列化，序列长度会爆炸式增长，无论从计算还是存储角度都不可行。</p>
+<p>但仔细观察会发现，这些数值型特征通常是对类别型特征的<strong>聚合统计</strong>。比如“用户在科技话题下的点击率”这个特征，本质上是对“用户历史中科技话题物品的点击行为”的统计。而这些被聚合的基础信号（话题标签、点击行为）已经在类别型特征序列中了！</p>
+<p>这意味着，如果序列模型足够强大，能够建模足够长的历史，理论上可以从原始的类别型特征序列中<strong>自动学习出</strong>这些聚合统计特征。这是一个大胆但合理的假设：用足够的模型容量，换取特征工程的简化。</p>
+<p>形式化地说，传统DLRM使用的特征空间可以表示为<span class="math notranslate nohighlight">\(\mathcal{F}_{\text{DLRM}} = \{\text{sparse features}\} \cup \{\text{dense features}\}\)</span>，而Generative
+Recommender将其统一为<span class="math notranslate nohighlight">\(\mathcal{F}_{\text{GR}} = \text{Seq}(\text{sparse features})\)</span>。当序列长度<span class="math notranslate nohighlight">\(n \to \infty\)</span>时，GR的特征空间可以近似覆盖DLRM的特征空间：<span class="math notranslate nohighlight">\(\lim_{n \to \infty} \mathcal{F}_{\text{GR}} \approx \mathcal{F}_{\text{DLRM}}\)</span>。</p>
+<p>值得注意的是，完全放弃数值型特征并非没有代价。论文的消融实验显示，当给DLRM
+baseline也使用相同的“仅类别型特征”配置时，其性能显著下降。这说明<strong>在低算力场景下，精心设计的数值型特征仍然很有价值</strong>。GR的优势在于：通过大幅增加模型容量和序列长度，它能够从原始交互序列中<strong>自动学习</strong>出那些手工特征所捕捉的信息，实现了“用算力换特征工程”的取舍。</p>
+<p>这个特征统一过程的优雅之处在于：它不仅简化了特征工程，更重要的是<strong>为后续的架构创新铺平了道路</strong>。当所有信息都编码在一个统一的序列中，我们就可以充分利用Transformer等强大的序列模型架构。</p>
+</section>
+<section id="id6">
+<h2><span class="section-number">6.1.1.3. </span>训练效率的飞跃<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
+<p>统一的序列表示不仅带来了建模上的优势，更重要的是<strong>从根本上改变了训练的计算复杂度</strong>。</p>
+<p>在传统DLRM的训练中，每个样本对应一次用户与物品的交互<span class="math notranslate nohighlight">\((u, i, a)\)</span>，模型需要将用户和物品的特征组合，计算评分，然后与标签比较得到loss。如果训练集有<span class="math notranslate nohighlight">\(M\)</span>个交互记录，我们需要进行<span class="math notranslate nohighlight">\(M\)</span>次前向传播，产生<span class="math notranslate nohighlight">\(M\)</span>个监督信号。</p>
+<p>而在Generative
+Recommender的框架下，情况发生了根本性的变化。考虑一个用户的完整行为序列<span class="math notranslate nohighlight">\([\Phi_0, a_0, \Phi_1, a_1, \ldots, \Phi_{n_c-1}, a_{n_c-1}]\)</span>，包含<span class="math notranslate nohighlight">\(n_c\)</span>个交互。由于采用了交织式建模，总序列长度<span class="math notranslate nohighlight">\(n = 2n_c\)</span>，内容和行为交替出现。在自回归的训练范式下，这个序列可以提供<span class="math notranslate nohighlight">\(n_c\)</span>个监督信号：在位置0（<span class="math notranslate nohighlight">\(\Phi_0\)</span>之后）预测<span class="math notranslate nohighlight">\(a_0\)</span>，在位置2（<span class="math notranslate nohighlight">\(\Phi_1\)</span>之后）预测<span class="math notranslate nohighlight">\(a_1\)</span>，依此类推。</p>
+<p>关键的insight是：<strong>这</strong><span class="math notranslate nohighlight">\(n_c\)</span><strong>个预测可以在一次前向传播中并行完成</strong>。</p>
+<p>在Transformer的自注意力机制中，通过causal
+mask（下三角mask），可以确保位置<span class="math notranslate nohighlight">\(i\)</span>的token只能看到位置<span class="math notranslate nohighlight">\(0\)</span>到<span class="math notranslate nohighlight">\(i-1\)</span>的信息。一次前向传播实际上隐式地完成了所有前缀的编码：位置0的hidden
+state编码了<span class="math notranslate nohighlight">\(\Phi_0\)</span>，位置2编码了<span class="math notranslate nohighlight">\(\Phi_0, a_0, \Phi_1\)</span>，依此类推。每个内容token之后的位置都可以用来预测对应的行为，这<span class="math notranslate nohighlight">\(n_c\)</span>个预测共享了大部分计算，都基于同一次前向传播的中间结果。这个设计也解释了为什么target-aware建模方式能够奏效：模型在看到候选内容<span class="math notranslate nohighlight">\(\Phi_i\)</span>后才预测行为<span class="math notranslate nohighlight">\(a_i\)</span>。</p>
+<p>从计算复杂度的角度看，这带来了惊人的提升。传统DLRM需要<span class="math notranslate nohighlight">\(M\)</span>次前向传播处理<span class="math notranslate nohighlight">\(M\)</span>个样本，总计算量为<span class="math notranslate nohighlight">\(O(M \cdot C_{\text{forward}})\)</span>。而Generative
+Recommender中，如果平均序列长度是<span class="math notranslate nohighlight">\(n_c\)</span>，<span class="math notranslate nohighlight">\(M\)</span>个样本可以组成<span class="math notranslate nohighlight">\(M/n_c\)</span>个序列，总计算量为<span class="math notranslate nohighlight">\(O((M/n_c) \cdot C_{\text{forward}})\)</span>。</p>
+<p>这相当于将训练的计算效率提升了<span class="math notranslate nohighlight">\(n_c\)</span>倍！在实际场景中，用户的行为序列长度往往可以达到数百甚至上千。举个例子，如果用户平均有500次历史交互，那么训练效率就提升了500倍。这意味着<strong>我们可以用同样的计算预算，训练复杂度高一到两个数量级的模型</strong>。</p>
+<p>这个训练效率的飞跃，是Generative Recommender能够突破传统DLRM
+scaling瓶颈的第一个关键因素。它为我们提供了足够的计算空间去尝试更深的网络、更大的模型容量。但这还不够。要真正实现scaling
+law，我们还需要一个专门为推荐场景设计、高效且强大的序列建模架构。</p>
+</section>
+<section id="id7">
+<h2><span class="section-number">6.1.1.4. </span>HSTU架构：为推荐优化的序列模型<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
+<p>有了统一的序列表示和高效的训练范式，下一个问题是：<strong>用什么架构来建模这个序列？</strong>一个自然的选择是直接使用Transformer，毕竟它在NLP领域已经证明了强大的序列建模能力和良好的scaling特性。但推荐场景有其独特性，直接套用标准Transformer会遇到一些问题。</p>
+<p>Meta团队设计的Hierarchical Sequential Transduction
+Unit（HSTU）架构，针对推荐场景的特点做了三个关键的架构创新。</p>
+<figure class="align-default" id="id14">
+<span id="dlrm-vs-gr-model-architecture"></span><a class="reference internal image-reference" href="../../_images/dlrms_vs_grs.png"><img alt="../../_images/dlrms_vs_grs.png" src="../../_images/dlrms_vs_grs.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">图6.1.2 </span><span class="caption-text">DLRM与GR/HSTU的模型架构对比</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="pointwise-aggregationsoftmax-attention">
+<h3><span class="section-number">6.1.1.4.1. </span>Pointwise Aggregation取代Softmax Attention<a class="headerlink" href="#pointwise-aggregationsoftmax-attention" title="Permalink to this heading">¶</a></h3>
+<p>标准Transformer使用的softmax
+attention机制表示为<span class="math notranslate nohighlight">\(\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right) V\)</span>，其中softmax归一化确保attention权重和为1，让模型学习的是历史token之间的<strong>相对重要性</strong>。在语言建模中，这是合理的：给定前文，我们需要判断哪些词对预测下一个词最重要。</p>
+<p>但在推荐场景中，我们不仅需要知道<strong>哪些历史行为重要</strong>，还需要知道<strong>它们有多重要</strong>。</p>
+<p>考虑一个具体的例子。用户A在科技话题下有10次点击，娱乐话题下有1次点击；用户B在科技话题下有100次点击，娱乐话题下有10次点击。用softmax
+attention，两个用户的attention分布可能非常相似（都是90%的权重在科技，10%在娱乐），但显然用户B对科技内容的兴趣强度远高于用户A。Softmax的归一化抹去了这个<strong>绝对强度</strong>信息。</p>
+<p>HSTU提出用pointwise
+aggregation替代softmax。根据论文的完整表述，HSTU的attention机制表示为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-1-hstu-optimization-1-hstu-2">
+<span class="eqno">(6.1.3)<a class="headerlink" href="#equation-chapter-6-scaling-1-hstu-optimization-1-hstu-2" title="Permalink to this equation">¶</a></span>\[A(X)V(X) = \varphi_2\left(Q(X)K(X)^T + \text{rab}_{p,t}\right) \odot V(X)\]</div>
+<p>其中<span class="math notranslate nohighlight">\(\varphi_2\)</span>是SiLU激活函数（Swish），<span class="math notranslate nohighlight">\(\text{rab}_{p,t}\)</span>是相对注意力偏置，<span class="math notranslate nohighlight">\(\odot\)</span>表示element-wise乘法。完整的HSTU
+block输出为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-1-hstu-optimization-1-hstu-3">
+<span class="eqno">(6.1.4)<a class="headerlink" href="#equation-chapter-6-scaling-1-hstu-optimization-1-hstu-3" title="Permalink to this equation">¶</a></span>\[\text{Output} = \text{LayerNorm}(A(X)V(X)) \odot U(X)\]</div>
+<p>这里<span class="math notranslate nohighlight">\(U(X)\)</span>是一个门控投影。这个设计的关键在于：SiLU将相似度映射到连续的值域但不做全局归一化，每个位置的attention权重保持独立，累加后的总和可以大于1，模型可以学习到“这个用户对某类内容兴趣很强烈”这样的绝对强度信息。</p>
+<p>在排序任务中，这个能力至关重要。我们不仅要预测用户是否会点击，还要预测点击后的深度行为（观看时长、点赞等），这些都需要捕捉兴趣的绝对强度。</p>
+</section>
+<section id="id8">
+<h3><span class="section-number">6.1.1.4.2. </span>相对位置编码的重新设计<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
+<p>在推荐序列中，时间信息极其重要，用户两年前的点击和两分钟前的点击，对当前推荐的影响显然不同。但推荐序列的时间特性与语言序列有本质区别。</p>
+<p>语言序列中位置是离散且均匀的。第3个词和第5个词之间的“距离”是2，这个距离的含义在整个序列中是一致的。而推荐序列中时间是连续且不均匀的。两次交互之间可能相隔几秒，也可能相隔几个月。简单的相对位置编码无法很好地capture这种复杂的时间模式。</p>
+<p>HSTU引入了一个增强的相对位置bias机制，记为<span class="math notranslate nohighlight">\(\text{rab}_{p,t}\)</span>。它不仅考虑位置关系<span class="math notranslate nohighlight">\(p_i - p_j\)</span>，还考虑实际时间间隔<span class="math notranslate nohighlight">\(t_i - t_j\)</span>。</p>
+<p>对于序列中的位置<span class="math notranslate nohighlight">\(i\)</span>和<span class="math notranslate nohighlight">\(j\)</span>，计算一个bias项：<span class="math notranslate nohighlight">\(\text{bias}_{i,j} = f(p_i - p_j, t_i - t_j, \text{type}_i, \text{type}_j)\)</span>，这里的<span class="math notranslate nohighlight">\(\text{type}\)</span>区分了内容token（<span class="math notranslate nohighlight">\(\Phi\)</span>）和行为token（<span class="math notranslate nohighlight">\(a\)</span>）。</p>
+<p>这个设计让模型能够学习到：最近的行为比久远的行为更重要，某些类型的行为衰减更快（如浏览vs点赞），内容token和行为token之间的关系与内容token之间的关系不同。这个看似简单的改进，在长序列建模中效果显著，帮助模型更好地权衡不同时间尺度的信息。</p>
+</section>
+<section id="id9">
+<h3><span class="section-number">6.1.1.4.3. </span>简化的前馈网络与门控机制<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
+<p>标准Transformer在attention层之后会接一个两层的前馈网络（FFN），通常表示为<span class="math notranslate nohighlight">\(\text{FFN}(x) = \text{ReLU}(xW_1 + b_1)W_2 + b_2\)</span>。中间层的维度通常是隐藏层维度的4倍，这导致FFN占据了Transformer大部分的参数和计算量。</p>
+<p>HSTU受到最近高效Transformer研究的启发（如GLU
+variants），采用了一个更简洁的设计，用element-wise的门控机制替代了显式的FFN：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-1-hstu-optimization-1-hstu-4">
+<span class="eqno">(6.1.5)<a class="headerlink" href="#equation-chapter-6-scaling-1-hstu-optimization-1-hstu-4" title="Permalink to this equation">¶</a></span>\[\text{HSTU-Block}(X) = \text{LayerNorm}(X + \text{Gate}(X) \odot \text{Attention}(X))\]</div>
+<p>这里的门控函数<span class="math notranslate nohighlight">\(\text{Gate}(X)\)</span>是一个轻量级的变换（如一个单层线性投影加激活）。这个设计有两个好处。</p>
+<p>首先是减少参数量和计算量，避免了4倍隐层维度的FFN。其次是降低激活值内存，更少的中间层意味着反向传播时需要保存的激活值更少。</p>
+<p>后者在推荐场景中尤为重要。工业级推荐模型需要使用非常大的batch
+size（可能到达数万甚至数十万）来稳定训练，这时激活值内存往往成为瓶颈。HSTU的设计将每层的激活值内存从标准Transformer的33倍隐层维度降到14倍，使得我们可以在相同内存预算下训练更深的网络。</p>
+<p>值得注意的是，HSTU名字中的“Hierarchical”指的是模型可以采用分层的token表示：对于超高基数的类别型特征（如物品ID可能有数十亿），可以将其分解为多个sub-token的序列。但这个层次化设计并非HSTU的核心。后续的研究会揭示，在大多数场景下，flat的token表示已经足够。HSTU真正的价值在于前面提到的三个架构创新。</p>
+</section>
+</section>
+<section id="id10">
+<h2><span class="section-number">6.1.1.5. </span>训练与推理的工程优化<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h2>
+<section id="stochastic-length">
+<h3><span class="section-number">6.1.1.5.1. </span>Stochastic Length：利用行为的多尺度冗余<a class="headerlink" href="#stochastic-length" title="Permalink to this heading">¶</a></h3>
+<p>即使有了高效的架构，训练超长序列依然是一个挑战。自注意力的复杂度是<span class="math notranslate nohighlight">\(O(n^2)\)</span>，当序列长度达到数千甚至上万时，计算和内存开销都会变得难以承受。</p>
+<p>但推荐序列有一个独特的性质：<strong>用户行为在不同时间尺度上展现出重复的模式</strong>。用户的兴趣不是单一尺度的，它既包含长期稳定的偏好（“我喜欢科技内容”），也包含中期的兴趣演化（“最近一个月在关注AI话题”），还有短期的场景化需求（“今天想看些轻松的”）。这意味着，模型既需要长期历史来捕捉稳定偏好，也需要近期历史来捕捉即时兴趣。</p>
+<p>基于这个观察，HSTU提出了<strong>Stochastic
+Length（随机长度）</strong>训练技巧。核心思想很简单：对于长度为<span class="math notranslate nohighlight">\(n\)</span>的用户序列，不总是使用完整的序列进行训练，而是以一定概率随机截取一个较短的子序列。</p>
+<p>具体来说，如果序列长度<span class="math notranslate nohighlight">\(n\)</span>超过某个阈值<span class="math notranslate nohighlight">\(N_{\alpha/2}\)</span>，那么以概率<span class="math notranslate nohighlight">\(p = 1 - N_{\alpha} / n^2\)</span>，随机采样长度为<span class="math notranslate nohighlight">\(N_{\alpha/2}\)</span>的子序列；以概率<span class="math notranslate nohighlight">\(1-p = N_{\alpha} / n^2\)</span>，使用完整序列。这个概率设计的巧妙之处在于：当<span class="math notranslate nohighlight">\(\alpha = 2\)</span>时，<span class="math notranslate nohighlight">\(p = 1 - N_c^2/n^2\)</span>，对于<span class="math notranslate nohighlight">\(n &gt; N_c\)</span>的序列几乎总是被截断，确保了计算复杂度的上界是<span class="math notranslate nohighlight">\(O(N_c^2)\)</span>。而当选择<span class="math notranslate nohighlight">\(\alpha &lt; 2\)</span>（如1.6-1.7）时，<span class="math notranslate nohighlight">\(p = 1 - N_c^\alpha/n^2\)</span>，即使对很长的序列，也保留了一定概率使用完整历史，防止模型完全“遗忘”长期依赖。参数<span class="math notranslate nohighlight">\(\alpha\)</span>控制了截断的激进程度：<span class="math notranslate nohighlight">\(\alpha\)</span>越小，截断越激进，训练越快；<span class="math notranslate nohighlight">\(\alpha = 2\)</span>时退化为不截断。</p>
+<p>子序列的采样也不是简单的随机截取，而是基于特征加权的采样，这确保了采样的子序列能够覆盖不同时间尺度的信息。</p>
+<p>Stochastic Length带来了双重好处。</p>
+<p>在训练加速方面，自注意力的复杂度从<span class="math notranslate nohighlight">\(O(n^2)\)</span>降低到<span class="math notranslate nohighlight">\(O(N_{\alpha})\)</span>。在实际应用中，通过选择合适的<span class="math notranslate nohighlight">\(\alpha\)</span>（如1.6-1.7），可以将序列稀疏度提升到80%以上，训练速度获得数倍提升。</p>
+<p>在正则化效果方面，随机的子序列采样起到了类似dropout的正则化作用，迫使模型不能过度依赖特定的历史模式，而要学习更鲁棒的表示，这反而提升了模型的泛化能力。</p>
+<p>实验验证表明，在很大的<span class="math notranslate nohighlight">\(\alpha\)</span>范围内，Stochastic
+Length对模型质量几乎没有负面影响，有时甚至略有提升。这个意外的发现再次印证了之前的假设：推荐序列在不同尺度上有丰富的冗余信息，模型不需要每次都看完整历史。</p>
+<figure class="align-default" id="id15">
+<span id="stochastic-length-effect"></span><a class="reference internal image-reference" href="../../_images/exp_stochastic_length.png"><img alt="../../_images/exp_stochastic_length.png" src="../../_images/exp_stochastic_length.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">图6.1.3 </span><span class="caption-text">Stochastic Length在不同α值下的效果</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="m-falcon">
+<h3><span class="section-number">6.1.1.5.2. </span>M-FALCON：全局成本分摊的推理算法<a class="headerlink" href="#m-falcon" title="Permalink to this heading">¶</a></h3>
+<p>训练的高效只解决了一半问题。在真实的推荐系统中，推理延迟同样关键。用户打开APP的那一刻，系统需要在几十毫秒内完成候选召回、粗排、精排的全流程。</p>
+<p>对于排序阶段，挑战尤为严峻。系统可能需要对成百上千的候选进行精排，每个候选都需要模型给出评分。按照朴素的想法，如果有<span class="math notranslate nohighlight">\(m\)</span>个候选需要评分，我们需要进行<span class="math notranslate nohighlight">\(m\)</span>次前向传播，每次将候选物品拼接到用户历史后面。从attention的计算复杂度看，总计算量是<span class="math notranslate nohighlight">\(O(mn^2d + mnd^2)\)</span>（其中<span class="math notranslate nohighlight">\(d\)</span>是隐藏层维度，<span class="math notranslate nohighlight">\(n^2d\)</span>来自attention的复杂度，<span class="math notranslate nohighlight">\(nd^2\)</span>来自线性投影层）。即使单次前向传播很快，累积起来的延迟也会超出可接受范围。</p>
+<p>HSTU团队提出的M-FALCON（Microbatched-Fast Attention Leveraging Cacheable
+OperatioNs）算法，通过三个层层递进的优化，将这个问题优雅地解决了。</p>
+<p><strong>第一层优化：Batched Inference</strong></p>
+<p>第一个insight是：<strong>可以将多个候选的推理batch在一起</strong>。虽然每个候选需要看到用户的完整历史，但如果把<span class="math notranslate nohighlight">\(b_m\)</span>个候选拼在一起，然后修改attention
+mask，使得候选之间不能互相看到（即<span class="math notranslate nohighlight">\(\Phi'_i\)</span>只能attend到用户历史，但不能attend到<span class="math notranslate nohighlight">\(\Phi'_j\)</span>
+where
+<span class="math notranslate nohighlight">\(j \neq i\)</span>），那么这<span class="math notranslate nohighlight">\(b_m\)</span>个候选的评分可以在一次前向传播中并行计算出来。</p>
+<p>通过这个简单的trick，计算复杂度从<span class="math notranslate nohighlight">\(O(mn^2d + mnd^2)\)</span>降低到<span class="math notranslate nohighlight">\(O((m/b_m) \cdot ((n + b_m)^2d + (n+b_m)d^2))\)</span>。如果设置<span class="math notranslate nohighlight">\(b_m = m\)</span>（所有候选一起batch），复杂度就变成<span class="math notranslate nohighlight">\(O((n+m)^2d + (n+m)d^2)\)</span>，成功消除了对<span class="math notranslate nohighlight">\(m\)</span>的线性依赖。在推荐场景中，通常<span class="math notranslate nohighlight">\(m \ll n^2/d\)</span>，这带来显著的提升。</p>
+<p><strong>第二层优化：Microbatching</strong></p>
+<p>但当<span class="math notranslate nohighlight">\(m\)</span>很大时（比如上千个候选），<span class="math notranslate nohighlight">\(b_m = m\)</span>会让<span class="math notranslate nohighlight">\((n+m)^2\)</span>项过大，反而降低效率。这时可以将<span class="math notranslate nohighlight">\(m\)</span>个候选分成<span class="math notranslate nohighlight">\(\lceil m/b_m \rceil\)</span>个microbatch，每个microbatch大小为<span class="math notranslate nohighlight">\(b_m\)</span>。选择合适的<span class="math notranslate nohighlight">\(b_m\)</span>（比如与<span class="math notranslate nohighlight">\(n\)</span>同数量级）可以确保<span class="math notranslate nohighlight">\((n + b_m)^2 \approx 4n^2\)</span>保持在可控范围内，同时microbatch数量也不会太多。这在工程实现上相当于在“全量并行”和“完全串行”之间找到一个甜点。</p>
+<p><strong>第三层优化：KV Caching</strong></p>
+<p>Microbatching还解锁了另一个重要优化：<strong>跨microbatch的KV
+caching</strong>。在Transformer的自注意力计算中，对于用户历史部分，<span class="math notranslate nohighlight">\(K\)</span>和<span class="math notranslate nohighlight">\(V\)</span>在所有microbatch中都是相同的！这意味着第一个microbatch计算时需要计算完整的<span class="math notranslate nohighlight">\(K\)</span>和<span class="math notranslate nohighlight">\(V\)</span>，后续microbatch只需要计算新增候选位置的<span class="math notranslate nohighlight">\(K\)</span>和<span class="math notranslate nohighlight">\(V\)</span>，用户历史部分直接复用缓存。</p>
+<p>这将后续microbatch的计算复杂度从<span class="math notranslate nohighlight">\(O((n+b_m)d^2 + (n+b_m)^2 d)\)</span>降低到<span class="math notranslate nohighlight">\(O(b_m d^2 + b_m nd)\)</span>，获得<span class="math notranslate nohighlight">\(2 \sim 4\)</span>倍的加速。更进一步，KV
+cache可以跨请求复用。在实际服务中，同一个用户可能在短时间内触发多次推荐请求（如滑动刷新），如果将用户历史的KV
+cache保存一段时间，后续请求可以直接使用。</p>
+<p>M-FALCON的三层优化组合起来，效果惊人。在典型的排序配置下（数千长度的用户序列，上千个候选），相比朴素的逐个推理，Batched
+inference带来数十倍加速，Microbatching + KV
+caching再带来<span class="math notranslate nohighlight">\(2 \sim 4\)</span>倍加速，综合提升可达数百倍。更重要的是，这让我们可以在相同的延迟预算下，使用复杂数百倍的模型。这是HSTU能够部署万亿参数模型的工程基础。</p>
+<figure class="align-default" id="id16">
+<span id="m-falcon-inference-algorithm"></span><a class="reference internal image-reference" href="../../_images/m-falcon_inference.png"><img alt="../../_images/m-falcon_inference.png" src="../../_images/m-falcon_inference.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">图6.1.4 </span><span class="caption-text">M-FALCON推理算法流程示意图</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="id11">
+<h2><span class="section-number">6.1.1.6. </span>推荐系统的Scaling Law<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h2>
+<p>有了Generative Recommender的统一范式、HSTU的高效架构、Stochastic
+Length的训练加速、M-FALCON的推理优化，所有的技术积木都已就位。现在，是时候回答那个最初的问题了：<strong>推荐模型能否像语言模型一样实现持续的scaling？</strong></p>
+<p>Meta团队进行了一系列精心设计的scaling实验。他们系统性地增加模型的各个维度：序列长度从512逐步扩展到8192，隐藏层维度从256扩展到1024，网络深度从几层扩展到24层，注意力头数相应增加。</p>
+<p>由于推荐模型采用持续的流式训练（streaming
+training），他们将训练计算量归一化到365天，这样可以与语言模型的训练计算量（如GPT-3、LLaMA-2）进行公平对比。实验在三个核心指标上进行：召回任务的Hit
+Rate&#64;100和Hit <a class="reference external" href="mailto:Rate&#37;&#52;&#48;500">Rate<span>&#64;</span>500</a>，以及排序任务的Normalized Entropy（越低越好）。</p>
+<p>当他们将实验结果绘制在对数坐标系上时，一个激动人心的图景出现了：<strong>所有指标都呈现出清晰的幂律关系！</strong></p>
+<p>模型性能与训练计算量之间的关系可以拟合为<span class="math notranslate nohighlight">\(L = L_0 + \beta \ln C\)</span>，其中<span class="math notranslate nohighlight">\(L\)</span>是模型的性能指标，<span class="math notranslate nohighlight">\(C\)</span>是训练使用的总计算量（以PetaFLOPs
+per
+day计），<span class="math notranslate nohighlight">\(L_0\)</span>和<span class="math notranslate nohighlight">\(\beta\)</span>是拟合参数。这个形式与语言模型的scaling
+law完全一致。根据论文的拟合结果：</p>
+<ul class="simple">
+<li><p>召回任务：<span class="math notranslate nohighlight">\(\text{HR&#64;100} = 0.15 + 0.0195 \ln C\)</span></p></li>
+<li><p>排序任务：<span class="math notranslate nohighlight">\(\text{NE} = 0.549 - 0.0053 \ln C\)</span></p></li>
+</ul>
+<p>这意味着，<strong>计算量每增加10倍（一个数量级），Hit
+Rate&#64;100约提升4.5个百分点，Normalized Entropy下降约1.2个百分点</strong>。</p>
+<p>更令人惊叹的是，这个scaling关系在<strong>三个数量级的计算量范围内都稳定成立</strong>。从几千PetaFLOPs/day的小规模实验，到十万PetaFLOPs/day量级、接近GPT-3训练规模的超大模型，性能都在可预测地提升。</p>
+<figure class="align-default" id="id17">
+<span id="scaling-law-ranking"></span><a class="reference internal image-reference" href="../../_images/exp_scaling_ranking_pflops.png"><img alt="../../_images/exp_scaling_ranking_pflops.png" src="../../_images/exp_scaling_ranking_pflops.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">图6.1.5 </span><span class="caption-text">排序任务的Scaling Law实验结果</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id18">
+<span id="scaling-law-retrieval"></span><a class="reference internal image-reference" href="../../_images/exp_scaling_retrieval_pflops.png"><img alt="../../_images/exp_scaling_retrieval_pflops.png" src="../../_images/exp_scaling_retrieval_pflops.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">图6.1.6 </span><span class="caption-text">召回任务的Scaling Law实验结果</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>这个发现的意义深远。首先，它<strong>首次证明了推荐模型的scaling
+law</strong>，推荐不再是深度学习的“例外”，它也遵循compute-optimal的scaling规律。</p>
+<p>其次，既然存在scaling
+law，我们就可以通过小规模实验预测大规模模型的性能，<strong>为未来的研发指明了方向</strong>，大幅降低研发的盲目性和碳排放。</p>
+<p>最后，它<strong>打开了推荐foundation
+model的可能性</strong>：既然scaling有效，那么预训练大规模通用推荐模型、然后在不同场景fine-tuning的范式就变得可行。</p>
+<p>在最大规模的配置下（8192序列长度、1024维度、24层HSTU），模型的总参数量达到了<strong>1.5万亿</strong>。这个规模在推荐领域是前所未有的。而更重要的是，这个巨型模型不是停留在论文里的数字，它被成功部署到了Meta的多个推荐场景，服务数十亿用户。</p>
+<p>线上A/B测试的结果同样令人振奋。在召回场景，相比已经高度优化的DLRM
+baseline，HSTU带来了显著的增益。在排序场景，核心指标的提升幅度更是达到了双位数百分比。从图表上看，推荐模型的训练计算量曲线，终于追上了语言模型和视觉模型的曲线。这不仅是技术上的突破，更是范式的转变。</p>
+</section>
+<section id="id12">
+<h2><span class="section-number">6.1.1.7. </span>为什么HSTU能够突破？<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h2>
+<p>HSTU为什么能够突破传统DLRM的scaling瓶颈？回顾整个技术体系，我们可以看到四个层面的创新相互支撑。</p>
+<p>范式的转变是根本。从item-level建模转向user-level建模，从独立评分转向序列生成，这个转变解除了计算成本与候选数量的线性绑定，为增加模型容量提供了空间。</p>
+<p>架构的创新是关键。HSTU针对推荐场景的特点，在attention机制、位置编码、前馈网络等多个方面做了针对性设计，相比直接套用标准Transformer获得了显著的效率和效果提升。</p>
+<p>工程的优化是保障。Stochastic
+Length让超长序列训练变得可行，M-FALCON让复杂模型的推理变得高效，激活值内存优化让大batch训练不再是瓶颈。这些工程创新将理论上的可能性转化为工程上的现实。</p>
+<p>统一的特征空间是基础。将异构的特征统一到序列中，不仅简化了特征工程，更重要的是让模型可以端到端地学习特征之间的复杂交互，提升了参数效率。</p>
+<p>这四个因素缺一不可，正是它们的有机结合，才造就了HSTU的成功。但故事并没有结束。HSTU的成功证明了推荐模型可以scale，但也留下了新的问题：在这个成功中，哪些因素是真正essential的？完全的generative训练是否必需，还是可以有更简化的方案？这些技术如何推广到更复杂的工业场景，比如多任务、多场景的联合优化？这些问题，将由后续的研究来回答。</p>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">6.1.1. Scaling Law的首次探索</a><ul>
+<li><a class="reference internal" href="#id3">6.1.1.1. 范式转变：从物品序列到行为序列</a></li>
+<li><a class="reference internal" href="#id5">6.1.1.2. 统一异构特征空间</a></li>
+<li><a class="reference internal" href="#id6">6.1.1.3. 训练效率的飞跃</a></li>
+<li><a class="reference internal" href="#id7">6.1.1.4. HSTU架构：为推荐优化的序列模型</a><ul>
+<li><a class="reference internal" href="#pointwise-aggregationsoftmax-attention">6.1.1.4.1. Pointwise Aggregation取代Softmax Attention</a></li>
+<li><a class="reference internal" href="#id8">6.1.1.4.2. 相对位置编码的重新设计</a></li>
+<li><a class="reference internal" href="#id9">6.1.1.4.3. 简化的前馈网络与门控机制</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id10">6.1.1.5. 训练与推理的工程优化</a><ul>
+<li><a class="reference internal" href="#stochastic-length">6.1.1.5.1. Stochastic Length：利用行为的多尺度冗余</a></li>
+<li><a class="reference internal" href="#m-falcon">6.1.1.5.2. M-FALCON：全局成本分摊的推理算法</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id11">6.1.1.6. 推荐系统的Scaling Law</a></li>
+<li><a class="reference internal" href="#id12">6.1.1.7. 为什么HSTU能够突破？</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>6.1. HSTU架构演进</div>
+         </div>
+     </a>
+     <a id="button-next" href="2.gen_rank.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>6.1.2. 生成式推荐的工程突破</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

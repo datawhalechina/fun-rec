@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>10.3. 离线流水线 &#8212; 深度推荐算法实践:从级联架构到生成式范式 1.0.0 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10.4. 在线流程" href="4.online_pipeline.html" />
+    <link rel="prev" title="10.2. 系统架构设计" href="2.architecture.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">10. </span>生产级推荐系统构建</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">10.3. </span>离线流水线</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_10_projects/3.offline_pipeline.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://funrec-notebooks.s3.eu-west-3.amazonaws.com/fun-rec.zip">
+                  <i class="fas fa-download"></i>
+                  Jupyter 记事本
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
+                  <i class="fab fa-github"></i>
+                  GitHub
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo_with_text.png" alt="深度推荐算法实践:从级联架构到生成式范式"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/6.summary.html">3.6. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排多样性建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_5_gr_basic/index.html">5. 生成式推荐基础</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/1.gr_intro.html">5.1. 推荐范式的演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/2.gr_arch_base.html">5.2. 生成式架构的基石</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/3.llm_base.html">5.3. LLM建模的基本流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/4.codebook.html">5.4. 推荐中的Tokenizer技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/5.summary.html">5.5. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/1.recommendation.html">7.1. OneRec的架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/2.search.html">7.2. 查询补全与商品检索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/3.ad.html">7.3. 竞价机制与多场景广告</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/4.summary.html">7.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_8_thinking/index.html">8. 会思考的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/1.semantic_alignment.html">8.1. 协同语义与语言语义的统一</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/2.reasoning_framework.html">8.2. OneRec-Think的思考框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/3.autonomous_reasoning.html">8.3. 自主推理的探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/4.summary.html">8.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_9_diffusion/index.html">9. 基于扩散的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/1.basics.html">9.1. 推荐中的扩散模型基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/2.augmentation.html">9.2. 基于扩散的数据增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/3.application.html">9.3. 特征增强与多样性优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/4.summary.html">9.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">10. 生产级推荐系统构建</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1.intro.html">10.1. 项目背景与目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.architecture.html">10.2. 系统架构设计</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10.3. 离线流水线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.online_pipeline.html">10.4. 在线流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.frontend.html">10.5. 前端与交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6.deployment.html">10.6. 部署与运维</a></li>
+<li class="toctree-l2"><a class="reference internal" href="7.summary.html">10.7. 本章总结</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo_with_text.png" alt="深度推荐算法实践:从级联架构到生成式范式"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/6.summary.html">3.6. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排多样性建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_5_gr_basic/index.html">5. 生成式推荐基础</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/1.gr_intro.html">5.1. 推荐范式的演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/2.gr_arch_base.html">5.2. 生成式架构的基石</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/3.llm_base.html">5.3. LLM建模的基本流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/4.codebook.html">5.4. 推荐中的Tokenizer技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/5.summary.html">5.5. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/1.recommendation.html">7.1. OneRec的架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/2.search.html">7.2. 查询补全与商品检索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/3.ad.html">7.3. 竞价机制与多场景广告</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/4.summary.html">7.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_8_thinking/index.html">8. 会思考的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/1.semantic_alignment.html">8.1. 协同语义与语言语义的统一</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/2.reasoning_framework.html">8.2. OneRec-Think的思考框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/3.autonomous_reasoning.html">8.3. 自主推理的探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/4.summary.html">8.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_9_diffusion/index.html">9. 基于扩散的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/1.basics.html">9.1. 推荐中的扩散模型基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/2.augmentation.html">9.2. 基于扩散的数据增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/3.application.html">9.3. 特征增强与多样性优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/4.summary.html">9.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">10. 生产级推荐系统构建</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1.intro.html">10.1. 项目背景与目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.architecture.html">10.2. 系统架构设计</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10.3. 离线流水线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.online_pipeline.html">10.4. 在线流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.frontend.html">10.5. 前端与交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6.deployment.html">10.6. 部署与运维</a></li>
+<li class="toctree-l2"><a class="reference internal" href="7.summary.html">10.7. 本章总结</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="sec-projects-offline-pipeline">
+<span id="id1"></span><h1><span class="section-number">10.3. </span>离线流水线<a class="headerlink" href="#sec-projects-offline-pipeline" title="Permalink to this heading">¶</a></h1>
+<p>在上一节中，我们设计了推荐系统的整体架构，明确了离线系统和在线系统的边界。本节将聚焦于离线流程的具体实现，包括特征工程、模型训练，以及将在线推理时使用的特征和模型部署上线三个核心环节。</p>
+<section id="id2">
+<h2><span class="section-number">10.3.1. </span>代码结构<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
+<p>离线流水线的代码位于 <code class="docutils literal notranslate"><span class="pre">web_project/backend/offline/</span></code> 目录下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>offline/
+├── pipeline.py                     # 流水线入口
+├── config.py                       # 配置管理
+├── feature/                        # 特征工程
+│   ├── preprocess_retrieval.py     # 召回模型特征处理
+│   └── preprocess_ranking.py       # 排序模型特征处理
+├── training/                       # 模型训练
+│   ├── train_retrieval.py          # 召回模型训练
+│   └── train_ranking.py            # 排序模型训练
+└── storage/                        # 存储部署
+    ├── redis_ingest.py             # 特征上线
+    └── local_deploy.py             # 模型部署
+</pre></div>
+</div>
+<p>整个流程通过 <code class="docutils literal notranslate"><span class="pre">pipeline.py</span></code> 统一管理，支持按需运行指定步骤：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># offline/pipeline.py</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;FunRec Offline Pipeline&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--steps&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">steps</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;all&quot;</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="n">steps</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;retrieval_preprocess&quot;</span><span class="p">,</span> <span class="s2">&quot;ranking_preprocess&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;retrieval_training&quot;</span><span class="p">,</span> <span class="s2">&quot;ranking_training&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;ingest&quot;</span><span class="p">,</span> <span class="s2">&quot;deploy&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s2">&quot;retrieval_preprocess&quot;</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="n">run_retrieval_preprocessing</span><span class="p">()</span>
+    <span class="k">if</span> <span class="s2">&quot;ranking_preprocess&quot;</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="n">run_ranking_preprocessing</span><span class="p">()</span>
+    <span class="k">if</span> <span class="s2">&quot;retrieval_training&quot;</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="n">run_retrieval_training</span><span class="p">()</span>
+    <span class="k">if</span> <span class="s2">&quot;ranking_training&quot;</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="n">run_ranking_training</span><span class="p">()</span>
+    <span class="k">if</span> <span class="s2">&quot;ingest&quot;</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="n">ingest_to_redis</span><span class="p">(</span><span class="n">flush</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">flush_redis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;deploy&quot;</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="n">deploy_local</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>这种模块化设计便于开发调试：可以选择只运行某些步骤，比如只重新训练排序模型而不改动召回模型。</p>
+<p>配置集中在 <code class="docutils literal notranslate"><span class="pre">offline/config.py</span></code>：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
+    <span class="c1"># 数据路径</span>
+    <span class="n">TEMP_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;FUNREC_PROCESSED_DATA_PATH&quot;</span><span class="p">))</span> <span class="o">/</span> <span class="s2">&quot;web_project&quot;</span>
+    <span class="n">DATASET_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;FUNREC_RAW_DATA_PATH&quot;</span><span class="p">))</span>
+
+    <span class="c1"># 特征工程参数</span>
+    <span class="n">MAX_SEQ_LEN</span> <span class="o">=</span> <span class="mi">10</span>      <span class="c1"># 历史序列最大长度</span>
+    <span class="n">EMB_DIM</span> <span class="o">=</span> <span class="mi">16</span>          <span class="c1"># Embedding 维度</span>
+    <span class="n">NEG_SAMPLE_SIZE</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># 负采样数量</span>
+
+    <span class="c1"># 训练参数</span>
+    <span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">128</span>
+    <span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">0.001</span>
+
+    <span class="c1"># 存储服务配置</span>
+    <span class="n">DEPLOY_DIR</span> <span class="o">=</span> <span class="n">TEMP_DIR</span> <span class="o">/</span> <span class="s2">&quot;deployed_models&quot;</span>  <span class="c1"># 模型部署目录</span>
+    <span class="n">REDIS_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;REDIS_URL&quot;</span><span class="p">,</span> <span class="s2">&quot;redis://localhost:6379/0&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>环境变量配置数据路径和服务地址，便于切换部署环境。下面依次介绍特征工程、模型训练、特征上线和模型部署的具体实现。</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">10.3.2. </span>特征工程<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
+<p>特征工程是机器学习项目中最耗时但也最关键的环节。好的特征可以大幅提升模型效果，而特征处理的错误往往会导致模型完全失效。本项目需要为召回模型和排序模型分别构建训练样本。</p>
+<section id="id4">
+<h3><span class="section-number">10.3.2.1. </span>原始数据加载<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
+<p>MovieLens-1M 数据集包含三个核心表：</p>
+<ul class="simple">
+<li><p><strong>users.pkl</strong>：6040
+个用户，包含性别、年龄、职业、邮编等人口统计特征</p></li>
+<li><p><strong>movies.pkl</strong>：3883 部电影，包含标题、类型、年份等属性</p></li>
+<li><p><strong>ratings.pkl</strong>：约 100 万条评分记录，每条记录包含用户 ID、电影
+ID、评分（1-5）和时间戳</p></li>
+</ul>
+<p>数据加载的代码很简单：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_raw_data</span><span class="p">():</span>
+    <span class="n">df_movies</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATASET_DIR</span> <span class="o">/</span> <span class="s2">&quot;movies.pkl&quot;</span><span class="p">)</span>
+    <span class="n">df_ratings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATASET_DIR</span> <span class="o">/</span> <span class="s2">&quot;ratings.pkl&quot;</span><span class="p">)</span>
+    <span class="n">df_users</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATASET_DIR</span> <span class="o">/</span> <span class="s2">&quot;users.pkl&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df_movies</span><span class="p">,</span> <span class="n">df_ratings</span><span class="p">,</span> <span class="n">df_users</span>
+</pre></div>
+</div>
+<p>原始数据经过了预处理，从 IMDB 补充了电影的海报
+URL、演员、导演等元数据。这些元数据主要用于前端展示，在模型训练中使用的特征相对简单。</p>
+</section>
+<section id="id5">
+<h3><span class="section-number">10.3.2.2. </span>召回模型的特征处理<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
+<blockquote>
+<div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">offline/feature/preprocess_retrieval.py</span></code></p>
+</div></blockquote>
+<p>召回模型（YoutubeDNN）采用序列建模的方式，将用户的历史观影序列作为重要输入。这里需要解决几个问题：如何编码类别特征？如何构建行为序列？如何生成训练样本？</p>
+<p><strong>类别特征编码</strong></p>
+<p>推荐系统中的特征大多是类别型的：用户 ID、电影
+ID、性别、类型等。这些特征需要编码为整数，才能输入神经网络的 Embedding
+层。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">process_features</span><span class="p">(</span><span class="n">df_movies</span><span class="p">,</span> <span class="n">df_ratings</span><span class="p">,</span> <span class="n">df_users</span><span class="p">):</span>
+    <span class="c1"># 用户特征编码</span>
+    <span class="n">user_sparse_feature_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;occupation&quot;</span><span class="p">,</span> <span class="s2">&quot;zip_code&quot;</span><span class="p">]</span>
+    <span class="n">user_vocab</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">feat_name</span> <span class="ow">in</span> <span class="n">user_sparse_feature_columns</span><span class="p">:</span>
+        <span class="n">label_encoder</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+        <span class="n">new_user_feature_df</span><span class="p">[</span><span class="n">feat_name</span> <span class="o">+</span> <span class="s2">&quot;_encode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">label_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">new_user_feature_df</span><span class="p">[</span><span class="n">feat_name</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">user_vocab</span><span class="p">[</span><span class="n">feat_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_encoder</span><span class="o">.</span><span class="n">classes_</span>
+
+    <span class="c1"># 电影特征编码</span>
+    <span class="n">movie_encode_feature_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">,</span> <span class="s2">&quot;genres&quot;</span><span class="p">,</span> <span class="s2">&quot;isAdult&quot;</span><span class="p">,</span> <span class="s2">&quot;startYear&quot;</span><span class="p">]</span>
+    <span class="n">movie_vocab</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">feat_name</span> <span class="ow">in</span> <span class="n">movie_encode_feature_columns</span><span class="p">:</span>
+        <span class="n">label_encoder</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+        <span class="n">label_encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">new_movie_sparse_feature_df</span><span class="p">[</span><span class="n">feat_name</span><span class="p">]</span><span class="o">.</span><span class="n">explode</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">feat_name</span> <span class="o">==</span> <span class="s2">&quot;genres&quot;</span><span class="p">:</span>
+            <span class="c1"># genres 是列表类型，需要特殊处理</span>
+            <span class="n">new_movie_sparse_feature_df</span><span class="p">[</span><span class="n">feat_name</span> <span class="o">+</span> <span class="s2">&quot;_encode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">new_movie_sparse_feature_df</span><span class="p">[</span><span class="n">feat_name</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">label_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_movie_sparse_feature_df</span><span class="p">[</span><span class="n">feat_name</span> <span class="o">+</span> <span class="s2">&quot;_encode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">label_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">new_movie_sparse_feature_df</span><span class="p">[</span><span class="n">feat_name</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="p">)</span>
+
+        <span class="n">movie_vocab</span><span class="p">[</span><span class="n">feat_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_encoder</span><span class="o">.</span><span class="n">classes_</span>
+</pre></div>
+</div>
+<p>编码时有一个细节：所有编码值都从 1 开始，0 预留给未知值和填充。这是因为
+Embedding 层的第 0 个向量通常用于表示“不存在”或“未知”的情况。</p>
+<p><strong>行为序列构建</strong></p>
+<p>YoutubeDNN
+的核心思想是“预测用户下一个会观看的视频”。因此，我们需要构建滑动窗口形式的训练样本：给定用户的前
+<span class="math notranslate nohighlight">\(k\)</span> 次观影记录，预测第 <span class="math notranslate nohighlight">\(k+1\)</span> 次观看的电影。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_train_eval_samples</span><span class="p">(</span>
+    <span class="n">data_df</span><span class="p">,</span> <span class="n">user_columns</span><span class="p">,</span> <span class="n">item_columns</span><span class="p">,</span>
+    <span class="n">max_hist_seq_len</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">padding_value</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">):</span>
+    <span class="n">data_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">train_data_dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">test_data_dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">grouped_feats</span> <span class="ow">in</span> <span class="n">data_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grouped_feats</span><span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">len_hist_seq</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grouped_feats</span><span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">])</span>
+
+        <span class="c1"># 测试集：使用最后一条记录</span>
+        <span class="n">test_data_dict</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">user_columns</span><span class="p">:</span>
+            <span class="n">test_data_dict</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grouped_feats</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">item_columns</span><span class="p">:</span>
+            <span class="c1"># 历史序列：除最后一条外的所有记录</span>
+            <span class="n">test_data_dict</span><span class="p">[</span><span class="s2">&quot;hist_&quot;</span> <span class="o">+</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">add_padding</span><span class="p">(</span><span class="n">grouped_feats</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                           <span class="n">padding_value</span><span class="p">,</span> <span class="n">max_hist_seq_len</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># 目标物品：最后一条记录</span>
+            <span class="n">test_data_dict</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grouped_feats</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># 训练集：滑动窗口</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">len_hist_seq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">train_data_dict</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">user_columns</span><span class="p">:</span>
+                <span class="n">train_data_dict</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grouped_feats</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">item_columns</span><span class="p">:</span>
+                <span class="c1"># 历史序列：前 i 条记录</span>
+                <span class="n">train_data_dict</span><span class="p">[</span><span class="s2">&quot;hist_&quot;</span> <span class="o">+</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">add_padding</span><span class="p">(</span><span class="n">grouped_feats</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[:</span><span class="n">i</span><span class="p">],</span>
+                               <span class="n">padding_value</span><span class="p">,</span> <span class="n">max_hist_seq_len</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="c1"># 目标物品：第 i 条记录</span>
+                <span class="n">train_data_dict</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grouped_feats</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>这种时序划分方式模拟了真实的推荐场景：模型只能使用过去的信息来预测未来。如果使用随机划分，可能会导致未来信息泄露，使模型在训练时表现良好但在实际服务中效果不佳。</p>
+<p><strong>序列填充</strong></p>
+<p>不同用户的历史行为长度不同，但模型需要固定长度的输入。我们采用左填充的方式，将较短的序列在左侧补零：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">add_padding</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">padding_value</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+            <span class="c1"># 处理嵌套列表（如 genres）</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">val</span><span class="p">))[:</span><span class="n">max_seq_len</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">val</span><span class="p">)[:</span><span class="n">max_seq_len</span><span class="p">]</span>
+        <span class="c1"># 左填充：新观看的在右边，符合时间顺序</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">padding_value</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_seq_len</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="o">+</span> <span class="n">val</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">val</span>
+</pre></div>
+</div>
+<p>左填充的好处是最近的行为总是在序列的右侧，这与时间顺序一致。对于序列模型（如
+RNN 或 Transformer）来说，这种排列方式更自然。</p>
+</section>
+<section id="id6">
+<h3><span class="section-number">10.3.2.3. </span>排序模型的特征处理<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
+<blockquote>
+<div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">offline/feature/preprocess_ranking.py</span></code></p>
+</div></blockquote>
+<p>排序模型（DeepFM）与召回模型的样本格式不同。排序模型是一个点击率预测模型，输入是用户-物品对，输出是该用户点击该物品的概率。因此，我们需要构建正负样本。</p>
+<p><strong>标签定义</strong></p>
+<p>MovieLens
+数据集只有评分，没有显式的点击信号。我们根据评分高低来定义标签：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 计算每个用户的平均评分</span>
+<span class="n">user_avg_ratings</span> <span class="o">=</span> <span class="n">df_ratings</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">)[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">df_ratings</span> <span class="o">=</span> <span class="n">df_ratings</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_avg_ratings</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+<span class="c1"># 如果评分高于用户平均分 - 1，认为是正样本</span>
+<span class="n">df_ratings</span><span class="p">[</span><span class="s1">&#39;is_click&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df_ratings</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">df_ratings</span><span class="p">[</span><span class="s1">&#39;user_avg_rating&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这种定义方式考虑了用户的评分偏好。有些用户普遍给高分，有些用户比较严格。使用相对于个人平均分的偏移来判断，可以减少这种个体差异的影响。</p>
+<p><strong>负样本采样</strong></p>
+<p>正样本直接来自用户的评分记录，但负样本需要额外构造。我们采用两种负采样策略：</p>
+<ol class="arabic simple">
+<li><p><strong>困难负样本（Hard
+Negatives）</strong>：用户曝光过但没有产生正向交互的物品。这些样本是“困难”的，因为用户看到了但选择不点击。</p></li>
+<li><p><strong>随机负样本（Random
+Negatives）</strong>：从用户没有交互过的物品中随机采样。这些样本相对“简单”，用于扩充负样本数量。</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_negative_samples</span><span class="p">(</span>
+    <span class="n">df_merged</span><span class="p">,</span> <span class="n">movie_vocab</span><span class="p">,</span>
+    <span class="n">neg_ratio_from_exposure</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># 每个正样本对应的困难负样本数</span>
+    <span class="n">neg_ratio_random</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>          <span class="c1"># 每个正样本对应的随机负样本数</span>
+<span class="p">):</span>
+    <span class="n">all_movie_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">movie_vocab</span><span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">positive_samples</span> <span class="o">=</span> <span class="n">df_merged</span><span class="p">[</span><span class="n">df_merged</span><span class="p">[</span><span class="s2">&quot;is_click&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">hard_negative_pool</span> <span class="o">=</span> <span class="n">df_merged</span><span class="p">[</span><span class="n">df_merged</span><span class="p">[</span><span class="s2">&quot;is_click&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># 构建每个用户的困难负样本池</span>
+    <span class="n">user_hard_negatives</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">hard_negative_pool</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;user_id_original&quot;</span><span class="p">):</span>
+        <span class="n">user_hard_negatives</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">group</span>
+
+    <span class="c1"># 构建每个用户的交互历史</span>
+    <span class="n">user_interactions</span> <span class="o">=</span> <span class="n">df_merged</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;user_id_original&quot;</span><span class="p">)[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="n">negative_samples</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># 1. 采样困难负样本</span>
+    <span class="k">for</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">user_positives</span> <span class="ow">in</span> <span class="n">positive_samples</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;user_id_original&quot;</span><span class="p">):</span>
+        <span class="n">user_hard_neg_pool</span> <span class="o">=</span> <span class="n">user_hard_negatives</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user_hard_neg_pool</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_hard_neg_pool</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">n_positives</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_positives</span><span class="p">)</span>
+        <span class="n">n_hard_neg_needed</span> <span class="o">=</span> <span class="n">n_positives</span> <span class="o">*</span> <span class="n">neg_ratio_from_exposure</span>
+        <span class="n">n_to_sample</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">user_hard_neg_pool</span><span class="p">),</span> <span class="n">n_hard_neg_needed</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">n_to_sample</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">sampled</span> <span class="o">=</span> <span class="n">user_hard_neg_pool</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_to_sample</span><span class="p">)</span>
+            <span class="n">negative_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sampled</span><span class="p">)</span>
+
+    <span class="c1"># 2. 采样随机负样本</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">positive_samples</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">user_id_orig</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;user_id_original&quot;</span><span class="p">]</span>
+        <span class="n">user_interacted</span> <span class="o">=</span> <span class="n">user_interactions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user_id_orig</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+        <span class="n">available_movies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">all_movie_ids</span> <span class="o">-</span> <span class="n">user_interacted</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">available_movies</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">neg_ratio_random</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">neg_movie_ids</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">available_movies</span><span class="p">,</span> <span class="n">neg_ratio_random</span><span class="p">)</span>
+        <span class="c1"># 构建负样本记录...</span>
+</pre></div>
+</div>
+<p>负采样的比例需要权衡。过多的负样本会导致正负样本不平衡，影响模型学习；过少则可能使模型无法区分正负样本。本项目使用
+1:3 的正负比例（1 个困难负样本 + 2 个随机负样本）。</p>
+<p><strong>训练/测试集划分</strong></p>
+<p>与召回模型类似，排序模型也采用时序划分：按时间排序后，较早的样本用于训练，较晚的样本用于测试。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">split_train_test</span><span class="p">(</span><span class="n">df_final</span><span class="p">,</span> <span class="n">test_ratio</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">by_time</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">by_time</span> <span class="ow">and</span> <span class="s2">&quot;timestamp&quot;</span> <span class="ow">in</span> <span class="n">df_final</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df_final</span> <span class="o">=</span> <span class="n">df_final</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">)</span>
+        <span class="n">split_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_final</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">test_ratio</span><span class="p">))</span>
+        <span class="n">train_df</span> <span class="o">=</span> <span class="n">df_final</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">split_idx</span><span class="p">]</span>
+        <span class="n">test_df</span> <span class="o">=</span> <span class="n">df_final</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">split_idx</span><span class="p">:]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+        <span class="n">train_df</span><span class="p">,</span> <span class="n">test_df</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df_final</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_ratio</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">train_df</span><span class="p">,</span> <span class="n">test_df</span>
+</pre></div>
+</div>
+<p>时序划分可以更真实地评估模型在未来数据上的表现。在实际生产环境中，模型总是使用历史数据训练，然后对未来的请求进行预测。</p>
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">10.3.3. </span>召回模型训练<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
+<blockquote>
+<div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">offline/training/train_retrieval.py</span></code></p>
+</div></blockquote>
+<p>召回模型的任务是从全量物品库中快速筛选出候选集。本项目使用 YoutubeDNN
+作为召回模型，它是一个双塔结构：用户塔将用户特征编码为向量，物品塔将物品特征编码为向量，二者的内积表示匹配程度。</p>
+<section id="id8">
+<h3><span class="section-number">10.3.3.1. </span>模型配置<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
+<p>模型配置定义了特征结构和训练参数：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_config_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;emb_dim&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="s2">&quot;max_seq_len&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">&quot;task_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="c1"># 用户特征</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user_dnn&quot;</span><span class="p">],</span> <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user_dnn&quot;</span><span class="p">],</span> <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user_dnn&quot;</span><span class="p">],</span> <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;occupation&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user_dnn&quot;</span><span class="p">],</span> <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;occupation&quot;</span><span class="p">]},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;zip_code&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user_dnn&quot;</span><span class="p">],</span> <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;zip_code&quot;</span><span class="p">]},</span>
+
+            <span class="c1"># 目标物品</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;movie_id&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;target_item&quot;</span><span class="p">],</span> <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">]},</span>
+
+            <span class="c1"># 历史行为序列</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;hist_movie_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;emb_name&quot;</span><span class="p">:</span> <span class="s2">&quot;movie_id&quot;</span><span class="p">,</span>  <span class="c1"># 与目标物品共享 Embedding</span>
+                <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;raw_hist_seq&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;combiner&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span>      <span class="c1"># 序列聚合方式</span>
+                <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">]</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;hist_genres&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;emb_name&quot;</span><span class="p">:</span> <span class="s2">&quot;genres&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;raw_hist_seq&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;combiner&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;genres&quot;</span><span class="p">]</span>
+            <span class="p">},</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;training&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;build_function&quot;</span><span class="p">:</span> <span class="s2">&quot;funrec.models.youtubednn.build_youtubednn_model&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;model_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;emb_dim&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+            <span class="s2">&quot;neg_sample&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="s2">&quot;dnn_units&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">64</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+            <span class="s2">&quot;label_name&quot;</span><span class="p">:</span> <span class="s2">&quot;movie_id&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;optimizer&quot;</span><span class="p">:</span> <span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;optimizer_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">},</span>
+        <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="s2">&quot;sampledsoftmaxloss&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="s2">&quot;epochs&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>这里有几个要点：</p>
+<ol class="arabic simple">
+<li><p><strong>Embedding 共享</strong>：历史序列中的电影
+ID（<code class="docutils literal notranslate"><span class="pre">hist_movie_id</span></code>）与目标电影（<code class="docutils literal notranslate"><span class="pre">movie_id</span></code>）共享同一个
+Embedding
+表。这种设计减少了参数量，也使得历史偏好和目标物品在同一个向量空间中表示。</p></li>
+<li><p><strong>序列聚合</strong>：历史序列通过 <code class="docutils literal notranslate"><span class="pre">mean</span></code>
+聚合，将变长的序列压缩为固定维度的向量。更复杂的聚合方式（如注意力机制）可能带来更好的效果，但也增加了计算成本。</p></li>
+<li><p><strong>Sampled Softmax</strong>：由于物品数量较多（3000+），直接计算完整的
+Softmax 开销较大。Sampled Softmax
+只对正样本和一定数量的负样本计算损失，大幅加速训练。</p></li>
+</ol>
+</section>
+<section id="id9">
+<h3><span class="section-number">10.3.3.2. </span>训练流程<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
+<p>训练流程封装在 <code class="docutils literal notranslate"><span class="pre">run_retrieval_training</span></code> 函数中：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval_training</span><span class="p">():</span>
+    <span class="c1"># 加载数据</span>
+    <span class="n">train_eval_samples</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">TRAIN_DATA_PATH</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+    <span class="n">feature_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">FEATURE_DICT_PATH</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+
+    <span class="n">train_data</span> <span class="o">=</span> <span class="n">train_eval_samples</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">]</span>
+    <span class="n">test_data</span> <span class="o">=</span> <span class="n">train_eval_samples</span><span class="p">[</span><span class="s2">&quot;test&quot;</span><span class="p">]</span>
+
+    <span class="c1"># 构建配置</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">FunRecConfig</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">model_config_dict</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
+        <span class="n">features</span><span class="o">=</span><span class="n">model_config_dict</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">],</span>
+        <span class="n">training</span><span class="o">=</span><span class="n">model_config_dict</span><span class="p">[</span><span class="s2">&quot;training&quot;</span><span class="p">],</span>
+        <span class="n">evaluation</span><span class="o">=</span><span class="n">model_config_dict</span><span class="p">[</span><span class="s2">&quot;evaluation&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 准备特征</span>
+    <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">prepare_features</span><span class="p">(</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span>
+        <span class="n">dataset_config</span><span class="o">=</span><span class="n">data_config</span><span class="p">[</span><span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;dataset_name&quot;</span><span class="p">]]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 训练模型</span>
+    <span class="n">models</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
+
+    <span class="c1"># 评估</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+
+    <span class="c1"># 保存用户塔和物品塔</span>
+    <span class="n">user_model</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">item_model</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">user_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">SAVED_MODELS_DIR</span> <span class="o">/</span> <span class="s2">&quot;user_model&quot;</span><span class="p">)</span>
+    <span class="n">item_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">SAVED_MODELS_DIR</span> <span class="o">/</span> <span class="s2">&quot;item_model&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>YoutubeDNN
+训练完成后会返回三个模型：完整模型、用户塔模型、物品塔模型。在线服务时，我们只需要用户塔模型（实时计算用户向量）和预计算的物品向量（通过物品塔生成）。</p>
+</section>
+<section id="id10">
+<h3><span class="section-number">10.3.3.3. </span>物品向量生成<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h3>
+<p>召回阶段需要计算用户向量与所有物品向量的相似度。为了加速在线检索，我们在离线阶段预计算所有物品的向量：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 生成所有物品的编码 ID</span>
+<span class="n">vocab_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">VOCAB_DICT_PATH</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+<span class="n">all_movie_ids</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vocab_dict</span><span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">]))</span>
+<span class="n">encoded_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_movie_ids</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 通过物品塔计算向量</span>
+<span class="n">item_inputs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;movie_id&quot;</span><span class="p">:</span> <span class="n">encoded_ids</span><span class="p">}</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">item_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">item_inputs</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># 归一化（使内积等价于余弦相似度）</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">embeddings</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 保存</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">ITEM_EMB_PATH</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MOVIE_IDS_PATH</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_movie_ids</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>向量归一化是一个重要步骤。归一化后，向量的内积等价于余弦相似度，取值范围在
+[-1, 1] 之间。这使得相似度的解释更加直观，也便于设置阈值进行过滤。</p>
+<p>在 <a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html#u2i"><span class="std std-numref">2.2.2节</span></a> 中，我们详细介绍了 YoutubeDNN
+的模型结构和训练技巧。这里不再赘述模型细节，重点关注工程实现。</p>
+</section>
+</section>
+<section id="id11">
+<h2><span class="section-number">10.3.4. </span>排序模型训练<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h2>
+<blockquote>
+<div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">offline/training/train_ranking.py</span></code></p>
+</div></blockquote>
+<p>排序模型的任务是对召回阶段筛选出的候选进行精确打分。本项目使用 DeepFM
+作为排序模型，它结合了 FM（捕捉二阶特征交叉）和
+DNN（捕捉高阶非线性）的优势。</p>
+<section id="id12">
+<h3><span class="section-number">10.3.4.1. </span>模型配置<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
+<p>DeepFM 的配置与 YoutubeDNN
+有所不同。它不需要区分用户塔和物品塔，所有特征都作为模型的输入：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_config_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;emb_dim&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="s2">&quot;task_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;is_click&quot;</span><span class="p">],</span>  <span class="c1"># 二分类标签</span>
+        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="c1"># 用户特征</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deepfm&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">],</span>
+             <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deepfm&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">],</span>
+             <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deepfm&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">],</span>
+             <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;occupation&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deepfm&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">],</span>
+             <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;occupation&quot;</span><span class="p">]},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;zip_code&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deepfm&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">],</span>
+             <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;zip_code&quot;</span><span class="p">]},</span>
+
+            <span class="c1"># 物品特征</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;movie_id&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deepfm&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">],</span>
+             <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">]},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;genres&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deepfm&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">],</span>
+             <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;genres&quot;</span><span class="p">]},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;isAdult&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deepfm&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">],</span>
+             <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;isAdult&quot;</span><span class="p">]},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;startYear&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;deepfm&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">],</span>
+             <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">[</span><span class="s2">&quot;startYear&quot;</span><span class="p">]},</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;training&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;build_function&quot;</span><span class="p">:</span> <span class="s2">&quot;funrec.models.deepfm.build_deepfm_model&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;model_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;dnn_units&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+            <span class="s2">&quot;dropout_rate&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;linear_logits&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;optimizer&quot;</span><span class="p">:</span> <span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;optimizer_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">},</span>
+        <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;binary_crossentropy&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;binary_accuracy&quot;</span><span class="p">,</span> <span class="s2">&quot;AUC&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="s2">&quot;epochs&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;validation_split&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>配置中的 <code class="docutils literal notranslate"><span class="pre">group</span></code> 字段指定了特征所属的组件：<code class="docutils literal notranslate"><span class="pre">deepfm</span></code> 表示特征参与
+FM 的二阶交叉计算，<code class="docutils literal notranslate"><span class="pre">linear</span></code>
+表示特征参与一阶线性计算。将特征同时放入两个组，可以让模型同时学习一阶效应和二阶交互。</p>
+</section>
+<section id="id13">
+<h3><span class="section-number">10.3.4.2. </span>训练流程<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h3>
+<p>排序模型的训练流程与召回模型类似：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_ranking_training</span><span class="p">():</span>
+    <span class="c1"># 加载数据</span>
+    <span class="n">train_eval_samples</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">ranking_data_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+    <span class="n">feature_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">ranking_feature_dict_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+
+    <span class="n">train_data</span> <span class="o">=</span> <span class="n">train_eval_samples</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">]</span>
+    <span class="n">test_data</span> <span class="o">=</span> <span class="n">train_eval_samples</span><span class="p">[</span><span class="s2">&quot;test&quot;</span><span class="p">]</span>
+
+    <span class="c1"># 构建配置</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">FunRecConfig</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">model_config_dict</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
+        <span class="n">features</span><span class="o">=</span><span class="n">model_config_dict</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">],</span>
+        <span class="n">training</span><span class="o">=</span><span class="n">model_config_dict</span><span class="p">[</span><span class="s2">&quot;training&quot;</span><span class="p">],</span>
+        <span class="n">evaluation</span><span class="o">=</span><span class="n">model_config_dict</span><span class="p">[</span><span class="s2">&quot;evaluation&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 准备特征</span>
+    <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span> <span class="o">=</span> <span class="n">prepare_features</span><span class="p">(</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span>
+        <span class="n">dataset_config</span><span class="o">=</span><span class="n">data_config</span><span class="p">[</span><span class="n">dataset_name</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 训练模型</span>
+    <span class="n">models</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">)</span>
+    <span class="n">main_model</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># 评估</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">evaluate_model</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">processed_data</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">feature_columns</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">build_metrics_table</span><span class="p">(</span><span class="n">metrics</span><span class="p">))</span>
+
+    <span class="c1"># 保存模型</span>
+    <span class="n">main_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">RANKING_MODEL_PATH</span><span class="p">)</span>
+
+    <span class="c1"># 保存模型配置（供在线推理使用）</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
+        <span class="s2">&quot;feature_dict&quot;</span><span class="p">:</span> <span class="n">feature_dict</span><span class="p">,</span>
+        <span class="s2">&quot;feature_columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">fc</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">fc</span> <span class="ow">in</span> <span class="n">feature_columns</span><span class="p">],</span>
+        <span class="s2">&quot;model_config&quot;</span><span class="p">:</span> <span class="n">model_config_dict</span>
+    <span class="p">},</span> <span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">TEMP_DIR</span> <span class="o">/</span> <span class="s2">&quot;ranking_model_config.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>排序模型的评估指标通常是 AUC（Area Under the ROC Curve）。AUC
+衡量的是模型区分正负样本的能力，不受正负样本比例的影响。在推荐场景中，AUC
+反映了模型将用户喜欢的物品排在不喜欢的物品前面的能力。</p>
+<p>在 <a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html#deepfm"><span class="std std-numref">3.2.1.6节</span></a> 中，我们详细介绍了 DeepFM 的模型结构。它将 Wide &amp;
+Deep 中需要人工设计的 Wide 部分替换为 FM，实现了端到端的特征交叉学习。</p>
+</section>
+</section>
+<section id="id14">
+<h2><span class="section-number">10.3.5. </span>特征上线与模型部署<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h2>
+<p>模型训练完成后，需要将相关产出物部署到在线系统可以访问的存储中。本项目使用
+Redis 存储用户特征，使用共享文件目录存储模型文件。</p>
+<section id="redis">
+<h3><span class="section-number">10.3.5.1. </span>Redis 特征写入<a class="headerlink" href="#redis" title="Permalink to this heading">¶</a></h3>
+<blockquote>
+<div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">offline/storage/redis_ingest.py</span></code></p>
+</div></blockquote>
+<p>用户特征需要在在线推理时快速读取。Redis 作为内存数据库，读取延迟通常在 1
+毫秒以内，非常适合这个场景。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ingest_to_redis</span><span class="p">(</span><span class="n">flush</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">REDIS_URL</span><span class="p">,</span> <span class="n">decode_responses</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">flush</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">flushdb</span><span class="p">()</span>  <span class="c1"># 清空数据库（开发调试用）</span>
+
+    <span class="n">df_movies</span><span class="p">,</span> <span class="n">df_ratings</span><span class="p">,</span> <span class="n">df_users</span> <span class="o">=</span> <span class="n">load_raw_data</span><span class="p">()</span>
+
+    <span class="c1"># 1. 写入用户画像</span>
+    <span class="n">pipeline</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">pipeline</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_users</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;user:</span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">:profile&quot;</span>
+
+        <span class="n">profile_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;occupation&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;occupation&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;zip_code&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;zip_code&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="n">pipeline</span><span class="o">.</span><span class="n">hset</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="n">profile_data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">_</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pipeline</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>  <span class="c1"># 批量执行，提升性能</span>
+    <span class="n">pipeline</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>用户画像使用 Redis Hash 类型存储，键为
+<code class="docutils literal notranslate"><span class="pre">user:{id}:profile</span></code>，值为包含多个字段的哈希表。这种结构便于读取单个字段或全部字段。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. 写入用户行为历史和偏好类目</span>
+    <span class="n">df_ratings</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">df_ratings</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">grouped</span><span class="p">:</span>
+        <span class="c1"># 行为历史（电影 ID 列表）</span>
+        <span class="n">history_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;user:</span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">:history&quot;</span>
+        <span class="n">movie_ids</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="n">pipeline</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">history_key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">movie_ids</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">movie_ids</span><span class="p">),</span> <span class="mi">1000</span><span class="p">):</span>
+                <span class="n">chunk</span> <span class="o">=</span> <span class="n">movie_ids</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1000</span><span class="p">]</span>
+                <span class="n">pipeline</span><span class="o">.</span><span class="n">rpush</span><span class="p">(</span><span class="n">history_key</span><span class="p">,</span> <span class="o">*</span><span class="n">chunk</span><span class="p">)</span>
+
+        <span class="c1"># 偏好类目（Top 3 类型）</span>
+        <span class="n">user_movies</span> <span class="o">=</span> <span class="n">df_movies</span><span class="p">[</span><span class="n">df_movies</span><span class="p">[</span><span class="s2">&quot;movie_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">movie_ids</span><span class="p">)]</span>
+        <span class="n">all_genres</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">genres</span> <span class="ow">in</span> <span class="n">user_movies</span><span class="p">[</span><span class="s2">&quot;genres&quot;</span><span class="p">]:</span>
+            <span class="n">all_genres</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">genres</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">all_genres</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+            <span class="n">counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_genres</span><span class="p">)</span>
+            <span class="n">top_3</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span> <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+
+            <span class="n">pipeline</span><span class="o">.</span><span class="n">hset</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;user:</span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">:profile&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;frequent_genres&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">top_3</span><span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="n">pipeline</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>用户行为历史使用 Redis List
+类型存储，保持时间顺序。偏好类目是从历史行为中统计出的 Top 3
+类型，存储在用户画像中，供偏好类目召回策略使用。</p>
+<p>使用 Pipeline 批量执行命令是一个重要的优化。Redis
+的命令执行速度很快，但每次网络往返都有开销。Pipeline
+将多个命令打包发送，减少网络往返次数，可以显著提升写入速度。</p>
+</section>
+<section id="id15">
+<h3><span class="section-number">10.3.5.2. </span>本地模型部署<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h3>
+<blockquote>
+<div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">offline/storage/local_deploy.py</span></code></p>
+</div></blockquote>
+<p>模型文件通常较大（几十 MB 到几百 MB），不适合存储在 Redis
+中。本项目使用共享文件目录来管理模型文件，离线流程将模型写入该目录，在线服务从该目录加载。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">deploy_local</span><span class="p">(</span><span class="n">recall</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ranking</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="n">deploy_dir</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEPLOY_DIR</span>
+    <span class="n">deploy_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">recall</span><span class="p">:</span>
+        <span class="n">deploy_recall_models</span><span class="p">(</span><span class="n">deploy_dir</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ranking</span><span class="p">:</span>
+        <span class="n">deploy_ranking_models</span><span class="p">(</span><span class="n">deploy_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>召回模型的部署包括用户塔模型、物品向量和词表：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">deploy_recall_models</span><span class="p">(</span><span class="n">deploy_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+    <span class="n">recall_dir</span> <span class="o">=</span> <span class="n">deploy_dir</span> <span class="o">/</span> <span class="s2">&quot;recall&quot;</span>
+    <span class="n">recall_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># 1. 词表（用于特征编码）</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">VOCAB_DICT_PATH</span><span class="p">,</span> <span class="n">recall_dir</span> <span class="o">/</span> <span class="s2">&quot;vocab_dict.pkl&quot;</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">VOCAB_DICT_PATH</span><span class="p">,</span> <span class="n">deploy_dir</span> <span class="o">/</span> <span class="s2">&quot;vocab_dict.pkl&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 2. 物品向量（用于相似度检索）</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">ITEM_EMB_PATH</span><span class="p">,</span> <span class="n">recall_dir</span> <span class="o">/</span> <span class="s2">&quot;item_embeddings.npy&quot;</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">ITEM_EMB_PATH</span><span class="p">,</span> <span class="n">deploy_dir</span> <span class="o">/</span> <span class="s2">&quot;item_embeddings.npy&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 3. 用户塔模型（复制整个目录）</span>
+    <span class="n">user_model_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">SAVED_MODELS_DIR</span> <span class="o">/</span> <span class="s2">&quot;user_model&quot;</span>
+    <span class="n">model_deploy_dir</span> <span class="o">=</span> <span class="n">deploy_dir</span> <span class="o">/</span> <span class="s2">&quot;model&quot;</span> <span class="o">/</span> <span class="s2">&quot;user_recall&quot;</span> <span class="o">/</span> <span class="s2">&quot;v1&quot;</span>
+    <span class="n">model_deploy_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">user_model_path</span><span class="p">,</span> <span class="n">model_deploy_dir</span> <span class="o">/</span> <span class="s2">&quot;user_model&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 更新版本指针</span>
+    <span class="n">version_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;model/user_recall/v1/user_model&quot;</span><span class="p">}</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">deploy_dir</span> <span class="o">/</span> <span class="s2">&quot;model&quot;</span> <span class="o">/</span> <span class="s2">&quot;user_recall&quot;</span> <span class="o">/</span> <span class="s2">&quot;active.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">version_info</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>TensorFlow SavedModel
+是一个目录，包含模型结构和权重。我们将整个目录复制到部署目录，保持目录结构完整。</p>
+<p>版本管理是生产环境中的重要功能。通过 <code class="docutils literal notranslate"><span class="pre">active.json</span></code>
+指针文件，在线服务可以知道当前应该加载哪个版本的模型。模型更新时，先部署新版本的模型文件，再更新指针，可以实现无感知的模型热更新。</p>
+<p>排序模型的部署类似：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">deploy_ranking_models</span><span class="p">(</span><span class="n">deploy_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+    <span class="n">ranking_dir</span> <span class="o">=</span> <span class="n">deploy_dir</span> <span class="o">/</span> <span class="s2">&quot;ranking&quot;</span>
+    <span class="n">ranking_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># 1. 词表和特征配置</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">RANKING_VOCAB_DICT_PATH</span><span class="p">,</span> <span class="n">ranking_dir</span> <span class="o">/</span> <span class="s2">&quot;vocab_dict.pkl&quot;</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">RANKING_FEATURE_DICT_PATH</span><span class="p">,</span> <span class="n">ranking_dir</span> <span class="o">/</span> <span class="s2">&quot;feature_dict.pkl&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 2. DeepFM 模型</span>
+    <span class="n">model_deploy_dir</span> <span class="o">=</span> <span class="n">deploy_dir</span> <span class="o">/</span> <span class="s2">&quot;model&quot;</span> <span class="o">/</span> <span class="s2">&quot;ranking&quot;</span> <span class="o">/</span> <span class="s2">&quot;v1&quot;</span>
+    <span class="n">model_deploy_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">RANKING_MODEL_PATH</span><span class="p">,</span> <span class="n">model_deploy_dir</span> <span class="o">/</span> <span class="s2">&quot;ranking_model&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 更新版本指针</span>
+    <span class="n">version_info</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;model/ranking/v1/ranking_model&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;deepfm&quot;</span>
+    <span class="p">}</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">deploy_dir</span> <span class="o">/</span> <span class="s2">&quot;model&quot;</span> <span class="o">/</span> <span class="s2">&quot;ranking&quot;</span> <span class="o">/</span> <span class="s2">&quot;active.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">version_info</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">10.3. 离线流水线</a><ul>
+<li><a class="reference internal" href="#id2">10.3.1. 代码结构</a></li>
+<li><a class="reference internal" href="#id3">10.3.2. 特征工程</a><ul>
+<li><a class="reference internal" href="#id4">10.3.2.1. 原始数据加载</a></li>
+<li><a class="reference internal" href="#id5">10.3.2.2. 召回模型的特征处理</a></li>
+<li><a class="reference internal" href="#id6">10.3.2.3. 排序模型的特征处理</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id7">10.3.3. 召回模型训练</a><ul>
+<li><a class="reference internal" href="#id8">10.3.3.1. 模型配置</a></li>
+<li><a class="reference internal" href="#id9">10.3.3.2. 训练流程</a></li>
+<li><a class="reference internal" href="#id10">10.3.3.3. 物品向量生成</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id11">10.3.4. 排序模型训练</a><ul>
+<li><a class="reference internal" href="#id12">10.3.4.1. 模型配置</a></li>
+<li><a class="reference internal" href="#id13">10.3.4.2. 训练流程</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id14">10.3.5. 特征上线与模型部署</a><ul>
+<li><a class="reference internal" href="#redis">10.3.5.1. Redis 特征写入</a></li>
+<li><a class="reference internal" href="#id15">10.3.5.2. 本地模型部署</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="2.architecture.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>10.2. 系统架构设计</div>
+         </div>
+     </a>
+     <a id="button-next" href="4.online_pipeline.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>10.4. 在线流程</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

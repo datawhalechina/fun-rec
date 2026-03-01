@@ -1,5 +1,5 @@
 
-《FunRec 推荐系统》
+《FunRec 推荐算法》
 ===================
 
 
@@ -15,16 +15,19 @@
    chapter_notation/index
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :numbered:
 
    chapter_0_introduction/index
    chapter_1_retrieval/index
    chapter_2_ranking/index
    chapter_3_rerank/index
-   chapter_4_trends/index
-   chapter_5_projects/index
-   chapter_appendix/index
+   chapter_5_gr_basic/index
+   chapter_6_scaling/index
+   chapter_7_gr_e2e/index
+   chapter_8_thinking/index
+   chapter_9_diffusion/index
+   chapter_10_projects/index
 
 .. toctree::
    :maxdepth: 1

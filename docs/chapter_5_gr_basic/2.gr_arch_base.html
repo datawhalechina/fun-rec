@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>5.2. 生成式架构的基石 &#8212; 深度推荐算法实践:从级联架构到生成式范式 1.0.0 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.3. LLM建模的基本流程" href="3.llm_base.html" />
+    <link rel="prev" title="5.1. 推荐范式的演进" href="1.gr_intro.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">5. </span>生成式推荐基础</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">5.2. </span>生成式架构的基石</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_5_gr_basic/2.gr_arch_base.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://funrec-notebooks.s3.eu-west-3.amazonaws.com/fun-rec.zip">
+                  <i class="fas fa-download"></i>
+                  Jupyter 记事本
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://github.com/datawhalechina/fun-rec">
+                  <i class="fab fa-github"></i>
+                  GitHub
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo_with_text.png" alt="深度推荐算法实践:从级联架构到生成式范式"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/6.summary.html">3.6. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排多样性建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. 生成式推荐基础</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1.gr_intro.html">5.1. 推荐范式的演进</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. 生成式架构的基石</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.llm_base.html">5.3. LLM建模的基本流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.codebook.html">5.4. 推荐中的Tokenizer技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.summary.html">5.5. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/1.recommendation.html">7.1. OneRec的架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/2.search.html">7.2. 查询补全与商品检索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/3.ad.html">7.3. 竞价机制与多场景广告</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/4.summary.html">7.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_8_thinking/index.html">8. 会思考的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/1.semantic_alignment.html">8.1. 协同语义与语言语义的统一</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/2.reasoning_framework.html">8.2. OneRec-Think的思考框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/3.autonomous_reasoning.html">8.3. 自主推理的探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/4.summary.html">8.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_9_diffusion/index.html">9. 基于扩散的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/1.basics.html">9.1. 推荐中的扩散模型基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/2.augmentation.html">9.2. 基于扩散的数据增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/3.application.html">9.3. 特征增强与多样性优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/4.summary.html">9.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_10_projects/index.html">10. 生产级推荐系统构建</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/1.intro.html">10.1. 项目背景与目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/2.architecture.html">10.2. 系统架构设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/3.offline_pipeline.html">10.3. 离线流水线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/4.online_pipeline.html">10.4. 在线流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/5.frontend.html">10.5. 前端与交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/6.deployment.html">10.6. 部署与运维</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/7.summary.html">10.7. 本章总结</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo_with_text.png" alt="深度推荐算法实践:从级联架构到生成式范式"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html">3.1. 记忆与泛化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html">3.2. 特征交叉</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html">3.2.1. 二阶特征交叉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/2.higher_order.html">3.2.2. 高阶特征交叉</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/3.sequence.html">3.3. 序列建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html">3.4. 多目标建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/1.arch.html">3.4.1. 基础结构演进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/2.dependency_modeling.html">3.4.2. 任务依赖建模</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/4.multi_objective/3.multi_loss_optim.html">3.4.3. 多目标损失融合</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html">3.5. 多场景建模</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/1.multi_tower.html">3.5.1. 多塔结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/2.dynamic_weight.html">3.5.2. 动态权重建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_2_ranking/6.summary.html">3.6. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_3_rerank/index.html">4. 重排多样性建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/1.greedy.html">4.1. 基于贪心的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/2.personalized.html">4.2. 基于个性化的重排</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_3_rerank/3.summary.html">4.3. 本章小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. 生成式推荐基础</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1.gr_intro.html">5.1. 推荐范式的演进</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. 生成式架构的基石</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.llm_base.html">5.3. LLM建模的基本流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.codebook.html">5.4. 推荐中的Tokenizer技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.summary.html">5.5. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/1.recommendation.html">7.1. OneRec的架构演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/2.search.html">7.2. 查询补全与商品检索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/3.ad.html">7.3. 竞价机制与多场景广告</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_7_gr_e2e/4.summary.html">7.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_8_thinking/index.html">8. 会思考的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/1.semantic_alignment.html">8.1. 协同语义与语言语义的统一</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/2.reasoning_framework.html">8.2. OneRec-Think的思考框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/3.autonomous_reasoning.html">8.3. 自主推理的探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_8_thinking/4.summary.html">8.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_9_diffusion/index.html">9. 基于扩散的推荐模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/1.basics.html">9.1. 推荐中的扩散模型基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/2.augmentation.html">9.2. 基于扩散的数据增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/3.application.html">9.3. 特征增强与多样性优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_9_diffusion/4.summary.html">9.4. 本章总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_10_projects/index.html">10. 生产级推荐系统构建</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/1.intro.html">10.1. 项目背景与目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/2.architecture.html">10.2. 系统架构设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/3.offline_pipeline.html">10.3. 离线流水线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/4.online_pipeline.html">10.4. 在线流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/5.frontend.html">10.5. 前端与交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/6.deployment.html">10.6. 部署与运维</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10_projects/7.summary.html">10.7. 本章总结</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/references.html">参考文献</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="gr-arch-base">
+<span id="id1"></span><h1><span class="section-number">5.2. </span>生成式架构的基石<a class="headerlink" href="#gr-arch-base" title="Permalink to this heading">¶</a></h1>
+<p>在理解了生成式推荐的核心思想之后，我们需要探讨支撑这一范式的技术基础——<strong>生成式架构</strong>。生成式推荐的核心在于将推荐问题建模为序列生成任务，而要实现高质量的序列生成，我们需要强大的模型架构作为支撑。</p>
+<p>当前生成式推荐领域主要依赖两大类架构范式：<strong>Transformer</strong>和<strong>Diffusion模型</strong>。这两种架构虽然在生成机制上存在本质差异，但都为生成式推荐提供了坚实的技术基础。Transformer通过自回归的方式逐token生成序列，擅长捕捉序列中的因果依赖关系；Diffusion模型则通过迭代去噪的方式从噪声中恢复数据，提供了一种全新的生成视角。更重要的是，这两种架构并非互斥，而是可以互补协同，为不同的推荐场景提供灵活的技术选择。</p>
+<p>本章将系统介绍这两大生成式架构的基础知识，重点关注它们在推荐场景中的应用要点。我们不会涉及过多的数学推导，而是强调直观理解和实践应用，帮助读者建立起对生成式架构的完整认知。</p>
+<section id="transformer">
+<h2><span class="section-number">5.2.1. </span>Transformer架构<a class="headerlink" href="#transformer" title="Permalink to this heading">¶</a></h2>
+<p>自2017年《Attention is All You Need》论文 <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id40" title="Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.">Vaswani <em>et al.</em>, 2017</a>)</span>
+问世以来，Transformer架构已经成为自然语言处理领域的主流选择，并逐渐扩展到计算机视觉、语音识别等多个领域。它的成功不仅在于强大的表达能力，更在于其高度规整的计算模式——大量的矩阵乘法操作使其能够充分利用现代GPU的并行计算能力，实现远超传统RNN、LSTM等序列模型的训练和推理效率。</p>
+<p>对于生成式推荐而言，Transformer的优势尤为明显。首先，它的自注意力机制天然适合捕捉用户行为序列中的长程依赖关系，无论用户的历史交互有多长，模型都能够灵活地关注到任意时刻的行为信号。其次，Transformer的并行化特性使其能够高效处理长序列，这对于需要建模用户完整行为历史的推荐场景至关重要。最后，Transformer架构的统一性和可扩展性，使得我们可以通过简单地堆叠更多层、增加隐层维度来提升模型容量，这为推荐模型的规模化（Scaling）提供了坚实基础。</p>
+<section id="id3">
+<h3><span class="section-number">5.2.1.1. </span>自注意力机制<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
+<p>自注意力机制是Transformer的核心创新 <span id="id4">(<a class="reference internal" href="../chapter_references/references.html#id40" title="Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.">Vaswani <em>et al.</em>, 2017</a>)</span>
+，也是其能够有效建模序列依赖关系的关键。在推荐场景中，自注意力机制使得模型能够自适应地关注用户历史行为中的重要信息，从而更准确地预测用户的下一步行为。</p>
+<section id="id5">
+<h4><span class="section-number">5.2.1.1.1. </span>注意力的直观理解<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h4>
+<p>在理解自注意力之前，我们先从一个直观的推荐场景入手。假设用户小明在电商平台上有以下历史行为序列：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[iPhone 14手机壳] → [AirPods耳机] → [iPad保护套] → [MacBook充电器] → [?]
+</pre></div>
+</div>
+<figure class="align-default" id="id40">
+<span id="user-behavior-sequence-timeline"></span><a class="reference internal image-reference" href="../_images/user_behavior_analysis.png"><img alt="../_images/user_behavior_analysis.png" src="../_images/user_behavior_analysis.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">图5.2.1 </span><span class="caption-text">用户行为序列的时间轴可视化</span><a class="headerlink" href="#id40" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>当模型需要预测小明接下来可能购买什么时，它应该关注哪些历史行为？显然，最近的几次购买行为（如MacBook充电器）可能更重要，因为它暗示了用户当前的兴趣焦点。但是，更早的行为（如iPhone手机壳、AirPods）也提供了有价值的信息——它们表明用户是苹果生态的用户，可能对其他苹果配件感兴趣。</p>
+<p><strong>注意力机制</strong>的核心思想，就是让模型自动学习“在预测下一个物品时，应该关注哪些历史行为”。不同于RNN那种固定的顺序处理方式，注意力机制允许模型<strong>动态地</strong>、<strong>选择性地</strong>聚焦于序列中的任意位置，根据当前的预测需求灵活分配注意力权重。</p>
+<p>更具体地说，注意力机制回答的是这样一个问题：<strong>给定当前的查询（Query），序列中的哪些部分（Key）最相关，它们的内容（Value）应该以多大的权重被聚合起来？</strong>
+这种“查询-匹配-聚合”的模式，使得模型能够根据上下文灵活调整信息提取策略，而不是死板地按照固定模式处理序列。</p>
+</section>
+<section id="qkv">
+<h4><span class="section-number">5.2.1.1.2. </span>QKV的计算过程<a class="headerlink" href="#qkv" title="Permalink to this heading">¶</a></h4>
+<p>自注意力机制的数学形式虽然看起来抽象，但其本质是一个非常直观的过程。让我们逐步拆解它的计算流程。</p>
+<p><strong>第一步：线性变换生成Q、K、V</strong></p>
+<p>给定输入序列的表示矩阵
+<span class="math notranslate nohighlight">\(\mathbf{X} \in \mathbb{R}^{T \times d}\)</span>（其中 <span class="math notranslate nohighlight">\(T\)</span>
+是序列长度，<span class="math notranslate nohighlight">\(d\)</span>
+是特征维度），我们首先通过三个不同的线性变换，将输入映射为Query、Key、Value三个矩阵：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-2-gr-arch-base-0">
+<span class="eqno">(5.2.1)<a class="headerlink" href="#equation-chapter-5-gr-basic-2-gr-arch-base-0" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+\mathbf{Q} &amp;= \mathbf{X} \mathbf{W}^Q, \quad \mathbf{W}^Q \in \mathbb{R}^{d \times d_k} \\
+\mathbf{K} &amp;= \mathbf{X} \mathbf{W}^K, \quad \mathbf{W}^K \in \mathbb{R}^{d \times d_k} \\
+\mathbf{V} &amp;= \mathbf{X} \mathbf{W}^V, \quad \mathbf{W}^V \in \mathbb{R}^{d \times d_v}
+\end{aligned}\end{split}\]</div>
+<p>这三个线性变换的作用是什么？可以这样理解：</p>
+<ul class="simple">
+<li><p><strong>Query</strong>（<span class="math notranslate nohighlight">\(\mathbf{Q}\)</span>）：表示“当前位置想要查询什么信息”。在推荐场景中，它可以理解为“当前时刻的预测需求”。</p></li>
+<li><p><strong>Key</strong>（<span class="math notranslate nohighlight">\(\mathbf{K}\)</span>）：表示“序列中每个位置提供了什么信息”。它是用来与Query进行匹配的“索引”。</p></li>
+<li><p><strong>Value</strong>（<span class="math notranslate nohighlight">\(\mathbf{V}\)</span>）：表示“序列中每个位置实际包含的内容”。当确定了哪些位置重要之后，我们聚合的就是这些Value。</p></li>
+</ul>
+<p>为什么需要三个独立的变换？因为“查询的需求”、“匹配的标准”和“实际的内容”在语义上是不同的。通过学习三组独立的权重矩阵，模型可以灵活地在这三个空间中进行投影和匹配。</p>
+<p><strong>第二步：计算注意力权重</strong></p>
+<p>有了Q、K、V之后，下一步是计算注意力权重，即“Query与哪些Key最匹配”。这通过计算Q和K的内积（点乘）来实现：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-2-gr-arch-base-1">
+<span class="eqno">(5.2.2)<a class="headerlink" href="#equation-chapter-5-gr-basic-2-gr-arch-base-1" title="Permalink to this equation">¶</a></span>\[\mathbf{A} = \text{softmax}\left(\frac{\mathbf{Q} \mathbf{K}^\top}{\sqrt{d_k}}\right)\]</div>
+<p>这里有几个关键点需要理解：</p>
+<ol class="arabic simple">
+<li><p><strong>内积的含义</strong>：<span class="math notranslate nohighlight">\(\mathbf{Q} \mathbf{K}^\top\)</span> 得到一个
+<span class="math notranslate nohighlight">\(T \times T\)</span> 的矩阵，其中第 <span class="math notranslate nohighlight">\(i\)</span> 行第 <span class="math notranslate nohighlight">\(j\)</span>
+列的元素表示“第 <span class="math notranslate nohighlight">\(i\)</span> 个Query与第 <span class="math notranslate nohighlight">\(j\)</span>
+个Key的相似度”。内积越大，说明两者越相关。</p></li>
+<li><p><strong>缩放因子</strong> <span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span>：为什么要除以
+<span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span>？这是为了防止内积的值过大。当维度 <span class="math notranslate nohighlight">\(d_k\)</span>
+很大时，内积的方差会变大，导致softmax之后的分布过于尖锐（接近one-hot），梯度接近零。通过缩放，可以使得注意力分布更加平滑，有利于训练。</p></li>
+<li><p><strong>Softmax归一化</strong>：将相似度分数转换为概率分布。Softmax确保所有位置的注意力权重之和为1，同时通过指数函数放大了相似度的差异。</p></li>
+</ol>
+<p>在推荐场景中，注意力权重矩阵 <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> 的第 <span class="math notranslate nohighlight">\(i\)</span>
+行可以理解为：<strong>在预测第</strong> <span class="math notranslate nohighlight">\(i\)</span>
+<strong>个位置的物品时，历史序列中每个位置应该被赋予多大的关注度</strong>。</p>
+<p><strong>第三步：加权聚合Value</strong></p>
+<p>最后一步是根据注意力权重聚合Value：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-2-gr-arch-base-2">
+<span class="eqno">(5.2.3)<a class="headerlink" href="#equation-chapter-5-gr-basic-2-gr-arch-base-2" title="Permalink to this equation">¶</a></span>\[\mathbf{Z} = \mathbf{A} \mathbf{V}\]</div>
+<p>这一步非常直观：对于每个位置，我们根据注意力权重对所有位置的Value进行加权求和。权重越大的位置，其Value对最终输出的贡献就越大。</p>
+<p>让我们用一个具体的例子来理解整个过程。假设用户的历史行为序列是
+<code class="docutils literal notranslate"><span class="pre">[item1,</span> <span class="pre">item2,</span> <span class="pre">item3]</span></code>，当模型预测 <code class="docutils literal notranslate"><span class="pre">item4</span></code> 时：</p>
+<ul class="simple">
+<li><p>Query（预测item4的需求）会与 <code class="docutils literal notranslate"><span class="pre">item1,</span> <span class="pre">item2,</span> <span class="pre">item3</span></code> 的Key进行匹配</p></li>
+<li><p>假设计算出的注意力权重是 <code class="docutils literal notranslate"><span class="pre">[0.1,</span> <span class="pre">0.3,</span> <span class="pre">0.6]</span></code>，说明 <code class="docutils literal notranslate"><span class="pre">item3</span></code> 最相关</p></li>
+<li><p>最终的输出就是 <code class="docutils literal notranslate"><span class="pre">0.1</span> <span class="pre">*</span> <span class="pre">V_item1</span> <span class="pre">+</span> <span class="pre">0.3</span> <span class="pre">*</span> <span class="pre">V_item2</span> <span class="pre">+</span> <span class="pre">0.6</span> <span class="pre">*</span> <span class="pre">V_item3</span></code></p></li>
+</ul>
+<p>这种机制使得模型能够自适应地从历史行为中提取信息，而不是简单地对所有历史物品一视同仁。</p>
+</section>
+<section id="id6">
+<h4><span class="section-number">5.2.1.1.3. </span>多头注意力的作用<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h4>
+<p>单个注意力头虽然能够捕捉序列中的依赖关系，但它只能学习一种“关注模式”。在实际应用中，用户的行为往往受到多种因素的影响——有时关注价格，有时关注品牌，有时关注功能。为了让模型能够同时学习多种不同的关注模式，Transformer引入了<strong>多头注意力（Multi-Head
+Attention）</strong>机制。</p>
+<p>多头注意力的思想非常简单：我们不只计算一组Q、K、V，而是并行地计算
+<span class="math notranslate nohighlight">\(h\)</span> 组（<span class="math notranslate nohighlight">\(h\)</span> 个“头”），每组使用独立的权重矩阵：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-2-gr-arch-base-3">
+<span class="eqno">(5.2.4)<a class="headerlink" href="#equation-chapter-5-gr-basic-2-gr-arch-base-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+\text{head}_i &amp;= \text{Attention}(\mathbf{X}\mathbf{W}_i^Q, \mathbf{X}\mathbf{W}_i^K, \mathbf{X}\mathbf{W}_i^V) \\
+\text{MultiHead}(\mathbf{X}) &amp;= \text{Concat}(\text{head}_1, \ldots, \text{head}_h) \mathbf{W}^O
+\end{aligned}\end{split}\]</div>
+<p>其中，<span class="math notranslate nohighlight">\(\mathbf{W}^O\)</span>
+是一个输出投影矩阵，用于将多个头的结果融合成最终的输出。</p>
+<p><strong>多头注意力的直观理解</strong>：可以把每个注意力头看作一个“专家”，它们各自学习不同的关注策略。例如：</p>
+<ul class="simple">
+<li><p>第1个头可能学会关注“同品牌”的物品（如用户买了iPhone，倾向于推荐AirPods）</p></li>
+<li><p>第2个头可能学会关注“同类别”的物品（如用户买了手机壳，倾向于推荐贴膜）</p></li>
+<li><p>第3个头可能学会关注“最近”的行为（如用户最近浏览的物品更重要）</p></li>
+</ul>
+<p>通过并行计算多个注意力头，模型可以同时从多个角度理解用户的行为序列，从而获得更丰富的表示能力。</p>
+<p><strong>为什么不用一个大的单头？</strong> 假设我们有 <span class="math notranslate nohighlight">\(h=8\)</span> 个头，每个头的维度是
+<span class="math notranslate nohighlight">\(d_k=64\)</span>，总的参数量与一个 <span class="math notranslate nohighlight">\(d_k=512\)</span>
+的单头相同。但多头的表达能力更强，因为每个头可以独立地学习不同的子空间表示，而单头则被迫在一个高维空间中同时学习所有模式，容易导致信息混杂。</p>
+</section>
+</section>
+<section id="id7">
+<h3><span class="section-number">5.2.1.2. </span>位置编码与序列建模<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
+<p>自注意力机制虽然强大，但它有一个天然的缺陷：<strong>它对序列中元素的顺序是不敏感的</strong>。无论是
+<code class="docutils literal notranslate"><span class="pre">[item1,</span> <span class="pre">item2,</span> <span class="pre">item3]</span></code> 还是
+<code class="docutils literal notranslate"><span class="pre">[item3,</span> <span class="pre">item1,</span> <span class="pre">item2]</span></code>，只要内容相同，自注意力的计算结果就完全一样。这显然不符合推荐场景的需求——用户行为的先后顺序包含了重要的时间信息，我们必须让模型能够区分“先买手机再买手机壳”和“先买手机壳再买手机”。</p>
+<p><strong>位置编码（Positional Encoding）</strong>
+的作用就是为序列中的每个位置注入位置信息，使得模型能够感知元素的相对或绝对位置。</p>
+<section id="id8">
+<h4><span class="section-number">5.2.1.2.1. </span>位置编码的两种方式<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h4>
+<p><strong>绝对位置编码</strong>是最直观的方式：为每个位置 <span class="math notranslate nohighlight">\(t\)</span>
+分配一个固定的编码向量 <span class="math notranslate nohighlight">\(\mathbf{p}_t\)</span>，然后将其加到输入表示上：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-2-gr-arch-base-4">
+<span class="eqno">(5.2.5)<a class="headerlink" href="#equation-chapter-5-gr-basic-2-gr-arch-base-4" title="Permalink to this equation">¶</a></span>\[\mathbf{X}'_t = \mathbf{X}_t + \mathbf{p}_t\]</div>
+<p>最经典的绝对位置编码是Transformer原论文中提出的<strong>正弦位置编码（Sinusoidal
+Positional Encoding）</strong> <span id="id9">(<a class="reference internal" href="../chapter_references/references.html#id40" title="Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.">Vaswani <em>et al.</em>, 2017</a>)</span> ：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-2-gr-arch-base-5">
+<span class="eqno">(5.2.6)<a class="headerlink" href="#equation-chapter-5-gr-basic-2-gr-arch-base-5" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+PE_{(t, 2i)} &amp;= \sin\left(\frac{t}{10000^{2i/d}}\right) \\
+PE_{(t, 2i+1)} &amp;= \cos\left(\frac{t}{10000^{2i/d}}\right)
+\end{aligned}\end{split}\]</div>
+<p>其中，<span class="math notranslate nohighlight">\(t\)</span> 是位置索引，<span class="math notranslate nohighlight">\(i\)</span>
+是维度索引。这种设计的巧妙之处在于：</p>
+<ul class="simple">
+<li><p>不同位置的编码是唯一的</p></li>
+<li><p>通过不同频率的正弦/余弦函数，模型可以学习到“位置之间的相对关系”</p></li>
+<li><p>编码是确定性的，不需要学习，可以外推到训练时未见过的长度</p></li>
+</ul>
+<p>除了正弦编码，另一种常用的方式是<strong>可学习的位置编码（Learned Positional
+Encoding）</strong>：直接为每个位置学习一个嵌入向量。这种方式更加灵活，但无法外推到超出训练长度的序列。</p>
+<p><strong>相对位置编码</strong>则采用了不同的思路：不再为每个绝对位置分配编码，而是直接在注意力计算中引入位置的相对关系。例如，在计算第
+<span class="math notranslate nohighlight">\(i\)</span> 个位置对第 <span class="math notranslate nohighlight">\(j\)</span> 个位置的注意力时，加入一个依赖于
+<span class="math notranslate nohighlight">\((i-j)\)</span> 的偏置项：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-2-gr-arch-base-6">
+<span class="eqno">(5.2.7)<a class="headerlink" href="#equation-chapter-5-gr-basic-2-gr-arch-base-6" title="Permalink to this equation">¶</a></span>\[A_{ij} = \frac{\mathbf{q}_i^\top \mathbf{k}_j}{\sqrt{d_k}} + b_{i-j}\]</div>
+<p>其中，<span class="math notranslate nohighlight">\(b_{i-j}\)</span> 是一个可学习的相对位置偏置。这种方式的优势在于：</p>
+<ul class="simple">
+<li><p>模型学习的是位置的<strong>相对关系</strong>而非绝对位置，泛化能力更强</p></li>
+<li><p>可以更自然地处理变长序列</p></li>
+</ul>
+<p>Transformer的不同变体采用了不同的位置编码方案。例如，BERT使用可学习的绝对位置编码，GPT使用可学习的绝对位置编码，T5和DeBERTa则采用相对位置编码。</p>
+</section>
+<section id="id10">
+<h4><span class="section-number">5.2.1.2.2. </span>时间序列建模<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h4>
+<p>在推荐系统中，位置编码的设计需要特别考虑<strong>时间信息</strong>的特殊性。与自然语言不同，用户行为序列不仅有顺序关系，还有真实的时间间隔信息。例如：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>用户A: [item1 (1月1日)] → [item2 (1月2日)] → [item3 (1月3日)]
+用户B: [item1 (1月1日)] → [item2 (3月1日)] → [item3 (6月1日)]
+</pre></div>
+</div>
+<p>虽然两个序列的顺序相同，但用户A的行为是密集的短期兴趣，而用户B的行为跨越了更长的时间周期。标准的位置编码无法区分这种时间尺度的差异。</p>
+<p>为了解决这个问题，推荐系统中的位置编码通常会引入<strong>时间戳信息</strong>。一种常见的做法是将时间戳离散化为多个时间粒度（如小时、天、周），然后为每个粒度学习独立的嵌入：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-2-gr-arch-base-7">
+<span class="eqno">(5.2.8)<a class="headerlink" href="#equation-chapter-5-gr-basic-2-gr-arch-base-7" title="Permalink to this equation">¶</a></span>\[\mathbf{t}_i = \mathbf{emb}_{\text{hour}}(h_i) + \mathbf{emb}_{\text{day}}(d_i) + \mathbf{emb}_{\text{week}}(w_i)\]</div>
+<p>另一种做法是直接将时间间隔作为连续特征编码。例如，HSTU
+<span id="id11">(<a class="reference internal" href="../chapter_references/references.html#id108" title="Zhai, J., Liao, L., Liu, X., Wang, Y., Li, R., Cao, X., … others. (2024). Actions speak louder than words: trillion-parameter sequential transducers for generative recommendations. arXiv preprint arXiv:2402.17152.">Zhai <em>et al.</em>, 2024</a>)</span>
+等生成式推荐模型采用了<strong>相对时间位置编码（Relative Temporal Positional
+Encoding）</strong>：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-2-gr-arch-base-8">
+<span class="eqno">(5.2.9)<a class="headerlink" href="#equation-chapter-5-gr-basic-2-gr-arch-base-8" title="Permalink to this equation">¶</a></span>\[\text{rab}_{p,t} = \mathbf{W}_{\text{rel}} \cdot \log(\Delta t_{p,t} + 1)\]</div>
+<p>其中，<span class="math notranslate nohighlight">\(\Delta t_{p,t}\)</span> 是位置 <span class="math notranslate nohighlight">\(p\)</span> 和 <span class="math notranslate nohighlight">\(t\)</span>
+之间的时间间隔。对数变换可以压缩时间尺度，使得模型对长期和短期行为都有较好的建模能力。</p>
+<p>在实践中，时间编码的设计需要根据具体业务场景进行调整。对于短视频推荐，用户的行为通常是密集的，时间间隔可能只有几秒到几分钟；而对于电商推荐，用户的购买行为可能跨越数天甚至数周。因此，选择合适的时间粒度和编码方式对模型性能至关重要。</p>
+</section>
+</section>
+<section id="id12">
+<h3><span class="section-number">5.2.1.3. </span>两种架构范式<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
+<p>在理解了自注意力和位置编码这两个核心组件之后，我们需要进一步讨论Transformer的整体架构设计。当前生成式推荐领域主要采用两种架构范式：<strong>Encoder-Decoder（编码器-解码器）架构</strong>和<strong>Decoder-Only（仅解码器）架构</strong>。这两种架构在设计理念、计算特性和适用场景上存在显著差异，理解它们的区别对于构建高效的生成式推荐系统至关重要。</p>
+<section id="id13">
+<h4><span class="section-number">5.2.1.3.1. </span>两种架构的结构差异<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h4>
+<p><strong>Encoder-Decoder架构</strong>采用双塔设计，将模型分为编码和解码两个相对独立的部分：</p>
+<figure class="align-default" id="id41">
+<span id="encoder-decoder-architecture"></span><a class="reference internal image-reference" href="../_images/encoder-decoder.png"><img alt="../_images/encoder-decoder.png" src="../_images/encoder-decoder.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">图5.2.2 </span><span class="caption-text">Encoder-Decoder架构示意图</span><a class="headerlink" href="#id41" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>具体而言，Encoder部分使用<strong>双向自注意力</strong>处理输入序列。以用户历史行为
+<span class="math notranslate nohighlight">\([i_1, i_2, \ldots, i_T]\)</span>
+为例，Encoder中的每个位置可以关注序列中的所有其他位置（包括前面和后面），从而获得对输入的全局理解。这种双向建模能力使得Encoder能够充分捕捉用户行为的整体模式和长期偏好。</p>
+<p>Decoder部分则同时使用两种注意力机制：</p>
+<ol class="arabic simple">
+<li><p><strong>因果自注意力（Masked
+Self-Attention）</strong>：确保生成过程的自回归性，即预测第 <span class="math notranslate nohighlight">\(t\)</span>
+个token时只能依赖前 <span class="math notranslate nohighlight">\(t-1\)</span> 个已生成的token</p></li>
+<li><p><strong>交叉注意力（Cross-Attention）</strong>：以Decoder的隐状态作为Query，Encoder的输出作为Key和Value，实现生成过程对输入信息的动态查询</p></li>
+</ol>
+<p>这种设计的典型代表包括原始Transformer、T5、BART等模型。在推荐领域，TIGER
+<span id="id14">(<a class="reference internal" href="../chapter_references/references.html#id58" title="Rajput, S., Mehta, N., Singh, A., Hulikal Keshavan, R., Vu, T., Heldt, L., … others. (2023). Recommender systems with generative retrieval. Advances in Neural Information Processing Systems, 36, 10299–10315.">Rajput <em>et al.</em>, 2023</a>)</span>
+最早将T5架构引入生成式推荐，OneRec等后续工作则进一步针对推荐场景优化了Encoder-Decoder的具体设计。</p>
+<p><strong>Decoder-Only架构</strong>则采用统一的单塔设计：</p>
+<figure class="align-default" id="id42">
+<span id="decoder-only-architecture"></span><a class="reference internal image-reference" href="../_images/decoder-only.png"><img alt="../_images/decoder-only.png" src="../_images/decoder-only.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">图5.2.3 </span><span class="caption-text">Decoder-Only架构示意图</span><a class="headerlink" href="#id42" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Decoder-Only将输入和输出视为一个连续的序列，通过统一的因果自注意力机制进行处理。模型从左到右自回归地生成输出，生成部分的每个位置可以关注所有输入位置以及之前已生成的输出位置。这种架构的代表包括GPT系列语言模型，在推荐领域则有HSTU
+<span id="id15">(<a class="reference internal" href="../chapter_references/references.html#id108" title="Zhai, J., Liao, L., Liu, X., Wang, Y., Li, R., Cao, X., … others. (2024). Actions speak louder than words: trillion-parameter sequential transducers for generative recommendations. arXiv preprint arXiv:2402.17152.">Zhai <em>et al.</em>, 2024</a>)</span> 、RecGPT <span id="id16">(<a class="reference internal" href="../chapter_references/references.html#id114" title="Jiang, Y., Ren, X., Xia, L., Luo, D., Lin, K., &amp; Huang, C. (2025). Recgpt: a foundation model for sequential recommendation. arXiv preprint arXiv:2506.06270.">Jiang <em>et al.</em>, 2025</a>)</span> 、OneRec-V2
+<span id="id17">(<a class="reference internal" href="../chapter_references/references.html#id151" title="Zhou, G., Deng, J., Zhang, J., Cai, K., Ren, L., Luo, Q., … others. (2025). Onerec technical report. arXiv preprint arXiv:2506.13695.">Zhou <em>et al.</em>, 2025</a>)</span> 等工作采用。</p>
+<p>两种架构的核心差异可以从以下维度进行对比：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>维度</p></th>
+<th class="head"><p>Encoder-Decoder</p></th>
+<th class="head"><p>Decoder-Only</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>注意力类型</strong></p></td>
+<td><p>Encoder双向 + Decoder因果 + 交叉注意力</p></td>
+<td><p>统一的因果自注意力</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>参数分配</strong></p></td>
+<td><p>分散在Encoder、Decoder、交叉注意力模块</p></td>
+<td><p>集中在Decoder层</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>计算模式</strong></p></td>
+<td><p>Encoder并行编码 + Decoder自回归解码</p></td>
+<td><p>完全自回归处理</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>序列组织</strong></p></td>
+<td><p>输入输出分离</p></td>
+<td><p>输入输出拼接</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id18">
+<h4><span class="section-number">5.2.1.3.2. </span>两种架构的优劣权衡<a class="headerlink" href="#id18" title="Permalink to this heading">¶</a></h4>
+<p>Encoder-Decoder架构的主要优势在于其<strong>结构化的信息处理方式</strong>。通过将输入理解和输出生成解耦，模型可以针对不同阶段采用不同的建模策略。Encoder的双向注意力能够不受因果约束地建模用户的完整行为序列，这对于捕捉用户的长期偏好和全局兴趣模式特别有利。同时，交叉注意力机制提供了一种显式的“查询-检索”模式：在生成每个推荐token时，Decoder可以动态地关注用户历史中最相关的部分，而不是被动地接受一个固定的输入表示。</p>
+<p>这种架构特别适合<strong>输入输出异构</strong>的推荐场景。例如，当输入包含用户的多模态特征（行为序列、用户画像、上下文信息）而输出是物品的Semantic
+ID序列时，Encoder-Decoder的双塔设计能够自然地处理这种异构性。在OneRec
+<span id="id19">(<a class="reference internal" href="../chapter_references/references.html#id84" title="Deng, J., Wang, S., Cai, K., Ren, L., Hu, Q., Ding, W., … Zhou, G. (2025). Onerec: unifying retrieve and rank with generative recommender and iterative preference alignment. arXiv preprint arXiv:2502.18965.">Deng <em>et al.</em>, 2025</a>)</span>
+的设计中，Encoder被进一步划分为多个pathway（短期pathway、长期pathway、正反馈pathway等），每个pathway专门处理一类行为信号，这种细粒度的结构化设计在Decoder-Only架构中较难实现。</p>
+<p>然而，Encoder-Decoder架构也存在明显的<strong>效率和扩展性问题</strong>。首先，维护三组独立的注意力机制（Encoder自注意力、Decoder自注意力、交叉注意力）需要更多的参数和计算资源。其次，交叉注意力的计算开销随着输入序列长度的增加而线性增长，当用户行为序列很长时会成为性能瓶颈。更重要的是，参数分散在多个模块中降低了单个模块的容量，这在一定程度上限制了模型的规模化潜力。</p>
+<p>相比之下，Decoder-Only架构的<strong>简洁性和统一性</strong>成为其核心优势。GPT系列模型的成功表明，在足够的数据和参数规模下，单一的Decoder架构就能同时具备理解和生成能力，无需显式的结构化设计。这种统一性带来了多方面的好处：</p>
+<p>首先是<strong>参数效率的提升</strong>。所有参数都集中在Decoder层中，没有结构性的冗余。当我们扩展模型规模时，新增的参数能够直接用于增强核心的序列建模能力，而不会分散到多个异构模块中。这使得Decoder-Only架构在大规模预训练方面具有天然优势。</p>
+<p>其次是<strong>工程实现的简化</strong>。只有一种注意力机制意味着计算模式高度统一，更容易进行算子融合、内存优化等底层优化。这在工业部署中尤为重要——统一的架构能够更充分地利用硬件加速器（如GPU、TPU）的计算能力，实现更高的Model
+FLOPs Utilization（MFU）。OneRec-V2 <span id="id20">(<a class="reference internal" href="../chapter_references/references.html#id151" title="Zhou, G., Deng, J., Zhang, J., Cai, K., Ren, L., Luo, Q., … others. (2025). Onerec technical report. arXiv preprint arXiv:2506.13695.">Zhou <em>et al.</em>, 2025</a>)</span>
+的实验表明，Decoder-Only架构的MFU可以达到20%以上，而传统的Encoder-Decoder架构往往只有5-10%。</p>
+<p>第三是<strong>与LLM生态的兼容性</strong>。当前主流的大语言模型（GPT、LLaMA、Qwen等）几乎都采用Decoder-Only架构。对于推荐系统而言，虽然由于词表和输入模态的差异，通常无法直接复用LLM的预训练权重，但可以借鉴其<strong>架构设计、优化技巧和训练框架</strong>，大大降低了从零开始构建生成式推荐系统的成本。例如，可以采用与GPT相同的模型配置（层数、hidden
+size、注意力头数等），复用其训练策略（学习率调度、优化器配置、混合精度训练等），甚至直接使用Hugging
+Face
+Transformers等成熟的训练框架，只需重新初始化embedding层以适配推荐场景的物品词表。</p>
+<p>当然，Decoder-Only架构也有其局限性。最主要的是<strong>单向建模的约束</strong>：因果注意力只能从左到右处理序列，无法利用“未来”信息。虽然在实际推荐时这是必然的约束（我们不可能提前知道用户未来的行为），但在离线训练阶段，这种单向约束可能会损失一部分建模能力。另一个问题是<strong>上下文长度的压力</strong>：由于没有独立的Encoder对输入进行压缩，用户的所有历史行为都需要作为上下文输入到Decoder中，当行为序列很长时可能导致计算开销过大。</p>
+</section>
+<section id="id21">
+<h4><span class="section-number">5.2.1.3.3. </span>推荐任务中的架构选择<a class="headerlink" href="#id21" title="Permalink to this heading">¶</a></h4>
+<p>在实际应用中，选择哪种架构需要综合考虑任务特性、数据规模和系统约束。</p>
+<p>从<strong>任务类型</strong>来看，如果推荐系统需要显式地区分“理解用户”和“生成推荐”两个阶段，或者输入输出的模态差异较大（如输入是多模态特征，输出是物品ID），Encoder-Decoder可能更合适。典型场景包括检索式生成（从大规模候选集中生成物品ID序列）和多任务推荐（需要同时建模多种用户行为）。相反，如果任务可以被自然地表述为“序列续写”（给定历史行为，预测后续行为），Decoder-Only会更简洁高效。</p>
+<p>从<strong>数据和模型规模</strong>来看，当有充足的数据支持大规模预训练时，Decoder-Only的扩展性优势会更加明显。GPT-3、LLaMA等模型已经证明，Decoder-Only架构可以有效扩展到千亿参数级别并展现出涌现能力（emergent
+abilities）。对于推荐系统，如果目标是构建一个10B甚至100B参数的基础推荐模型，Decoder-Only是更可行的选择。反之，如果数据量有限或模型规模较小（如1B以下），Encoder-Decoder的结构化设计可能更容易优化和稳定训练。</p>
+<p>从<strong>系统部署</strong>角度看，如果对推理延迟有极致要求，需要考虑两种架构的推理特性。Encoder-Decoder可以在离线或异步场景下预先计算Encoder的输出并缓存，减少在线推理时的计算量。但Decoder-Only的统一架构更容易进行端到端的优化（如KV
+Cache、Speculative
+Decoding等技术），在实时生成场景下可能反而更高效。HSTU的工业部署经验表明，通过精心的工程优化，Decoder-Only架构可以在毫秒级延迟下完成推荐生成。</p>
+<p>值得注意的是，架构选择并非非黑即白。一些近期工作开始探索<strong>混合架构</strong>，试图结合两者的优势。例如，OneRec
+<span id="id22">(<a class="reference internal" href="../chapter_references/references.html#id84" title="Deng, J., Wang, S., Cai, K., Ren, L., Hu, Q., Ding, W., … Zhou, G. (2025). Onerec: unifying retrieve and rank with generative recommender and iterative preference alignment. arXiv preprint arXiv:2502.18965.">Deng <em>et al.</em>, 2025</a>)</span> 在Encoder-Decoder的基础上引入了Lazy
+Decoder设计，让多个Decoder层共享Encoder的KV输出，在保留双塔灵活性的同时提升了参数效率。另一些工作则在Decoder-Only中加入<strong>双向预训练目标</strong>（如BERT式的masked预训练），试图缓解单向建模的局限。</p>
+</section>
+<section id="id23">
+<h4><span class="section-number">5.2.1.3.4. </span>因果掩码机制<a class="headerlink" href="#id23" title="Permalink to this heading">¶</a></h4>
+<p>无论选择哪种架构，<strong>因果注意力掩码（Causal
+Masking）</strong>都是实现自回归生成的关键机制。掩码通过控制注意力矩阵中哪些位置可见、哪些位置不可见，来确保模型在预测第
+<span class="math notranslate nohighlight">\(t\)</span> 个token时只能依赖前 <span class="math notranslate nohighlight">\(t-1\)</span> 个token的信息。</p>
+<p>在数学实现上，因果掩码通过在softmax之前对未来位置施加极大的负值（通常是<code class="docutils literal notranslate"><span class="pre">-inf</span></code>）来实现：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-2-gr-arch-base-9">
+<span class="eqno">(5.2.10)<a class="headerlink" href="#equation-chapter-5-gr-basic-2-gr-arch-base-9" title="Permalink to this equation">¶</a></span>\[\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^\top}{\sqrt{d_k}} + M\right)V\]</div>
+<p>其中掩码矩阵 <span class="math notranslate nohighlight">\(M\)</span> 的定义为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-2-gr-arch-base-10">
+<span class="eqno">(5.2.11)<a class="headerlink" href="#equation-chapter-5-gr-basic-2-gr-arch-base-10" title="Permalink to this equation">¶</a></span>\[\begin{split}M_{ij} = \begin{cases}
+0 &amp; \text{if } j \leq i \\
+-\infty &amp; \text{if } j &gt; i
+\end{cases}\end{split}\]</div>
+<p>这种设计确保了 <span class="math notranslate nohighlight">\(A_{ij} = 0\)</span> 当 <span class="math notranslate nohighlight">\(j &gt; i\)</span> 时，即第 <span class="math notranslate nohighlight">\(i\)</span>
+个位置无法看到第 <span class="math notranslate nohighlight">\(j\)</span> 个位置的信息。</p>
+<p>在推荐场景中，因果掩码不仅保证了训练推理的一致性，还带来了<strong>训练效率的提升</strong>。虽然生成是自回归的（一个一个token依次生成），但在训练时我们可以并行计算所有位置的损失函数。给定一个用户行为序列
+<span class="math notranslate nohighlight">\([i_1, i_2, \ldots, i_T]\)</span>，模型可以同时学习：</p>
+<ul class="simple">
+<li><p>基于 <span class="math notranslate nohighlight">\([i_1]\)</span> 预测 <span class="math notranslate nohighlight">\(i_2\)</span></p></li>
+<li><p>基于 <span class="math notranslate nohighlight">\([i_1, i_2]\)</span> 预测 <span class="math notranslate nohighlight">\(i_3\)</span></p></li>
+<li><p>…</p></li>
+<li><p>基于 <span class="math notranslate nohighlight">\([i_1, \ldots, i_{T-1}]\)</span> 预测 <span class="math notranslate nohighlight">\(i_T\)</span></p></li>
+</ul>
+<p>所有这些预测任务在一次前向传播中完成，而因果掩码确保了每个预测只使用了“合法”的历史信息。这种并行化训练是Transformer相比RNN的重要优势之一。</p>
+<p>在实际应用中，研究者还发展出了<strong>定制化的掩码策略</strong>以适应推荐场景的特殊需求。例如：</p>
+<p><strong>Session-level Masking</strong> <span id="id24">(<a class="reference internal" href="../chapter_references/references.html#id115" title="Yan, H., Xu, L., Sun, J., Ou, N., Luo, W., Tan, X., … Chu, X. (2025). Intsr: an integrated generative framework for search and recommendation. arXiv preprint arXiv:2509.21179.">Yan <em>et al.</em>, 2025</a>)</span>
+：当用户行为被划分为多个独立的会话时，可以设计掩码使得模型只关注当前会话内的行为。具体实现是在跨会话边界处设置掩码，阻止信息跨会话流动。这在建模用户多场景行为（如同一用户在不同时段的购物、浏览、搜索行为）时特别有用。</p>
+<p><strong>Task-specific Masking</strong> <span id="id25">(<a class="reference internal" href="../chapter_references/references.html#id83" title="Han, R., Yin, B., Chen, S., Jiang, H., Jiang, F., Li, X., … others. (2025). Mtgr: industrial-scale generative recommendation framework in meituan. arXiv preprint arXiv:2505.18654.">Han <em>et al.</em>, 2025</a>)</span>
+：在多任务学习中，可以为不同任务设计不同的掩码模式。例如，在同时优化点击率和转化率时，可以让CTR任务看到完整的历史序列，而CVR任务只看到已点击的物品子序列，从而更精准地刻画不同粒度的用户意图。</p>
+<p><strong>Bidirectional Prefix
+Masking</strong>：对于用户的静态特征（如性别、年龄、常驻城市），我们希望模型能够双向地理解这些信息。一种做法是将这些特征放在序列开头作为“prefix”，并为它们设置双向掩码（即prefix内部可以互相看到），而后续的行为序列仍然保持因果掩码。HSTU等模型采用了类似的设计。</p>
+<p>这些定制化掩码策略体现了Transformer架构的灵活性——通过简单地修改掩码矩阵，我们可以精确控制模型的信息流动方式，而无需改变模型的核心计算逻辑。这为推荐系统的精细化建模提供了丰富的设计空间。</p>
+<p>通过以上讨论，我们系统梳理了Transformer架构的核心机制——自注意力、位置编码、以及Encoder-Decoder和Decoder-Only两种主流架构范式。在实践中，架构选择没有绝对的优劣之分，而是需要根据具体的任务目标、数据条件和系统约束进行权衡。</p>
+</section>
+</section>
+</section>
+<section id="diffusion">
+<h2><span class="section-number">5.2.2. </span>Diffusion模型<a class="headerlink" href="#diffusion" title="Permalink to this heading">¶</a></h2>
+<p>在深入了解了Transformer这一自回归生成架构之后，我们来探讨另一种重要的生成范式——<strong>Diffusion模型</strong>。与Transformer的逐token顺序生成不同，Diffusion模型提供了一种全新的生成视角：通过迭代去噪的过程从随机噪声中恢复目标数据。</p>
+<section id="id26">
+<h3><span class="section-number">5.2.2.1. </span>多样化的生成范式<a class="headerlink" href="#id26" title="Permalink to this heading">¶</a></h3>
+<p>Transformer通过自回归的方式逐个生成token，本质上是一种<strong>序列化的生成过程</strong>——模型需要按照固定的顺序依次预测下一个token，每个token的生成都依赖于之前已生成的所有token。这种因果依赖关系虽然保证了生成的逻辑一致性，但也带来了一些局限性：生成速度受限于序列长度，难以并行化；对于某些任务，严格的顺序约束可能并非必需。</p>
+<p>与Transformer的序列生成不同，<strong>Diffusion模型</strong>（扩散模型）提供了一种全新的生成范式。它不是通过逐步添加token来构建序列，而是从<strong>纯噪声</strong>开始，通过<strong>迭代去噪</strong>的过程逐步恢复出目标数据。这个过程类似于雕刻：艺术家不是一笔一画地绘制，而是从一块模糊的石料中逐步雕琢出清晰的形象。Diffusion模型的这种“全局并行去噪”特性，使其在某些场景下能够突破自回归模型的限制，为生成式推荐提供了新的技术路径。</p>
+<p>更重要的是，Diffusion模型与Transformer并非对立关系，而是<strong>互补</strong>的。在实际应用中，许多先进的Diffusion架构（如DiT
+<span id="id27">(<a class="reference internal" href="../chapter_references/references.html#id116" title="Peebles, W., &amp; Xie, S. (2023). Scalable diffusion models with transformers. Proceedings of the IEEE/CVF international conference on computer vision (pp. 4195–4205).">Peebles and Xie, 2023</a>)</span>
+）实际上采用Transformer作为其去噪网络的骨干，将两者的优势结合起来。在推荐系统中，Diffusion模型既可以独立使用，也可以与Transformer协同工作，为不同的推荐场景提供灵活的技术选择。</p>
+</section>
+<section id="id28">
+<h3><span class="section-number">5.2.2.2. </span>Diffusion模型的核心机制<a class="headerlink" href="#id28" title="Permalink to this heading">¶</a></h3>
+<p>Diffusion模型的核心思想可以概括为两个互逆的马尔可夫过程：</p>
+<ul class="simple">
+<li><p><strong>前向扩散过程</strong>：从真实数据出发，通过逐步添加高斯噪声，经过
+<span class="math notranslate nohighlight">\(T\)</span> 步得到近似纯噪声的状态。</p></li>
+<li><p><strong>反向去噪过程</strong>：从随机噪声开始，通过学习到的去噪网络，逐步去除噪声，最终恢复出真实数据。</p></li>
+</ul>
+<p>这个过程类似于雕刻：前向过程是将一座精美的雕像逐渐侵蚀成一块模糊的石料，而反向过程则是从这块石料中雕琢出原来的形象。模型的训练目标就是学习这个反向去噪过程，使其能够准确地逆转前向扩散。</p>
+<figure class="align-default" id="id43">
+<span id="forward-reverse-denoising"></span><a class="reference internal image-reference" href="../_images/forward_reverse_denoizing.png"><img alt="../_images/forward_reverse_denoizing.png" src="../_images/forward_reverse_denoizing.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">图5.2.4 </span><span class="caption-text">前向扩散与反向去噪过程</span><a class="headerlink" href="#id43" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>根据操作空间的不同，Diffusion模型可以分为两大类：</p>
+<ul class="simple">
+<li><p><strong>数据空间扩散模型</strong>（如DDPM
+<span id="id29">(<a class="reference internal" href="../chapter_references/references.html#id117" title="Ho, J., Jain, A., &amp; Abbeel, P. (2020). Denoising diffusion probabilistic models. Advances in neural information processing systems, 33, 6840–6851.">Ho <em>et al.</em>, 2020</a>)</span>）：直接在原始数据空间进行扩散和去噪，理论上更直接，但计算开销较大。</p></li>
+<li><p><strong>潜在空间扩散模型</strong>（如Stable Diffusion
+<span id="id30">(<a class="reference internal" href="../chapter_references/references.html#id118" title="Rombach, R., Blattmann, A., Lorenz, D., Esser, P., &amp; Ommer, B. (2022). High-resolution image synthesis with latent diffusion models. Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 10684–10695).">Rombach <em>et al.</em>, 2022</a>)</span>）：先将数据压缩到低维潜在空间，在其中进行扩散和去噪，显著提升效率。</p></li>
+</ul>
+<p>在推荐系统中，<strong>潜在空间扩散模型的应用更为普遍</strong>，因为推荐场景需要处理大规模的用户行为序列，潜在空间既能降低计算成本，又能提供更紧凑的语义表示。</p>
+<p>此外，为了让生成过程能够受到用户历史行为等条件的控制，研究者发展了<strong>条件扩散模型</strong>，通过直接拼接、交叉注意力或分类器引导等方式将条件信息注入去噪网络。</p>
+<p>关于Diffusion模型的详细数学公式、训练目标、采样过程以及在推荐场景中的特殊设计（如噪声尺度控制、两种参数化方式的选择等），我们将在
+<a class="reference internal" href="../chapter_9_diffusion/1.basics.html#sec-diffusion-basics"><span class="std std-numref">9.1节</span></a> 进行系统深入的讲解。</p>
+</section>
+<section id="id31">
+<h3><span class="section-number">5.2.2.3. </span>Diffusion的推荐应用<a class="headerlink" href="#id31" title="Permalink to this heading">¶</a></h3>
+<p>在推荐系统中，Diffusion模型提供了一种全新的生成范式，主要应用在以下几个方面：</p>
+<p><strong>特征增强与表示学习</strong>：许多方法利用Diffusion模型的生成能力来增强用户或物品的表示。例如，通过在潜在空间对用户历史行为进行扩散和去噪，可以生成更加鲁棒的用户embedding，缓解数据稀疏性问题。同时，Diffusion过程中的多步去噪也可以看作是一种数据增强手段，为下游任务提供更丰富的训练样本。DiffuASR
+<span id="id32">(<a class="reference internal" href="../chapter_references/references.html#id138" title="Liu, Q., Yan, F., Zhao, X., Du, Z., Guo, H., Tang, R., &amp; Tian, F. (2023). Diffusion augmentation for sequential recommendation. Proceedings of the 32nd ACM International conference on information and knowledge management (pp. 1576–1586).">Liu <em>et al.</em>, 2023</a>)</span>、CausalDiffRec <span id="id33">(<a class="reference internal" href="../chapter_references/references.html#id140" title="Zhao, C., Yang, E., Liang, Y., Lan, P., Liu, Y., Zhao, J., … Wang, X. (2025). Graph representation learning via causal diffusion for out-of-distribution recommendation. Proceedings of the ACM on Web Conference 2025 (pp. 334–346).">Zhao <em>et al.</em>, 2025</a>)</span>
+等方法正是这一方向的代表（详见
+<a class="reference internal" href="../chapter_9_diffusion/2.augmentation.html#sec-diffusion-augmentation"><span class="std std-numref">9.2节</span></a>）。</p>
+<p><strong>序列生成与推荐</strong>：Diffusion模型可以直接用于生成推荐物品序列。与自回归模型不同，Diffusion可以并行地对整个序列进行去噪，生成过程不受严格的顺序约束。DiffRec
+<span id="id34">(<a class="reference internal" href="../chapter_references/references.html#id137" title="Wang, W., Xu, Y., Feng, F., Lin, X., He, X., &amp; Chua, T.-S. (2023). Diffusion recommender model. Proceedings of the 46th international ACM SIGIR conference on research and development in information retrieval (pp. 832–841).">Wang <em>et al.</em>, 2023</a>)</span>、DreamRec <span id="id35">(<a class="reference internal" href="../chapter_references/references.html#id139" title="Yang, Z., Wu, J., Wang, Z., Wang, X., Yuan, Y., &amp; He, X. (2023). Generate what you prefer: reshaping sequential recommendation via guided diffusion. Advances in Neural Information Processing Systems.">Yang <em>et al.</em>, 2023</a>)</span>
+等方法将扩散过程本身作为推荐模型的核心组件（详见
+<a class="reference internal" href="../chapter_9_diffusion/3.application.html#sec-diffusion-application"><span class="std std-numref">9.3节</span></a>）。</p>
+<p><strong>多模态信息融合</strong>：在多模态推荐场景中，Diffusion模型可以作为不同模态特征的融合桥梁。例如，MCDRec
+<span id="id36">(<a class="reference internal" href="../chapter_references/references.html#id145" title="Ma, Z., Xu, F., Gu, W., Song, Y., &amp; Wen, Z. (2024). Multi-modal diffused collaborative filtering for recommendation. arXiv preprint arXiv:2404.06415.">Ma <em>et al.</em>, 2024</a>)</span>、LD4MRec <span id="id37">(<a class="reference internal" href="../chapter_references/references.html#id146" title="Yu, P., Jiang, Z., Shao, D., Xie, R., Sun, F., Zhu, Z., … Lin, L. (2023). Ld4mrec: simplifying and powering diffusion model for multimedia recommendation. Proceedings of the 31st ACM International Conference on Multimedia.">Yu <em>et al.</em>, 2023</a>)</span>
+等方法将文本、图像等多模态信息编码到统一的潜在空间，通过条件扩散生成融合后的推荐结果，实现跨模态的语义对齐。</p>
+<p><strong>协同过滤与图结构建模</strong>：一些研究将Diffusion过程引入到协同过滤和图神经网络中，如CF-Diff
+<span id="id38">(<a class="reference internal" href="../chapter_references/references.html#id148" title="Hou, Y., Yu, W., Yin, Z., Cai, C., Liu, Z., &amp; Wang, E. (2024). Collaborative filtering with diffusion models. Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval (pp. 1–10).">Hou <em>et al.</em>, 2024</a>)</span>、GiffCF <span id="id39">(<a class="reference internal" href="../chapter_references/references.html#id147" title="Zhu, Y., Ma, C., Gao, C., Zhao, Y., Li, Z., &amp; Yu, Y. (2024). Giffcf: a generative diffusion-based approach for graph collaborative filtering. Proceedings of the ACM Web Conference 2024 (pp. 1–12).">Zhu <em>et al.</em>, 2024</a>)</span>
+等方法通过在用户-物品交互图的潜在表示上进行扩散，捕捉更复杂的高阶邻居关系和全局协同信号。</p>
+<p>需要注意的是，虽然Diffusion模型在生成质量和灵活性上具有优势，但其<strong>多步迭代的采样过程</strong>也带来了推理延迟的挑战。在工业部署中，需要在生成质量和实时性之间做出权衡，通过采样加速、模型蒸馏等技术来满足线上服务的延迟要求。关于Diffusion推荐的详细技术原理，请参阅
+<a class="reference internal" href="../chapter_9_diffusion/1.basics.html#sec-diffusion-basics"><span class="std std-numref">9.1节</span></a>。</p>
+</section>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">5.2. 生成式架构的基石</a><ul>
+<li><a class="reference internal" href="#transformer">5.2.1. Transformer架构</a><ul>
+<li><a class="reference internal" href="#id3">5.2.1.1. 自注意力机制</a><ul>
+<li><a class="reference internal" href="#id5">5.2.1.1.1. 注意力的直观理解</a></li>
+<li><a class="reference internal" href="#qkv">5.2.1.1.2. QKV的计算过程</a></li>
+<li><a class="reference internal" href="#id6">5.2.1.1.3. 多头注意力的作用</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id7">5.2.1.2. 位置编码与序列建模</a><ul>
+<li><a class="reference internal" href="#id8">5.2.1.2.1. 位置编码的两种方式</a></li>
+<li><a class="reference internal" href="#id10">5.2.1.2.2. 时间序列建模</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id12">5.2.1.3. 两种架构范式</a><ul>
+<li><a class="reference internal" href="#id13">5.2.1.3.1. 两种架构的结构差异</a></li>
+<li><a class="reference internal" href="#id18">5.2.1.3.2. 两种架构的优劣权衡</a></li>
+<li><a class="reference internal" href="#id21">5.2.1.3.3. 推荐任务中的架构选择</a></li>
+<li><a class="reference internal" href="#id23">5.2.1.3.4. 因果掩码机制</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#diffusion">5.2.2. Diffusion模型</a><ul>
+<li><a class="reference internal" href="#id26">5.2.2.1. 多样化的生成范式</a></li>
+<li><a class="reference internal" href="#id28">5.2.2.2. Diffusion模型的核心机制</a></li>
+<li><a class="reference internal" href="#id31">5.2.2.3. Diffusion的推荐应用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="1.gr_intro.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>5.1. 推荐范式的演进</div>
+         </div>
+     </a>
+     <a id="button-next" href="3.llm_base.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>5.3. LLM建模的基本流程</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>
