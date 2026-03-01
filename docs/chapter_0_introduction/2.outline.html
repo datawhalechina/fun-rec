@@ -369,10 +369,10 @@ Show Source
         
   <section id="id1">
 <h1><span class="section-number">1.2. </span>本书概览<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
-<p>理解了推荐系统的核心逻辑后，我们现在需要为这个复杂的技术体系绘制一份清晰的地图。本书沿着判别式与生成式两条主线组织内容，同时串联起推荐算法从记忆、泛化到理解、推理的能力演进。前半部分深入判别式推荐的工业实践，按照召回、排序、重排的流水线逐步展开，并剖析这套体系面临的关键挑战；后半部分转向生成式推荐，从基础范式出发，经由规模化架构、端到端建模、推理能力和扩散模型，展现这一新范式的完整技术图景。最后通过完整的项目实践将理论落地，帮你建立从认知到构建的完整知识框架。</p>
+<p>理解了推荐系统的核心逻辑后，我们现在需要为这个复杂的技术体系绘制一份清晰的地图。本书沿着判别式与生成式两条主线组织内容，同时串联起推荐算法从记忆、泛化到理解、推理的能力演进。前半部分深入判别式推荐的工业实践，按照召回、排序、重排的流水线逐步展开；后半部分转向生成式推荐，从基础范式出发，经由规模化架构、端到端建模、推理能力和扩散模型，展现这一新范式的完整技术图景。最后通过完整的项目实践将理论落地，帮你建立从认知到构建的完整知识框架。</p>
 <hr class="docutils" />
 <p><strong>上篇：判别式推荐的工业实践</strong></p>
-<p><strong>第一章：快速候选召回</strong></p>
+<p><strong>第二章：快速候选召回</strong></p>
 <p>召回是推荐流水线的起点，需要在毫秒级时间内从亿级物品库中筛选出千级候选。本章沿三条演进路径展开。</p>
 <p><strong>协同过滤</strong>(<a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html#sec-cf"><span class="std std-numref">2.1节</span></a>)是推荐的经典起点，系统不理解物品的内容，只记忆“看过A的人也看了B”这样的共现模式。从
 ItemCF的物品相似度计算出发，到矩阵分解将用户和物品映射为隐向量，协同过滤开启了向量化表示的先河
@@ -382,7 +382,7 @@ DSSM 和 YoutubeDNN 为代表的双塔架构将推荐问题转化为高效的向
 ，MIND 用多向量表示用户的多元兴趣，SDM 分离长短期偏好
 （<a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html#user-interests"><span class="std std-numref">2.3.1节</span></a>），Trinity 和 Streaming VQ
 进一步突破序列长度的限制，探索全量历史的保留与流式更新（<a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html#full-interest-modeling"><span class="std std-numref">2.3.2节</span></a>）。</p>
-<p><strong>第二章：精准偏好预测</strong></p>
+<p><strong>第三章：精准偏好预测</strong></p>
 <p>经过召回的快速筛选，排序阶段需要对千级候选进行精准的偏好打分。这里是深度学习泛化能力的主战场：模型要将学到的知识推广到训练时未曾见过的用户-物品组合。</p>
 <p>本章从 Wide &amp; Deep
 模型（<a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html#sec-wide-and-deep"><span class="std std-numref">3.1节</span></a>）出发，它通过联合训练线性模型和深度网络，确立了“记忆
@@ -394,17 +394,14 @@ DeepFM、xDeepFM
 引入注意力机制根据候选物品动态激活相关历史行为，DIEN
 进一步显式建模兴趣的时序演化。面对真实业务中多个优化目标共存、多个场景差异化的需求，<strong>多目标优化</strong>（<a class="reference internal" href="../chapter_2_ranking/4.multi_objective/index.html#sec-multi-objective"><span class="std std-numref">3.4节</span></a>，如
 MMoE、ESMM）和<strong>多场景建模</strong>（<a class="reference internal" href="../chapter_2_ranking/5.multi_scenario/index.html#sec-multi-scenario"><span class="std std-numref">3.5节</span></a>）在共享与独立之间寻求平衡，让排序模型适应复杂的业务环境。</p>
-<p><strong>第三章：重排多样性建模</strong></p>
+<p><strong>第四章：重排多样性建模</strong></p>
 <p>排序输出的列表按分数排列，往往高度同质化。重排阶段的任务是在保持相关性的前提下优化整张列表的体验。<strong>贪心策略</strong>（<a class="reference internal" href="../chapter_3_rerank/1.greedy.html#greedy-rerank"><span class="std std-numref">4.1节</span></a>）如
 MMR 通过线性组合平衡相关性与多样性，DPP
 则用行列式数学框架实现更精确的多样性控制。<strong>个性化重排</strong>（<a class="reference internal" href="../chapter_3_rerank/2.personalized.html#personalized-rerank"><span class="std std-numref">4.2节</span></a>）进一步将用户偏好融入列表级优化，PRM
 用 Transformer 建模物品间的相互影响，实现端到端的个性化列表生成。</p>
-<p><strong>第四章：难点及热点研究</strong></p>
-<p>完成了完整的召回-排序-重排流水线后，本章退后一步，审视这套体系面临的深层挑战。<strong>模型去偏</strong>（<code class="xref std std-numref docutils literal notranslate"><span class="pre">debias</span></code>）关注训练数据中的选择偏差和位置偏差，通过逆倾向得分（IPS）等方法校正模型学到的虚假模式。<strong>冷启动</strong>（<code class="xref std std-numref docutils literal notranslate"><span class="pre">cold_start</span></code>）问题揭示了纯ID记忆方式的根本局限：当物品没有历史行为数据时，基于ID的模型束手无策。CB2CF
-等方法通过学习内容特征到协同过滤表示的映射来破解这一困境。更根本的是，本章梳理了从判别式到<strong>生成式推荐</strong>（<code class="xref std std-numref docutils literal notranslate"><span class="pre">generative_recommendation</span></code>）的范式演进，从
-HSTU 的输入统一化，到 TIGER 的语义 ID 输出革新，再到 OneRec
-的端到端生成，预示着推荐系统从“记忆与泛化”向“理解与推理”的跃迁，为后半部分的深入探讨搭建桥梁。</p>
-<hr class="docutils" />
+<!-- **第四章：难点及热点研究**
+
+完成了完整的召回-排序-重排流水线后，本章退后一步，审视这套体系面临的深层挑战。**模型去偏**（:numref:`debias`）关注训练数据中的选择偏差和位置偏差，通过逆倾向得分（IPS）等方法校正模型学到的虚假模式。**冷启动**（:numref:`cold_start`）问题揭示了纯ID记忆方式的根本局限：当物品没有历史行为数据时，基于ID的模型束手无策。CB2CF 等方法通过学习内容特征到协同过滤表示的映射来破解这一困境。更根本的是，本章梳理了从判别式到**生成式推荐**（:numref:`generative_recommendation`）的范式演进，从 HSTU 的输入统一化，到 TIGER 的语义 ID 输出革新，再到 OneRec 的端到端生成，预示着推荐系统从"记忆与泛化"向"理解与推理"的跃迁，为后半部分的深入探讨搭建桥梁。 --><hr class="docutils" />
 <p><strong>下篇：生成式推荐的技术图景</strong></p>
 <p><strong>第五章：生成式推荐基础</strong></p>
 <p>本章为后续所有生成式章节奠定基础。我们首先对比判别式与生成式两种范式的本质差异（<a class="reference internal" href="../chapter_5_gr_basic/1.gr_intro.html#gr-intro"><span class="std std-numref">5.1节</span></a>）：前者对候选逐一打分，后者直接生成推荐序列。随后介绍两大架构基石（<a class="reference internal" href="../chapter_5_gr_basic/2.gr_arch_base.html#gr-arch-base"><span class="std std-numref">5.2节</span></a>），Transformer
