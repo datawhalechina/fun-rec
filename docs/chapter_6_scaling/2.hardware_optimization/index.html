@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -367,7 +366,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="sec-hardware-optimization">
+  <div class="section" id="sec-hardware-optimization">
 <span id="id1"></span><h1><span class="section-number">6.2. </span>硬件感知架构设计<a class="headerlink" href="#sec-hardware-optimization" title="Permalink to this heading">¶</a></h1>
 <p>传统DLRM虽然在推荐系统中取得了巨大成功，但其scaling能力受到底层架构设计的根本性制约。这些制约源于早期CPU时代的设计理念，导致模型难以充分利用现代GPU的计算能力，从而无法像大语言模型那样享受scaling
 law带来的性能红利。传统DLRM由手工设计的碎片化模块拼接而成：特征交叉模块（如DCN、FM）、序列建模模块（如DIN、SIM）、多任务学习模块（如MMoE、PLE）等。这些模块的核心操作多为memory-bound而非compute-bound，在GPU上无法实现高效并行。实际测量显示，传统DLRM的Model
@@ -394,7 +393,7 @@ law带来的性能红利。</p>
 <li class="toctree-l1"><a class="reference internal" href="2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
 </ul>
 </div>
-</section>
+</div>
 
 
         </div>

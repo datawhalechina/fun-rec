@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -368,7 +367,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="semantic-alignment">
+  <div class="section" id="semantic-alignment">
 <span id="id1"></span><h1><span class="section-number">8.1. </span>协同语义与语言语义的统一<a class="headerlink" href="#semantic-alignment" title="Permalink to this heading">¶</a></h1>
 <p>推荐系统与大语言模型之间存在一道巨大的“语义鸿沟”：推荐系统依赖用户行为数据构建的<strong>协同语义</strong>(collaborative
 semantics)，而LLM理解的是文本中的<strong>语言语义</strong>(language
@@ -378,7 +377,7 @@ semantics)。传统推荐系统将每个物品表示为一个离散的ID(如item
 <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id130" title="Zheng, B., Hou, Y., Lu, H., Chen, Y., Zhao, W. X., Chen, M., &amp; Wen, J.-R. (2024). Adapting large language models by integrating collaborative semantics for recommendation. 2024 IEEE 40th International Conference on Data Engineering (ICDE) (pp. 1435–1448).">Zheng <em>et al.</em>, 2024</a>)</span>
 提出了一套系统性的解决方案，其核心思想是为每个物品学习一组离散的语义索引(Semantic
 Index)，使其同时具备语言可理解性和协同表达能力。该方法包含两个关键技术模块：物品索引学习和语义对齐训练。</p>
-<section id="id3">
+<div class="section" id="id3">
 <h2><span class="section-number">8.1.1. </span>物品索引学习<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
 <p>在前面第五章中，我们已经详细介绍了语义ID的生成方法，包括VQ-VAE的基本原理、RQ-VAE的残差量化机制、以及RQ-Kmeans等工业级方案。LC-Rec延续了这一技术路线，采用<strong>层次化的残差向量量化(Residual
 Vector Quantization, RQ)</strong>方法构建物品索引。</p>
@@ -396,12 +395,10 @@ Vector Quantization, RQ)</strong>方法构建物品索引。</p>
 <p>这种层次化设计带来两个重要特性：<strong>语义的逐层细化</strong>和<strong>相似物品的索引前缀共享</strong>。从第一层到第
 <span class="math notranslate nohighlight">\(H\)</span>
 层，索引逐渐从粗粒度的类别信息细化到精细的个体特征。由于索引由物品的语义向量学习而来，内容相似的物品会倾向于共享更多的前缀索引，这为后续的自回归生成提供了结构化的先验知识。</p>
-<figure class="align-default" id="id9">
+<div class="figure align-default" id="id9">
 <span id="lcrec-model-architecture"></span><a class="reference internal image-reference" href="../_images/lc-rec-model-arch.png"><img alt="../_images/lc-rec-model-arch.png" src="../_images/lc-rec-model-arch.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图8.1.1 </span><span class="caption-text">LC-Rec模型架构</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图8.1.1 </span><span class="caption-text">LC-Rec模型架构</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
 <p>LC-Rec相较于前面介绍的方法，其关键创新在于<strong>均匀语义映射</strong>(Uniform
 Semantic
 Mapping)机制。标准的向量量化方法存在索引冲突问题：多个不同物品可能被映射到相同的索引序列。在推荐系统中，这是不可接受的，每个物品必须有唯一标识。现有方法(如TIGER)通常通过增加额外的索引层来解决冲突，但这会引入语义无关的噪声，影响模型对索引语义的理解。</p>
@@ -414,8 +411,8 @@ Mapping)机制。标准的向量量化方法存在索引冲突问题：多个不
 为一个批次的残差向量，<span class="math notranslate nohighlight">\(q(c_H=k|\mathbf{r}_H)\)</span> 表示将残差
 <span class="math notranslate nohighlight">\(\mathbf{r}_H\)</span> 分配给第 <span class="math notranslate nohighlight">\(k\)</span>
 个码本向量的概率。该优化问题通过Sinkhorn-Knopp算法求解。这种方法在保持语义连续性的同时，显著降低了索引冲突率，使得模型可以在不增加额外索引层的情况下，为绝大多数物品分配唯一的语义ID。</p>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h2><span class="section-number">8.1.2. </span>语义对齐训练<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
 <p>获得物品索引后，需要通过指令微调(Instruction
 Tuning)让LLM理解这些索引的含义，并能在推荐任务中灵活运用。然而，由于语义鸿沟的存在，简单地在目标推荐任务上微调是不够的，LLM难以将这些本质上是OOV
@@ -455,14 +452,14 @@ tokens的索引与其背后的协同信号和语言内容建立有效关联。LC
 <p><strong>生成式全库检索能力</strong>：由于索引数量远小于物品总数(4层×256码本 vs
 百万级物品)，且索引已被纳入LLM词汇表，模型可以直接通过自回归生成完成全库检索，无需依赖候选集。这在实验中表现为显著优于基于候选集的基线方法(如TALLRec、InstructRec)。</p>
 <p>LC-Rec通过物品索引学习和多层次语义对齐，系统性地解决了LLM与推荐系统之间的语义鸿沟问题。其核心贡献在于构建了一种同时承载语言语义和协同语义的物品表示，并通过渐进式的训练任务让LLM深度理解这种表示。这为后续基于LLM的推荐推理能力奠定了基础：当模型能够自如地在两种语义之间切换时，才具备进行复杂推理的前提。</p>
-</section>
-<section id="plum">
+</div>
+<div class="section" id="plum">
 <h2><span class="section-number">8.1.3. </span>工业级语义对齐：PLUM框架<a class="headerlink" href="#plum" title="Permalink to this heading">¶</a></h2>
 <p>LC-Rec在学术数据集上验证了可行性，但从学术到工业仍有巨大鸿沟。YouTube平台每天产生数百万新视频和数十亿用户交互，面临着多模态内容融合、实时增量更新、十亿级规模检索等挑战。Google
 DeepMind与YouTube团队推出的PLUM(Pre-trained Language Models for
 Recommendations) <span id="id5">(<a class="reference internal" href="../chapter_references/references.html#id131" title="He, R., Heldt, L., Hong, L., Keshavan, R., Mao, S., Mehta, N., … others. (2025). Plum: adapting pre-trained language models for industrial-scale generative recommendations. arXiv preprint arXiv:2510.07784.">He <em>et al.</em>, 2025</a>)</span>
 框架正是为应对这些挑战而生，它通过三个递进阶段（增强型语义ID构建、领域持续预训练、生成式检索微调）实现了工业级规模的语义对齐。</p>
-<section id="id6">
+<div class="section" id="id6">
 <h3><span class="section-number">8.1.3.1. </span>多模态与协同信号的融合<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
 <p>LC-Rec仅使用文本嵌入构建语义ID，但视频内容的丰富性远超纯文本，一个游戏直播的吸引力可能更多来自主播的声音特质和游戏画面的流畅度，而非标题中的文字。PLUM认识到，真正的协同语义不仅来自用户对文本描述的偏好，更来自用户对多模态内容整体的感知。</p>
 <p>PLUM采用<strong>多模态嵌入拼接</strong>策略来融合异构信息。每个视频通过三个独立的预训练编码器处理：</p>
@@ -478,19 +475,17 @@ Recommendations) <span id="id5">(<a class="reference internal" href="../chapter_
 <p>更关键的是，PLUM通过显式引入<strong>协同过滤嵌入</strong>来弥补内容语义的不足。两个在内容上相似的视频，比如两个都是关于“Python教程”的视频，可能因为讲解风格、难度设置、受众群体的不同，在推荐系统中扮演完全不同的角色。PLUM从用户-视频交互图中，通过图神经网络或矩阵分解学习每个视频的协同嵌入<span class="math notranslate nohighlight">\(\mathbf{e}_{\text{cf}} \in \mathbb{R}^{d_c}\)</span>，编码“哪些用户倾向于一起观看这个视频和其他哪些视频”的协同模式，然后将其与内容嵌入拼接：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-8-thinking-1-semantic-alignment-4">
 <span class="eqno">(8.1.5)<a class="headerlink" href="#equation-chapter-8-thinking-1-semantic-alignment-4" title="Permalink to this equation">¶</a></span>\[\mathbf{e}_{\text{final}} = [\mathbf{e}_{\text{text}} \oplus \mathbf{e}_{\text{visual}} \oplus \mathbf{e}_{\text{audio}} \oplus \mathbf{e}_{\text{cf}}]\]</div>
-<figure class="align-default" id="id10">
+<div class="figure align-default" id="id10">
 <span id="plum-semantic-id-model"></span><a class="reference internal image-reference" href="../_images/plum-semantic-id.png"><img alt="../_images/plum-semantic-id.png" src="../_images/plum-semantic-id.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图8.1.2 </span><span class="caption-text">PLUM语义ID模型架构</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图8.1.2 </span><span class="caption-text">PLUM语义ID模型架构</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div>
 <p>这个设计使得语义ID不再是纯粹的内容标识，而是融合了“内容是什么”和“用户如何感知”的双重语义。当RQ-VAE对<span class="math notranslate nohighlight">\(\mathbf{e}_{\text{final}}\)</span>进行量化时，它学到的码本不仅是内容的聚类，更是内容-行为联合空间的聚类。</p>
 <p>为保证语义在层次化索引中被正确组织，PLUM引入两项技术。第一项是<strong>多分辨率码本</strong>：不同层使用不同大小的码本（第1层128个，第2层256个，第3层512个，第4层1024个），符合从粗粒度到精细区分的信息论原理。第二项是<strong>渐进式掩码训练</strong>，除了要求解码器根据完整索引重建原始嵌入，PLUM还引入部分掩码的重建任务：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-8-thinking-1-semantic-alignment-5">
 <span class="eqno">(8.1.6)<a class="headerlink" href="#equation-chapter-8-thinking-1-semantic-alignment-5" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{recon}} = \sum_{k=1}^{4} \lambda_k \|\mathbf{e}_{\text{final}} - \text{Decoder}([c_1, ..., c_k, \texttt{&lt;mask&gt;}, ..., \texttt{&lt;mask&gt;}])\|^2\]</div>
 <p>这强制每一层的索引都携带增量语义信息，确保语义ID展现出清晰的层次结构：第1层区分大类别（游戏、音乐、新闻），第2层区分子类别（FPS游戏、流行音乐），第3-4层逐步细化到具体视频。</p>
-</section>
-<section id="id7">
+</div>
+<div class="section" id="id7">
 <h3><span class="section-number">8.1.3.2. </span>持续预训练：建立协同-语言的双向映射<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <p>即使拥有了融合多模态内容和协同信号的语义ID，LLM仍然不知道这些ID“意味着什么”。PLUM的持续预训练(CPT)阶段正是为了在LLM内部建立语义ID与自然语言之间的双向映射，让模型既能“看到ID想到内容”，也能“看到内容想到ID”。</p>
 <p>CPT首先将所有语义ID
@@ -523,16 +518,14 @@ token赋予了与其代表的语义内容相关的初始位置，为后续的语
 </pre></div>
 </div>
 <p>这种零样本能力证明了语义对齐已经内化为模型的表示结构。模型没有显式地被告知“第1层索引代表大类别，第2层代表子类别”，但它通过大量交错序列训练，自动学会了这种层次语义的对应关系。</p>
-</section>
-<section id="id8">
+</div>
+<div class="section" id="id8">
 <h3><span class="section-number">8.1.3.3. </span>任务微调与生产验证<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
 <p>持续预训练建立了协同语义与语言语义的统一表示空间，但模型还需要针对具体的推荐目标进行优化。PLUM的任务微调阶段将推荐重新定义为条件生成任务：给定用户的多模态上下文（历史观看的语义ID序列、文本特征、数值特征），自回归生成推荐视频的语义ID。</p>
-<figure class="align-default" id="id11">
+<div class="figure align-default" id="id11">
 <span id="plum-generative-retrieval"></span><a class="reference internal image-reference" href="../_images/plum-gen-retrieval.png"><img alt="../_images/plum-gen-retrieval.png" src="../_images/plum-gen-retrieval.png" style="width: 500px;" /></a>
-<figcaption>
-<p><span class="caption-number">图8.1.3 </span><span class="caption-text">PLUM生成式检索架构</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图8.1.3 </span><span class="caption-text">PLUM生成式检索架构</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
 <p>任务微调通过两个方式激活和强化CPT阶段建立的对齐关系：</p>
 <p><strong>异构输入的统一编码</strong>：不同于传统推荐模型将所有特征压缩为固定维度向量，PLUM充分利用LLM处理异构序列的能力。一个完整的输入提示包含：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>用户在 周六晚上8点 通过 手机 观看:
@@ -552,9 +545,9 @@ token赋予了与其代表的语义内容相关的初始位置，为后续的语
 <p><strong>样本效率的显著提升</strong>：虽然PLUM的神经网络参数是传统大嵌入表模型(LEM)的100倍，但由于语义对齐带来的样本效率提升，PLUM在推荐任务上的训练数据需求远低于LEM。LEM每天需要数十亿训练样本才能收敛，而PLUM的900M
 MoE模型仅需2.5亿样本。总训练成本(FLOPs)仅为LEM的0.55倍。这种效率提升的根源在于：对齐后的语义空间具有更好的泛化能力，模型不再需要通过海量数据“记忆”每个物品的嵌入，而是通过理解语义ID的层次结构和协同模式，实现小样本甚至零样本推广。</p>
 <p>PLUM的成功标志着协同语义与语言语义统一从学术原型走向工业落地。它证明了即使在十亿级规模、多模态内容、实时推理的严苛约束下，通过精心设计的语义ID构建、持续预训练、任务微调流程，LLM完全能够深度理解推荐系统中的“协同语言”，并将这种理解转化为强大的推荐能力。然而，PLUM仍然是一个端到端的生成模型，它能够高效生成高质量推荐，却无法解释为什么推荐这些内容。当模型已经“认识”了物品、“理解”了用户，下一个自然的问题是：<strong>如何让它学会“思考”推荐的理由，并将这种思考过程显式地展现出来？</strong></p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
         </div>

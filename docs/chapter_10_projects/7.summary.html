@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -367,7 +366,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="id1">
+  <div class="section" id="id1">
 <h1><span class="section-number">10.7. </span>本章总结<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>本章通过一个端到端的电影推荐系统实践项目，将前面章节中分散讲解的算法模块整合为一个可运行的完整系统，回答了“如何从零构建一个生产级推荐系统”的核心工程问题。</p>
 <p><strong>系统思维的建立</strong>：推荐系统工程实践的核心难点不在于单个算法，而在于将离散的算法模块整合为一个协同运转的系统。本章通过清晰区分离线系统（负责全量数据处理、模型训练、特征计算）与在线系统（负责实时请求响应、低延迟推理、结果组装），建立了推荐系统架构的基本认知框架。两者通过存储层（PostgreSQL、Redis、Elasticsearch）解耦，离线系统周期性产出模型文件与特征索引，在线系统实时加载并提供服务，这种设计在质量与延迟之间取得了工程上的平衡。</p>
@@ -379,7 +378,7 @@ Elasticsearch）和容器化部署（Docker
 Compose）的组合，构成了一个技术选型贴近工业实际的完整栈。前端不仅是展示层，也是用户行为数据的采集入口，用户的评分、浏览和搜索行为通过前端采集后反馈至后端，形成“用户行为→数据采集→特征更新→推荐优化”的闭环。Docker
 Compose的一键部署设计解决了多服务依赖管理的复杂性，使整个系统可以在任意环境下快速复现。</p>
 <p><strong>工程实践的核心价值</strong>：本章的价值不仅在于提供了一个可运行的示例，更在于通过完整系统的搭建，让读者真正理解推荐系统中那些“理所当然”却常被忽视的工程问题：特征如何在离线和在线之间传递？模型如何在不停服的情况下更新？冷启动时系统应该如何降级？这些问题的答案无法从单篇论文中找到，只能在系统层面的实践中获得。</p>
-</section>
+</div>
 
 
         </div>

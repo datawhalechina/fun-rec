@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -368,7 +367,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="hstu">
+  <div class="section" id="hstu">
 <span id="sec-hstu-optimization"></span><h1><span class="section-number">6.1. </span>HSTU架构演进<a class="headerlink" href="#hstu" title="Permalink to this heading">¶</a></h1>
 <p>传统DLRM采用item-level的建模范式：对用户<span class="math notranslate nohighlight">\(u\)</span>和候选项集合<span class="math notranslate nohighlight">\(\{i_1, i_2, \ldots, i_N\}\)</span>中的每个候选独立打分，需要进行<span class="math notranslate nohighlight">\(N\)</span>次前向传播计算<span class="math notranslate nohighlight">\(\text{score}(u, i_j)\)</span>。这种范式在工业界沿用多年，但存在两个根本性限制。首先是计算成本与候选数量线性绑定，推理成本为<span class="math notranslate nohighlight">\(\mathcal{O}(N \cdot C)\)</span>，其中<span class="math notranslate nohighlight">\(N\)</span>是候选数量，<span class="math notranslate nohighlight">\(C\)</span>是单次前向传播成本。当<span class="math notranslate nohighlight">\(N\)</span>达到百万甚至十亿级别时，即使单次计算很快，总成本仍然难以承受。其次是候选之间的信息孤岛问题，每个候选的打分过程相互独立，模型难以捕捉候选之间的关联关系，无法进行全局的列表级优化。这两个限制使得传统DLRM即使增加模型参数，性能提升也会很快遇到瓶颈，无法遵循scaling
 law。</p>
@@ -393,7 +392,7 @@ law时代的到来。</p>
 <li class="toctree-l1"><a class="reference internal" href="3.mtgr.html">6.1.3. 混合范式的突破</a></li>
 </ul>
 </div>
-</section>
+</div>
 
 
         </div>

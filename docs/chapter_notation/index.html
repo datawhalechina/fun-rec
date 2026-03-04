@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -25,6 +24,7 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="1. 推荐系统概述" href="../chapter_0_introduction/index.html" />
@@ -366,15 +366,197 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="chap-notation">
+  <div class="section" id="chap-notation">
 <span id="id1"></span><h1>符号<a class="headerlink" href="#chap-notation" title="Permalink to this heading">¶</a></h1>
 <p>本书中使用的符号概述如下。</p>
-</section>
+<div class="section" id="id2">
+<h2>数字<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x\)</span>：标量</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{x}\)</span>：向量</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{X}\)</span>：矩阵</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathsf{X}\)</span>：张量</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{I}\)</span>：单位矩阵</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_i\)</span>，<span class="math notranslate nohighlight">\([\mathbf{x}]_i\)</span>：向量 <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>
+的第 <span class="math notranslate nohighlight">\(i\)</span> 个元素</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_{ij}\)</span>，<span class="math notranslate nohighlight">\([\mathbf{X}]_{ij}\)</span>：矩阵
+<span class="math notranslate nohighlight">\(\mathbf{X}\)</span> 第 <span class="math notranslate nohighlight">\(i\)</span> 行第 <span class="math notranslate nohighlight">\(j\)</span> 列的元素</p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>集合论<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{X}\)</span>：集合</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{Z}\)</span>：整数集合</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{R}\)</span>：实数集合</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>：<span class="math notranslate nohighlight">\(n\)</span> 维实数向量集合</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{R}^{a \times b}\)</span>：包含 <span class="math notranslate nohighlight">\(a\)</span> 行和 <span class="math notranslate nohighlight">\(b\)</span>
+列的实数矩阵集合</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{A} \cup \mathcal{B}\)</span>：集合 <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> 和
+<span class="math notranslate nohighlight">\(\mathcal{B}\)</span> 的并集</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{A} \cap \mathcal{B}\)</span>：集合 <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> 和
+<span class="math notranslate nohighlight">\(\mathcal{B}\)</span> 的交集</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{A} \setminus \mathcal{B}\)</span>：集合 <span class="math notranslate nohighlight">\(\mathcal{A}\)</span>
+与集合 <span class="math notranslate nohighlight">\(\mathcal{B}\)</span> 相减，<span class="math notranslate nohighlight">\(\mathcal{B}\)</span> 关于
+<span class="math notranslate nohighlight">\(\mathcal{A}\)</span> 的相对补集</p></li>
+<li><p><span class="math notranslate nohighlight">\(|\mathcal{X}|\)</span>：集合 <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> 的基数（元素个数）</p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>推荐系统<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(u\)</span>，<span class="math notranslate nohighlight">\(v\)</span>：用户</p></li>
+<li><p><span class="math notranslate nohighlight">\(i\)</span>，<span class="math notranslate nohighlight">\(j\)</span>，<span class="math notranslate nohighlight">\(k\)</span>：物品</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{U}\)</span>：用户全集</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{I}\)</span>：物品全集</p></li>
+<li><p><span class="math notranslate nohighlight">\(c\)</span>：上下文（场景、会话信息）</p></li>
+<li><p><span class="math notranslate nohighlight">\(r_{ui}\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 对物品 <span class="math notranslate nohighlight">\(i\)</span> 的评分或反馈</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{r}_{ui}\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 对物品 <span class="math notranslate nohighlight">\(i\)</span> 的预测评分</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{y}\)</span>：模型预测输出（如点击率预估值）</p></li>
+<li><p><span class="math notranslate nohighlight">\(N(u)\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 有过交互的物品集合</p></li>
+<li><p><span class="math notranslate nohighlight">\(N(i)\)</span>：与物品 <span class="math notranslate nohighlight">\(i\)</span> 有过交互的用户集合</p></li>
+<li><p><span class="math notranslate nohighlight">\(w_{ij}\)</span>：物品 <span class="math notranslate nohighlight">\(i\)</span> 与物品 <span class="math notranslate nohighlight">\(j\)</span> 之间的相似度</p></li>
+<li><p><span class="math notranslate nohighlight">\(w_{uv}\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 与用户 <span class="math notranslate nohighlight">\(v\)</span> 之间的相似度</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{p}_u\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 的隐向量（潜在特征向量）</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span>：物品 <span class="math notranslate nohighlight">\(i\)</span> 的隐向量（潜在特征向量）</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{S}\)</span>：用户交互序列数据集</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{S}^u\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 的历史交互序列</p></li>
+<li><p><span class="math notranslate nohighlight">\(i_{1:T}\)</span>：长度为 <span class="math notranslate nohighlight">\(T\)</span> 的物品交互序列</p></li>
+<li><p><span class="math notranslate nohighlight">\(i_{&lt;t}\)</span>：序列中时刻 <span class="math notranslate nohighlight">\(t\)</span> 之前的所有物品
+<span class="math notranslate nohighlight">\((i_1, i_2, \ldots, i_{t-1})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(pCTR\)</span>：点击率预估值（Predicted Click-Through Rate）</p></li>
+<li><p><span class="math notranslate nohighlight">\(pCVR\)</span>：转化率预估值（Predicted Conversion Rate）</p></li>
+<li><p><span class="math notranslate nohighlight">\(pCTCVR\)</span>：点击后转化率联合预估值，即 <span class="math notranslate nohighlight">\(pCTR \times pCVR\)</span></p></li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2>深度学习<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\theta\)</span>：模型参数</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{W}^{(l)}\)</span>，<span class="math notranslate nohighlight">\(\mathbf{b}^{(l)}\)</span>：第
+<span class="math notranslate nohighlight">\(l\)</span> 层神经网络的权重矩阵和偏置向量</p></li>
+<li><p><span class="math notranslate nohighlight">\(a^{(l)}\)</span>：第 <span class="math notranslate nohighlight">\(l\)</span> 层的激活输出向量</p></li>
+<li><p><span class="math notranslate nohighlight">\(d\)</span>：隐层维度或嵌入维度</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span>：序列长度</p></li>
+<li><p><span class="math notranslate nohighlight">\(h\)</span>：多头注意力的头数</p></li>
+<li><p><span class="math notranslate nohighlight">\(d_k\)</span>：注意力机制中查询/键的维度</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{Q}\)</span>，<span class="math notranslate nohighlight">\(\mathbf{K}\)</span>，<span class="math notranslate nohighlight">\(\mathbf{V}\)</span>：注意力机制中的查询、键、值矩阵</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{W}^Q\)</span>，<span class="math notranslate nohighlight">\(\mathbf{W}^K\)</span>，<span class="math notranslate nohighlight">\(\mathbf{W}^V\)</span>：查询、键、值的投影权重矩阵</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>：第 <span class="math notranslate nohighlight">\(i\)</span> 个特征域或第 <span class="math notranslate nohighlight">\(i\)</span>
+个物品的嵌入向量</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{E}\)</span>：码本矩阵，包含 <span class="math notranslate nohighlight">\(K\)</span> 个码字（codeword）</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{z}_e\)</span>：编码器的连续潜在输出向量</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{z}_q\)</span>：向量量化后的离散近似向量</p></li>
+<li><p><span class="math notranslate nohighlight">\(K\)</span>：码本大小（码字数量）或专家网络数量</p></li>
+<li><p><span class="math notranslate nohighlight">\(L\)</span>：残差量化（RQ-VAE）的量化层数</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{sg}[\cdot]\)</span>：停止梯度算子（stop-gradient），阻断梯度传递</p></li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2>函数和运算符<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(f(\cdot)\)</span>：函数</p></li>
+<li><p><span class="math notranslate nohighlight">\(\log(\cdot)\)</span>：自然对数</p></li>
+<li><p><span class="math notranslate nohighlight">\(\exp(\cdot)\)</span>：指数函数</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{1}_{\mathcal{X}}\)</span>：指示函数</p></li>
+<li><p><span class="math notranslate nohighlight">\((\cdot)^\top\)</span>：向量或矩阵的转置</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{X}^{-1}\)</span>：矩阵的逆</p></li>
+<li><p><span class="math notranslate nohighlight">\(\odot\)</span>：按元素相乘（Hadamard 积）</p></li>
+<li><p><span class="math notranslate nohighlight">\(\oplus\)</span>：向量拼接（concatenation）</p></li>
+<li><p><span class="math notranslate nohighlight">\([\cdot, \cdot]\)</span>：连结</p></li>
+<li><p><span class="math notranslate nohighlight">\(\langle \mathbf{x}, \mathbf{y} \rangle\)</span>：向量
+<span class="math notranslate nohighlight">\(\mathbf{x}\)</span> 和 <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> 的点积</p></li>
+<li><p><span class="math notranslate nohighlight">\(\|\cdot\|_p\)</span>：<span class="math notranslate nohighlight">\(L_p\)</span> 正则</p></li>
+<li><p><span class="math notranslate nohighlight">\(\|\cdot\|\)</span>：<span class="math notranslate nohighlight">\(L_2\)</span> 正则</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma(\cdot)\)</span>：Sigmoid
+函数，<span class="math notranslate nohighlight">\(\sigma(x) = 1/(1+e^{-x})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{softmax}(\cdot)\)</span>：Softmax 归一化函数</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{ReLU}(\cdot)\)</span>：线性整流函数，<span class="math notranslate nohighlight">\(\text{ReLU}(x) = \max(0, x)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{tanh}(\cdot)\)</span>：双曲正切函数</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sum\)</span>：连加</p></li>
+<li><p><span class="math notranslate nohighlight">\(\prod\)</span>：连乘</p></li>
+<li><p><span class="math notranslate nohighlight">\(\overset{\text{def}}{=}\)</span>：定义</p></li>
+<li><p><span class="math notranslate nohighlight">\(\arg\max\)</span>，<span class="math notranslate nohighlight">\(\arg\min\)</span>：取最大值/最小值时对应的参数</p></li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h2>微积分<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\frac{dy}{dx}\)</span>：<span class="math notranslate nohighlight">\(y\)</span> 关于 <span class="math notranslate nohighlight">\(x\)</span> 的导数</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{\partial y}{\partial x}\)</span>：<span class="math notranslate nohighlight">\(y\)</span> 关于 <span class="math notranslate nohighlight">\(x\)</span>
+的偏导数</p></li>
+<li><p><span class="math notranslate nohighlight">\(\nabla_{\mathbf{x}} y\)</span>：<span class="math notranslate nohighlight">\(y\)</span> 关于 <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>
+的梯度</p></li>
+<li><p><span class="math notranslate nohighlight">\(\int_a^b f(x) \, dx\)</span>：<span class="math notranslate nohighlight">\(f\)</span> 在 <span class="math notranslate nohighlight">\(a\)</span> 到 <span class="math notranslate nohighlight">\(b\)</span>
+区间上关于 <span class="math notranslate nohighlight">\(x\)</span> 的定积分</p></li>
+<li><p><span class="math notranslate nohighlight">\(\int f(x) \, dx\)</span>：<span class="math notranslate nohighlight">\(f\)</span> 关于 <span class="math notranslate nohighlight">\(x\)</span> 的不定积分</p></li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h2>概率与信息论<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(\cdot)\)</span>：概率分布</p></li>
+<li><p><span class="math notranslate nohighlight">\(z \sim P\)</span>：随机变量 <span class="math notranslate nohighlight">\(z\)</span> 具有概率分布 <span class="math notranslate nohighlight">\(P\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(X \mid Y)\)</span>：<span class="math notranslate nohighlight">\(X\)</span> 给定 <span class="math notranslate nohighlight">\(Y\)</span> 的条件概率</p></li>
+<li><p><span class="math notranslate nohighlight">\(p(x)\)</span>：概率密度函数</p></li>
+<li><p><span class="math notranslate nohighlight">\(E_z[f(x)]\)</span>：函数 <span class="math notranslate nohighlight">\(f\)</span> 对 <span class="math notranslate nohighlight">\(z\)</span> 的数学期望</p></li>
+<li><p><span class="math notranslate nohighlight">\(X \perp Y\)</span>：随机变量 <span class="math notranslate nohighlight">\(X\)</span> 和 <span class="math notranslate nohighlight">\(Y\)</span> 是独立的</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{Var}(X)\)</span>：随机变量 <span class="math notranslate nohighlight">\(X\)</span> 的方差</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_X\)</span>：随机变量 <span class="math notranslate nohighlight">\(X\)</span> 的标准差</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{L}\)</span>：损失函数（目标函数）</p></li>
+<li><p><span class="math notranslate nohighlight">\(D_\text{KL}(P \| Q)\)</span>：<span class="math notranslate nohighlight">\(P\)</span> 和 <span class="math notranslate nohighlight">\(Q\)</span> 的 KL 散度</p></li>
+<li><p><span class="math notranslate nohighlight">\(H(X)\)</span>：随机变量 <span class="math notranslate nohighlight">\(X\)</span> 的熵</p></li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h2>扩散模型<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_0\)</span>：原始数据样本</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_t\)</span>：经过 <span class="math notranslate nohighlight">\(t\)</span> 步前向加噪后的含噪潜变量</p></li>
+<li><p><span class="math notranslate nohighlight">\(T\)</span>：扩散过程总步数</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_t \in (0, 1)\)</span>：第 <span class="math notranslate nohighlight">\(t\)</span> 步的噪声强度系数</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha_t = 1 - \beta_t\)</span>：第 <span class="math notranslate nohighlight">\(t\)</span> 步的信号保留率</p></li>
+<li><p><span class="math notranslate nohighlight">\(\bar{\alpha}_t = \prod_{i=1}^{t} \alpha_i\)</span>：累积信号保留率</p></li>
+<li><p><span class="math notranslate nohighlight">\(\varepsilon \sim \mathcal{N}(0, \mathbf{I})\)</span>：标准高斯噪声</p></li>
+<li><p><span class="math notranslate nohighlight">\(\varepsilon_\theta(x_t, t)\)</span>：噪声预测网络（以 <span class="math notranslate nohighlight">\(\theta\)</span>
+为参数）</p></li>
+<li><p><span class="math notranslate nohighlight">\(q(x_t \mid x_{t-1})\)</span>：前向扩散过程的条件分布</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_\theta(x_{t-1} \mid x_t)\)</span>：以 <span class="math notranslate nohighlight">\(\theta\)</span>
+为参数的逆向去噪分布</p></li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h2>复杂度<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{O}\)</span>：大 <span class="math notranslate nohighlight">\(O\)</span> 标记</p></li>
+</ul>
+</div>
+</div>
 
 
         </div>
         <div class="side-doc-outline">
             <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">符号</a><ul>
+<li><a class="reference internal" href="#id2">数字</a></li>
+<li><a class="reference internal" href="#id3">集合论</a></li>
+<li><a class="reference internal" href="#id4">推荐系统</a></li>
+<li><a class="reference internal" href="#id5">深度学习</a></li>
+<li><a class="reference internal" href="#id6">函数和运算符</a></li>
+<li><a class="reference internal" href="#id7">微积分</a></li>
+<li><a class="reference internal" href="#id8">概率与信息论</a></li>
+<li><a class="reference internal" href="#id9">扩散模型</a></li>
+<li><a class="reference internal" href="#id10">复杂度</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
             </div>
         </div>
 

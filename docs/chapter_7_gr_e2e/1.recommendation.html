@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -368,7 +367,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="onerec">
+  <div class="section" id="onerec">
 <span id="id1"></span><h1><span class="section-number">7.1. </span>OneRec的架构演进<a class="headerlink" href="#onerec" title="Permalink to this heading">¶</a></h1>
 <p>如前所述，传统多阶段级联架构存在计算碎片化、优化目标冲突、与 AI
 前沿技术脱节等结构性缺陷。在推荐场景下，这些问题尤为突出：大量资源消耗在通信和存储而非模型计算，GPU
@@ -378,9 +377,9 @@ Scaling Law、强化学习对齐等先进技术的应用。</p>
 框架，将推荐系统重新定义为端到端的生成式任务：模型根据用户上下文直接“生成”推荐序列，而非从候选集中“挑选”物品。本节将介绍
 OneRec-V1 的技术体系、其部署中暴露的关键瓶颈，以及 OneRec-V2
 如何突破这些瓶颈。</p>
-<section id="onerec-v1">
+<div class="section" id="onerec-v1">
 <h2><span class="section-number">7.1.1. </span>OneRec-V1：开创性探索<a class="headerlink" href="#onerec-v1" title="Permalink to this heading">¶</a></h2>
-<section id="id">
+<div class="section" id="id">
 <h3><span class="section-number">7.1.1.1. </span>语义 ID 设计<a class="headerlink" href="#id" title="Permalink to this heading">¶</a></h3>
 <p>生成式推荐面临的首要挑战是：如何让模型“说出”一个物品？在传统推荐系统中，物品通过原子
 ID（如视频 ID）来标识，但快手平台拥有数十亿量级的物品，直接生成原子 ID
@@ -411,18 +410,16 @@ RQ-VAE，RQ-Kmeans 直接在残差上应用 K-means 聚类构建码本：</p>
 <span class="eqno">(7.1.3)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-2" title="Permalink to this equation">¶</a></span>\[s_i^l = \arg\min_k \|\mathcal{R}_i^{(l)} - \mathbf{c}_k^{(l)}\|, \quad \mathcal{R}_i^{(l+1)} = \mathcal{R}_i^{(l)} - \mathbf{c}_{s_i^l}^{(l)}\]</div>
 <p>经过 3 层量化，每个视频 <span class="math notranslate nohighlight">\(m\)</span> 获得由粗到细的语义标识符序列
 <span class="math notranslate nohighlight">\(\{s_m^1, s_m^2, s_m^3\}\)</span>，这将成为生成式推荐模型的输出目标。</p>
-</section>
-<section id="id3">
+</div>
+<div class="section" id="id3">
 <h3><span class="section-number">7.1.1.2. </span>模型架构设计<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
 <p>OneRec-V1 采用经典的 <strong>Encoder-Decoder
 架构</strong>实现端到端生成。编码器负责处理和编码用户的多尺度特征，解码器则基于编码器输出的上下文表示，以自回归方式生成目标物品的语义
 ID 序列。</p>
-<figure class="align-default" id="id7">
+<div class="figure align-default" id="id7">
 <span id="onerec-encoder-decoder"></span><a class="reference internal image-reference" href="../_images/onerec_encoder_decoder.png"><img alt="../_images/onerec_encoder_decoder.png" src="../_images/onerec_encoder_decoder.png" style="width: 500px;" /></a>
-<figcaption>
-<p><span class="caption-number">图7.1.1 </span><span class="caption-text">Onerec-V1模型结构图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图7.1.1 </span><span class="caption-text">Onerec-V1模型结构图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>编码器设计</strong></p>
 <p>编码器的设计体现了对用户兴趣多时间尺度特性的深刻理解：</p>
 <ol class="arabic simple">
@@ -473,8 +470,8 @@ FFN）采用 top-k
 预测的交叉熵损失进行训练：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-8">
 <span class="eqno">(7.1.9)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-8" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{NTP} = -\sum_{j=0}^{L_t-1} \log P(s_m^{j+1} | [s_{[BOS]}, s_m^1, s_m^2, ..., s_m^j])\]</div>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h3><span class="section-number">7.1.1.3. </span>奖励系统设计<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
 <p>预训练模型仅通过 <span class="math notranslate nohighlight">\(\mathcal{L}_{NTP}\)</span>
 拟合历史曝光数据的分布，而这些曝光数据来自传统推荐系统。这导致模型本质上在“模仿”过去系统的行为，<strong>性能上限被传统推荐系统所束缚</strong>。为了突破这一天花板，OneRec-V1
@@ -513,8 +510,8 @@ Token。当对负优势物品应用强化学习时，模型会将概率质量压
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-10">
 <span class="eqno">(7.1.11)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-10" title="Permalink to this equation">¶</a></span>\[\begin{split}r_i' = \begin{cases} r_i &amp; \text{if } o_i \notin I_{\text{viral}} \\ \alpha r_i &amp; \text{if } o_i \in I_{\text{viral}} \end{cases}, \quad \alpha \in (0, 1)\end{split}\]</div>
 <p>实验表明，SIR 有效降低了病毒内容曝光 9.59%，同时核心指标保持稳定。</p>
-</section>
-<section id="ecpo">
+</div>
+<div class="section" id="ecpo">
 <h3><span class="section-number">7.1.1.4. </span>ECPO 算法<a class="headerlink" href="#ecpo" title="Permalink to this heading">¶</a></h3>
 <p>OneRec-V1 使用 <strong>ECPO（Early Clipped
 GRPO）</strong>算法进行偏好对齐。对于用户 <span class="math notranslate nohighlight">\(u\)</span>，使用旧策略模型生成
@@ -538,25 +535,23 @@ Encoder-Decoder
 Token 解码占比极低；二是基于奖励模型的强化学习面临采样效率低和 reward
 hacking 的风险。随着 OneRec
 大规模部署后真实用户反馈变得可观测，这些瓶颈催生了 OneRec-V2 的诞生。</p>
-</section>
-</section>
-<section id="onerec-v2">
+</div>
+</div>
+<div class="section" id="onerec-v2">
 <h2><span class="section-number">7.1.2. </span>OneRec-V2：效率与性能突破<a class="headerlink" href="#onerec-v2" title="Permalink to this heading">¶</a></h2>
 <p>OneRec-V2 从架构和算法两个维度进行了系统性优化：架构上提出 Lazy
 Decoder-Only
 架构解决计算效率问题，算法上引入基于真实用户反馈的强化学习突破奖励模型的局限
 <span id="id5">(<a class="reference internal" href="../chapter_references/references.html#id151" title="Zhou, G., Deng, J., Zhang, J., Cai, K., Ren, L., Luo, Q., … others. (2025). Onerec technical report. arXiv preprint arXiv:2506.13695.">Zhou <em>et al.</em>, 2025</a>)</span>。</p>
-<section id="lazy-decoder-only">
+<div class="section" id="lazy-decoder-only">
 <h3><span class="section-number">7.1.2.1. </span>Lazy Decoder-Only 架构<a class="headerlink" href="#lazy-decoder-only" title="Permalink to this heading">¶</a></h3>
 <p>Lazy Decoder-Only
 架构的设计哲学是：<strong>将计算资源集中到真正对损失贡献梯度的目标物品 Token
 上</strong>。这一架构包含两个核心组件：</p>
-<figure class="align-default" id="id8">
+<div class="figure align-default" id="id8">
 <span id="onerec-lazy-decoder-only"></span><a class="reference internal image-reference" href="../_images/onerec_lazy_decoder_only.png"><img alt="../_images/onerec_lazy_decoder_only.png" src="../_images/onerec_lazy_decoder_only.png" style="width: 500px;" /></a>
-<figcaption>
-<p><span class="caption-number">图7.1.2 </span><span class="caption-text">Onerec Lazy Decoder-Only模型结构图</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">图7.1.2 </span><span class="caption-text">Onerec Lazy Decoder-Only模型结构图</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
 <p><strong>Context Processor 设计</strong></p>
 <p>Context Processor 将异构的用户特征统一转换为适合解码器消费的键值对。这是
 Lazy Decoder-Only 架构效率提升的关键所在。</p>
@@ -606,6 +601,12 @@ MoE 替代。</p></li>
 <p>通过这种设计，Lazy Decoder-Only 架构实现了<strong>接近 100%
 的计算资源集中在目标 Token 上</strong>：</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 12%" />
+<col style="width: 30%" />
+<col style="width: 16%" />
+</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>架构</p></th>
 <th class="head"><p>参数量</p></th>
@@ -629,8 +630,8 @@ MoE 替代。</p></li>
 <p>换言之，Lazy Decoder-Only
 架构在保持相近的模型性能的前提下，将计算开销降低了
 <strong>94%</strong>，训练资源节约了 <strong>90%</strong>。</p>
-</section>
-<section id="scaling-law">
+</div>
+<div class="section" id="scaling-law">
 <h3><span class="section-number">7.1.2.2. </span>Scaling Law 验证<a class="headerlink" href="#scaling-law" title="Permalink to this heading">¶</a></h3>
 <p>Lazy Decoder-Only 架构展现出优秀的可扩展性。OneRec-V2 成功将模型规模从
 0.1B 扩展到 8B 参数，并观察到清晰的 Scaling Law：模型损失 <span class="math notranslate nohighlight">\(L\)</span>
@@ -640,6 +641,11 @@ MoE 替代。</p></li>
 <p>拟合参数为
 <span class="math notranslate nohighlight">\(E=3.13, A=3660, \alpha=0.489\)</span>。这意味着随着模型规模增大，推荐效果呈现可预测的持续改进。</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 47%" />
+<col style="width: 27%" />
+</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>模型规模</p></th>
 <th class="head"><p>参数量</p></th>
@@ -680,8 +686,8 @@ MoE 替代。</p></li>
 <p>通过引入 MoE，一个总参数 4B 但每次仅激活 0.5B 的稀疏模型，收敛损失为
 3.22，优于 2B 密集模型（损失 3.23），而计算开销与 0.5B
 密集模型相当。这为在计算预算受限的情况下提升模型性能提供了有效途径。</p>
-</section>
-<section id="id6">
+</div>
+<div class="section" id="id6">
 <h3><span class="section-number">7.1.2.3. </span>用户反馈强化学习<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
 <p>OneRec-V2
 利用大规模部署后获得的真实用户反馈信号进行强化学习，从根本上解决奖励模型的局限性。在短视频推荐场景中，每个视频的播放时长是最密集的反馈信号，且与最重要的在线指标（如
@@ -704,8 +710,8 @@ App Stay Time 和 7 日留存 LT7）高度相关。</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-22">
 <span class="eqno">(7.1.23)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-22" title="Permalink to this equation">¶</a></span>\[\begin{split}A_i = \begin{cases} +1, &amp; q_i &gt; \tau_B \text{ and } neg_i = 0 \\ -1, &amp; neg_i = 1 \\ 0, &amp; \text{otherwise} \end{cases}\end{split}\]</div>
 <p>这种策略有效过滤出高质量正样本，同时纳入直接负反馈信号，生成更准确的用户偏好信号。</p>
-</section>
-<section id="gbpo">
+</div>
+<div class="section" id="gbpo">
 <h3><span class="section-number">7.1.2.4. </span>GBPO 算法<a class="headerlink" href="#gbpo" title="Permalink to this heading">¶</a></h3>
 <p>在使用真实用户反馈进行强化学习时，OneRec-V2 发现传统的裁剪方法（如
 PPO、GRPO、ECPO）无法完全解决梯度不稳定问题。问题的根源在于：对于策略比率为
@@ -726,9 +732,9 @@ PPO、GRPO、ECPO）无法完全解决梯度不稳定问题。问题的根源在
 <p>GBPO 相比传统裁剪方法有两个优势：(1)
 <strong>完整样本利用</strong>，保留所有样本的梯度，鼓励模型进行更多样化的探索；(2)
 <strong>有界梯度稳定化</strong>，用 BCE 损失的梯度界定 RL 梯度，增强训练稳定性。</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
         </div>

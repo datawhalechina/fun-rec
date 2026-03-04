@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -367,7 +366,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="id1">
+  <div class="section" id="id1">
 <h1><span class="section-number">5.5. </span>本章总结<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>本章系统介绍了生成式推荐的基础技术体系，为理解后续各类方法奠定了理论与工程双重基础。</p>
 <p><strong>范式转变的动机与本质</strong>：传统判别式推荐长期以“对候选集打分排序”为核心范式，这一设计带来了三重局限——Embedding层参数稀疏低效、物品ID之间缺乏语义关联、多阶段级联导致优化目标不一致且误差逐层累积。生成式推荐的根本性转变在于将推荐任务重定义为序列生成问题：模型不再判断“某个物品是否应被推荐”，而是直接学习“用户接下来会与哪些物品交互”的概率分布。这一转变从局部决策转向全局概率建模，从多阶段优化转向端到端目标，为推荐系统的架构革新打开了空间。</p>
@@ -375,7 +374,7 @@ Show Source
 <p><strong>LLM建模流程的迁移</strong>：大语言模型的“预训练-指令微调-偏好对齐”三阶段范式为生成式推荐提供了完整的方法论框架。预训练阶段通过因果语言建模在大规模数据上建立通用生成能力；指令微调阶段将通用能力对准特定任务；偏好对齐阶段（RLHF/PPO/DPO）让模型的输出符合人类意图。这一流程迁移到推荐领域时，核心挑战在于如何让LLM“理解”推荐系统中的物品——这直接引出了Tokenizer技术的核心问题。</p>
 <p><strong>Tokenizer：连接两个世界的桥梁</strong>：物品的Token化是生成式推荐最关键的技术问题之一。稀疏ID范式虽然工程成熟，但在生成模型下面临词表爆炸、冷启动和协同信号稀疏的三重困境；文本ID范式借助LLM预训练词表降低了词表规模，但纯文本难以捕捉用户行为层面的协同语义；语义ID范式（RQ-VAE、RQ-Kmeans等Codebook方法）通过层次化量化将物品映射为短码序列，同时编码内容语义与协同信号，成为当前工业级生成式推荐的主流选择。语义ID的核心价值在于既能被LLM高效处理，又能保留推荐系统赖以工作的协同信息，为后续端到端生成奠定了基础。</p>
 <p><strong>技术体系的内在逻辑</strong>：本章四个核心话题形成了层层递进的逻辑链：范式转变指明了为什么需要生成式推荐，架构基础回答了用什么模型来实现生成，LLM建模流程提供了如何训练这类模型的方法论，Tokenizer技术则解决了推荐数据如何适配生成模型的接口问题。这四个层次共同构成了理解后续章节——从Scaling架构到端到端生成、从会思考的推荐到扩散模型应用——所必需的完整基础。</p>
-</section>
+</div>
 
 
         </div>

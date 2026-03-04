@@ -3,8 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -367,14 +366,18 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="sec-projects-frontend">
+  <div class="section" id="sec-projects-frontend">
 <span id="id1"></span><h1><span class="section-number">10.5. </span>前端与交互<a class="headerlink" href="#sec-projects-frontend" title="Permalink to this heading">¶</a></h1>
 <p>在前面的章节中，我们完成了离线流程和在线流程的构建。离线流程训练好了召回模型和排序模型，在线流程实现了从用户请求到推荐结果的完整链路。本节将介绍如何构建前端应用，将推荐结果呈现给用户，并处理用户的各种交互行为。</p>
-<section id="id2">
+<div class="section" id="id2">
 <h2><span class="section-number">10.5.1. </span>前端概述<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>前端应用是用户与推荐系统交互的入口。用户通过前端浏览电影、查看推荐、进行搜索、提交评分。这些行为数据会被收集并反馈到后端，影响未来的推荐结果。因此，前端不仅是展示层，也是数据采集层。</p>
 <p>本项目采用以下技术栈构建前端：</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>技术</p></th>
 <th class="head"><p>用途</p></th>
@@ -406,16 +409,14 @@ Show Source
 <li><p><strong>个人中心（Profile）</strong>：展示用户信息、评分历史、偏好设置</p></li>
 <li><p><strong>搜索功能（SearchOverlay）</strong>：全局搜索入口，支持实时搜索</p></li>
 </ul>
-<!-- TODO: Screenshot - 首页整体截图，展示 Hero Banner + 多个电影行（For You、Popular、按类型分类） --><figure class="align-default" id="id16">
+<!-- TODO: Screenshot - 首页整体截图，展示 Hero Banner + 多个电影行（For You、Popular、按类型分类） --><div class="figure align-default" id="id16">
 <span id="frontend-home-logout"></span><a class="reference internal image-reference" href="../_images/frontend_home_logout.png"><img alt="../_images/frontend_home_logout.png" src="../_images/frontend_home_logout.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图10.5.1 </span><span class="caption-text">首页</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="id3">
+<p class="caption"><span class="caption-number">图10.5.1 </span><span class="caption-text">首页</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="id3">
 <h2><span class="section-number">10.5.2. </span>项目结构与路由配置<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
-<section id="id4">
+<div class="section" id="id4">
 <h3><span class="section-number">10.5.2.1. </span>目录结构<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
 <p>前端代码位于 <code class="docutils literal notranslate"><span class="pre">web_project/frontend/</span></code> 目录下：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>frontend/src/
@@ -440,8 +441,8 @@ Show Source
 <p><code class="docutils literal notranslate"><span class="pre">components/</span></code> 存放可复用组件，<code class="docutils literal notranslate"><span class="pre">views/</span></code>
 存放页面级组件，<code class="docutils literal notranslate"><span class="pre">services/</span></code> 存放 API 调用逻辑，<code class="docutils literal notranslate"><span class="pre">stores/</span></code>
 存放状态管理逻辑。</p>
-</section>
-<section id="id5">
+</div>
+<div class="section" id="id5">
 <h3><span class="section-number">10.5.2.2. </span>路由与权限控制<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">src/router/index.js</span></code></p>
@@ -475,19 +476,17 @@ Show Source
 </pre></div>
 </div>
 <p>这种设计将权限逻辑集中在路由层，各个页面组件不需要单独处理登录状态检查。</p>
-<figure class="align-default" id="id17">
+<div class="figure align-default" id="id17">
 <span id="frontend-header"></span><a class="reference internal image-reference" href="../_images/frontend_header.png"><img alt="../_images/frontend_header.png" src="../_images/frontend_header.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图10.5.2 </span><span class="caption-text">顶部导航栏</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-</section>
-<section id="id6">
+<p class="caption"><span class="caption-number">图10.5.2 </span><span class="caption-text">顶部导航栏</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="id6">
 <h2><span class="section-number">10.5.3. </span>核心组件设计<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
 <p>Vue 的组件化开发允许我们将 UI
 拆分为独立、可复用的部分。本项目设计了几个核心组件，它们在多个页面中被使用。</p>
-<section id="id7">
+<div class="section" id="id7">
 <h3><span class="section-number">10.5.3.1. </span>电影卡片组件<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">src/components/MovieCard.vue</span></code></p>
@@ -504,14 +503,12 @@ Show Source
 <li><p><strong>悬停效果</strong>：鼠标悬停时显示详细信息。Tailwind CSS 的 <code class="docutils literal notranslate"><span class="pre">group</span></code> 和
 <code class="docutils literal notranslate"><span class="pre">group-hover</span></code> 类允许父元素悬停时改变子元素样式</p></li>
 </ol>
-<figure class="align-default" id="id18">
+<div class="figure align-default" id="id18">
 <span id="frontend-movie-card"></span><a class="reference internal image-reference" href="../_images/frontend_movie_card.png"><img alt="../_images/frontend_movie_card.png" src="../_images/frontend_movie_card.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图10.5.3 </span><span class="caption-text">电影卡片 左：正常状态，右：鼠标悬停状态</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="id8">
+<p class="caption"><span class="caption-number">图10.5.3 </span><span class="caption-text">电影卡片 左：正常状态，右：鼠标悬停状态</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="id8">
 <h3><span class="section-number">10.5.3.2. </span>电影横向列表<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">src/components/MovieRow.vue</span></code></p>
@@ -541,14 +538,12 @@ Netflix 的电影行效果。</p>
 </pre></div>
 </div>
 <p>已经滚动到最左边时隐藏左箭头，滚动到最右边时隐藏右箭头。</p>
-<!-- TODO: Screenshot - MovieRow 组件：显示电影横向滚动行，右侧可见滚动箭头 --><figure class="align-default" id="id19">
+<!-- TODO: Screenshot - MovieRow 组件：显示电影横向滚动行，右侧可见滚动箭头 --><div class="figure align-default" id="id19">
 <span id="frontend-movie-row"></span><a class="reference internal image-reference" href="../_images/frontend_movie_row.png"><img alt="../_images/frontend_movie_row.png" src="../_images/frontend_movie_row.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图10.5.4 </span><span class="caption-text">电影横向列表</span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="id9">
+<p class="caption"><span class="caption-number">图10.5.4 </span><span class="caption-text">电影横向列表</span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="id9">
 <h3><span class="section-number">10.5.3.3. </span>评分组件<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">src/components/StarRating.vue</span></code></p>
@@ -574,14 +569,12 @@ Netflix 的电影行效果。</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<figure class="align-default" id="id20">
+<div class="figure align-default" id="id20">
 <span id="frontend-star-rating"></span><a class="reference internal image-reference" href="../_images/frontend_star_rating.png"><img alt="../_images/frontend_star_rating.png" src="../_images/frontend_star_rating.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图10.5.5 </span><span class="caption-text">评分组件</span><a class="headerlink" href="#id20" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="id10">
+<p class="caption"><span class="caption-number">图10.5.5 </span><span class="caption-text">评分组件</span><a class="headerlink" href="#id20" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="id10">
 <h3><span class="section-number">10.5.3.4. </span>首页<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">src/views/Home.vue</span></code></p>
@@ -630,14 +623,12 @@ Composition API 中，我们使用 <code class="docutils literal notranslate"><s
 </ol>
 <p>个性化推荐调用了上一节实现的推荐
 API，会执行完整的推荐流程：冷启动检测、多路召回、精准排序、多样性重排。</p>
-<!-- TODO: Screenshot - 首页对比：左侧未登录状态（无 For You 行），右侧已登录状态（显示 For You 个性化推荐行） --><figure class="align-default" id="id21">
+<!-- TODO: Screenshot - 首页对比：左侧未登录状态（无 For You 行），右侧已登录状态（显示 For You 个性化推荐行） --><div class="figure align-default" id="id21">
 <span id="frontend-home-login"></span><a class="reference internal image-reference" href="../_images/frontend_home_login.png"><img alt="../_images/frontend_home_login.png" src="../_images/frontend_home_login.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图10.5.6 </span><span class="caption-text">首页对比</span><a class="headerlink" href="#id21" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="id11">
+<p class="caption"><span class="caption-number">图10.5.6 </span><span class="caption-text">首页对比</span><a class="headerlink" href="#id21" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="id11">
 <h3><span class="section-number">10.5.3.5. </span>电影详情页<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">src/views/MovieDetail.vue</span></code></p>
@@ -676,17 +667,15 @@ API，会执行完整的推荐流程：冷启动检测、多路召回、精准�
 </pre></div>
 </div>
 <p>用户的评分行为会被后端记录，影响该用户未来的推荐结果。</p>
-<!-- TODO: Screenshot - 电影详情页完整截图：Hero 区域（海报+信息+评分组件）+ 演员阵容 + 主创信息 --><figure class="align-default" id="id22">
+<!-- TODO: Screenshot - 电影详情页完整截图：Hero 区域（海报+信息+评分组件）+ 演员阵容 + 主创信息 --><div class="figure align-default" id="id22">
 <span id="frontend-movie-detail"></span><a class="reference internal image-reference" href="../_images/frontend_movie_detail.png"><img alt="../_images/frontend_movie_detail.png" src="../_images/frontend_movie_detail.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图10.5.7 </span><span class="caption-text">电影详情页</span><a class="headerlink" href="#id22" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-</section>
-<section id="api">
+<p class="caption"><span class="caption-number">图10.5.7 </span><span class="caption-text">电影详情页</span><a class="headerlink" href="#id22" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="api">
 <h2><span class="section-number">10.5.4. </span>API 集成与状态管理<a class="headerlink" href="#api" title="Permalink to this heading">¶</a></h2>
-<section id="id12">
+<div class="section" id="id12">
 <h3><span class="section-number">10.5.4.1. </span>API 服务封装<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">src/services/api.js</span></code></p>
@@ -720,8 +709,8 @@ Promise、请求拦截、响应拦截等功能。</p>
 </div>
 <p>需要用户认证的 API 会从 <code class="docutils literal notranslate"><span class="pre">localStorage</span></code> 读取 token
 并添加到请求头中。这种设计将认证逻辑集中在 API 层。</p>
-</section>
-<section id="id13">
+</div>
+<div class="section" id="id13">
 <h3><span class="section-number">10.5.4.2. </span>用户状态管理<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">src/stores/auth.js</span></code></p>
@@ -778,15 +767,13 @@ Store 中的状态，状态变化时相关组件会自动更新。</p>
 <li><p><strong>集中管理</strong>：登录、登出逻辑集中在 Store
 中，各组件只需调用方法，不需要重复实现</p></li>
 </ol>
-<!-- TODO: Screenshot - 个人中心页面：用户信息 + 偏好类型 + 常看类型 + 最近评分历史 --><figure class="align-default" id="id23">
+<!-- TODO: Screenshot - 个人中心页面：用户信息 + 偏好类型 + 常看类型 + 最近评分历史 --><div class="figure align-default" id="id23">
 <span id="frontend-profile"></span><a class="reference internal image-reference" href="../_images/frontend_profile.png"><img alt="../_images/frontend_profile.png" src="../_images/frontend_profile.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图10.5.8 </span><span class="caption-text">个人中心</span><a class="headerlink" href="#id23" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-</section>
-<section id="id14">
+<p class="caption"><span class="caption-number">图10.5.8 </span><span class="caption-text">个人中心</span><a class="headerlink" href="#id23" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="id14">
 <h2><span class="section-number">10.5.5. </span>搜索功能实现<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h2>
 <blockquote>
 <div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">src/components/SearchOverlay.vue</span></code></p>
@@ -827,14 +814,12 @@ Store 中的状态，状态变化时相关组件会自动更新。</p>
 后才会发起搜索请求。这样既保证了响应速度，又避免了过多的 API 调用。</p>
 <p>搜索 API 调用后端的 Elasticsearch
 服务，支持对电影标题、类型、简介的模糊匹配和相关性排序。</p>
-<!-- TODO: Screenshot - 搜索功能：搜索遮罩层打开状态，输入关键词后显示搜索结果网格 --><figure class="align-default" id="id24">
+<!-- TODO: Screenshot - 搜索功能：搜索遮罩层打开状态，输入关键词后显示搜索结果网格 --><div class="figure align-default" id="id24">
 <span id="frontend-search"></span><a class="reference internal image-reference" href="../_images/frontend_search.png"><img alt="../_images/frontend_search.png" src="../_images/frontend_search.png" style="width: 550px;" /></a>
-<figcaption>
-<p><span class="caption-number">图10.5.9 </span><span class="caption-text">搜索功能</span><a class="headerlink" href="#id24" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="id15">
+<p class="caption"><span class="caption-number">图10.5.9 </span><span class="caption-text">搜索功能</span><a class="headerlink" href="#id24" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="id15">
 <h2><span class="section-number">10.5.6. </span>用户认证与冷启动<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h2>
 <blockquote>
 <div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">src/views/Auth.vue</span></code></p>
@@ -867,14 +852,12 @@ Store 中的状态，状态变化时相关组件会自动更新。</p>
 </pre></div>
 </div>
 <p>用户在注册时选择的偏好类型会保存到数据库，供在线流程的冷启动模块使用。</p>
-<!-- TODO: Screenshot - 注册页面：显示偏好类型选择区域，部分类型已选中 --><figure class="align-default" id="id25">
+<!-- TODO: Screenshot - 注册页面：显示偏好类型选择区域，部分类型已选中 --><div class="figure align-default" id="id25">
 <span id="frontend-signup"></span><a class="reference internal image-reference" href="../_images/frontend_signup.png"><img alt="../_images/frontend_signup.png" src="../_images/frontend_signup.png" style="width: 300px;" /></a>
-<figcaption>
-<p><span class="caption-number">图10.5.10 </span><span class="caption-text">注册页面</span><a class="headerlink" href="#id25" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-</section>
+<p class="caption"><span class="caption-number">图10.5.10 </span><span class="caption-text">注册页面</span><a class="headerlink" href="#id25" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
 
 
         </div>

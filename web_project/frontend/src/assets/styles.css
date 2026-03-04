@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 电影横向滚动行的自定义滚动条样式 */
+.movie-row-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.movie-row-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.movie-row-container::-webkit-scrollbar-thumb {
+  background: rgba(37, 105, 178, 0.3);
+  border-radius: 4px;
+}
+
+.movie-row-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(37, 105, 178, 0.5);
+}
+
+/* 平滑过渡动画 */
+.movie-card {
+  transition: transform 0.3s ease, z-index 0s 0.3s;
+}
+
+.movie-card:hover {
+  transform: scale(1.08);
+  z-index: 10;
+  transition: transform 0.3s ease, z-index 0s 0s;
+}
+
+/* 加载骨架屏动画 */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(
+    to right,
+    #E5E7EB 0%,
+    #F3F4F6 50%,
+    #E5E7EB 100%
+  );
+  background-size: 1000px 100%;
+}
+

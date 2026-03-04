@@ -6,3 +6,156 @@
 
 
 本书中使用的符号概述如下。
+
+数字
+----
+
+-  :math:`x`\ ：标量
+-  :math:`\mathbf{x}`\ ：向量
+-  :math:`\mathbf{X}`\ ：矩阵
+-  :math:`\mathsf{X}`\ ：张量
+-  :math:`\mathbf{I}`\ ：单位矩阵
+-  :math:`x_i`\ ，\ :math:`[\mathbf{x}]_i`\ ：向量 :math:`\mathbf{x}`
+   的第 :math:`i` 个元素
+-  :math:`x_{ij}`\ ，\ :math:`[\mathbf{X}]_{ij}`\ ：矩阵
+   :math:`\mathbf{X}` 第 :math:`i` 行第 :math:`j` 列的元素
+
+集合论
+------
+
+-  :math:`\mathcal{X}`\ ：集合
+-  :math:`\mathbb{Z}`\ ：整数集合
+-  :math:`\mathbb{R}`\ ：实数集合
+-  :math:`\mathbb{R}^n`\ ：\ :math:`n` 维实数向量集合
+-  :math:`\mathbb{R}^{a \times b}`\ ：包含 :math:`a` 行和 :math:`b`
+   列的实数矩阵集合
+-  :math:`\mathcal{A} \cup \mathcal{B}`\ ：集合 :math:`\mathcal{A}` 和
+   :math:`\mathcal{B}` 的并集
+-  :math:`\mathcal{A} \cap \mathcal{B}`\ ：集合 :math:`\mathcal{A}` 和
+   :math:`\mathcal{B}` 的交集
+-  :math:`\mathcal{A} \setminus \mathcal{B}`\ ：集合 :math:`\mathcal{A}`
+   与集合 :math:`\mathcal{B}` 相减，\ :math:`\mathcal{B}` 关于
+   :math:`\mathcal{A}` 的相对补集
+-  :math:`|\mathcal{X}|`\ ：集合 :math:`\mathcal{X}` 的基数（元素个数）
+
+推荐系统
+--------
+
+-  :math:`u`\ ，\ :math:`v`\ ：用户
+-  :math:`i`\ ，\ :math:`j`\ ，\ :math:`k`\ ：物品
+-  :math:`\mathcal{U}`\ ：用户全集
+-  :math:`\mathcal{I}`\ ：物品全集
+-  :math:`c`\ ：上下文（场景、会话信息）
+-  :math:`r_{ui}`\ ：用户 :math:`u` 对物品 :math:`i` 的评分或反馈
+-  :math:`\hat{r}_{ui}`\ ：用户 :math:`u` 对物品 :math:`i` 的预测评分
+-  :math:`\hat{y}`\ ：模型预测输出（如点击率预估值）
+-  :math:`N(u)`\ ：用户 :math:`u` 有过交互的物品集合
+-  :math:`N(i)`\ ：与物品 :math:`i` 有过交互的用户集合
+-  :math:`w_{ij}`\ ：物品 :math:`i` 与物品 :math:`j` 之间的相似度
+-  :math:`w_{uv}`\ ：用户 :math:`u` 与用户 :math:`v` 之间的相似度
+-  :math:`\mathbf{p}_u`\ ：用户 :math:`u` 的隐向量（潜在特征向量）
+-  :math:`\mathbf{q}_i`\ ：物品 :math:`i` 的隐向量（潜在特征向量）
+-  :math:`\mathcal{S}`\ ：用户交互序列数据集
+-  :math:`\mathcal{S}^u`\ ：用户 :math:`u` 的历史交互序列
+-  :math:`i_{1:T}`\ ：长度为 :math:`T` 的物品交互序列
+-  :math:`i_{<t}`\ ：序列中时刻 :math:`t` 之前的所有物品
+   :math:`(i_1, i_2, \ldots, i_{t-1})`
+-  :math:`pCTR`\ ：点击率预估值（Predicted Click-Through Rate）
+-  :math:`pCVR`\ ：转化率预估值（Predicted Conversion Rate）
+-  :math:`pCTCVR`\ ：点击后转化率联合预估值，即 :math:`pCTR \times pCVR`
+
+深度学习
+--------
+
+-  :math:`\theta`\ ：模型参数
+-  :math:`\mathbf{W}^{(l)}`\ ，\ :math:`\mathbf{b}^{(l)}`\ ：第
+   :math:`l` 层神经网络的权重矩阵和偏置向量
+-  :math:`a^{(l)}`\ ：第 :math:`l` 层的激活输出向量
+-  :math:`d`\ ：隐层维度或嵌入维度
+-  :math:`n`\ ：序列长度
+-  :math:`h`\ ：多头注意力的头数
+-  :math:`d_k`\ ：注意力机制中查询/键的维度
+-  :math:`\mathbf{Q}`\ ，\ :math:`\mathbf{K}`\ ，\ :math:`\mathbf{V}`\ ：注意力机制中的查询、键、值矩阵
+-  :math:`\mathbf{W}^Q`\ ，\ :math:`\mathbf{W}^K`\ ，\ :math:`\mathbf{W}^V`\ ：查询、键、值的投影权重矩阵
+-  :math:`\mathbf{e}_i`\ ：第 :math:`i` 个特征域或第 :math:`i`
+   个物品的嵌入向量
+-  :math:`\mathbf{E}`\ ：码本矩阵，包含 :math:`K` 个码字（codeword）
+-  :math:`\mathbf{z}_e`\ ：编码器的连续潜在输出向量
+-  :math:`\mathbf{z}_q`\ ：向量量化后的离散近似向量
+-  :math:`K`\ ：码本大小（码字数量）或专家网络数量
+-  :math:`L`\ ：残差量化（RQ-VAE）的量化层数
+-  :math:`\text{sg}[\cdot]`\ ：停止梯度算子（stop-gradient），阻断梯度传递
+
+函数和运算符
+------------
+
+-  :math:`f(\cdot)`\ ：函数
+-  :math:`\log(\cdot)`\ ：自然对数
+-  :math:`\exp(\cdot)`\ ：指数函数
+-  :math:`\mathbf{1}_{\mathcal{X}}`\ ：指示函数
+-  :math:`(\cdot)^\top`\ ：向量或矩阵的转置
+-  :math:`\mathbf{X}^{-1}`\ ：矩阵的逆
+-  :math:`\odot`\ ：按元素相乘（Hadamard 积）
+-  :math:`\oplus`\ ：向量拼接（concatenation）
+-  :math:`[\cdot, \cdot]`\ ：连结
+-  :math:`\langle \mathbf{x}, \mathbf{y} \rangle`\ ：向量
+   :math:`\mathbf{x}` 和 :math:`\mathbf{y}` 的点积
+-  :math:`\|\cdot\|_p`\ ：\ :math:`L_p` 正则
+-  :math:`\|\cdot\|`\ ：\ :math:`L_2` 正则
+-  :math:`\sigma(\cdot)`\ ：Sigmoid
+   函数，\ :math:`\sigma(x) = 1/(1+e^{-x})`
+-  :math:`\text{softmax}(\cdot)`\ ：Softmax 归一化函数
+-  :math:`\text{ReLU}(\cdot)`\ ：线性整流函数，\ :math:`\text{ReLU}(x) = \max(0, x)`
+-  :math:`\text{tanh}(\cdot)`\ ：双曲正切函数
+-  :math:`\sum`\ ：连加
+-  :math:`\prod`\ ：连乘
+-  :math:`\overset{\text{def}}{=}`\ ：定义
+-  :math:`\arg\max`\ ，\ :math:`\arg\min`\ ：取最大值/最小值时对应的参数
+
+微积分
+------
+
+-  :math:`\frac{dy}{dx}`\ ：\ :math:`y` 关于 :math:`x` 的导数
+-  :math:`\frac{\partial y}{\partial x}`\ ：\ :math:`y` 关于 :math:`x`
+   的偏导数
+-  :math:`\nabla_{\mathbf{x}} y`\ ：\ :math:`y` 关于 :math:`\mathbf{x}`
+   的梯度
+-  :math:`\int_a^b f(x) \, dx`\ ：\ :math:`f` 在 :math:`a` 到 :math:`b`
+   区间上关于 :math:`x` 的定积分
+-  :math:`\int f(x) \, dx`\ ：\ :math:`f` 关于 :math:`x` 的不定积分
+
+概率与信息论
+------------
+
+-  :math:`P(\cdot)`\ ：概率分布
+-  :math:`z \sim P`\ ：随机变量 :math:`z` 具有概率分布 :math:`P`
+-  :math:`P(X \mid Y)`\ ：\ :math:`X` 给定 :math:`Y` 的条件概率
+-  :math:`p(x)`\ ：概率密度函数
+-  :math:`E_z[f(x)]`\ ：函数 :math:`f` 对 :math:`z` 的数学期望
+-  :math:`X \perp Y`\ ：随机变量 :math:`X` 和 :math:`Y` 是独立的
+-  :math:`\text{Var}(X)`\ ：随机变量 :math:`X` 的方差
+-  :math:`\sigma_X`\ ：随机变量 :math:`X` 的标准差
+-  :math:`\mathcal{L}`\ ：损失函数（目标函数）
+-  :math:`D_\text{KL}(P \| Q)`\ ：\ :math:`P` 和 :math:`Q` 的 KL 散度
+-  :math:`H(X)`\ ：随机变量 :math:`X` 的熵
+
+扩散模型
+--------
+
+-  :math:`x_0`\ ：原始数据样本
+-  :math:`x_t`\ ：经过 :math:`t` 步前向加噪后的含噪潜变量
+-  :math:`T`\ ：扩散过程总步数
+-  :math:`\beta_t \in (0, 1)`\ ：第 :math:`t` 步的噪声强度系数
+-  :math:`\alpha_t = 1 - \beta_t`\ ：第 :math:`t` 步的信号保留率
+-  :math:`\bar{\alpha}_t = \prod_{i=1}^{t} \alpha_i`\ ：累积信号保留率
+-  :math:`\varepsilon \sim \mathcal{N}(0, \mathbf{I})`\ ：标准高斯噪声
+-  :math:`\varepsilon_\theta(x_t, t)`\ ：噪声预测网络（以 :math:`\theta`
+   为参数）
+-  :math:`q(x_t \mid x_{t-1})`\ ：前向扩散过程的条件分布
+-  :math:`p_\theta(x_{t-1} \mid x_t)`\ ：以 :math:`\theta`
+   为参数的逆向去噪分布
+
+复杂度
+------
+
+-  :math:`\mathcal{O}`\ ：大 :math:`O` 标记
