@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -111,21 +112,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
@@ -165,18 +180,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -253,21 +262,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
@@ -307,18 +330,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -366,11 +383,11 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="sec-projects-deployment">
+  <section id="sec-projects-deployment">
 <span id="id1"></span><h1><span class="section-number">10.6. </span>部署与运维<a class="headerlink" href="#sec-projects-deployment" title="Permalink to this heading">¶</a></h1>
 <p>在前面的章节中，我们完成了离线流程、在线流程和前端应用的开发。各个模块在本地开发环境中可以正常运行，但如何将它们组合成一个完整的系统，并且能够在其他机器上快速部署？本节将介绍使用
 Docker Compose 进行容器化部署的方法。</p>
-<div class="section" id="docker-compose">
+<section id="docker-compose">
 <h2><span class="section-number">10.6.1. </span>为什么使用 Docker Compose<a class="headerlink" href="#docker-compose" title="Permalink to this heading">¶</a></h2>
 <p>本项目依赖多个服务：PostgreSQL 存储业务数据，Redis
 缓存用户特征，Elasticsearch 提供搜索功能。加上后端 API
@@ -388,12 +405,12 @@ YAML
 <li><p><strong>隔离与安全</strong>：各服务在独立的容器中运行，相互隔离。即使某个服务出现问题，也不会影响其他服务。</p></li>
 <li><p><strong>易于扩展</strong>：需要增加新服务时，只需在配置文件中添加相应的定义，不需要修改现有服务的配置。</p></li>
 </ol>
-</div>
-<div class="section" id="id2">
+</section>
+<section id="id2">
 <h2><span class="section-number">10.6.2. </span>Docker Compose 配置详解<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>本项目的 <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>
 文件定义了六个服务。我们逐一介绍每个服务的配置。</p>
-<div class="section" id="postgresql">
+<section id="postgresql">
 <h3><span class="section-number">10.6.2.1. </span>数据库服务（PostgreSQL）<a class="headerlink" href="#postgresql" title="Permalink to this heading">¶</a></h3>
 <p>PostgreSQL 是系统的主数据库，存储用户信息、电影信息和评分记录。</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
@@ -424,8 +441,8 @@ YAML
 <li><p><code class="docutils literal notranslate"><span class="pre">networks</span></code>：将服务加入 <code class="docutils literal notranslate"><span class="pre">funrec-network</span></code>
 网络，使其能够与其他服务通信。</p></li>
 </ul>
-</div>
-<div class="section" id="redis">
+</section>
+<section id="redis">
 <h3><span class="section-number">10.6.2.2. </span>缓存服务（Redis）<a class="headerlink" href="#redis" title="Permalink to this heading">¶</a></h3>
 <p>Redis 用于缓存用户画像和行为序列，支持在线推理时的快速特征读取。</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">redis</span><span class="p">:</span>
@@ -447,8 +464,8 @@ YAML
 <p><code class="docutils literal notranslate"><span class="pre">healthcheck</span></code> 定义了健康检查机制。Docker 会定期执行 <code class="docutils literal notranslate"><span class="pre">redis-cli</span> <span class="pre">ping</span></code>
 命令，如果连续 5 次超时（每次 3 秒）则认为服务不健康。依赖 Redis
 的服务可以等待 Redis 健康后再启动。</p>
-</div>
-<div class="section" id="elasticsearch">
+</section>
+<section id="elasticsearch">
 <h3><span class="section-number">10.6.2.3. </span>搜索服务（Elasticsearch）<a class="headerlink" href="#elasticsearch" title="Permalink to this heading">¶</a></h3>
 <p>Elasticsearch 提供电影的全文搜索功能，支持标题、类型、演员的模糊匹配。</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">elasticsearch</span><span class="p">:</span>
@@ -479,8 +496,8 @@ YAML
 <li><p><code class="docutils literal notranslate"><span class="pre">ES_JAVA_OPTS</span></code>：限制 JVM 堆内存为 512MB。Elasticsearch
 默认会使用较多内存，在开发机上需要限制。</p></li>
 </ul>
-</div>
-<div class="section" id="id3">
+</section>
+<section id="id3">
 <h3><span class="section-number">10.6.2.4. </span>后端服务<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
 <p>后端服务是 FastAPI 应用，提供推荐 API、用户认证、电影搜索等功能。</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">backend</span><span class="p">:</span>
@@ -553,8 +570,8 @@ PostgreSQL、Redis 等服务，再启动后端。</p></li>
 </div>
 <p>Dockerfile
 采用分层构建：先安装依赖，再复制代码。这样修改代码时不需要重新安装依赖，加快构建速度。</p>
-</div>
-<div class="section" id="id4">
+</section>
+<section id="id4">
 <h3><span class="section-number">10.6.2.5. </span>前端服务<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
 <p>前端服务使用多阶段构建，先用 Node.js 构建静态文件，再用 Nginx 提供服务。</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">frontend</span><span class="p">:</span>
@@ -589,8 +606,8 @@ PostgreSQL、Redis 等服务，再启动后端。</p></li>
 </div>
 <p>多阶段构建的优势是最终镜像只包含构建产物和 Nginx，不包含 Node.js
 和开发依赖，镜像体积更小。</p>
-</div>
-<div class="section" id="id5">
+</section>
+<section id="id5">
 <h3><span class="section-number">10.6.2.6. </span>网络与数据<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <p>配置文件的末尾定义了共享的网络和数据卷：</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">volumes</span><span class="p">:</span>
@@ -605,11 +622,11 @@ PostgreSQL、Redis 等服务，再启动后端。</p></li>
 </div>
 <p>所有服务加入同一个桥接网络
 <code class="docutils literal notranslate"><span class="pre">funrec-network</span></code>，可以通过服务名相互访问。命名卷用于持久化各服务的数据，即使容器删除，数据也不会丢失。</p>
-</div>
-</div>
-<div class="section" id="id6">
+</section>
+</section>
+<section id="id6">
 <h2><span class="section-number">10.6.3. </span>环境准备与启动流程<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
-<div class="section" id="id7">
+<section id="id7">
 <h3><span class="section-number">10.6.3.1. </span>前置条件<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <p>在开始部署之前，需要确保系统已安装以下工具：</p>
 <ul class="simple">
@@ -626,8 +643,8 @@ docker<span class="w"> </span>compose<span class="w"> </span>version
 uv<span class="w"> </span>--version
 </pre></div>
 </div>
-</div>
-<div class="section" id="id8">
+</section>
+<section id="id8">
 <h3><span class="section-number">10.6.3.2. </span>数据准备<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
 <p>本项目使用预处理后的 MovieLens-1M
 数据集。数据包含用户信息、电影信息（含海报）和评分记录。</p>
@@ -646,8 +663,8 @@ uv<span class="w"> </span>--version
     └── ...
 </pre></div>
 </div>
-</div>
-<div class="section" id="id9">
+</section>
+<section id="id9">
 <h3><span class="section-number">10.6.3.3. </span>环境变量配置<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
 <p>项目根目录下有一个 <code class="docutils literal notranslate"><span class="pre">.env.example</span></code>
 文件，包含了所需的环境变量模板。复制这个文件并配置：</p>
@@ -665,8 +682,8 @@ cp<span class="w"> </span>.env.example<span class="w"> </span>.env
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">FUNREC_PROCESSED_DATA_PATH</span></code>
 用于存储特征工程和模型训练的中间产物，需要设置为一个可写的目录。</p>
-</div>
-<div class="section" id="id10">
+</section>
+<section id="id10">
 <h3><span class="section-number">10.6.3.4. </span>启动基础设施<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h3>
 <p>环境准备完成后，启动所有服务：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
@@ -684,8 +701,8 @@ cp<span class="w"> </span>.env.example<span class="w"> </span>.env
 docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>backend<span class="w">   </span><span class="c1"># 只看后端日志</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id11">
+</section>
+<section id="id11">
 <h3><span class="section-number">10.6.3.5. </span>运行离线流程<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
 <p>服务启动后，需要运行离线流程来训练模型和初始化数据。</p>
 <p>首先进入后端目录并安装依赖：</p>
@@ -705,8 +722,8 @@ uv<span class="w"> </span>sync
 <li><p>模型部署：将模型文件部署到共享目录</p></li>
 </ol>
 <p>整个过程大约需要 10-20 分钟，取决于机器性能。</p>
-</div>
-<div class="section" id="id12">
+</section>
+<section id="id12">
 <h3><span class="section-number">10.6.3.6. </span>加载数据到数据库<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
 <p>离线流程完成后，将业务数据加载到 PostgreSQL：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>ingest-data-to-database
@@ -718,24 +735,19 @@ uv<span class="w"> </span>sync
 <li><p>导入用户、电影、评分数据</p></li>
 <li><p>创建测试用户（<code class="docutils literal notranslate"><span class="pre">test&#64;funrec.com</span></code> / <code class="docutils literal notranslate"><span class="pre">test123456</span></code>）</p></li>
 </ol>
-</div>
-<div class="section" id="id13">
+</section>
+<section id="id13">
 <h3><span class="section-number">10.6.3.7. </span>索引电影到搜索引擎<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h3>
 <p>将电影数据索引到 Elasticsearch，支持搜索功能：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>index-movies-to-elasticsearch
 </pre></div>
 </div>
 <p>索引完成后，电影的标题、类型、演员等字段就可以被搜索了。</p>
-</div>
-<div class="section" id="id14">
+</section>
+<section id="id14">
 <h3><span class="section-number">10.6.3.8. </span>访问应用<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h3>
 <p>所有步骤完成后，可以通过以下地址访问应用：</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 51%" />
-<col style="width: 24%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>服务</p></th>
 <th class="head"><p>地址</p></th>
@@ -767,12 +779,12 @@ uv<span class="w"> </span>sync
 <li><p>Password: <code class="docutils literal notranslate"><span class="pre">test123456</span></code></p></li>
 </ul>
 <p>登录后可以看到个性化推荐、搜索电影、查看电影详情、提交评分等功能。</p>
-</div>
-</div>
-<div class="section" id="id15">
+</section>
+</section>
+<section id="id15">
 <h2><span class="section-number">10.6.4. </span>服务健康检查与调试<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h2>
 <p>部署过程中可能会遇到各种问题。本节介绍如何检查各服务的运行状态，以及常见问题的排查方法。</p>
-<div class="section" id="id16">
+<section id="id16">
 <h3><span class="section-number">10.6.4.1. </span>检查服务状态<a class="headerlink" href="#id16" title="Permalink to this heading">¶</a></h3>
 <p>使用 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">ps</span></code> 查看所有容器的状态：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>ps
@@ -789,8 +801,8 @@ uv<span class="w"> </span>sync
 </div>
 <p>所有服务的状态应该显示为 <code class="docutils literal notranslate"><span class="pre">Up</span></code>。如果某个服务显示 <code class="docutils literal notranslate"><span class="pre">Exited</span></code> 或
 <code class="docutils literal notranslate"><span class="pre">Restarting</span></code>，说明启动失败，需要查看日志排查原因。</p>
-</div>
-<div class="section" id="id17">
+</section>
+<section id="id17">
 <h3><span class="section-number">10.6.4.2. </span>验证各服务<a class="headerlink" href="#id17" title="Permalink to this heading">¶</a></h3>
 <p><strong>后端 API</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:8000/health
@@ -821,8 +833,8 @@ uv<span class="w"> </span>sync
 </pre></div>
 </div>
 <p>正常响应会返回 Elasticsearch 的版本信息。</p>
-</div>
-<div class="section" id="id18">
+</section>
+<section id="id18">
 <h3><span class="section-number">10.6.4.3. </span>查看 Redis 中的数据<a class="headerlink" href="#id18" title="Permalink to this heading">¶</a></h3>
 <p>离线流程完成后，可以验证用户特征是否已写入 Redis：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 查看某用户的偏好类型</span>
@@ -832,8 +844,8 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>funrec-redis<span class="w"> </span>redis-cli<span class="w"> </span>llen<span class="w"> </span>user:6041:history
 </pre></div>
 </div>
-</div>
-<div class="section" id="id19">
+</section>
+<section id="id19">
 <h3><span class="section-number">10.6.4.4. </span>常见问题排查<a class="headerlink" href="#id19" title="Permalink to this heading">¶</a></h3>
 <p><strong>问题：容器启动失败</strong></p>
 <p>查看失败容器的日志：</p>
@@ -872,9 +884,9 @@ connections”，说明数据库已就绪。</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>index-movies-to-elasticsearch
 </pre></div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
         </div>

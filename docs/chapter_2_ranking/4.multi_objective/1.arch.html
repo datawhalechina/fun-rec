@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -113,21 +114,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. 精准偏好预测</a><ul class="current">
@@ -167,18 +182,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -255,21 +264,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. 精准偏好预测</a><ul class="current">
@@ -309,18 +332,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -368,9 +385,9 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="multi-objective-arch">
+  <section id="multi-objective-arch">
 <span id="id1"></span><h1><span class="section-number">3.4.1. </span>基础结构演进<a class="headerlink" href="#multi-objective-arch" title="Permalink to this heading">¶</a></h1>
-<div class="section" id="shared-bottom">
+<section id="shared-bottom">
 <h2><span class="section-number">3.4.1.1. </span>Shared-Bottom<a class="headerlink" href="#shared-bottom" title="Permalink to this heading">¶</a></h2>
 <p>Shared-Bottom <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id90" title="Caruana, R. (1997). Multitask learning. Machine learning, 28(1), 41–75.">Caruana, 1997</a>)</span>
 模型作为多目标建模的奠基性架构，采用“共享地基+独立塔楼”的设计范式。其核心结构包含两个关键组件：</p>
@@ -380,10 +397,12 @@ Bottom）：所有任务共用同一组特征转换层，负责学习跨任务�
 <li><p>任务特定塔（Task-Specific
 Towers）：每个任务拥有独立的顶层网络，基于共享表示学习任务特定决策边界。</p></li>
 </ul>
-<div class="figure align-default" id="id3">
+<figure class="align-default" id="id3">
 <span id="shared-bottom-model-structure"></span><a class="reference internal image-reference" href="../../_images/shared-bottom.png"><img alt="../../_images/shared-bottom.png" src="../../_images/shared-bottom.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.1 </span><span class="caption-text">Shared-Bottom</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.1 </span><span class="caption-text">Shared-Bottom</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>这种架构的数学表达可描述为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-1-arch-0">
 <span class="eqno">(3.4.1)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-1-arch-0" title="Permalink to this equation">¶</a></span>\[\hat{y}_t = f_t(W_t \cdot g(W_s \mathbf{x}))\]</div>
@@ -445,21 +464,23 @@ DNN网络，遍历创建各个任务独立的DNN塔，最后输出多个塔的�
 <span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;shared_bottom&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████| 16/16 [00:00&lt;00:00, 108065.80it/s]
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 16/16 [00:00&lt;00:00, 8089.30it/s]
 +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   val_user_is_click |   val_user_is_like |   val_user_long_view |
 +================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+
-|         0.5942 |        0.4359 |          0.4243 |      0.4848 |          0.5726 |         0.4425 |           0.4379 |       0.4843 |                 928 |                530 |                  925 |
+|         0.6023 |        0.3979 |          0.4264 |      0.4755 |          0.5708 |         0.4358 |           0.4515 |        0.486 |                 928 |                530 |                  925 |
 +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 </pre></div>
 </div>
-</div>
-<div class="section" id="mmoe">
+</section>
+<section id="mmoe">
 <h2><span class="section-number">3.4.1.2. </span>MMoE<a class="headerlink" href="#mmoe" title="Permalink to this heading">¶</a></h2>
-<div class="figure align-default" id="id4">
+<figure class="align-default" id="id4">
 <span id="mmoe-model-structure"></span><a class="reference internal image-reference" href="../../_images/mmoe.png"><img alt="../../_images/mmoe.png" src="../../_images/mmoe.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.2 </span><span class="caption-text">MMoE模型结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.2 </span><span class="caption-text">MMoE模型结构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>针对Shared-Bottom对相关性低的多个任务出现负迁移的现象，OMoE（OneGate
 Mixture-of-Experts）将底层共享的一个Shared-Bottom模块拆分成了多个Expert，最终OMoE的输出为多个Expert的加权和，本质可以看成是专家网络和全局门控的双层结构。</p>
 <p>虽然OMoE通过底层多专家融合的方式提升了特征表征的多样性，从最终的实验结果看，确实可以一定程度上缓解低相关性任务的负迁移问题，但没有彻底解决多任务冲突的问题。因为不同任务反向传播的梯度还是会直接影响底层专家网络的学习。</p>
@@ -534,16 +555,16 @@ g_t(\mathbf{x}) &amp;= \text{softmax}(\mathbf{W}_t \mathbf{x}) \\
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;mmoe&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████| 16/16 [00:00&lt;00:00, 290514.56it/s]
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 16/16 [00:00&lt;00:00, 4845.41it/s]
 +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   val_user_is_click |   val_user_is_like |   val_user_long_view |
 +================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+
-|         0.5992 |        0.4373 |          0.4363 |      0.4909 |           0.573 |         0.4448 |           0.4604 |       0.4927 |                 928 |                530 |                  925 |
+|         0.5991 |        0.4288 |          0.4676 |      0.4985 |          0.5741 |         0.4475 |            0.472 |       0.4979 |                 928 |                530 |                  925 |
 +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 </pre></div>
 </div>
-</div>
-<div class="section" id="ple">
+</section>
+<section id="ple">
 <h2><span class="section-number">3.4.1.3. </span>PLE<a class="headerlink" href="#ple" title="Permalink to this heading">¶</a></h2>
 <p>MMoE
 通过为每个任务配备专属门控网络，在一定程度上缓解了多任务冲突问题。专属门控网络能够根据任务特性选择专家组合，从而使得不同任务可以关注不同的特征表示。但其架构仍存在一个根本性局限：所有专家对所有任务门控可见。这种“软隔离”设计在实践中仍面临两大挑战：</p>
@@ -565,10 +586,12 @@ g_t(\mathbf{x}) &amp;= \text{softmax}(\mathbf{W}_t \mathbf{x}) \\
 <p>为解决上述问题，cite:<code class="docutils literal notranslate"><span class="pre">tang2020progressive</span></code> 提出提出了CGC（Customized
 Gate
 Control）结构，其核心思想是通过硬性结构约束，显式分离共享知识与任务特定知识：</p>
-<div class="figure align-default" id="id5">
+<figure class="align-default" id="id5">
 <span id="cgc-model-structure"></span><a class="reference internal image-reference" href="../../_images/cgc.png"><img alt="../../_images/cgc.png" src="../../_images/cgc.png" style="width: 350px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.3 </span><span class="caption-text">CGC网络结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.3 </span><span class="caption-text">CGC网络结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p><strong>专家职责强制分离</strong>：</p>
 <ul class="simple">
 <li><p>共享专家
@@ -663,10 +686,12 @@ Control）结构，其核心思想是通过硬性结构约束，显式分离共�
 <p>CGC解决了知识分离的核心问题，但其本质是单层结构，表征学习深度有限。受深度神经网络逐层抽象特征的启发，PLE
 (Progressive Layered Extraction)
 将多个CGC单元纵向堆叠，形成深层架构，实现渐进式知识提取与融合。</p>
-<div class="figure align-default" id="id6">
+<figure class="align-default" id="id6">
 <span id="ple-model-structure"></span><a class="reference internal image-reference" href="../../_images/ple.png"><img alt="../../_images/ple.png" src="../../_images/ple.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.4 </span><span class="caption-text">PLE网络结构</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.4 </span><span class="caption-text">PLE网络结构</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <ul class="simple">
 <li><p>第1层 (输入层 CGC)：</p>
 <ul>
@@ -752,16 +777,16 @@ Control）结构，其核心思想是通过硬性结构约束，显式分离共�
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;ple&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████| 16/16 [00:00&lt;00:00, 270600.26it/s]
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 16/16 [00:00&lt;00:00, 54782.75it/s]
 +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 |   auc_is_click |   auc_is_like |   auc_long_view |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_long_view |   gauc_macro |   val_user_is_click |   val_user_is_like |   val_user_long_view |
 +================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+
-|         0.5977 |        0.4208 |          0.4381 |      0.4855 |          0.5751 |         0.4432 |           0.4538 |       0.4907 |                 928 |                530 |                  925 |
+|         0.6061 |         0.444 |          0.4515 |      0.5005 |          0.5733 |          0.442 |           0.4575 |       0.4909 |                 928 |                530 |                  925 |
 +----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>

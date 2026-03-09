@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -112,21 +113,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
@@ -166,18 +181,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -254,21 +263,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
@@ -308,18 +331,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -367,12 +384,12 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="sec-diffusion-basics">
+  <section id="sec-diffusion-basics">
 <span id="id1"></span><h1><span class="section-number">9.1. </span>推荐中的扩散模型基础<a class="headerlink" href="#sec-diffusion-basics" title="Permalink to this heading">¶</a></h1>
 <p>在第5章中，我们已经从架构层面介绍了扩散模型与Transformer的区别和互补关系。本节将系统回顾扩散模型的核心技术原理，并着重讨论将其应用于推荐场景时的特殊考量与设计选择。这些内容将为后续章节中具体方法的理解提供必要的技术铺垫。扩散模型的理论基础主要来自DDPM
 <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id117" title="Ho, J., Jain, A., &amp; Abbeel, P. (2020). Denoising diffusion probabilistic models. Advances in neural information processing systems, 33, 6840–6851.">Ho <em>et al.</em>, 2020</a>)</span>，而其在推荐系统中的应用则以DiffRec
 <span id="id3">(<a class="reference internal" href="../chapter_references/references.html#id137" title="Wang, W., Xu, Y., Feng, F., Lin, X., He, X., &amp; Chua, T.-S. (2023). Diffusion recommender model. Proceedings of the 46th international ACM SIGIR conference on research and development in information retrieval (pp. 832–841).">Wang <em>et al.</em>, 2023</a>)</span> 为代表性工作。</p>
-<div class="section" id="diffusion">
+<section id="diffusion">
 <h2><span class="section-number">9.1.1. </span>Diffusion模型的分类<a class="headerlink" href="#diffusion" title="Permalink to this heading">¶</a></h2>
 <p>Diffusion模型根据其操作空间的不同，可以主要分为两大类：</p>
 <p><strong>数据空间扩散模型（Pixel-Space Diffusion）</strong></p>
@@ -404,11 +421,11 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <li><p><strong>灵活性</strong>：潜在空间的表示可以更方便地与现有的推荐系统架构（如协同过滤、图神经网络等）进行融合，便于工程实现和系统集成。</p></li>
 </ul>
 <p>因此，在本章后续介绍的各类方法中，扩散过程通常在物品的嵌入空间或用户的特征表示空间中进行，而非直接操作原始的稀疏交互矩阵。</p>
-</div>
-<div class="section" id="id6">
+</section>
+<section id="id6">
 <h2><span class="section-number">9.1.2. </span>前向加噪与反向去噪过程<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
 <p>扩散模型的核心思想可以概括为两个互逆的马尔可夫过程：<strong>前向扩散</strong>逐步向数据添加噪声，而<strong>反向去噪</strong>则学习从噪声中恢复原始数据。</p>
-<div class="section" id="id7">
+<section id="id7">
 <h3><span class="section-number">9.1.2.1. </span>前向扩散过程<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <p>给定一个数据样本
 <span class="math notranslate nohighlight">\(\mathbf{x}_0 \sim q(\mathbf{x}_0)\)</span>，前向过程通过 <span class="math notranslate nohighlight">\(T\)</span>
@@ -429,8 +446,8 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <p>其中
 <span class="math notranslate nohighlight">\(\alpha_t = 1 - \beta_t\)</span>，<span class="math notranslate nohighlight">\(\bar{\alpha}_t = \prod_{i=1}^{t}\alpha_i\)</span>。这个性质使得训练时可以高效地采样任意时间步的加噪数据，而无需逐步执行前向过程
 <span id="id8">(<a class="reference internal" href="../chapter_references/references.html#id117" title="Ho, J., Jain, A., &amp; Abbeel, P. (2020). Denoising diffusion probabilistic models. Advances in neural information processing systems, 33, 6840–6851.">Ho <em>et al.</em>, 2020</a>)</span>。</p>
-</div>
-<div class="section" id="id9">
+</section>
+<section id="id9">
 <h3><span class="section-number">9.1.2.2. </span>反向去噪过程<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
 <p>反向过程从 <span class="math notranslate nohighlight">\(\mathbf{x}_T\)</span>
 出发，通过学习到的去噪网络逐步恢复原始数据。每一步的去噪转移定义为：</p>
@@ -440,19 +457,21 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_\theta\)</span>
 是由神经网络参数化的均值和协方差。在实际应用中，协方差通常设为固定值
 <span class="math notranslate nohighlight">\(\sigma^2(t)\mathbf{I}\)</span>，重点学习均值函数。</p>
-<div class="figure align-default" id="id29">
+<figure class="align-default" id="id29">
 <span id="ddpm-forward-backward"></span><a class="reference internal image-reference" href="../_images/ddpm_forward_backward.png"><img alt="../_images/ddpm_forward_backward.png" src="../_images/ddpm_forward_backward.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">图9.1.1 </span><span class="caption-text">前向扩散和反向去噪过程的示意图</span><a class="headerlink" href="#id29" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图9.1.1 </span><span class="caption-text">前向扩散和反向去噪过程的示意图</span><a class="headerlink" href="#id29" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>图片展示了用户交互向量从 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> 逐步添加噪声变为
 <span class="math notranslate nohighlight">\(\mathbf{x}_T\)</span> 的过程（前向扩散），以及从 <span class="math notranslate nohighlight">\(\mathbf{x}_T\)</span>
 逐步恢复 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>
 的过程（反向去噪）。图片来源：<span id="id10">(<a class="reference internal" href="../chapter_references/references.html#id149" title="Luo, C. (2022). Understanding diffusion models: a unified perspective. arXiv preprint arXiv:2208.11970.">Luo, 2022</a>)</span>。</p>
-</div>
-</div>
-<div class="section" id="id11">
+</section>
+</section>
+<section id="id11">
 <h2><span class="section-number">9.1.3. </span>扩散模型的训练与采样<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h2>
-<div class="section" id="elbo">
+<section id="elbo">
 <h3><span class="section-number">9.1.3.1. </span>训练目标：从ELBO到简化损失<a class="headerlink" href="#elbo" title="Permalink to this heading">¶</a></h3>
 <p>扩散模型通过最大化观测数据 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>
 的对数似然下界（ELBO）进行训练：</p>
@@ -471,8 +490,8 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>，因此需要训练网络 <span class="math notranslate nohighlight">\(p_\theta\)</span>
 来近似这个理想过程，使其在没有 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>
 的情况下也能做出接近最优的去噪决策。</p>
-</div>
-<div class="section" id="id12">
+</section>
+<section id="id12">
 <h3><span class="section-number">9.1.3.2. </span>两种参数化方式<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
 <p>在实际实现中，去噪网络可以采用两种不同的参数化方式：</p>
 <p><strong>1. 预测噪声</strong> <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span>：网络
@@ -495,8 +514,8 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 的重建更符合这一任务目标。此外，随机采样的噪声
 <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})\)</span>
 具有较大的方差，迫使网络估计这样不稳定的目标会增加训练难度。</p>
-<!-- **[图片描述]** 建议插入一张对比两种参数化方式的示意图。上半部分展示 $\epsilon$-prediction 的数据流，下半部分展示 $x_0$-prediction 的数据流，并标注各自的损失函数形式和适用场景。 --></div>
-<div class="section" id="id15">
+<!-- **[图片描述]** 建议插入一张对比两种参数化方式的示意图。上半部分展示 $\epsilon$-prediction 的数据流，下半部分展示 $x_0$-prediction 的数据流，并标注各自的损失函数形式和适用场景。 --></section>
+<section id="id15">
 <h3><span class="section-number">9.1.3.3. </span>采样过程<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h3>
 <p>训练完成后，生成新样本的过程如下：</p>
 <ol class="arabic">
@@ -510,8 +529,8 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 </li>
 <li><p>最终得到生成样本 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>。</p></li>
 </ol>
-</div>
-<div class="section" id="id16">
+</section>
+<section id="id16">
 <h3><span class="section-number">9.1.3.4. </span>推荐场景的特殊设计<a class="headerlink" href="#id16" title="Permalink to this heading">¶</a></h3>
 <p>与图像生成不同，推荐场景中的扩散模型通常采用以下特殊设计：</p>
 <p><strong>噪声尺度控制</strong>：标准 DDPM 的前向过程会将数据逐步扩散至纯高斯噪声，即
@@ -525,13 +544,13 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 定义噪声的上下界。</p>
 <p><strong>推理起点选择</strong>：在推理时，我们可以从部分加噪的状态
 <span class="math notranslate nohighlight">\(\mathbf{x}_{T'}\)</span>（<span class="math notranslate nohighlight">\(T' &lt; T\)</span>）开始反向去噪，而非从纯噪声开始。这样既能利用去噪过程的纠错能力处理原始交互中的噪声，又能保留足够的个性化信息。</p>
-</div>
-</div>
-<div class="section" id="id17">
+</section>
+</section>
+<section id="id17">
 <h2><span class="section-number">9.1.4. </span>条件生成与可控性<a class="headerlink" href="#id17" title="Permalink to this heading">¶</a></h2>
 <p>在推荐场景中，我们希望生成过程能够受到用户历史行为、上下文信息等条件的控制。条件扩散模型通过在去噪过程中引入条件信息
 <span class="math notranslate nohighlight">\(\mathbf{c}\)</span> 来实现这一目标。</p>
-<div class="section" id="id18">
+<section id="id18">
 <h3><span class="section-number">9.1.4.1. </span>条件信息的注入<a class="headerlink" href="#id18" title="Permalink to this heading">¶</a></h3>
 <p>条件信息可以通过多种方式融入去噪网络：</p>
 <ul class="simple">
@@ -543,8 +562,8 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <p>训练时的损失函数相应修改为条件形式：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-9">
 <span class="eqno">(9.1.10)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-9" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{cond}} = \mathbb{E}_{t, \mathbf{x}_0, \boldsymbol{\epsilon}, \mathbf{c}}[\|\boldsymbol{\epsilon} - \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t, \mathbf{c})\|^2]\]</div>
-</div>
-<div class="section" id="id19">
+</section>
+<section id="id19">
 <h3><span class="section-number">9.1.4.2. </span>两种引导策略<a class="headerlink" href="#id19" title="Permalink to this heading">¶</a></h3>
 <p>在推理阶段控制生成方向的主要有两种策略：</p>
 <p><strong>1. Classifier-Guided（分类器引导）</strong></p>
@@ -567,8 +586,8 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <p>其中 <span class="math notranslate nohighlight">\(\gamma\)</span> 控制条件的影响强度。较大的 <span class="math notranslate nohighlight">\(\gamma\)</span>
 会增强个性化程度，但可能损害生成质量；较小的 <span class="math notranslate nohighlight">\(\gamma\)</span>
 则生成更多样但个性化程度较低的结果。</p>
-<!-- **[图片描述]** 建议插入一张对比两种引导策略的示意图。左侧展示Classifier-Guided的流程（需要预训练分类器，推理时计算梯度），右侧展示Classifier-Free的流程（训练时随机丢弃条件，推理时线性组合），并标注各自的公式。 --></div>
-<div class="section" id="id23">
+<!-- **[图片描述]** 建议插入一张对比两种引导策略的示意图。左侧展示Classifier-Guided的流程（需要预训练分类器，推理时计算梯度），右侧展示Classifier-Free的流程（训练时随机丢弃条件，推理时线性组合），并标注各自的公式。 --></section>
+<section id="id23">
 <h3><span class="section-number">9.1.4.3. </span>推荐中的条件设计示例<a class="headerlink" href="#id23" title="Permalink to this heading">¶</a></h3>
 <p>以序列推荐为例，条件信息通常是用户的历史交互序列。一种典型的设计是使用Transformer编码器将历史序列
 <span class="math notranslate nohighlight">\(\mathbf{e}_{1:n-1}\)</span> 编码为条件向量：</p>
@@ -584,9 +603,9 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <span id="id26">(<a class="reference internal" href="../chapter_references/references.html#id141" title="Wang, Y., Gao, C., Guo, W., Li, Y., &amp; Wang, D. (2024). Diff-msr: a diffusion model enhanced paradigm for cold-start multi-scenario recommendation. arXiv preprint arXiv:2312.10613.">Wang <em>et al.</em>, 2024</a>)</span>）以及特征增强与多样性优化（AsymDiffRec
 <span id="id27">(<a class="reference internal" href="../chapter_references/references.html#id153" title="Zhu, Y., Jiang, G., Chen, J., Zhang, F., Yang, X., &amp; Liu, Z. (2025). Asymmetric diffusion recommendation model. Proceedings of the 34th ACM International Conference on Information and Knowledge Management (pp. 5535–5539).">Zhu <em>et al.</em>, 2025</a>)</span>、DMSG
 <span id="id28">(<a class="reference internal" href="../chapter_references/references.html#id152" title="Tomasi, F., Fabbri, F., Carter, J., Kalomiris, E., Lalmas, M., &amp; Dai, Z. (2025). Prompt-to-slate: diffusion models for prompt-conditioned slate generation. Proceedings of the Nineteenth ACM Conference on Recommender Systems (pp. 401–410).">Tomasi <em>et al.</em>, 2025</a>)</span>）等任务中。</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
         </div>

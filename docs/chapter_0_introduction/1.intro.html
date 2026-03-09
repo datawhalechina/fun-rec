@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -112,21 +113,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
@@ -166,18 +181,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -254,21 +263,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
@@ -308,18 +331,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -367,11 +384,12 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="id1">
+  <section id="id1">
 <h1><span class="section-number">1.1. </span>推荐系统是什么？<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>当你早晨打开手机，浏览今日头条的新闻推送，或者在淘宝上寻找心仪的商品时，你可能并未意识到，背后有一套复杂而精密的系统正在为你工作。这套系统在毫秒之间做出了成千上万个判断，决定着你将看到哪些内容，错过哪些信息。这就是推荐系统——现代互联网世界中最核心的基础设施之一。</p>
 <p>要真正理解推荐系统，我们不能停留在“它能帮用户找到感兴趣内容”这样的表面描述上。推荐系统的本质，需要我们从三个不同的层次来观察和理解：从最微观的单个预测开始，到工业化的规模流程，再到宏观的生态平衡。只有通过这样的层次递进，我们才能真正把握推荐系统的核心逻辑。</p>
-<p><strong>微观视角：推荐问题的两种根本范式</strong></p>
+<section id="id2">
+<h2><span class="section-number">1.1.1. </span>微观视角：推荐问题的两种根本范式<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>让我们从最基本的单元开始思考。推荐系统面临的核心问题看似简单：如何为用户找到最有价值的内容？但对这个问题的回答方式，存在两种截然不同的思路。在展开它们之前，我们先来理解两种思路共同的基础——推荐系统需要深入理解的三个关键要素。</p>
 <p>想象你正在使用一个视频应用。此时此刻，推荐系统面临的核心问题是：在成千上万个可能的视频中，哪些最有可能与你产生有价值的连接？这里的“连接”不是抽象概念，而是具体的、可观察的行为——你可能会点击某个视频，观看超过30秒，甚至点赞或分享。</p>
 <p>要做出有效的推荐，无论采用哪种范式，系统都需要深入理解三个关键要素。首先是<strong>理解用户</strong>。系统需要知道你是谁，你的兴趣偏好如何。你的历史观看记录是最重要的信号——如果你经常观看科技类视频，这强烈暗示了你的兴趣方向。同时，你的显式反馈（比如你主动点击的“不感兴趣”按钮）和基本画像信息（年龄、地理位置等）也为系统提供了重要线索。更微妙的是，系统还会捕捉你的实时意图——你刚刚搜索了什么关键词，或者在这次会话中点击了哪些内容。所有这些信息汇聚在一起，构成了系统对你这个独特个体的多维度理解。</p>
@@ -379,21 +397,27 @@ Show Source
 <p>最后是<strong>理解场景</strong>。用户和内容的连接从不发生在真空中，场景因素往往决定了推荐的成败。现在是工作日的上午还是周末的深夜？用户是在拥挤的地铁上还是安静的家中？这些看似细微的差别，实际上会显著影响用户的内容偏好。一个在地铁上通勤的用户更可能对短视频感兴趣，而在家中休闲的用户则可能愿意观看较长的深度内容。</p>
 <p>综合这三个要素——用户、物品、场景——推荐系统面临一个根本性的选择：如何利用这些理解来做出推荐？这正是两种范式分道扬镳之处。</p>
 <p><strong>第一种思路是判别式推荐</strong>。它将推荐问题定义为：给定一个具体的用户-物品-场景三元组，预测用户会对这个物品产生正面行为的概率。其核心可以抽象为一个打分函数：<span class="math notranslate nohighlight">\(Score = f(User, Item, Context)\)</span>。系统需要对每个候选物品逐一评估，计算匹配分数，然后择优推荐。这就像一位评委，面对所有参赛选手，逐一打分，最后选出得分最高的几位。</p>
-<div class="figure align-default" id="id2">
+<figure class="align-default" id="id4">
 <span id="score-function"></span><a class="reference internal image-reference" href="../_images/score_function.svg"><img alt="../_images/score_function.svg" src="../_images/score_function.svg" width="300px" /></a>
-<p class="caption"><span class="caption-number">图1.1.1 </span><span class="caption-text">判别式推荐的核心：打分函数</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图1.1.1 </span><span class="caption-text">判别式推荐的核心：打分函数</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>判别式推荐通过整合用户特征(U)、物品特征(I)和场景特征(C)，对每个候选物品逐一打分，预测用户与物品产生有价值连接的可能性。</p>
 <p><strong>第二种思路是生成式推荐</strong>。它从根本上重新定义了问题：不再逐一评估候选物品，而是让模型根据对用户和场景的理解，直接“创作”出推荐结果。其核心可以抽象为一个生成函数：<span class="math notranslate nohighlight">\([I_1, I_2, \ldots, I_k] = g(User, Context)\)</span>。模型以用户的历史交互序列和当前场景作为输入，通过自回归解码直接生成推荐物品的序列。这就像一位了解你品味的朋友，不需要翻遍所有选项，而是直接告诉你“你接下来应该看这几个”。</p>
-<div class="figure align-default" id="id3">
+<figure class="align-default" id="id5">
 <span id="generative-rec"></span><a class="reference internal image-reference" href="../_images/generative_rec.svg"><img alt="../_images/generative_rec.svg" src="../_images/generative_rec.svg" width="300px" /></a>
-<p class="caption"><span class="caption-number">图1.1.2 </span><span class="caption-text">生成式推荐的核心：序列生成</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图1.1.2 </span><span class="caption-text">生成式推荐的核心：序列生成</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>生成式推荐以用户的历史交互和场景为输入，通过生成模型直接输出推荐物品序列，无需逐一评估候选物品。</p>
 <p>两种范式的输入看似相同：都需要理解用户、物品和场景——但它们提出的<strong>问题截然不同</strong>。判别式问的是“这个用户会喜欢这个物品吗？”，生成式问的是“这个用户接下来想看什么？”。前者是在有限候选中<strong>择优</strong>，后者是在开放空间中<strong>创造</strong>。这一差异看似微妙，却深刻地影响了系统架构、优化目标和工程实现的方方面面。</p>
 <p>如果从更纵深的时间线来审视，推荐算法的发展历程呈现出一条清晰的能力演进轨迹，它同时贯穿了判别式与生成式两种范式。最初是<strong>纯ID的记忆</strong>：协同过滤将物品视为不透明的符号，通过记忆“看过A的人也看了B”这样的共现模式来推荐。然后是<strong>深度学习的泛化</strong>：深度网络通过特征交叉和序列建模，将学到的知识泛化到未曾见过的用户-物品组合，但物品本身仍是不携带语义信息的原子ID。接着是<strong>语义ID的理解</strong>：当物品被编码为携带语义的结构化Token时，系统开始真正“理解”物品的内容含义，新物品无需积累行为数据即可被推荐。最前沿的是<strong>大模型的推理</strong>：模型不再隐式计算一个分数，而是显式地分析用户意图、评估匹配逻辑、给出推荐理由，从模式匹配器进化为能解释自身决策的推理者。</p>
 <p>这四个阶段并非简单的线性替代，而是层层叠加、彼此共存。今天的工业级系统中，基于ID的协同过滤仍然是召回的重要通路，深度学习的泛化能力支撑着从召回到排序的各个环节，语义ID和大模型推理则在最前沿的生成式架构中崭露头角。判别式与生成式两种范式在这条演进轨迹上交织前行，共同构成了现代推荐系统的技术全景。</p>
-<p><strong>工业视角：规模化的两条技术路线</strong></p>
+</section>
+<section id="id3">
+<h2><span class="section-number">1.1.2. </span>工业视角：规模化的两条技术路线<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
 <p>理解了推荐的两种基本范式后，我们面临一个共同的现实挑战：规模。一个典型的视频平台拥有数亿用户和上亿个视频，推荐系统需要在毫秒级延迟内完成从海量物品到个性化推荐的全过程。如果页面加载超过几秒钟，大部分用户就会直接离开。</p>
 <blockquote>
 <div><p><strong>这就是推荐系统工程化面临的核心矛盾：如何在极有限的时间内，从海量的候选中找到最优的推荐结果？</strong></p>
@@ -404,18 +428,22 @@ Show Source
 <p>第一阶段是<strong>召回</strong>，其目标是快速从全量物品库中筛选出几千个可能相关的候选。召回阶段奉行“宁可错杀一千，不可放过一个”的策略，它不追求精准，但求全面。为了达到极致的速度，召回模型通常比较简单，使用的特征也相对有限。比如，系统可能使用协同过滤方法快速找到与你品味相似的其他用户，然后推荐他们喜欢的内容；或者基于内容相似性，为你召回与你最近观看内容类似的其他视频。</p>
 <p>经过召回阶段的快速筛选，候选集从上亿缩减到了几千个。这时进入第二阶段——<strong>排序</strong>。排序阶段是预测函数<span class="math notranslate nohighlight">\(f\)</span>真正发挥威力的地方。系统会动用最复杂的模型（往往是深度学习模型），融合用户、物品、场景的所有可用特征，为每个候选物品计算精确的预测分数。这个阶段追求的是预测精度的最大化，计算成本相对较高，但由于候选集已经大幅缩小，整体耗时仍在可接受范围内。</p>
 <p>最后一个阶段是<strong>重排</strong>，其目标是对排序后的结果进行最终优化。重排阶段解决的一个关键问题是：预测分数最高的列表，不一定等于用户体验最佳的列表。系统在这个阶段会考虑多样性、新颖性、公平性等因素。比如，如果排序后的前十个推荐都是同一类型的内容，重排阶段会适当调整，引入一些其他类型的优质内容，避免用户产生审美疲劳。同时，这个阶段也会处理一些业务规则，比如插入必要的广告内容或运营推广的物品。</p>
-<div class="figure align-default" id="id4">
+<figure class="align-default" id="id6">
 <span id="recommendation-pipeline"></span><a class="reference internal image-reference" href="../_images/recommendation_pipeline.svg"><img alt="../_images/recommendation_pipeline.svg" src="../_images/recommendation_pipeline.svg" width="350px" /></a>
-<p class="caption"><span class="caption-number">图1.1.3 </span><span class="caption-text">工业级推荐系统的三阶段流水线架构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图1.1.3 </span><span class="caption-text">工业级推荐系统的三阶段流水线架构</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>通过召回、排序、重排三个阶段，推荐系统将亿级候选逐步筛选为最终推荐列表，在效率与效果之间实现平衡。</p>
 <p>这套三阶段流水线的核心逻辑很简单：<strong>在不同阶段采用不同的策略，逐步从“可能相关”筛选到“最优匹配”</strong>。召回追求速度和覆盖度，排序追求精度，重排追求体验。每个阶段都有其不可替代的价值，共同构成了判别式推荐系统的技术骨架。</p>
 <p><strong>生成式的解法：端到端生成。</strong>
 生成式范式提出了一种截然不同的思路。既然模型可以直接“生成”推荐结果，为什么还需要多阶段的候选筛选呢？生成式推荐将用户的历史交互序列视为“上下文”，通过Transformer等自回归模型直接解码出推荐物品的Token序列——整个过程在一个统一的模型中端到端完成，无需召回、排序、重排的多阶段级联。</p>
-<div class="figure align-default" id="id5">
+<figure class="align-default" id="id7">
 <span id="e2e-generative-pipeline"></span><a class="reference internal image-reference" href="../_images/e2e_generative_pipeline.svg"><img alt="../_images/e2e_generative_pipeline.svg" src="../_images/e2e_generative_pipeline.svg" width="400px" /></a>
-<p class="caption"><span class="caption-number">图1.1.4 </span><span class="caption-text">生成式推荐的端到端架构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图1.1.4 </span><span class="caption-text">生成式推荐的端到端架构</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>生成式推荐将用户历史交互作为上下文输入，通过统一的生成模型直接输出推荐序列，将多阶段级联压缩为端到端的单一过程。</p>
 <p>这种端到端架构消除了多阶段流水线的三个核心痛点：不同阶段之间的<strong>目标不一致</strong>（召回优化相关性、排序优化点击率、重排优化多样性，各自为战）、逐级筛选带来的<strong>信息损失</strong>（召回阶段过滤掉的优质物品在后续阶段永远无法被看到）、以及异构模块导致的<strong>计算碎片化</strong>（不同阶段使用不同模型，难以充分利用现代GPU的算力）。</p>
 <p>当然，端到端生成式架构仍在快速发展中，面临着生成效率、物品空间覆盖、工程化部署等方面的挑战。目前，两种架构在工业界并行发展：判别式流水线通过“分而治之”在成熟场景中稳定服务，生成式架构通过“端到端优化”在前沿探索中展现出巨大潜力。</p>
@@ -435,22 +463,38 @@ Content）</strong>：借助人工智能技术生成的内容，正在快速发�
 <p>这种多元化的内容生产格局为推荐系统带来了新的机遇和复杂性。一方面，丰富的内容来源能够更好地满足用户的个性化需求；另一方面，如何在不同质量层次的内容中进行有效分配，如何平衡专业内容与用户原创内容的曝光机会，成为推荐系统设计中的重要考量。</p>
 <p>对于<strong>内容</strong>而言，它是连接用户与创作者的媒介，是推荐系统真正分发的“原子单位”。推荐系统需要在理解内容属性的基础上，建立更丰富的匹配机制，让优质内容能够高效找到合适的受众。一个健康的推荐系统，不仅要分发受欢迎的内容，还要持续发掘潜力内容，避免整个生态滑向“头部集中、长尾沉没”的局面。</p>
 <p>对于<strong>平台</strong>而言，它承担着生态协调者的角色。一方面，平台需要优化推荐效果，提升用户满意度和使用时长；另一方面，它还要关注生态的长期健康，比如维护内容多样性、抑制低质内容泛滥、保护创作者积极性。有时平台甚至需要牺牲部分短期指标来换取长期信任，例如降低对标题党内容的推荐权重，以维护整体体验。</p>
-<div class="figure align-default" id="id6">
+<figure class="align-default" id="id8">
 <span id="ecosystem-balance"></span><a class="reference internal image-reference" href="../_images/ecosystem_balance.svg"><img alt="../_images/ecosystem_balance.svg" src="../_images/ecosystem_balance.svg" width="220px" /></a>
-<p class="caption"><span class="caption-number">图1.1.5 </span><span class="caption-text">推荐系统生态中的三角关系</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图1.1.5 </span><span class="caption-text">推荐系统生态中的三角关系</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>推荐系统生态包含用户与创作者、内容、平台三个核心要素。用户既是内容的消费者，也是潜在的生产者；内容是价值的核心媒介；平台负责连接与分配。推荐系统需要在三者之间保持动态平衡。</p>
 <p><strong>真正优秀的推荐系统，是一个精巧的平衡器</strong>。它需要在用户与创作者、内容质量、平台发展之间找到动态平衡点，确保生态系统的长期健康。这要求推荐系统设计者不仅是技术专家，更需要具备生态思维，能够从多方利益的角度思考问题。</p>
 <p><strong>从认知到实践：本书的技术地图</strong></p>
 <p>通过这三个层次的分析，我们已经对推荐系统有了一个立体的认知。从微观的双范式视角，到工业的两条技术路线，再到宏观的生态平衡，每一个层次都揭示了推荐系统的不同侧面，也对应着不同的技术挑战和解决方案。</p>
 <p>但认知只是开始，真正的挑战在于如何将这些理解转化为可操作的技术方案。在推荐系统的发展历程中，研究者和工程师们提出了数百种不同的算法和模型，每一种都试图在特定场景下优化推荐效果。面对如此丰富的技术选择，初学者往往会感到迷茫：这些模型之间有什么关系？在什么情况下应该选择哪种方法？如何构建一个完整的推荐系统？</p>
 <p>接下来，我们将为你绘制一幅完整的推荐系统技术地图。本书沿着<strong>判别式与生成式</strong>两条主线展开，同时串联起从ID记忆到深度泛化、从语义理解到模型推理的能力演进。前半部分深入判别式推荐的工业实践，沿着召回、排序、重排的流水线逐步深入；后半部分探索生成式推荐的前沿技术，从基础范式到规模化架构，从端到端建模到推理与扩散，展现这一新范式的完整技术图景。最后，我们还会通过完整的项目实践，帮你将理论知识转化为可运行的系统。从判别式的精雕细琢到生成式的范式突破，希望这幅地图能帮你建立对推荐系统技术体系的清晰认知，并把握正在发生的技术变革。</p>
-</div>
+</section>
+</section>
 
 
         </div>
         <div class="side-doc-outline">
             <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">1.1. 推荐系统是什么？</a><ul>
+<li><a class="reference internal" href="#id2">1.1.1. 微观视角：推荐问题的两种根本范式</a></li>
+<li><a class="reference internal" href="#id3">1.1.2. 工业视角：规模化的两条技术路线</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
             </div>
         </div>
 

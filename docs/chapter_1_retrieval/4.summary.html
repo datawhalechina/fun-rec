@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -367,7 +368,7 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="id1">
+  <section id="id1">
 <h1><span class="section-number">2.4. </span>本章总结<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>本章围绕推荐系统召回阶段的核心问题——如何在有限延迟内从海量候选中高效筛选出与用户相关的候选集——介绍了三类具有代表性的技术路径，共同构成了现代工业级召回系统的技术基础。</p>
 <p><strong>协同过滤：从统计到表示学习的奠基</strong>：协同过滤是推荐系统最经典的技术范式。ItemCF通过物品共现关系建立相似度矩阵，Swing算法进一步通过二部图分析消除热门物品的干扰，为物品间关系建模提供了鲁棒的统计方法；UserCF以“集体智慧”为核心，擅长发现用户的跨领域潜在兴趣，其理念在后续深度学习方法中通过注意力机制得到了延伸。矩阵分解是协同过滤技术演进的关键转折点：从FunkSVD到BiasSVD，它将用户和物品映射到连续的低维向量空间，不仅解决了稀疏性问题，更引入了向量化表示的核心思想，为后续所有基于嵌入的技术奠定了基础。</p>
@@ -377,7 +378,7 @@ Show Source
 <p><strong>序列召回：从静态画像到动态兴趣建模</strong>：前两类方法通常将用户历史行为汇总为静态表示，而序列召回关注的是用户兴趣如何随时间演化。动态兴趣表示方向，MIND用多个向量捕捉用户的不同兴趣维度，SDM从时间层面分离长期偏好与短期行为，两者都在模型内部构建更丰富的用户表示以缓解单向量的信息瓶颈；全量兴趣建模方向，Trinity将用户行为投影到聚类空间以保留完整历史兴趣，Streaming
 VQ通过流式更新机制使索引实时适应数据分布变化，两者从结构层面突破了压缩机制的固有局限。值得注意的是，向量量化技术不仅是一种高效的索引方法，也为后续章节的生成式推荐范式奠定了基础。</p>
 <p><strong>技术演进的内在逻辑</strong>：三类技术并非孤立存在，而是共享一条清晰的演进脉络。协同过滤提出了向量化表示的思想，向量召回将其与深度学习结合并建立了高效的检索范式，序列召回则在此基础上引入时序建模，进一步拓展了可利用的信息维度。无论哪种方法，召回阶段追求的核心目标始终一致：在保持计算效率的前提下，尽可能全面地理解用户兴趣，为后续的排序模型提供高质量的候选集。</p>
-</div>
+</section>
 
 
         </div>

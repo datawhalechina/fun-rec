@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -113,21 +114,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. 精准偏好预测</a><ul class="current">
@@ -167,18 +182,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -255,21 +264,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. 精准偏好预测</a><ul class="current">
@@ -309,18 +332,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -368,17 +385,19 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="dependency-modeling">
+  <section id="dependency-modeling">
 <span id="id1"></span><h1><span class="section-number">3.4.2. </span>任务依赖建模<a class="headerlink" href="#dependency-modeling" title="Permalink to this heading">¶</a></h1>
 <p>前面介绍的多目标方法主要解决任务间的相关性冲突，但现实场景中任务间往往存在明确的依赖关系。用户行为具有天然的时序性：曝光→点击→转化，这种严格的依赖关系带来了新的挑战。</p>
 <p>传统方法在处理这种依赖时面临两个核心问题：样本选择偏差（CVR模型在点击样本上训练，却要在全量样本上预测）和数据稀疏性（转化事件极其稀少）。</p>
 <p>本节介绍两个全空间建模方法：ESMM解决经典的CTR-CVR联合建模问题，ESM2将思想扩展到更复杂的多阶段行为链路。</p>
-<div class="section" id="esmm">
+<section id="esmm">
 <h2><span class="section-number">3.4.2.1. </span>ESMM<a class="headerlink" href="#esmm" title="Permalink to this heading">¶</a></h2>
-<div class="figure align-default" id="id4">
+<figure class="align-default" id="id4">
 <span id="esmm-sample-bias"></span><a class="reference internal image-reference" href="../../_images/esmm_sample_bias.png"><img alt="../../_images/esmm_sample_bias.png" src="../../_images/esmm_sample_bias.png" style="width: 300px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.5 </span><span class="caption-text">点击率和转化率预估的样本空间</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.5 </span><span class="caption-text">点击率和转化率预估的样本空间</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>在推荐系统的用户行为链中，存在严格的时序依赖关系。以电商场景为例：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-0">
 <span class="eqno">(3.4.6)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-0" title="Permalink to this equation">¶</a></span>\[\text{曝光(Impression)} \rightarrow \text{点击(Click)} \rightarrow \text{转化(Conversion)}\]</div>
@@ -392,10 +411,12 @@ CVR，典型场景：CTR≈2%, CVR≈0.5% →
 </ol>
 <p>ESMM (Entire Space Multi-task Model) <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id93" title="Ma, X., Zhao, L., Huang, G., Wang, Z., Hu, Z., Zhu, X., &amp; Gai, K. (2018). Entire space multi-task model: an effective approach for estimating post-click conversion rate. The 41st International ACM SIGIR Conference on Research &amp; Development in Information Retrieval (pp. 1137–1140).">Ma <em>et al.</em>, 2018</a>)</span>
 通过概率图约束重建任务关系：</p>
-<div class="figure align-default" id="id5">
+<figure class="align-default" id="id5">
 <span id="esmm-model-structure"></span><a class="reference internal image-reference" href="../../_images/esmm.png"><img alt="../../_images/esmm.png" src="../../_images/esmm.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.6 </span><span class="caption-text">ESMM模型结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.6 </span><span class="caption-text">ESMM模型结构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <ul class="simple">
 <li><p>输入层：全量曝光样本特征 <span class="math notranslate nohighlight">\(\mathbf{x}\)</span></p></li>
 <li><p>共享表征层：基础特征提取模块（原论文中采用的是Shared-Bottom的简单共享结构，也可将其直接替换成MMoE、PLE等复杂的底层共享模型）</p></li>
@@ -464,29 +485,33 @@ Tower的参数更新是在曝光空间下进行的</strong>：</p>
 <span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;esmm&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████| 16/16 [00:00&lt;00:00, 95189.88it/s]
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████| 16/16 [00:00&lt;00:00, 146846.53it/s]
 +----------------+---------------+-------------+-----------------+----------------+--------------+---------------------+--------------------+
 |   auc_is_click |   auc_is_like |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_macro |   val_user_is_click |   val_user_is_like |
 +================+===============+=============+=================+================+==============+=====================+====================+
-|         0.5965 |        0.6832 |      0.6398 |           0.574 |         0.5767 |       0.5754 |                 928 |                530 |
+|         0.5966 |        0.6649 |      0.6307 |          0.5725 |         0.5831 |       0.5778 |                 928 |                530 |
 +----------------+---------------+-------------+-----------------+----------------+--------------+---------------------+--------------------+
 </pre></div>
 </div>
-</div>
-<div class="section" id="esm2">
+</section>
+<section id="esm2">
 <h2><span class="section-number">3.4.2.2. </span>ESM2<a class="headerlink" href="#esm2" title="Permalink to this heading">¶</a></h2>
 <p>ESMM成功解决了曝光→点击→转化这一两阶段行为链路的样本偏差问题，但在真实工业场景中，用户行为链路往往更长更复杂。</p>
-<div class="figure align-default" id="id6">
+<figure class="align-default" id="id6">
 <span id="esm2-seq"></span><a class="reference internal image-reference" href="../../_images/esm2_seq.png"><img alt="../../_images/esm2_seq.png" src="../../_images/esm2_seq.png" style="width: 250px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.7 </span><span class="caption-text">用户下单链路图</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.7 </span><span class="caption-text">用户下单链路图</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>如图所示，用户从曝光到转化可能会有非常多条的路径，例如
 <code class="docutils literal notranslate"><span class="pre">曝光-&gt;点击-&gt;加入购物车-&gt;购买</span></code>、<code class="docutils literal notranslate"><span class="pre">曝光-&gt;点击-&gt;加入许愿池-&gt;加入购物车-&gt;购买</span></code>等。为了方便后续建模，对点击后的行为分解做了进一步的简化，将加入购物车、加入心愿单归并为决定行为（Deterministic
 Action，DAction），将其余行为归并为其他行为（Other Action，OAction）</p>
-<div class="figure align-default" id="id7">
+<figure class="align-default" id="id7">
 <span id="esm2-seq-2"></span><a class="reference internal image-reference" href="../../_images/esm2_seq_2.png"><img alt="../../_images/esm2_seq_2.png" src="../../_images/esm2_seq_2.png" style="width: 300px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.8 </span><span class="caption-text">简化后的用户下单链路图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.8 </span><span class="caption-text">简化后的用户下单链路图</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>为了更好理解后续建模时的数学表达，先对简化后图中的过程，做进一步的数学表示。</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(y_1=p(\text{点击}|\text{曝光})\)</span></p></li>
@@ -495,10 +520,12 @@ Action，DAction），将其余行为归并为其他行为（Other Action，OAct
 <li><p><span class="math notranslate nohighlight">\(y_4=p(\text{购买}|\text{其他行为})\)</span></p></li>
 </ul>
 <p>根据上述定义，更便于理解ESM2模型的结构图：</p>
-<div class="figure align-default" id="id8">
+<figure class="align-default" id="id8">
 <span id="esm2-model-structure"></span><a class="reference internal image-reference" href="../../_images/esm2.png"><img alt="../../_images/esm2.png" src="../../_images/esm2.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">图3.4.9 </span><span class="caption-text">ESM2模型结构图</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">图3.4.9 </span><span class="caption-text">ESM2模型结构图</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>ESM2模型 <span id="id3">(<a class="reference internal" href="../../chapter_references/references.html#id94" title="Wen, H., Zhang, J., Wang, Y., Lv, F., Bao, W., Lin, Q., &amp; Yang, K. (2020). Entire space multi-task modeling via post-click behavior decomposition for conversion rate prediction. Proceedings of the 43rd International ACM SIGIR conference on research and development in Information Retrieval (pp. 2377–2386).">Wen <em>et al.</em>, 2020</a>)</span>
 有四个塔，分别用来预测上述的<span class="math notranslate nohighlight">\(y_1,y_2,y_3\)</span>和<span class="math notranslate nohighlight">\(y_4\)</span>，对于这四个塔的输出并不是算4个Loss，而是分别计算<code class="docutils literal notranslate"><span class="pre">曝光-&gt;点击</span></code>、<code class="docutils literal notranslate"><span class="pre">曝光-&gt;决定行为</span></code>和<code class="docutils literal notranslate"><span class="pre">曝光-&gt;购买</span></code>这三个Loss。可以很明显的看出，这三个Loss都是在曝光空间上计算的，和ESMM在曝光空间优化CVR有着异曲同工之处。下面对于上述的三个Loss做简单的介绍，下面的<span class="math notranslate nohighlight">\(BCE_{Loss}\)</span>表示的是二元交叉熵损失。</p>
 <p><span class="math notranslate nohighlight">\(L_{ctr}\)</span>点击率预估损失：</p>
@@ -533,8 +560,8 @@ L_{ctcvr}
 <span class="eqno">(3.4.14)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-8" title="Permalink to this equation">¶</a></span>\[L_{final} = w_{ctr} \cdot L_{ctr} +  w_{ctavr} \cdot L_{ctavr} + w_{ctcvr} \cdot L_{ctcvr}\]</div>
 <p>其中<span class="math notranslate nohighlight">\(w_{ctr},w_{ctavr},w_{ctcvr}\)</span>分别为三个损失的权重。</p>
 <p>ESM2通过这种多阶段的概率乘积方式，将复杂的用户行为链路分解为多个可建模的子任务，同时确保每个任务都在曝光空间中进行联合优化。这种设计不仅有效解决了样本选择偏差问题，还通过共享底层特征表征，降低了数据稀疏性对模型性能的影响。更重要的是，ESM2提供了一种通用的建模思路，可以灵活扩展到更长的行为链路和更多样化的用户决策路径中。</p>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>

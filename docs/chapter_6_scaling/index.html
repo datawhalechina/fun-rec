@@ -3,7 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -24,9 +25,10 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.1. HSTU架构演进" href="1.hstu_optimization/index.html" />
+    <link rel="next" title="6.2.1. Scaling Law的首次探索" href="1.hstu.html" />
     <link rel="prev" title="5.5. 本章总结" href="../chapter_5_gr_basic/5.summary.html" /> 
   </head>
 <body>
@@ -110,21 +112,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
@@ -164,18 +180,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -252,21 +262,35 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.summary.html">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
@@ -306,18 +330,12 @@ Show Source
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -365,44 +383,67 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <div class="section" id="scaling-law">
+  <section id="scaling-law">
 <h1><span class="section-number">6. </span>Scaling Law架构探索<a class="headerlink" href="#scaling-law" title="Permalink to this heading">¶</a></h1>
 <p>自Kaplan等人 <span id="id1">(<a class="reference internal" href="../chapter_references/references.html#id40" title="Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.">Vaswani <em>et al.</em>, 2017</a>)</span>
 在2020年提出神经语言模型的scaling law以来，“更大的模型、更多的数据 =
-更好的性能”这一范式已在自然语言处理和计算机视觉领域得到充分验证。推荐系统是否也应遵循这一范式？从数据规模来看，答案是肯定的——大型互联网平台每天产生的用户行为数据量远超语言模型的训练语料。然而，传统的深度学习推荐模型（DLRM）在规模化时却遭遇了两大关键瓶颈。</p>
-<p>首先是计算成本与候选数量线性增长的问题。传统DLRM对每个候选项独立打分，导致推理成本随候选数量线性增长。当候选集规模达到数百万甚至数十亿的工业级水平时，计算开销难以承受。其次是长序列用户行为建模能力不足。用户的历史行为序列往往包含数千甚至数万次交互，但传统DLRM通常只能处理长度在几十到几百的序列，对于超长序列要么截断损失信息，要么受限于O(n²)的注意力机制复杂度而无法扩展。这两大瓶颈导致传统DLRM难以通过增加模型规模来提升性能，工业界的推荐模型计算量增长曲线几乎陷入停滞。</p>
-<p>面对这一困境，工业界和学术界探索出了两条互补的技术路径。第一条路径是HSTU架构演进，它从根本上改变了推荐模型的建模范式——将传统的item-level建模转变为user-level建模。核心思想是将同一用户的多个候选项组织为一个序列，通过序列到序列的方式一次性预测用户对所有候选的行为。这一范式转变通过KV
-caching技术解除了计算成本与候选数量的线性绑定，同时统一的Transformer架构大幅提升了参数效率，支持数千甚至上万长度的用户行为序列建模。代表工作包括Meta的HSTU
-<span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id108" title="Zhai, J., Liao, L., Liu, X., Wang, Y., Li, R., Cao, X., … others. (2024). Actions speak louder than words: trillion-parameter sequential transducers for generative recommendations. arXiv preprint arXiv:2402.17152.">Zhai <em>et al.</em>, 2024</a>)</span>、小红书的GenRank
-<span id="id3">(<a class="reference internal" href="../chapter_references/references.html#id82" title="Huang, Y., Chen, Y., Cao, X., Yang, R., Qi, M., Zhu, Y., … others. (2025). Towards large-scale generative ranking. arXiv preprint arXiv:2505.04180.">Huang <em>et al.</em>, 2025</a>)</span>、美团的MTGR <span id="id4">(<a class="reference internal" href="../chapter_references/references.html#id83" title="Han, R., Yin, B., Chen, S., Jiang, H., Jiang, F., Li, X., … others. (2025). Mtgr: industrial-scale generative recommendation framework in meituan. arXiv preprint arXiv:2505.18654.">Han <em>et al.</em>, 2025</a>)</span> 等。</p>
-<p>第二条路径是硬件感知架构设计，它从底层架构入手，将传统DLRM重构为hardware-aware的统一Transformer架构。核心思想是通过统一的计算图替代碎片化的手工模块，从而大幅提升硬件利用率。传统DLRM的Model
-FLOPs
-Utilization通常只有4-5%，而通过硬件感知的架构设计可以提升到接近LLM的40-60%，使每一个FLOPs都能产生实际价值。这一架构改进不仅实现了在推理成本不变前提下数十倍的参数量增长，还突破了序列建模与特征交互之间的架构壁垒，为推荐模型的scaling打开了新的空间。代表工作包括阿里的RankMixer
-<span id="id5">(<a class="reference internal" href="../chapter_references/references.html#id128" title="Zhu, J., Fan, Z., Zhu, X., Jiang, Y., Wang, H., Han, X., … others. (2025). Rankmixer: scaling up ranking models in industrial recommenders. Proceedings of the 34th ACM International Conference on Information and Knowledge Management (pp. 6309–6316).">Zhu <em>et al.</em>, 2025</a>)</span>、字节的OneTrans <span id="id6">(<a class="reference internal" href="../chapter_references/references.html#id129" title="Zhang, Z., Pei, H., Guo, J., Wang, T., Feng, Y., Sun, H., … Sun, A. (2025). Onetrans: unified feature interaction and sequence modeling with one transformer in industrial recommender. arXiv preprint arXiv:2510.26104.">Zhang <em>et al.</em>, 2025</a>)</span>
-等。</p>
-<p>值得强调的是，这两条路径并非相互排斥，而是在不同维度上推动推荐模型的scaling。HSTU架构演进侧重于推理效率和长序列建模，通过改变计算范式降低per-candidate成本；硬件感知架构设计侧重于训练效率和参数利用率，通过优化底层架构提升每个FLOPs的价值。两者的结合有望进一步释放推荐模型的scaling潜力。接下来我们将详细剖析每条路径的核心算法及其演进脉络。</p>
+更好的性能”这一范式已在自然语言处理和计算机视觉领域得到充分验证。推荐系统是否也应遵循这一范式？从数据规模来看，答案是肯定的——大型互联网平台每天产生的用户行为数据量远超语言模型的训练语料。</p>
+<p>然而，传统的深度学习推荐模型（DLRM）在规模化时遭遇了两大关键瓶颈：</p>
+<p><strong>第一，计算成本与候选数量线性增长。</strong>
+传统DLRM对每个候选项独立打分，导致推理成本随候选数量线性增长。当候选集规模达到数百万甚至数十亿的工业级水平时，计算开销难以承受。</p>
+<p><strong>第二，长序列用户行为建模能力不足。</strong>
+用户的历史行为序列往往包含数千甚至数万次交互，但传统DLRM通常只能处理长度在几十到几百的序列，对于超长序列要么截断损失信息，要么受限于O(n²)的注意力机制复杂度而无法扩展。</p>
+<p>这两大瓶颈导致传统DLRM难以通过增加模型规模来提升性能，工业界的推荐模型计算量增长曲线几乎陷入停滞。面对这一困境，工业界和学术界探索出了两条技术路径。</p>
+<section id="sec-hstu-optimization">
+<span id="id2"></span><h2><span class="section-number">6.1. </span>路径一：用户粒度建模<a class="headerlink" href="#sec-hstu-optimization" title="Permalink to this heading">¶</a></h2>
+<p>该路径的核心思想是将“为每个候选项独立打分”转变为“为每个用户的候选集批量建模”：将历史行为序列与候选集拼接为统一序列，通过自回归Transformer一次性预测用户对所有候选的行为。借助KV
+caching技术，用户历史的Key-Value表征只需计算一次，后续每个候选的边际推理成本降至<span class="math notranslate nohighlight">\(\mathcal{O}(1)\)</span>，彻底解除了计算成本与候选数量的线性绑定。端到端的统一架构还大幅提升了参数效率，支持处理数千甚至上万长度的超长行为序列，为推荐模型遵循scaling
+law奠定了基础。</p>
+<p>本路径涵盖三个代表性工作：Meta的HSTU <span id="id3">(<a class="reference internal" href="../chapter_references/references.html#id108" title="Zhai, J., Liao, L., Liu, X., Wang, Y., Li, R., Cao, X., … others. (2024). Actions speak louder than words: trillion-parameter sequential transducers for generative recommendations. arXiv preprint arXiv:2402.17152.">Zhai <em>et al.</em>, 2024</a>)</span>
+首次在推荐领域系统性验证了scaling law，并在Instagram和Facebook
+Reels上部署了万亿参数模型；小红书的GenRank <span id="id4">(<a class="reference internal" href="../chapter_references/references.html#id82" title="Huang, Y., Chen, Y., Cao, X., Yang, R., Qi, M., Zhu, Y., … others. (2025). Towards large-scale generative ranking. arXiv preprint arXiv:2505.04180.">Huang <em>et al.</em>, 2025</a>)</span>
+提出了基于生成式框架的统一建模方法，深入分析了该路径在工业场景的有效性来源；美团的MTGR
+<span id="id5">(<a class="reference internal" href="../chapter_references/references.html#id83" title="Han, R., Yin, B., Chen, S., Jiang, H., Jiang, F., Li, X., … others. (2025). Mtgr: industrial-scale generative recommendation framework in meituan. arXiv preprint arXiv:2505.18654.">Han <em>et al.</em>, 2025</a>)</span>
+展现了该架构在多目标、多场景、冷启动等复杂业务场景下的规模化部署实践。</p>
+</section>
+<section id="sec-hardware-optimization">
+<span id="id6"></span><h2><span class="section-number">6.2. </span>路径二：硬件感知架构设计<a class="headerlink" href="#sec-hardware-optimization" title="Permalink to this heading">¶</a></h2>
+<p>该路径的核心思想是将传统DLRM从底层重构为hardware-aware的统一Transformer架构。传统DLRM由手工设计的碎片化模块拼接而成，核心操作多为memory-bound，实测MFU通常仅有4-5%，即使扩大参数量也难以转化为性能提升。硬件感知架构将所有计算（序列建模、特征交互、多任务学习）统一至同一Transformer框架下，以compute-bound操作替换memory-bound操作，并允许不同类型特征进行深度交互，使MFU跻身LLM水平（40-60%），从而真正享受scaling
+law红利。</p>
+<p>本路径涵盖两个代表性工作：阿里的RankMixer <span id="id7">(<a class="reference internal" href="../chapter_references/references.html#id128" title="Zhu, J., Fan, Z., Zhu, X., Jiang, Y., Wang, H., Han, X., … others. (2025). Rankmixer: scaling up ranking models in industrial recommenders. Proceedings of the 34th ACM International Conference on Information and Knowledge Management (pp. 6309–6316).">Zhu <em>et al.</em>, 2025</a>)</span>
+系统性地重新设计了推荐模型的每一个组件，在推理成本不变的前提下实现了70倍的参数量增长（从100M到7B）；字节的OneTrans
+<span id="id8">(<a class="reference internal" href="../chapter_references/references.html#id129" title="Zhang, Z., Pei, H., Guo, J., Wang, T., Feng, Y., Sun, H., … Sun, A. (2025). Onetrans: unified feature interaction and sequence modeling with one transformer in industrial recommender. arXiv preprint arXiv:2510.26104.">Zhang <em>et al.</em>, 2025</a>)</span>
+提出将所有输入统一表示为token序列，在同一Transformer中进行端到端的联合建模，进一步简化了架构设计。</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1.hstu.html">6.2.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2.gen_rank.html">6.2.2. HSTU的工程突破</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3.mtgr.html">6.2.3. MTGR:混合范式建模</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1.rankmixer.html">6.2.4. Rankmixer:硬件效率优化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2.one_trans.html">6.2.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3.summary.html">6.2.6. 本章总结</a></li>
 </ul>
 </div>
-</div>
+</section>
+</section>
 
 
         </div>
         <div class="side-doc-outline">
             <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">6. Scaling Law架构探索</a><ul>
+<li><a class="reference internal" href="#sec-hstu-optimization">6.1. 路径一：用户粒度建模</a></li>
+<li><a class="reference internal" href="#sec-hardware-optimization">6.2. 路径二：硬件感知架构设计</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
             </div>
         </div>
 
@@ -415,11 +456,11 @@ Utilization通常只有4-5%，而通过硬件感知的架构设计可以提升�
             <div>5.5. 本章总结</div>
          </div>
      </a>
-     <a id="button-next" href="1.hstu_optimization/index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+     <a id="button-next" href="1.hstu.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
          <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
         <div class="pagenation-text">
             <span class="pagenation-direction">Next</span>
-            <div>6.1. HSTU架构演进</div>
+            <div>6.2.1. Scaling Law的首次探索</div>
         </div>
      </a>
   </div>

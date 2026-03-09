@@ -1,0 +1,125 @@
+
+.. _fm-matching-model:
+
+FM（因子分解机）：双塔模型的雏形
+================================
+
+
+虽然因子分解机（Factorization Machine, FM）
+:cite:`rendle2010factorization`
+诞生于深度学习兴起之前，但它在思想上可以说是双塔模型的雏形。FM的核心贡献在于，它首次将用户-物品的复杂交互，优雅地分解为两个低维向量的内积操作。
+
+从交互矩阵到向量内积
+--------------------
+
+FM模型的完整数学表达式为：
+
+.. math:: \hat{y}(\mathbf{x}):=w_{0}+\sum_{i=1}^{n} w_{i} x_{i}+\sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j}
+
+这个公式看起来复杂，但其核心思想简单而深刻：每个特征\ :math:`i`\ 都对应一个\ :math:`k`\ 维的隐向量\ :math:`\mathbf{v}_i`\ ，特征间的交互通过这些隐向量的内积\ :math:`\langle\mathbf{v}_{i}, \mathbf{v}_{j}\rangle = \sum_{f=1}^{k} v_{i,f} \cdot v_{j,f}`\ 来建模。
+
+FM的真正巧妙之处在于一个数学变换技巧。原本\ :math:`O(n^2)`\ 复杂度的二阶交互项，可以通过代数运算重写为：
+
+.. math:: \sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j} = \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right)
+   :label: eq-fm-cross
+
+这一变换将计算复杂度从\ :math:`O(kn^2)`\ 降低到\ :math:`O(kn)`\ ，使得FM能够处理大规模稀疏数据。
+
+分解为双塔结构
+--------------
+
+虽然FM通过数学变换解决了计算复杂度问题，但在召回任务中，我们还面临另一个挑战：如何高效地为用户从海量候选物品中筛选出最相关的推荐结果？这时就需要考虑将FM分解为双塔结构。
+
+在召回场景下，我们可以将所有特征自然地分为两类：用户侧特征集\ :math:`U`\ （如用户年龄、性别、历史偏好等）和物品侧特征集\ :math:`I`\ （如物品类别、价格、品牌等）。
+
+这里有一个关键的发现：当我们为同一个用户推荐不同物品时，用户特征是固定不变的。因此，用户特征内部的交互得分（无论是一阶还是二阶）对所有候选物品都是相同的。既然这部分得分相同，在排序时就可以忽略，我们只需要关注：
+1. 物品特征内部的交互得分 2. 用户特征与物品特征之间的交互得分
+
+基于这个思路，我们可以将FM的二阶交互项重新组织：
+
+.. math::
+
+
+   \begin{aligned}
+   & \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right) \\
+   =& \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{u \in U} v_{u, f} x_{u} + \sum_{t \in I} v_{t, f} x_{t}\right)^{2}-\sum_{u \in U} v_{u, f}^{2} x_{u}^{2} - \sum_{t\in I} v_{t, f}^{2} x_{t}^{2}\right) \\
+   =& \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{u \in U} v_{u, f} x_{u}\right)^{2} + \left(\sum_{t \in I} v_{t, f} x_{t}\right)^{2} + 2{\sum_{u \in U} v_{u, f} x_{u}}{\sum_{t \in I} v_{t, f} x_{t}} - \sum_{u \in U} v_{u, f}^{2} x_{u}^{2} - \sum_{t \in I} v_{t, f}^{2} x_{t}^{2}\right)  
+   \end{aligned}
+
+基于前面的分析，我们发现用户特征内部的交互项对所有候选物品都相同，因此可以在召回阶段忽略。这样就可以将FM重新组织，只保留对排序有影响的部分：
+
+.. math::
+
+
+   \text{score}_{FM} = \sum_{t \in I} w_{t} x_{t} + \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{t \in I} v_{t, f} x_{t}\right)^{2}  - \sum_{t \in I} v_{t, f}^{2} x_{t}^{2}\right)  + \sum_{f=1}^{k}\left( {\sum_{u \in U} v_{u, f} x_{u}}{\sum_{t \in I} v_{t, f} x_{t}} \right)
+
+观察上面的公式，我们发现一个重要的数学结构：最后一项\ :math:`\sum_{f=1}^{k}\left( {\sum_{u \in U} v_{u, f} x_{u}}{\sum_{t \in I} v_{t, f} x_{t}} \right)`\ 实际上是两个向量\ :math:`\sum_{u \in U} v_{u} x_{u}`\ 和\ :math:`\sum_{t \in I} v_{t} x_{t}`\ 的内积。这启发我们将整个匹配分数重新组织为双塔结构：
+
+.. math:: \text{score}_{FM} = V_{item} \cdot V_{user}^T
+
+通过这种重新组织，我们得到了FM的双塔表示：
+
+-  用户向量：\ :math:`V_{user} = [1; \sum_{u \in U} v_{u} x_{u}]`
+-  物品向量：\ :math:`V_{item} = [\sum_{t \in I} w_{t} x_{t} + \frac{1}{2} \sum_{f=1}^{k}((\sum_{t \in I} v_{t, f} x_{t})^{2} - \sum_{t \in I} v_{t, f}^{2} x_{t}^{2}); \sum_{t \in I} v_{t} x_{t}]`
+
+这里的设计很巧妙：用户向量包含一个常数项1和用户特征的聚合表示，物品向量则包含物品的内部交互信息和物品特征的聚合表示。两个向量通过内积运算，既能捕捉用户-物品之间的交互，又保留了物品内部特征的复杂关系。
+
+这样的分解揭示了一个重要原理：即使是复杂的特征交互模式，也可以通过合适的向量表示和简单的内积运算来实现。
+
+代码实践
+--------
+
+FM召回的双塔实现关键在于如何将数学推导转化为实际的向量表示。用户塔构建了包含常数项和特征聚合的向量：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 用户塔：V_user = [1; ∑(v_u * x_u)]
+   user_concat = Concatenate(axis=1)(user_embeddings)  # [batch_size, num_user_features, embedding_dim]
+   user_embedding_sum = SumPooling()(user_concat)  # [batch_size, embedding_dim]
+
+   # 构建用户向量：[1; ∑(v_u * x_u)]
+   ones_vector = OnesLayer()(user_embedding_sum)  # [batch_size, 1]
+   user_vector = Concatenate(axis=1)([ones_vector, user_embedding_sum])
+
+物品塔则更为复杂，需要计算一阶线性项和FM交互项：
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   # 物品塔：V_item = [∑w_t*x_t + FM_interaction; ∑(v_t * x_t)]
+   item_concat = Concatenate(axis=1)(item_embeddings)  # [batch_size, num_item_features, embedding_dim]
+   item_embedding_sum = SumPooling()(item_concat)  # [batch_size, embedding_dim]
+
+   # 计算一阶线性项：∑(w_t * x_t)
+   item_linear_weights = Dense(1, use_bias=False)(item_embedding_sum)
+
+   # 计算FM二阶交互项：0.5 * ((∑v_t*x_t)² - ∑(v_t²*x_t²))
+   sum_squared = SquareLayer()(item_embedding_sum)
+   item_squared = SquareLayer()(item_concat)
+   squared_sum = SumPooling()(item_squared)
+   fm_interaction_vector = Subtract()([sum_squared, squared_sum])
+   fm_interaction_scalar = SumScalarLayer()(ScaleLayer(0.5)(fm_interaction_vector))
+
+   # 组合为物品向量
+   first_term = Add()([item_linear_weights, fm_interaction_scalar])
+   item_vector = Concatenate(axis=1)([first_term, item_embedding_sum])
+
+最终通过内积计算匹配分数：\ ``fm_score = Dot(axes=1)([item_vector, user_vector])``\ 。这种设计使得物品向量可以离线预计算，用户向量实时计算，从而支持高效的召回检索。
+
+下面训练FM召回模型并评估效果。
+
+.. raw:: latex
+
+   \diilbookstyleinputcell
+
+.. code:: python
+
+   from funrec import run_experiment
+   run_experiment('fm_recall')
