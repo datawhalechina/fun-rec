@@ -182,7 +182,7 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
@@ -328,7 +328,7 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
@@ -379,11 +379,11 @@ Show Source
         
   <section id="matrix-factorization">
 <span id="id1"></span><h1><span class="section-number">2.1.4. </span>矩阵分解<a class="headerlink" href="#matrix-factorization" title="Permalink to this heading">¶</a></h1>
-<p>UserCF和ItemCF虽然思路直观、易于理解，但它们都面临一个根本性的挑战：<strong>数据稀疏性</strong>。在真实的推荐场景中，用户-物品交互矩阵往往是极度稀疏的——大部分用户只与极少数物品发生过交互。这导致两个问题：一是很难找到足够的共同评分来计算可靠的相似度；二是即使找到了相似用户或物品，他们的交互覆盖面也可能很有限。</p>
+<p>UserCF和ItemCF虽然思路直观、易于理解，但它们都面临一个根本性的挑战：<strong>数据稀疏性</strong>。在真实的推荐场景中，用户-物品交互矩阵往往是极度稀疏的，大部分用户只与极少数物品发生过交互。这导致两个问题：一是很难找到足够的共同评分来计算可靠的相似度；二是即使找到了相似用户或物品，他们的交互覆盖面也可能很有限。</p>
 <p>矩阵分解换了一种思路：不再显式计算相似度，而是通过学习用户和物品的<strong>隐向量表示</strong>，让向量空间中的距离自然地反映偏好关系。这种端到端的优化方式标志着协同过滤从统计方法向机器学习方法的转变。</p>
 <section id="id2">
 <h2><span class="section-number">2.1.4.1. </span>隐向量时代的开端<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
-<p>在推荐系统中，我们经常观察到这样的规律：喜欢《理智与情感》的用户往往也会给《公主日记》好评，而钟爱《致命武器》的观众通常也喜欢《独立日》。这反映了用户偏好的内在结构——一些隐含的“品味因子”在起作用。比如有些用户偏好面向女性的影片，有些则更喜欢面向男性的内容；有些人倾向于严肃深刻的作品如《阿马迪斯》，有些人则更享受轻松娱乐的片子如《阿呆与阿瓜》。</p>
+<p>在推荐系统中，我们经常观察到这样的规律：喜欢《理智与情感》的用户往往也会给《公主日记》好评，而钟爱《致命武器》的观众通常也喜欢《独立日》。这反映了用户偏好的内在结构：一些隐含的“品味因子”在起作用。比如有些用户偏好面向女性的影片，有些则更喜欢面向男性的内容；有些人倾向于严肃深刻的作品如《阿马迪斯》，有些人则更享受轻松娱乐的片子如《阿呆与阿瓜》。</p>
 <p>回顾前面介绍的UserCF和ItemCF这些基于邻域的协同过滤方法，它们的思路很直观：通过寻找相似的用户或物品来进行推荐，就像
 <a class="reference internal" href="#mf-usercf-illustration"><span class="std std-numref">图2.1.6</span></a> 展示的那样。</p>
 <figure class="align-default" id="id7">
@@ -463,12 +463,11 @@ Show Source
 <span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;funksvd&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████| 2/2 [00:00&lt;00:00, 6517.95it/s]
-+---------------+--------------+-----------+----------+----------------+---------------+
-|   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
-+===============+==============+===========+==========+================+===============+
-|        0.0022 |       0.0015 |    0.0009 |   0.0007 |         0.0002 |        0.0003 |
-+---------------+--------------+-----------+----------+----------------+---------------+
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
+<span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
+<span class="o">+===============+==============+===========+==========+================+===============+</span>
+<span class="o">|</span>        <span class="mf">0.0008</span> <span class="o">|</span>       <span class="mf">0.0002</span> <span class="o">|</span>    <span class="mf">0.0003</span> <span class="o">|</span>   <span class="mf">0.0001</span> <span class="o">|</span>         <span class="mf">0.0001</span> <span class="o">|</span>             <span class="mi">0</span> <span class="o">|</span>
+<span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
 </section>
@@ -543,12 +542,11 @@ Show Source
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;biassvd&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>100%|███████████████████████████████████████████████████| 2/2 [00:00&lt;00:00, 15621.24it/s]
-+---------------+--------------+-----------+----------+----------------+---------------+
-|   hit_rate@10 |   hit_rate@5 |   ndcg@10 |   ndcg@5 |   precision@10 |   precision@5 |
-+===============+==============+===========+==========+================+===============+
-|        0.0008 |       0.0008 |    0.0008 |   0.0008 |         0.0001 |        0.0002 |
-+---------------+--------------+-----------+----------+----------------+---------------+
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
+<span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
+<span class="o">+===============+==============+===========+==========+================+===============+</span>
+<span class="o">|</span>        <span class="mf">0.0013</span> <span class="o">|</span>       <span class="mf">0.0012</span> <span class="o">|</span>    <span class="mf">0.0008</span> <span class="o">|</span>   <span class="mf">0.0008</span> <span class="o">|</span>         <span class="mf">0.0001</span> <span class="o">|</span>        <span class="mf">0.0002</span> <span class="o">|</span>
+<span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
 </section>

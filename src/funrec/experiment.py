@@ -38,7 +38,7 @@ def run_experiment(
 
     # 准备特征
     feature_columns, processed_data = prepare_features(
-        config.features, train_data, test_data
+        config.features, train_data, test_data, verbose=False
     )
 
     # 训练模型

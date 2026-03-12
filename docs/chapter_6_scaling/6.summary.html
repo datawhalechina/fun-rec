@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     
-    <title>2.4. 本章总结 &#8212; 深度推荐算法实践: 从级联架构到生成式范式 1.0.0 documentation</title>
+    <title>6.6. 本章总结 &#8212; 深度推荐算法实践: 从级联架构到生成式范式 1.0.0 documentation</title>
 
     <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
@@ -25,19 +25,18 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/d2l.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3. 精准偏好预测" href="../chapter_2_ranking/index.html" />
-    <link rel="prev" title="2.3.2. 全量兴趣建模与流式索引" href="3.sequence/2.full_interest_modeling.html" /> 
+    <link rel="next" title="7. 端到端生成式建模" href="../chapter_7_gr_e2e/index.html" />
+    <link rel="prev" title="6.5. OneTrans: 统一序列与特征交差" href="5.one_trans.html" /> 
   </head>
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
     <div class="mdl-layout__header-row">
         
         <nav class="mdl-navigation breadcrumb">
-            <a class="mdl-navigation__link" href="index.html"><span class="section-number">2. </span>快速候选召回</a><i class="material-icons">navigate_next</i>
-            <a class="mdl-navigation__link is-active"><span class="section-number">2.4. </span>本章总结</a>
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">6. </span>Scaling Law架构探索</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">6.6. </span>本章总结</a>
         </nav>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
@@ -60,7 +59,7 @@
         
 <a id="button-show-source"
     class="mdl-button mdl-js-button mdl-button--icon"
-    href="../_sources/chapter_1_retrieval/4.summary.rst.txt" rel="nofollow">
+    href="../_sources/chapter_6_scaling/6.summary.rst.txt" rel="nofollow">
   <i class="material-icons">code</i>
 </a>
 <div class="mdl-tooltip" data-mdl-for="button-show-source">
@@ -101,33 +100,43 @@ Show Source
             <nav class="mdl-navigation">
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">准备工作</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. 快速候选召回</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
@@ -166,19 +175,13 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/5.summary.html">5.5. 本章总结</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. Scaling Law架构探索</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1.hstu.html">6.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.gen_rank.html">6.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -243,33 +246,43 @@ Show Source
             <nav class="mdl-navigation">
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_preface/index.html">前言</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_installation/index.html">准备工作</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/1.intro.html">1.1. 推荐系统是什么？</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_0_introduction/2.outline.html">1.2. 本书概览</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. 快速候选召回</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/2.usercf.html">2.1.2. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/3.mf.html">2.1.3. 矩阵分解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/1.word2vec.html">2.2.1. Word2Vec：序列建模的理论基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/2.item2vec.html">2.2.2. Item2Vec：最直接的迁移</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/3.eges.html">2.2.3. EGES：用属性信息增强序列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/4.airbnb.html">2.2.4. Airbnb：将业务目标融入序列</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="2.embedding/index.html">2.2. 向量召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2.embedding/1.i2i.html">2.2.1. I2I召回</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.embedding/2.u2i.html">2.2.2. U2I召回</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/index.html">2.3. 双塔模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/2.dssm.html">2.3.2. DSSM：深度结构化语义模型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/3.two_tower/3.youtubednn.html">2.3.3. YouTubeDNN：从匹配到预测用户下一行为</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="3.sequence/index.html">2.3. 序列召回</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="3.sequence/1.user_interests.html">2.3.1. 深化用户兴趣表示</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.sequence/2.full_interest_modeling.html">2.3.2. 全量兴趣建模与流式索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/index.html">2.4. 序列召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/1.mind.html">2.4.1. MIND：用多个向量捕捉用户的多元兴趣</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/4.sequence/2.sdm.html">2.4.2. SDM：融合长短期兴趣，捕捉动态变化</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.4. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/index.html">2.5. 流式索引召回</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/1.trinity.html">2.5.1. 聚类统计的全量兴趣召回</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/5.streaming_index/2.streaming_vq.html">2.5.2. 实时更新的流式索引</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/6.summary.html">2.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_2_ranking/index.html">3. 精准偏好预测</a><ul>
@@ -308,19 +321,13 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../chapter_5_gr_basic/5.summary.html">5.5. 本章总结</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/index.html">6.1. HSTU架构演进</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/1.hstu.html">6.1.1. Scaling Law的首次探索</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/2.gen_rank.html">6.1.2. 生成式推荐的工程突破</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/1.hstu_optimization/3.mtgr.html">6.1.3. 混合范式的突破</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/index.html">6.2. 硬件感知架构设计</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/1.rankmixer.html">6.2.1. Hardware-Aware统一架构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_6_scaling/2.hardware_optimization/2.one_trans.html">6.2.2. 统一序列与特征交叉建模</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.3. 本章总结</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. Scaling Law架构探索</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1.hstu.html">6.1. Scaling Law的首次探索</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2.gen_rank.html">6.2. HSTU的工程突破</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -369,15 +376,16 @@ Show Source
         <div class="page-content" role="main">
         
   <section id="id1">
-<h1><span class="section-number">2.4. </span>本章总结<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
-<p>本章围绕推荐系统召回阶段的核心问题——如何在有限延迟内从海量候选中高效筛选出与用户相关的候选集——介绍了三类具有代表性的技术路径，共同构成了现代工业级召回系统的技术基础。</p>
-<p><strong>协同过滤：从统计到表示学习的奠基</strong>：协同过滤是推荐系统最经典的技术范式。ItemCF通过物品共现关系建立相似度矩阵，Swing算法进一步通过二部图分析消除热门物品的干扰，为物品间关系建模提供了鲁棒的统计方法；UserCF以“集体智慧”为核心，擅长发现用户的跨领域潜在兴趣，其理念在后续深度学习方法中通过注意力机制得到了延伸。矩阵分解是协同过滤技术演进的关键转折点：从FunkSVD到BiasSVD，它将用户和物品映射到连续的低维向量空间，不仅解决了稀疏性问题，更引入了向量化表示的核心思想，为后续所有基于嵌入的技术奠定了基础。</p>
-<p><strong>向量召回：将推荐问题转化为向量检索</strong>：向量召回继承了矩阵分解的向量化思想，将其推向了更深、更广的维度，实现了从
-<span class="math notranslate nohighlight">\(O(U \times I)\)</span> 到 <span class="math notranslate nohighlight">\(O(U + I)\)</span>
-的复杂度优化。I2I路径上，Item2Vec将序列建模思想从NLP迁移至推荐，EGES通过商品关系图融合辅助信息解决冷启动，Airbnb则将业务目标深度融入序列构建，将相似性优化推进到转化率层面；U2I路径以双塔模型为核心，FM首次实现了用户—物品交互的向量分解，DSSM用深度神经网络提升表达能力并建立了多分类训练范式，YouTubeDNN通过工程技巧在超大规模场景下验证了双塔模型的实用价值。双塔的“分而治之”设计哲学——物品向量离线预计算、用户向量实时生成——成为工业界召回系统的标准架构。</p>
-<p><strong>序列召回：从静态画像到动态兴趣建模</strong>：前两类方法通常将用户历史行为汇总为静态表示，而序列召回关注的是用户兴趣如何随时间演化。动态兴趣表示方向，MIND用多个向量捕捉用户的不同兴趣维度，SDM从时间层面分离长期偏好与短期行为，两者都在模型内部构建更丰富的用户表示以缓解单向量的信息瓶颈；全量兴趣建模方向，Trinity将用户行为投影到聚类空间以保留完整历史兴趣，Streaming
-VQ通过流式更新机制使索引实时适应数据分布变化，两者从结构层面突破了压缩机制的固有局限。值得注意的是，向量量化技术不仅是一种高效的索引方法，也为后续章节的生成式推荐范式奠定了基础。</p>
-<p><strong>技术演进的内在逻辑</strong>：三类技术并非孤立存在，而是共享一条清晰的演进脉络。协同过滤提出了向量化表示的思想，向量召回将其与深度学习结合并建立了高效的检索范式，序列召回则在此基础上引入时序建模，进一步拓展了可利用的信息维度。无论哪种方法，召回阶段追求的核心目标始终一致：在保持计算效率的前提下，尽可能全面地理解用户兴趣，为后续的排序模型提供高质量的候选集。</p>
+<h1><span class="section-number">6.6. </span>本章总结<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
+<p>本章围绕推荐模型规模化（Scaling）面临的核心瓶颈，介绍了工业界和学术界的代表性探索，共同回答了一个关键问题：如何让推荐系统也能像大语言模型一样享受“更大模型、更多数据
+= 更好性能”的Scaling Law红利？</p>
+<p>传统深度学习推荐模型在两个维度遭遇了根本性限制：一是计算成本与候选数量线性绑定，对每个候选独立打分导致推理成本随候选规模线性增长，使得参数扩张难以转化为实际收益；二是碎片化的手工模块导致硬件利用率极低，大量算力耗费在访存密集型操作上，无法充分发挥现代GPU的计算能力。这两个瓶颈共同导致推荐模型的算力增长曲线几乎停滞。</p>
+<p>Meta的HSTU首次在推荐领域系统性验证了scaling
+law，其核心洞察是将item-level建模转变为user-level建模——将同一用户的多个候选组织为一个序列，通过KV
+caching技术将历史表征的计算成本与候选数量解绑，同时打开了超长序列建模的大门。小红书的GenRank深入分析了user-level建模有效性的来源，揭示自回归机制是其本质所在，并通过action-oriented
+organization大幅提升计算效率。美团的MTGR在多目标、多场景、冷启动等复杂业务条件下验证了这一范式，提出混合范式在保持效率的同时兼容传统特征工程的经验。阿里的RankMixer从底层将推荐模型重构为统一的Transformer架构，通过将访存密集型操作替换为计算密集型操作大幅提升硬件利用率，使每一个FLOPs都能产生实际价值。字节的OneTrans进一步打破序列特征与非序列特征之间的架构壁垒，将所有输入统一表示为token序列进行深度融合，并无缝引入KV
+caching等系统优化，实现整体可扩展。</p>
+<p>五个工作从不同角度推动推荐模型的规模化，共同表明：推荐系统不再是深度学习scaling的“例外”，只要解决架构层面的根本瓶颈，推荐模型同样可以从计算资源的持续投入中获得可预测的性能提升，真正进入与大语言模型并驾齐驱的大规模参数时代。</p>
 </section>
 
 
@@ -389,18 +397,18 @@ VQ通过流式更新机制使索引实时适应数据分布变化，两者从结
 
       <div class="clearer"></div>
     </div><div class="pagenation">
-     <a id="button-prev" href="3.sequence/2.full_interest_modeling.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+     <a id="button-prev" href="5.one_trans.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
          <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
          <div class="pagenation-text">
             <span class="pagenation-direction">Previous</span>
-            <div>2.3.2. 全量兴趣建模与流式索引</div>
+            <div>6.5. OneTrans: 统一序列与特征交差</div>
          </div>
      </a>
-     <a id="button-next" href="../chapter_2_ranking/index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+     <a id="button-next" href="../chapter_7_gr_e2e/index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
          <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
         <div class="pagenation-text">
             <span class="pagenation-direction">Next</span>
-            <div>3. 精准偏好预测</div>
+            <div>7. 端到端生成式建模</div>
         </div>
      </a>
   </div>

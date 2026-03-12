@@ -182,7 +182,7 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
@@ -328,7 +328,7 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
@@ -381,10 +381,10 @@ Show Source
 <span id="id1"></span><h1><span class="section-number">2.1.1. </span>物品的协同过滤<a class="headerlink" href="#itemcf" title="Permalink to this heading">¶</a></h1>
 <p>基于物品的协同过滤（ItemCF）:cite:<cite>linden2003amazon</cite>
 的核心思想是：用户的兴趣具有连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。ItemCF关注的问题是“和你喜欢的物品相似的还有什么”，通过计算物品之间的相似度来生成推荐。</p>
-<figure class="align-default" id="id9">
+<figure class="align-default" id="id10">
 <span id="itemcf-illustration"></span><a class="reference internal image-reference" href="../../_images/itemcf_illustration.svg"><img alt="../../_images/itemcf_illustration.svg" src="../../_images/itemcf_illustration.svg" width="300px" /></a>
 <figcaption>
-<p><span class="caption-number">图2.1.1 </span><span class="caption-text">ItemCF 原理示意图</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图2.1.1 </span><span class="caption-text">ItemCF 原理示意图</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>从上图可以看到，当我们要给左方用户推荐物品时，ItemCF会分析T恤和夹克之间的相似性。由于右方三个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么夹克就成为了一个不错的推荐选择。</p>
@@ -392,22 +392,13 @@ Show Source
 <h2><span class="section-number">2.1.1.1. </span>ItemCF核心算法<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <section id="id3">
 <h3><span class="section-number">2.1.1.1.1. </span>物品相似度计算<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
-<p>在大多数实际场景中，只有用户是否对物品有过交互行为的数据（如点击、购买、收藏等），而没有具体的评分信息。直接计算所有物品对的相似度复杂度为
-<span class="math notranslate nohighlight">\(O(|I|^2)\)</span>，但大多数物品对之间没有共同的用户交互，相似度必然为
-0。因此，更高效的做法是从用户出发：</p>
-<ol class="arabic simple">
-<li><p><strong>构建用户-物品倒排表</strong>：为每个用户维护一个交互过的物品列表。</p></li>
-<li><p><strong>计算物品共现矩阵</strong>：创建一个矩阵<span class="math notranslate nohighlight">\(C[i][j]\)</span>来记录物品<span class="math notranslate nohighlight">\(i\)</span>和<span class="math notranslate nohighlight">\(j\)</span>的共同用户数量。遍历所有用户的物品列表，将列表中的物品两两配对，对应的<span class="math notranslate nohighlight">\(C[i][j]\)</span>值加1，这就构成了共现矩阵。</p></li>
-<li><p><strong>计算最终相似度</strong>：使用余弦相似度公式计算物品相似度：</p></li>
-</ol>
+<p>在大多数实际场景中，只有用户是否对物品有过交互行为的数据（如点击、购买、收藏等），而没有具体的评分信息。ItemCF
+使用余弦相似度量化物品间的相似程度：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-0">
 <span class="eqno">(2.1.1)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-0" title="Permalink to this equation">¶</a></span>\[w_{ij} = \frac{C[i][j]}{\sqrt{|N(i)| \cdot |N(j)|}}\]</div>
-<p>这里<span class="math notranslate nohighlight">\(|N(i)|\)</span>表示与物品<span class="math notranslate nohighlight">\(i\)</span>有交互的用户总数，<span class="math notranslate nohighlight">\(C[i][j]\)</span>是两个物品的共现次数。这个公式很直观：分子是两个物品的共同用户数，分母是对共同用户数的标准化，防止热门商品占据绝对优势。</p>
-<p>优化方法只计算有共同用户的物品对，复杂度从暴力的
-<span class="math notranslate nohighlight">\(O(|I|^2 \cdot |U|)\)</span> 降至
-<span class="math notranslate nohighlight">\(O(R \cdot \bar{m})\)</span>（<span class="math notranslate nohighlight">\(R\)</span> 为总交互数，<span class="math notranslate nohighlight">\(\bar{m}\)</span>
-为用户平均交互物品数）。在稀疏数据场景下，由于
-<span class="math notranslate nohighlight">\(\bar{m} \ll |I|\)</span>，效率大幅提升。</p>
+<p>其中 <span class="math notranslate nohighlight">\(|N(i)|\)</span> 表示与物品 <span class="math notranslate nohighlight">\(i\)</span>
+有交互的用户总数，<span class="math notranslate nohighlight">\(C[i][j]\)</span>
+是两个物品的共现次数（同时对两个物品有过行为的用户数）。分母对共现次数进行标准化，防止热门商品占据绝对优势。</p>
 </section>
 <section id="id4">
 <h3><span class="section-number">2.1.1.1.2. </span>候选物品推荐<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
@@ -416,12 +407,24 @@ Show Source
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-1">
 <span class="eqno">(2.1.2)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-1" title="Permalink to this equation">¶</a></span>\[p(u, i) = \sum_{j \in N(u)} w_{ij} \cdot r_{uj}\]</div>
 <p>其中<span class="math notranslate nohighlight">\(N(u)\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>交互过的物品集合，<span class="math notranslate nohighlight">\(w_{ij}\)</span>是物品<span class="math notranslate nohighlight">\(i\)</span>和<span class="math notranslate nohighlight">\(j\)</span>的相似度，<span class="math notranslate nohighlight">\(r_{uj}\)</span>表示用户对物品<span class="math notranslate nohighlight">\(j\)</span>的兴趣强度（可以是简单的1，也可以根据交互时间、类型等设置不同权重）。</p>
-<p>最终，系统对所有候选物品按兴趣分数排序，选择Top-N物品作为ItemCF通道的推荐结果。这种“种子扩展”的方式既保证了推荐质量，又大大提高了计算效率。</p>
+<p>最终，系统对所有候选物品按兴趣分数排序，选择Top-N物品作为ItemCF通道的推荐结果。</p>
 </section>
 <section id="id5">
-<h3><span class="section-number">2.1.1.1.3. </span>处理评分数据的相似度计算<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">2.1.1.1.3. </span>计算效率优化<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
+<p>直接计算所有物品对相似度的复杂度为
+<span class="math notranslate nohighlight">\(O(|I|^2 \cdot |U|)\)</span>，但大多数物品对之间没有共同的用户交互，相似度必然为
+0。基于用户-物品倒排表可以大幅提速：为每个用户维护一个物品交互列表，遍历时将列表中的物品两两配对，累加共现矩阵
+<span class="math notranslate nohighlight">\(C[i][j]\)</span>，再除以 <span class="math notranslate nohighlight">\(\sqrt{|N(i)||N(j)|}\)</span>
+得到余弦相似度，只需计算真正有共同用户的物品对。</p>
+<p>优化后的复杂度约为 <span class="math notranslate nohighlight">\(O(R \cdot \bar{m})\)</span>（<span class="math notranslate nohighlight">\(R\)</span>
+为总交互数，<span class="math notranslate nohighlight">\(\bar{m}\)</span>
+为用户平均交互物品数），在稀疏数据场景下由于
+<span class="math notranslate nohighlight">\(\bar{m} \ll |I|\)</span>，效率远高于暴力计算。</p>
+</section>
+<section id="id6">
+<h3><span class="section-number">2.1.1.1.4. </span>处理评分数据的相似度计算<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
 <p>前面的余弦相似度适用于隐式反馈场景（如点击、浏览），当有显式评分数据（如5星评分）时，皮尔逊相关系数能更好地捕获物品间的相似性模式
-<span id="id6">(<a class="reference internal" href="../../chapter_references/references.html#id4" title="Sarwar, B., Karypis, G., Konstan, J., &amp; Riedl, J. (2001). Item-based collaborative filtering recommendation algorithms. Proceedings of the 10th international conference on World Wide Web (pp. 285–295).">Sarwar <em>et al.</em>, 2001</a>)</span>：</p>
+<span id="id7">(<a class="reference internal" href="../../chapter_references/references.html#id4" title="Sarwar, B., Karypis, G., Konstan, J., &amp; Riedl, J. (2001). Item-based collaborative filtering recommendation algorithms. Proceedings of the 10th international conference on World Wide Web (pp. 285–295).">Sarwar <em>et al.</em>, 2001</a>)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-2">
 <span class="eqno">(2.1.3)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-2" title="Permalink to this equation">¶</a></span>\[w_{ij} = \frac{\sum_{u \in U_{ij}}(r_{ui} - \bar{r}_i)(r_{uj} - \bar{r}_j)}{\sqrt{\sum_{u \in U_{ij}}(r_{ui} - \bar{r}_i)^2}\sqrt{\sum_{u \in U_{ij}}(r_{uj} - \bar{r}_j)^2}}\]</div>
 <p>其中<span class="math notranslate nohighlight">\(U_{ij}\)</span>表示同时评价过物品<span class="math notranslate nohighlight">\(i\)</span>和<span class="math notranslate nohighlight">\(j\)</span>的用户集合，<span class="math notranslate nohighlight">\(r_{ui}\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的评分，<span class="math notranslate nohighlight">\(\bar{r}_i\)</span>是物品<span class="math notranslate nohighlight">\(i\)</span>的平均评分。</p>
@@ -432,12 +435,12 @@ Show Source
 的平均评分为基准，根据用户对相似物品的评分偏好进行调整。在大规模推荐系统中，出于计算复杂度和数据稀疏性的考虑，多数系统仍倾向于使用余弦相似度，辅以加权或归一化来处理评分差异。</p>
 </section>
 </section>
-<section id="id7">
-<h2><span class="section-number">2.1.1.2. </span>ItemCF评分预测示例<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
+<section id="id8">
+<h2><span class="section-number">2.1.1.2. </span>ItemCF评分预测示例<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h2>
 <p>表格 <a class="reference internal" href="#table-itemcf-data"><span class="std std-numref">表2.1.1</span></a> 是和 <a class="reference internal" href="3.usercf.html#usercf"><span class="std std-numref">2.1.3节</span></a>
 相同的用户评分数据。</p>
-<span id="table-itemcf-data"></span><table class="docutils align-default" id="id10">
-<caption><span class="caption-number">表2.1.1 </span><span class="caption-text">用户评分数据</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<span id="table-itemcf-data"></span><table class="docutils align-default" id="id11">
+<caption><span class="caption-number">表2.1.1 </span><span class="caption-text">用户评分数据</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p></p></th>
 <th class="head"><p>用户1</p></th>
@@ -503,8 +506,8 @@ Show Source
 &amp;=4.6
 \end{aligned}\end{split}\]</div>
 </section>
-<section id="id8">
-<h2><span class="section-number">2.1.1.3. </span>代码实践<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h2>
+<section id="id9">
+<h2><span class="section-number">2.1.1.3. </span>代码实践<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="n">item_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;item1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;user1&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;user2&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;user3&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;user4&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;user5&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
@@ -575,6 +578,7 @@ Show Source
 </div>
 <p>下面我们训练和评估完整的ItemCF模型。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
+
 <span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;item_cf&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -594,11 +598,12 @@ Show Source
 <li><a class="reference internal" href="#id2">2.1.1.1. ItemCF核心算法</a><ul>
 <li><a class="reference internal" href="#id3">2.1.1.1.1. 物品相似度计算</a></li>
 <li><a class="reference internal" href="#id4">2.1.1.1.2. 候选物品推荐</a></li>
-<li><a class="reference internal" href="#id5">2.1.1.1.3. 处理评分数据的相似度计算</a></li>
+<li><a class="reference internal" href="#id5">2.1.1.1.3. 计算效率优化</a></li>
+<li><a class="reference internal" href="#id6">2.1.1.1.4. 处理评分数据的相似度计算</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id7">2.1.1.2. ItemCF评分预测示例</a></li>
-<li><a class="reference internal" href="#id8">2.1.1.3. 代码实践</a></li>
+<li><a class="reference internal" href="#id8">2.1.1.2. ItemCF评分预测示例</a></li>
+<li><a class="reference internal" href="#id9">2.1.1.3. 代码实践</a></li>
 </ul>
 </li>
 </ul>

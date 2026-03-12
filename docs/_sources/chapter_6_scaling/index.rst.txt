@@ -30,6 +30,6 @@ law；小红书的GenRank :cite:`huang2025towards`
    1.hstu.md
    2.gen_rank.md
    3.mtgr.md
-   1.rankmixer.md
-   2.one_trans.md
-   3.summary.md
+   4.rankmixer.md
+   5.one_trans.md
+   6.summary.md

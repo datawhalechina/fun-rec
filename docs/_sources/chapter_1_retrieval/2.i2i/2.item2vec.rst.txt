@@ -61,4 +61,5 @@ Item2Vec的实现可以直接调用gensim库 :cite:`rehurek_lrec`
 .. code:: python
 
    from funrec import run_experiment
+
    run_experiment('item2vec')

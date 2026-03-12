@@ -122,4 +122,5 @@ FM召回的双塔实现关键在于如何将数学推导转化为实际的向量
 .. code:: python
 
    from funrec import run_experiment
+
    run_experiment('fm_recall')

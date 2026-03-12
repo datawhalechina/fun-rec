@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     
-    <title>6.5. OneTrans:统一序列与特征交差 &#8212; 深度推荐算法实践: 从级联架构到生成式范式 1.0.0 documentation</title>
+    <title>6.4. Rankmixer: 硬件效率优化 &#8212; 深度推荐算法实践: 从级联架构到生成式范式 1.0.0 documentation</title>
 
     <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
@@ -28,8 +28,8 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.6. 本章总结" href="3.summary.html" />
-    <link rel="prev" title="6.4. Rankmixer:硬件效率优化" href="1.rankmixer.html" /> 
+    <link rel="next" title="6.5. OneTrans: 统一序列与特征交差" href="5.one_trans.html" />
+    <link rel="prev" title="6.3. MTGR: 混合范式建模" href="3.mtgr.html" /> 
   </head>
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
@@ -37,7 +37,7 @@
         
         <nav class="mdl-navigation breadcrumb">
             <a class="mdl-navigation__link" href="index.html"><span class="section-number">6. </span>Scaling Law架构探索</a><i class="material-icons">navigate_next</i>
-            <a class="mdl-navigation__link is-active"><span class="section-number">6.5. </span>OneTrans:统一序列与特征交差</a>
+            <a class="mdl-navigation__link is-active"><span class="section-number">6.4. </span>Rankmixer: 硬件效率优化</a>
         </nav>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
@@ -60,7 +60,7 @@
         
 <a id="button-show-source"
     class="mdl-button mdl-js-button mdl-button--icon"
-    href="../_sources/chapter_6_scaling/2.one_trans.rst.txt" rel="nofollow">
+    href="../_sources/chapter_6_scaling/4.rankmixer.rst.txt" rel="nofollow">
   <i class="material-icons">code</i>
 </a>
 <div class="mdl-tooltip" data-mdl-for="button-show-source">
@@ -179,10 +179,10 @@ Show Source
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">6. Scaling Law架构探索</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -325,10 +325,10 @@ Show Source
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">6. Scaling Law架构探索</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -376,261 +376,157 @@ Show Source
     <div class="document">
         <div class="page-content" role="main">
         
-  <section id="onetrans">
-<span id="id1"></span><h1><span class="section-number">6.5. </span>OneTrans:统一序列与特征交差<a class="headerlink" href="#onetrans" title="Permalink to this heading">¶</a></h1>
-<p>RankMixer 通过 hardware-aware 架构设计解决了 GPU
-利用率问题，但推荐系统的整体架构仍存在碎片化。工业界主流的推荐模型普遍采用
-<strong>encode-then-interaction</strong>
-范式：序列建模模块（DIN、LONGER）将行为序列编码为固定长度向量，然后与非序列特征拼接，输入特征交互模块（RankMixer）学习高阶交叉（如图
-<a class="reference internal" href="#onetrans-compare"><span class="std std-numref">图6.5.1</span></a> (a)）。</p>
-<p>这种分离式设计存在两个根本问题：（1）<strong>信息流受限</strong>，序列必须压缩为固定维度向量，静态特征无法在序列编码阶段发挥作用，只能后期“补救式”融合；（2）<strong>执行碎片化</strong>，两模块独立执行，无法享受
-LLM 的系统优化（KV Caching、FlashAttention），且需分别调优，难以形成统一
-scaling law。</p>
-<p>OneTrans <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id129" title="Zhang, Z., Pei, H., Guo, J., Wang, T., Feng, Y., Sun, H., … Sun, A. (2025). Onetrans: unified feature interaction and sequence modeling with one transformer in industrial recommender. arXiv preprint arXiv:2510.26104.">Zhang <em>et al.</em>, 2025</a>)</span> 提出根本性架构革新：<strong>用单一
-Transformer backbone 同时完成序列建模和特征交互</strong>。如图
-<a class="reference internal" href="#onetrans-compare"><span class="std std-numref">图6.5.1</span></a> (b) 所示，OneTrans 通过统一 tokenizer
-将序列特征（S-tokens）和非序列特征（NS-tokens）转为统一 token
-序列，在堆叠 Transformer 层中联合建模，打破序列与特征的信息壁垒，为应用
-LLM 系统优化奠定基础。</p>
-<figure class="align-default" id="id4">
-<span id="onetrans-compare"></span><a class="reference internal image-reference" href="../_images/onetrans-compare.png"><img alt="../_images/onetrans-compare.png" src="../_images/onetrans-compare.png" style="width: 500px;" /></a>
-<figcaption>
-<p><span class="caption-number">图6.5.1 </span><span class="caption-text">架构对比</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<section id="tokenization">
-<h2><span class="section-number">6.5.1. </span>统一 Tokenization<a class="headerlink" href="#tokenization" title="Permalink to this heading">¶</a></h2>
-<p>推荐系统的输入包含两类截然不同的特征：<strong>序列特征</strong>
-<span class="math notranslate nohighlight">\(\mathcal{S}\)</span>（用户的多行为序列，如点击序列、加购序列、下单序列）和<strong>非序列特征</strong>
-<span class="math notranslate nohighlight">\(\mathcal{NS}\)</span>（静态属性和上下文，如用户年龄、物品类目、查询词、当前时段）。传统方法将
-<span class="math notranslate nohighlight">\(\mathcal{S}\)</span> 压缩为固定长度向量后与 <span class="math notranslate nohighlight">\(\mathcal{NS}\)</span> 拼接，而
-OneTrans 的核心创新是：<strong>将两类特征统一转换为 token 序列，在同一个
-Transformer 中处理</strong>。</p>
-<p>对于序列特征
-<span class="math notranslate nohighlight">\(\mathcal{S} = \{\mathbf{S}_1, \dots, \mathbf{S}_n\}\)</span>（如
-<span class="math notranslate nohighlight">\(n\)</span> 种行为类型），每个序列
-<span class="math notranslate nohighlight">\(\mathbf{S}_i = [\mathbf{e}_{i1}, \dots, \mathbf{e}_{iL_i}]\)</span> 包含
-<span class="math notranslate nohighlight">\(L_i\)</span> 个事件 embedding（事件 = 物品 ID +
-物品侧信息）。由于不同行为序列的原始维度可能不同，OneTrans
-首先用行为特定的 MLP 将每个序列对齐到统一维度 <span class="math notranslate nohighlight">\(d\)</span>：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-2-one-trans-0">
-<span class="eqno">(6.5.1)<a class="headerlink" href="#equation-chapter-6-scaling-2-one-trans-0" title="Permalink to this equation">¶</a></span>\[\tilde{\mathbf{S}}_i = [\text{MLP}_i(\mathbf{e}_{i1}), \dots, \text{MLP}_i(\mathbf{e}_{iL_i})] \in \mathbb{R}^{L_i \times d}\]</div>
-<p>对齐后的多个序列需要合并为单一 token 序列。OneTrans
-支持两种融合策略：（1）<strong>Timestamp-aware</strong>：如果行为事件带有时间戳，则按时间顺序交错排列所有行为，并添加行为类型标识符；（2）<strong>Timestamp-agnostic</strong>：如果无时间戳，则按照行为意图强度排序（如下单
-→ 加购 → 点击），并在不同行为序列之间插入可学习的 <code class="docutils literal notranslate"><span class="pre">[SEP]</span></code> token
-作为分隔符。实验表明，当时间戳可用时，timestamp-aware
-策略效果更好，因为时间顺序本身蕴含了用户兴趣的演化模式。最终得到：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-2-one-trans-1">
-<span class="eqno">(6.5.2)<a class="headerlink" href="#equation-chapter-6-scaling-2-one-trans-1" title="Permalink to this equation">¶</a></span>\[\text{S-tokens} = \text{Merge}(\tilde{\mathbf{S}}_1, \dots, \tilde{\mathbf{S}}_n) \in \mathbb{R}^{L_S \times d}, \quad L_S = \sum_{i=1}^n L_i + L_{\text{SEP}}\]</div>
-<p>对于非序列特征 <span class="math notranslate nohighlight">\(\mathcal{NS}\)</span>（包括数值特征和类别特征，经过
-bucketization 或 one-hot 编码后 embedding），OneTrans 将所有特征 concat
-后通过单个 MLP 投影，然后切分为 <span class="math notranslate nohighlight">\(L_{NS}\)</span> 个 token（称为
-<strong>Auto-Split Tokenizer</strong>）：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-2-one-trans-2">
-<span class="eqno">(6.5.3)<a class="headerlink" href="#equation-chapter-6-scaling-2-one-trans-2" title="Permalink to this equation">¶</a></span>\[\text{NS-tokens} = \text{Split}(\text{MLP}(\text{Concat}(\mathcal{NS})), L_{NS}) \in \mathbb{R}^{L_{NS} \times d}\]</div>
-<p>这种设计避免了手工特征分组的主观性，让模型自动学习如何组织非序列特征。最终，OneTrans
-的初始输入是 S-tokens 和 NS-tokens 的拼接：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-2-one-trans-3">
-<span class="eqno">(6.5.4)<a class="headerlink" href="#equation-chapter-6-scaling-2-one-trans-3" title="Permalink to this equation">¶</a></span>\[\mathbf{X}^{(0)} = [\text{S-tokens}; \text{NS-tokens}] \in \mathbb{R}^{(L_S + L_{NS}) \times d}\]</div>
-<p>这个统一 token
-序列的构造方式与传统方法有本质区别：<strong>传统方法压缩序列为单个向量，OneTrans
-保留完整的序列 token</strong>。这意味着在后续的 Transformer
-层中，每个行为事件都作为独立 token 参与 attention 计算，而非序列特征也以
-token 形式存在，使得两类特征可以在同一个 attention 矩阵中交互。图
-<a class="reference internal" href="#onetrans-arch"><span class="std std-numref">图6.5.2</span></a> 展示了 OneTrans 的完整架构。</p>
-<figure class="align-default" id="id5">
-<span id="onetrans-arch"></span><a class="reference internal image-reference" href="../_images/onetrans-arch.png"><img alt="../_images/onetrans-arch.png" src="../_images/onetrans-arch.png" style="width: 500px;" /></a>
-<figcaption>
-<p><span class="caption-number">图6.5.2 </span><span class="caption-text">OneTrans 整体架构</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="mixed-parameterization">
-<h2><span class="section-number">6.5.2. </span>Mixed Parameterization 的核心机制<a class="headerlink" href="#mixed-parameterization" title="Permalink to this heading">¶</a></h2>
-<p>如果直接用标准 Transformer 处理统一 token
-序列，会遇到推荐系统特有的问题：<strong>token 的异质性</strong>。在 LLM 中，所有
-token 都是词或 sub-word，语义空间相对统一，因此所有 token 共享 Q/K/V 和
-FFN 参数是合理的。但在 OneTrans 中，S-tokens
-来自行为序列（同质性强，都是用户与物品的交互事件），而 NS-tokens
-来自完全不同的特征空间（用户年龄是人口统计学特征、物品价格是数值特征、查询词是文本特征）。如果强制所有
-token
-共享参数，会导致参数冲突，例如用于捕捉“序列中相邻物品相似性”的参数，对于“用户年龄
-→ 物品类目”的交互可能完全不适用。</p>
-<p>OneTrans 的核心创新是 <strong>Mixed Parameterization</strong>：<strong>S-tokens
-共享一套参数，每个 NS-token 拥有独立的 token-specific
-参数</strong>。这种设计基于两个观察：（1）行为序列中的所有事件都在同一语义空间（物品空间），可以高效地共享参数学习序列模式；（2）非序列特征来自异构空间，需要独立参数捕捉各自的特性。</p>
-<section id="mixed-causal-attention">
-<h3><span class="section-number">6.5.2.1. </span>Mixed Causal Attention<a class="headerlink" href="#mixed-causal-attention" title="Permalink to this heading">¶</a></h3>
-<p>在 OneTrans Block 中，Multi-Head Attention 的 Q/K/V
-计算采用混合参数化。对于第 <span class="math notranslate nohighlight">\(i\)</span> 个 token <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>，其
-query、key、value 计算为：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-2-one-trans-4">
-<span class="eqno">(6.5.5)<a class="headerlink" href="#equation-chapter-6-scaling-2-one-trans-4" title="Permalink to this equation">¶</a></span>\[(\mathbf{q}_i, \mathbf{k}_i, \mathbf{v}_i) = (\mathbf{W}^Q_i \mathbf{x}_i, \mathbf{W}^K_i \mathbf{x}_i, \mathbf{W}^V_i \mathbf{x}_i)\]</div>
-<p>其中权重矩阵
-<span class="math notranslate nohighlight">\(\mathbf{W}^{\Psi}_i\)</span>（<span class="math notranslate nohighlight">\(\Psi \in \{Q,K,V\}\)</span>）遵循条件参数化：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-2-one-trans-5">
-<span class="eqno">(6.5.6)<a class="headerlink" href="#equation-chapter-6-scaling-2-one-trans-5" title="Permalink to this equation">¶</a></span>\[\begin{split}\mathbf{W}^{\Psi}_i = \begin{cases}
-\mathbf{W}^{\Psi}_{\text{S}}, &amp; i \le L_S \quad \text{(S-tokens 共享)} \\
-\mathbf{W}^{\Psi}_{\text{NS}, i}, &amp; i &gt; L_S \quad \text{(NS-tokens 独立)}
-\end{cases}\end{split}\]</div>
-<p>这意味着所有 S-tokens 使用同一组
-<span class="math notranslate nohighlight">\(\mathbf{W}^Q_{\text{S}}, \mathbf{W}^K_{\text{S}}, \mathbf{W}^V_{\text{S}}\)</span>，而第
-<span class="math notranslate nohighlight">\(j\)</span> 个 NS-token 有自己的
-<span class="math notranslate nohighlight">\(\mathbf{W}^Q_{\text{NS},j}, \mathbf{W}^K_{\text{NS},j}, \mathbf{W}^V_{\text{NS},j}\)</span>。</p>
-<p>OneTrans 采用 <strong>Causal Attention Mask</strong>，但 NS-tokens 放置在 S-tokens
-之后，这导致了三个关键的信息流模式：</p>
-<ol class="arabic simple">
-<li><p><strong>S-side 因果依赖</strong>：每个 S-token 只能 attend 到它之前的
-S-tokens。对于 timestamp-aware 序列，这自然建模了时间因果关系；对于
-timestamp-agnostic 序列（按意图排序），causal mask
-让高意图行为（如下单）的信息可以传递到低意图行为（如点击），实现“从强信号过滤弱信号”的效果。</p></li>
-<li><p><strong>NS-side 全局 attention</strong>：每个 NS-token 可以 attend 到<strong>所有</strong>
-S-tokens（完整行为历史）以及它之前的
-NS-tokens。这使得非序列特征可以充分利用序列证据，例如“物品类目”token
-可以 attend
-到所有历史点击的物品类目，自动学习“用户对该类目的历史偏好”。</p></li>
-<li><p><strong>支持 Pyramid</strong>：Causal mask
-的方向性使得信息自然向序列尾部聚集，为后续的 Pyramid Stack
-提供了理论基础（详见下一节）。</p></li>
-</ol>
-</section>
-<section id="mixed-ffn">
-<h3><span class="section-number">6.5.2.2. </span>Mixed FFN<a class="headerlink" href="#mixed-ffn" title="Permalink to this heading">¶</a></h3>
-<p>Feed-Forward Network 同样采用混合参数化：</p>
-<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-2-one-trans-6">
-<span class="eqno">(6.5.7)<a class="headerlink" href="#equation-chapter-6-scaling-2-one-trans-6" title="Permalink to this equation">¶</a></span>\[\text{MixedFFN}(\mathbf{x}_i) = \mathbf{W}^{2}_i \cdot \phi(\mathbf{W}^{1}_i \mathbf{x}_i + \mathbf{b}^1_i) + \mathbf{b}^2_i\]</div>
-<p>其中 <span class="math notranslate nohighlight">\(\mathbf{W}^1_i, \mathbf{W}^2_i\)</span> 遵循与 attention
-相同的条件参数化：S-tokens 共享
-<span class="math notranslate nohighlight">\(\mathbf{W}^1_{\text{S}}, \mathbf{W}^2_{\text{S}}\)</span>，每个
-NS-token 有独立的
-<span class="math notranslate nohighlight">\(\mathbf{W}^1_{\text{NS},i}, \mathbf{W}^2_{\text{NS},i}\)</span>。</p>
-<p>这里需要与 RankMixer 的 Per-Token FFN 做对比。RankMixer 为<strong>每个</strong>
-token 配备独立 FFN（包括序列 token），参数量为
-<span class="math notranslate nohighlight">\(O(T \cdot d^2)\)</span>（<span class="math notranslate nohighlight">\(T\)</span> 为 token 总数）。OneTrans 的 Mixed
-FFN 只为 <span class="math notranslate nohighlight">\(L_{NS}\)</span> 个 NS-tokens 配备独立参数，S-tokens
-共享，参数量为
-<span class="math notranslate nohighlight">\(O(L_{NS} \cdot d^2 + d^2)\)</span>。在推荐场景中，<span class="math notranslate nohighlight">\(L_{NS} \ll L_S\)</span>（非序列特征数量远小于序列长度），这使得
-OneTrans
-在保持表达能力的同时显著降低了参数开销。更重要的是，<strong>参数共享不是妥协，而是设计</strong>，行为序列的同质性使得共享参数可以更高效地学习序列模式，避免参数冗余。</p>
-<p>OneTrans 使用 <strong>Pre-norm + RMSNorm</strong>。在推荐场景中，S-tokens 和
-NS-tokens 的数值范围和统计特性差异显著，Post-norm 容易导致 attention
-分数的尺度失衡（某些 token 的 attention logits
-过大）引发训练不稳定。Pre-norm 在每个子层之前先归一化，确保输入
-attention 和 FFN 的 token 表示在相近的尺度上，RMSNorm 进一步通过 root
-mean square 归一化提供更稳定的梯度传播。</p>
-</section>
-</section>
-<section id="pyramid-stack">
-<h2><span class="section-number">6.5.3. </span>Pyramid Stack 渐进式蒸馏<a class="headerlink" href="#pyramid-stack" title="Permalink to this heading">¶</a></h2>
-<p>OneTrans 的 Causal Attention
-有一个重要特性：<strong>信息自然向序列后方聚集</strong>。在第 <span class="math notranslate nohighlight">\(n\)</span> 层，位置
-<span class="math notranslate nohighlight">\(i\)</span> 的 token 融合了位置 <span class="math notranslate nohighlight">\(1, \dots, i\)</span> 的信息；到第
-<span class="math notranslate nohighlight">\(n+1\)</span> 层，位置 <span class="math notranslate nohighlight">\(i+1\)</span> 又融合了更新后的位置
-<span class="math notranslate nohighlight">\(1, \dots, i+1\)</span> 的信息。随着层数加深，<strong>靠后的 token
-逐渐成为前面所有 token 信息的“汇聚点”</strong>。特别地，NS-tokens
-位于序列末尾，它们在深层会积累整个序列和前面 NS-tokens 的信息。</p>
-<p>Pyramid Stack 正是利用这一特性：<strong>逐层减少参与 attention 计算的 query
-token 数量，只保留序列尾部的 token</strong>。具体地，设第 <span class="math notranslate nohighlight">\(n\)</span> 层的输入
-token 序列长度为 <span class="math notranslate nohighlight">\(L\)</span>，定义一个尾部索引集合
-<span class="math notranslate nohighlight">\(\mathcal{Q} = \{L - L' + 1, \dots, L\}\)</span>（<span class="math notranslate nohighlight">\(L' &lt; L\)</span>）。在
-attention 计算中：</p>
-<ul class="simple">
-<li><p><strong>Keys 和 Values</strong>：仍然从所有 <span class="math notranslate nohighlight">\(L\)</span> 个 token
-计算，保持完整的上下文信息</p></li>
-<li><p><strong>Queries</strong>：只从 <span class="math notranslate nohighlight">\(\mathcal{Q}\)</span> 中的 <span class="math notranslate nohighlight">\(L'\)</span> 个 token 计算</p></li>
-</ul>
-<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-2-one-trans-7">
-<span class="eqno">(6.5.8)<a class="headerlink" href="#equation-chapter-6-scaling-2-one-trans-7" title="Permalink to this equation">¶</a></span>\[\mathbf{q}_i = \mathbf{W}^Q_i \mathbf{x}_i, \quad i \in \mathcal{Q}\]</div>
-<p>Attention 输出只保留 <span class="math notranslate nohighlight">\(\mathcal{Q}\)</span> 对应位置的结果，序列长度从
-<span class="math notranslate nohighlight">\(L\)</span> 收缩到 <span class="math notranslate nohighlight">\(L'\)</span>。通过在多层之间设置递减的 <span class="math notranslate nohighlight">\(L'\)</span>（如
-1190 → 595 → 297 → … → 12），形成金字塔式的层级结构。</p>
-<p>这种设计带来两个核心收益：</p>
-<ol class="arabic simple">
-<li><p><strong>Progressive
-Distillation（渐进式蒸馏）</strong>：长行为序列（可能有数百上千个事件）通过逐层收缩，将信息逐步“蒸馏”到少量尾部
-token 中。浅层 Transformer 学习局部模式（如相邻物品的相似性），深层
-Transformer 在压缩后的 token
-上学习全局模式（如长期兴趣漂移）。最终，所有序列信息都汇聚到
-NS-tokens 中，为下游任务提供紧凑但信息丰富的表示。</p></li>
-<li><p><strong>Compute Efficiency（计算效率）</strong>：标准 Transformer 的 attention
-复杂度为 <span class="math notranslate nohighlight">\(O(L^2 d)\)</span>，FFN 复杂度为 <span class="math notranslate nohighlight">\(O(Ld^2)\)</span>。Pyramid
-将复杂度降低到 <span class="math notranslate nohighlight">\(O(LL'd)\)</span>（attention）和
-<span class="math notranslate nohighlight">\(O(L'd^2)\)</span>（FFN）。当 <span class="math notranslate nohighlight">\(L' \ll L\)</span> 时（如序列长度从 1190
-逐层减少到 12），计算量和激活内存都显著下降。</p></li>
-</ol>
-<p>与标准 Transformer 相比，Pyramid Stack 的关键差异在于：标准 Transformer
-需要在每一层保持完整序列长度，因为 LLM 需要输出每个位置的预测（如
-next-token prediction）。而推荐任务只需要最终的排序分数，中间的序列
-token 可以逐层丢弃，只要保证尾部 token 充分融合了历史信息即可。Causal
-attention 的方向性保证了这一点。</p>
-</section>
-<section id="cross-request-kv-caching">
-<h2><span class="section-number">6.5.4. </span>Cross-Request KV Caching<a class="headerlink" href="#cross-request-kv-caching" title="Permalink to this heading">¶</a></h2>
-<p>统一架构的一个关键优势是可以无缝应用 LLM 的系统优化，其中最重要的是 <strong>KV
-Caching</strong>。在推荐场景中，一次请求（request）通常返回数百个候选物品，每个候选对应一个样本。这些样本的<strong>用户侧特征完全相同</strong>（同一用户、同一行为序列），只有物品侧特征不同。传统
-encode-then-interaction
-架构中，序列编码模块虽然可以复用，但特征交互模块必须为每个候选重新计算，无法充分利用这种共享结构。</p>
-<p>OneTrans 的统一 Transformer 自然地支持两阶段计算：</p>
-<p><strong>Stage I（S-side，once per request）</strong>：处理所有
-S-tokens，计算每一层的 key、value 以及 attention
-输出，并将它们缓存起来。这一阶段<strong>每个请求只执行一次</strong>，与候选数量无关。</p>
-<p><strong>Stage II（NS-side，per candidate）</strong>：对于每个候选物品，计算其对应的
-NS-tokens，然后在每一层执行以下操作：</p>
-<ul class="simple">
-<li><p>使用缓存的 S-side keys 和 values</p></li>
-<li><p>计算 NS-tokens 的 queries</p></li>
-<li><p>执行 Cross-Attention：NS-tokens attend 到缓存的 S-side keys</p></li>
-<li><p>执行 NS-tokens 之间的 Self-Attention</p></li>
-<li><p>通过 token-specific FFN 处理 NS-tokens</p></li>
-</ul>
-<p>这种分解的关键在于：S-tokens 的 KV 在所有候选之间共享，只有 NS-tokens 的
-QKV 需要为每个候选重新计算。假设一次请求有 <span class="math notranslate nohighlight">\(C\)</span>
-个候选，传统方法需要 <span class="math notranslate nohighlight">\(O(C \cdot L_S)\)</span> 的序列计算，而 KV Caching
-将其降低到 <span class="math notranslate nohighlight">\(O(L_S + C \cdot L_{NS})\)</span>。由于
-<span class="math notranslate nohighlight">\(L_{NS} \ll L_S\)</span>（非序列特征数量远小于序列长度），实际复杂度近似
-<span class="math notranslate nohighlight">\(O(1)\)</span>（相对于候选数 <span class="math notranslate nohighlight">\(C\)</span>）。</p>
-<p>更进一步，OneTrans 实现了 <strong>Cross-Request KV
-Caching</strong>。用户的行为序列是 append-only
-的，每次新请求相比上一次请求，只是在序列末尾新增了少量行为事件。因此，可以在多个请求之间复用
-KV cache：</p>
-<ul class="simple">
-<li><p><strong>首次请求</strong>：计算完整序列的 KV，缓存</p></li>
-<li><p><strong>后续请求</strong>：只计算新增的 <span class="math notranslate nohighlight">\(\Delta L\)</span> 个行为事件的 KV，与旧
-cache 拼接</p></li>
-</ul>
-<p>这将每次请求的序列计算从 <span class="math notranslate nohighlight">\(O(L_S)\)</span> 降低到
-<span class="math notranslate nohighlight">\(O(\Delta L_S)\)</span>（<span class="math notranslate nohighlight">\(\Delta L_S\)</span>
-通常只有个位数）。在高频推荐场景（如信息流刷新），用户行为序列在短时间内变化很小，Cross-Request
-KV Caching 的收益尤为显著。</p>
-<p>需要注意的是，KV Caching 的有效性依赖于<strong>统一的 Transformer
-计算图</strong>。如果序列建模和特征交互是两个独立模块，它们各自的中间表示无法跨候选复用（因为两个模块的输入和参数完全不同）。OneTrans
-通过统一 tokenization 和 Mixed Parameterization，将两类特征置于同一个
-attention 矩阵中，使得 S-tokens 的 KV 可以被所有候选的 NS-tokens
-共享。这是 encode-then-interaction 架构无法实现的。</p>
-<p>除了 KV Caching，OneTrans 还继承了 LLM
-领域的其他系统优化：<strong>FlashAttention-2</strong> 通过 kernel fusion 和 memory
-tiling 减少 attention 的 I/O
-开销，显著降低激活内存占用；<strong>Mixed-Precision
-Training</strong>（BF16/FP16）和 <strong>Activation Recomputation</strong>
-结合使用，在保持数值稳定性的前提下进一步压缩内存。这些优化对于训练和部署大规模
-OneTrans 模型（数亿参数）至关重要。</p>
-</section>
+  <section id="rankmixer">
+<span id="id1"></span><h1><span class="section-number">6.4. </span>Rankmixer: 硬件效率优化<a class="headerlink" href="#rankmixer" title="Permalink to this heading">¶</a></h1>
+<p>传统深度学习推荐模型（DLRM）在GPU上的Model FLOPs
+Utilization（MFU）通常只有4-5%，而大语言模型可达到40-60%。这个十倍的效率差距直接导致推荐模型无法享受scaling
+law的红利——即使增加参数量，大部分新增计算也被浪费在低效的内存访问上。</p>
+<p>这一问题的根源在于传统DLRM继承自CPU时代的架构设计。这些模型在GPU上暴露出三个根本性问题：（1）核心操作以memory-bound为主，embedding
+lookup、特征交叉、序列建模等操作的访存量远大于计算量；（2）计算图高度碎片化，由多个独立的手工模块串联而成，每个模块的kernel
+launch开销和global memory传输累积成显著瓶颈；（3）无法充分利用Tensor
+Core，大部分操作都是小规模向量运算或不规则访存，无法发挥GPU矩阵乘法加速单元的效能。</p>
+<p>RankMixer <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id128" title="Zhu, J., Fan, Z., Zhu, X., Jiang, Y., Wang, H., Han, X., … others. (2025). Rankmixer: scaling up ranking models in industrial recommenders. Proceedings of the 34th ACM International Conference on Information and Knowledge Management (pp. 6309–6316).">Zhu <em>et al.</em>, 2025</a>)</span>
+通过hardware-aware的架构设计，从根本上解决了这一问题。其核心原则是<strong>从硬件特性反推架构设计</strong>，将推荐模型重构为统一的、GPU友好的计算图：用Token
+Mixing替代Self-Attention以降低复杂度，用Per-Token
+FFN捕捉特征异质性，用Sparse MoE实现参数高效的模型扩展。</p>
 <section id="id3">
-<h2><span class="section-number">6.5.5. </span>统一建模的本质<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
-<p>OneTrans
-的核心贡献在于推荐系统架构的根本性转变：<strong>从模块组合到统一建模</strong>。传统
-encode-then-interaction
-将序列编码和特征交互分离为独立模块，不同类型的交互（序列内、跨序列、多源特征、序列-特征）被人为隔断。OneTrans
-通过统一
-Transformer，让这些交互在每一层同时发生，通过多层堆叠形成复杂的组合模式。</p>
-<p>统一架构带来的另一个关键优势是<strong>整体可扩展性</strong>。分离架构需要分别调优序列模块和交互模块，难以形成统一的
-scaling law。OneTrans 将整个模型统一为单一 Transformer
-backbone，扩展策略变得简单明确：增加层数（depth）、增加隐藏维度（width）、增加序列长度（length），推荐模型可以像
-LLM 一样获得可预测的性能提升。</p>
-<p>从 RankMixer 到
-OneTrans，推荐系统架构演进的两个关键方向清晰可见：hardware-aware
-的计算设计解决了 GPU
-利用率问题，统一建模框架打破了模块碎片化壁垒。两者的结合为推荐系统走向大规模、可扩展的智能化奠定了基础。</p>
+<h2><span class="section-number">6.4.1. </span>RankMixer整体架构<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
+<p>图 <a class="reference internal" href="#rankmixer-arch"><span class="std std-numref">图6.4.1</span></a>
+展示了RankMixer的完整架构。模型核心是<span class="math notranslate nohighlight">\(L\)</span>层堆叠的RankMixer
+Block，每个block包含Multi-head Token
+Mixing（替代Self-Attention）和Per-Token
+FFN（捕捉特征异质性）两个模块。输入特征经tokenization转换为<span class="math notranslate nohighlight">\(T\)</span>个统一维度的token，经<span class="math notranslate nohighlight">\(L\)</span>层block处理后通过mean
+pooling产生最终输出。</p>
+<figure class="align-default" id="id4">
+<span id="rankmixer-arch"></span><a class="reference internal image-reference" href="../_images/rankmixer_arch.png"><img alt="../_images/rankmixer_arch.png" src="../_images/rankmixer_arch.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">图6.4.1 </span><span class="caption-text">RankMixer整体架构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>每个RankMixer Block的前向传播为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-4-rankmixer-0">
+<span class="eqno">(6.4.1)<a class="headerlink" href="#equation-chapter-6-scaling-4-rankmixer-0" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+\mathbf{S}_{n-1} &amp;= \text{LN}(\text{TokenMixing}(\mathbf{X}_{n-1}) + \mathbf{X}_{n-1}) \\
+\mathbf{X}_n &amp;= \text{LN}(\text{PFFN}(\mathbf{S}_{n-1}) + \mathbf{S}_{n-1})
+\end{aligned}\end{split}\]</div>
+<p>整体复杂度为<span class="math notranslate nohighlight">\(O(LTD^2)\)</span>。在Sparse MoE版本中，Per-Token
+FFN可替换为专家网络，在保持推理成本的前提下扩展参数量。RankMixer的设计遵循三个核心原则：（1）所有核心操作应为矩阵乘法，充分利用Tensor
+Core；（2）计算图应尽可能简洁，减少kernel
+launch开销；（3）保持推荐任务所需的表达能力。</p>
+</section>
+<section id="token-mixing">
+<h2><span class="section-number">6.4.2. </span>Token Mixing机制<a class="headerlink" href="#token-mixing" title="Permalink to this heading">¶</a></h2>
+<p>Self-Attention的计算复杂度为<span class="math notranslate nohighlight">\(O(T^2D)\)</span>（<span class="math notranslate nohighlight">\(T\)</span>为token数量，<span class="math notranslate nohighlight">\(D\)</span>为隐藏维度），来自于需要计算所有token
+pair之间的相似度矩阵<span class="math notranslate nohighlight">\(QK^T\)</span>。在推荐场景中特征数量可达数百上千，这个<span class="math notranslate nohighlight">\(T^2\)</span>项成为显著瓶颈。RankMixer的核心洞察是：<strong>推荐任务需要的是token之间的信息混合（mixing），而非基于相似度的动态加权（attention）</strong>。例如学习“年轻用户在一线城市更喜欢科技类物品”这样的高阶交互，本质是让多个token的信息融合形成新的representation，而不一定需要显式计算token
+pair相似度。</p>
+<p>Token Mixing的核心思想是：<strong>在特征维度而非token维度进行混合</strong>。如图
+<a class="reference internal" href="#rankmixer-arch"><span class="std std-numref">图6.4.1</span></a>
+右下角所示，给定输入token序列<span class="math notranslate nohighlight">\(\mathbf{X} \in \mathbb{R}^{T \times D}\)</span>（<span class="math notranslate nohighlight">\(T\)</span>个token，每个维度为<span class="math notranslate nohighlight">\(D\)</span>），Token
+Mixing包含两个步骤。</p>
+<p>首先是<strong>Multi-head
+decomposition</strong>。将每个token分解为<span class="math notranslate nohighlight">\(H\)</span>个head：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-4-rankmixer-1">
+<span class="eqno">(6.4.2)<a class="headerlink" href="#equation-chapter-6-scaling-4-rankmixer-1" title="Permalink to this equation">¶</a></span>\[[\mathbf{x}_t^{(1)} \| \mathbf{x}_t^{(2)} \| \cdots \| \mathbf{x}_t^{(H)}] = \text{SplitHead}(\mathbf{x}_t)\]</div>
+<p>其中<span class="math notranslate nohighlight">\(\mathbf{x}_t^{(h)} \in \mathbb{R}^{D/H}\)</span>是第<span class="math notranslate nohighlight">\(t\)</span>个token的第<span class="math notranslate nohighlight">\(h\)</span>个head。这和multi-head
+attention的分解方式相同，不同head可以捕捉不同类型的交互模式。</p>
+<p>然后是<strong>Token-wise
+mixing</strong>。对每个head，将所有token的该head部分拼接起来：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-4-rankmixer-2">
+<span class="eqno">(6.4.3)<a class="headerlink" href="#equation-chapter-6-scaling-4-rankmixer-2" title="Permalink to this equation">¶</a></span>\[\mathbf{s}^{(h)} = \text{Concat}(\mathbf{x}_1^{(h)}, \mathbf{x}_2^{(h)}, \ldots, \mathbf{x}_T^{(h)}) \in \mathbb{R}^{TD/H}\]</div>
+<p>这个操作的关键在于：<strong>它改变了数据的组织方式，从“按token组织”变为“按head组织”</strong>。原始输入<span class="math notranslate nohighlight">\(\mathbf{X}\)</span>是<span class="math notranslate nohighlight">\(T\)</span>个长度为<span class="math notranslate nohighlight">\(D\)</span>的向量（每个token一个向量），经过SplitHead和Concat后，变为<span class="math notranslate nohighlight">\(H\)</span>个长度为<span class="math notranslate nohighlight">\(TD/H\)</span>的向量（每个head一个向量）。在每个head内部，不同token的特征紧密排列在一起，为信息混合创造了条件。实际实现中，RankMixer设置<span class="math notranslate nohighlight">\(H=T\)</span>，这样每个“head”实际包含了所有token的一部分特征。经过mixing后，token数量保持不变，便于residual
+connection。</p>
+<p>从复杂度角度看，Token
+Mixing的计算量为<span class="math notranslate nohighlight">\(O(TD)\)</span>（主要是内存重排操作）。相比self-attention的<span class="math notranslate nohighlight">\(O(T^2D + TD^2)\)</span>，当<span class="math notranslate nohighlight">\(T\)</span>较大时（推荐场景中<span class="math notranslate nohighlight">\(T\)</span>可能有几百上千），Token
+Mixing避免了<span class="math notranslate nohighlight">\(T^2\)</span>项，复杂度显著降低。当<span class="math notranslate nohighlight">\(T\)</span>和<span class="math notranslate nohighlight">\(D\)</span>相近时，两者复杂度相当，但Token
+Mixing没有softmax的normalize操作（需要额外的reduction
+kernel），进一步减少了kernel开销。</p>
+<p>一个关键问题是：<strong>不显式计算token
+pair之间的相似度，如何保证能捕捉它们之间的交互？</strong>答案在于<strong>多层堆叠</strong>。单层Token
+Mixing实现的是“feature-level
+mixing”——不同token的同一维度特征会相互影响（因为它们被concat到同一个向量中）。但当堆叠多层Token
+Mixing时，第1层的每个token输出融合了所有token的一阶信息，第2层的输入已经是第1层mixed后的结果，每个token已经包含其他token的信息，第2层再次mixing实现了二阶交互。形式化地，令<span class="math notranslate nohighlight">\(f(\cdot)\)</span>表示单层Token
+Mixing，<span class="math notranslate nohighlight">\(\mathbf{X}_0\)</span>为输入，则：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-4-rankmixer-3">
+<span class="eqno">(6.4.4)<a class="headerlink" href="#equation-chapter-6-scaling-4-rankmixer-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+\mathbf{X}_1 &amp;= f(\mathbf{X}_0) \\
+\mathbf{X}_2 &amp;= f(\mathbf{X}_1) = f(f(\mathbf{X}_0))\\
+&amp;\vdots \\
+\mathbf{X}_L &amp;= \underbrace{f \circ f \circ \cdots \circ f}_{L \text{ times}}(\mathbf{X}_0)
+\end{aligned}\end{split}\]</div>
+<p>由于每层Token
+Mixing都在特征维度进行线性变换（通过后续的FFN实现），堆叠<span class="math notranslate nohighlight">\(L\)</span>层可以建模token之间的<span class="math notranslate nohighlight">\(L\)</span>阶多项式交互。在实际推荐模型中，<span class="math notranslate nohighlight">\(L\)</span>通常为6-12层，足以捕捉所需的高阶特征交叉。</p>
+<p>从硬件角度看，Token
+Mixing的核心操作是数据重排（SplitHead和Concat），这在GPU上可以通过高效的kernel实现。重排操作可以设计为连续的内存读写（coalesced
+memory
+access），充分利用GPU的内存带宽。相比attention需要计算softmax（需要全局归一化），Token
+Mixing的操作是局部的、可并行的。更重要的是，SplitHead、Concat和后续的FFN可以融合成一个kernel，减少kernel
+launch overhead，这是MFU提升的关键所在。</p>
+</section>
+<section id="per-token-ffn">
+<h2><span class="section-number">6.4.3. </span>Per-Token FFN<a class="headerlink" href="#per-token-ffn" title="Permalink to this heading">¶</a></h2>
+<p>从图 <a class="reference internal" href="#rankmixer-arch"><span class="std std-numref">图6.4.1</span></a> 左侧的RankMixer Block可以看到，Per-Token
+FFN为每个token配备了独立的FFN参数。标准Transformer的FFN对所有token使用相同权重：<span class="math notranslate nohighlight">\(\text{FFN}(\mathbf{x}) = \mathbf{W}_2 \cdot \text{GELU}(\mathbf{W}_1 \mathbf{x} + \mathbf{b}_1) + \mathbf{b}_2\)</span>，其中<span class="math notranslate nohighlight">\(\mathbf{W}_1 \in \mathbb{R}^{D \times 4D}\)</span>，<span class="math notranslate nohighlight">\(\mathbf{W}_2 \in \mathbb{R}^{4D \times D}\)</span>。这在语言模型中是合理的，所有token（词或sub-word）都在同一个语义空间中，可以学到通用规律。但推荐系统的特征完全不同：用户ID表示隐式偏好、物品类目是粗粒度分类、点击率服从long-tail分布、时间戳有周期性。这些特征的语义空间和分布特性完全不同，强行用同一个FFN处理会导致参数效率损失。</p>
+<p>RankMixer的核心设计是：<strong>每个token有独立的FFN参数</strong>。对于第<span class="math notranslate nohighlight">\(t\)</span>个token，其FFN变换为：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-4-rankmixer-4">
+<span class="eqno">(6.4.5)<a class="headerlink" href="#equation-chapter-6-scaling-4-rankmixer-4" title="Permalink to this equation">¶</a></span>\[\mathbf{v}_t = \mathbf{W}_{\text{pffn}}^{t,2} \cdot \text{GELU}(\mathbf{W}_{\text{pffn}}^{t,1} \mathbf{s}_t + \mathbf{b}_{\text{pffn}}^{t,1}) + \mathbf{b}_{\text{pffn}}^{t,2}\]</div>
+<p>其中<span class="math notranslate nohighlight">\(\mathbf{W}_{\text{pffn}}^{t,1} \in \mathbb{R}^{D \times kD}\)</span>，<span class="math notranslate nohighlight">\(\mathbf{W}_{\text{pffn}}^{t,2} \in \mathbb{R}^{kD \times D}\)</span>，<span class="math notranslate nohighlight">\(k\)</span>是FFN隐藏层扩展系数。关键在于每个token的<span class="math notranslate nohighlight">\(\mathbf{W}_{\text{pffn}}^{t,i}\)</span>是独立的，这使得：（1）每个token可以学习特定于其语义空间的变换；（2）高信息量token可自动分配更大参数容量；（3）避免不同语义空间相互干扰。</p>
+<p>Per-Token FFN与MMoE有本质区别。MMoE中多个expert共享同一输入，gating
+network动态决定权重，输出是expert的加权组合：<span class="math notranslate nohighlight">\(\mathbf{y} = \sum_{i=1}^{E} g_i(\mathbf{x}) \cdot \text{Expert}_i(\mathbf{x})\)</span>（所有expert看到相同的<span class="math notranslate nohighlight">\(\mathbf{x}\)</span>）。而Per-Token
+FFN中每个token有独立的输入和独立的FFN：<span class="math notranslate nohighlight">\(\mathbf{v}_t = \text{FFN}_t(\mathbf{s}_t)\)</span>（每个FFN看到不同的<span class="math notranslate nohighlight">\(\mathbf{s}_t\)</span>）。这种参数隔离确保不同特征空间的学习相互独立，避免高频特征dominate低频特征。</p>
+<p>从参数效率看，假设有<span class="math notranslate nohighlight">\(T\)</span>个token，Per-Token
+FFN的总参数量为<span class="math notranslate nohighlight">\(\text{Param} = 2TkD^2\)</span>，相比shared
+FFN（<span class="math notranslate nohighlight">\(2kD^2\)</span>）增加了<span class="math notranslate nohighlight">\(T\)</span>倍。但<strong>计算复杂度不变</strong>：<span class="math notranslate nohighlight">\(\text{FLOPs} = 2TkD^2\)</span>，与shared
+FFN相同（shared
+FFN需对<span class="math notranslate nohighlight">\(T\)</span>个token分别计算）。关键在于增加的参数是“专门化”的，每块参数只服务于特定token，学习效率更高。</p>
+<p>跨特征空间交互通过Token Mixing层实现。Per-Token
+FFN专注于各自特征空间的深度建模，Token
+Mixing确保不同token的信息混合。这种“mixing + per-token
+processing”的组合，在保持参数隔离的同时，通过多层堆叠（<span class="math notranslate nohighlight">\(\mathbf{S}_{n-1} = \text{LN}(\text{TokenMixing}(\mathbf{X}_{n-1}) + \mathbf{X}_{n-1})\)</span>，<span class="math notranslate nohighlight">\(\mathbf{X}_n = \text{LN}(\text{PFFN}(\mathbf{S}_{n-1}) + \mathbf{S}_{n-1})\)</span>）实现了充分的跨空间交互。</p>
+</section>
+<section id="sparse-moe">
+<h2><span class="section-number">6.4.4. </span>Sparse MoE扩展<a class="headerlink" href="#sparse-moe" title="Permalink to this heading">¶</a></h2>
+<p>有了Token Mixing和Per-Token
+FFN，RankMixer已经可以高效建模特征交互。但如何扩展到十亿甚至百亿参数？直接增加模型深度和宽度会线性增加计算量，推理延迟也会同比增加，这在工业场景中不可接受。Sparse
+Mixture-of-Experts（MoE）提供了解决方案：不是让所有参数都参与每个样本的计算，而是根据样本特性动态选择一部分expert。这样模型参数量可以很大，但每个样本的计算量是固定的（只激活少数expert）。</p>
+<p>MoE的理想工作模式是每个expert专门化到某种特定样本模式。但在推荐场景中，实现有效的expert
+specialization面临三大挑战。第一，推荐系统的输入是高维稀疏特征向量，特征组合空间是指数级的，不同样本的representation可能散布在高维空间各个角落，缺乏清晰的cluster
+structure，导致gating
+network很难学到稳定的路由策略。第二，推荐数据往往极度不均衡，头部用户可能贡献50%样本，如果gating在训练早期将大量头部样本路由到某个expert，该expert会获得更多梯度更新，后续gating会继续将样本发给它，最终导致少数expert处理大部分样本（expert
+overload），其余expert基本不被使用（expert
+underutilization）。第三，即使训练时expert负载相对均衡，推理时不同时刻的请求分布可能不同，某些expert可能成为瓶颈，增加延迟variance。</p>
+<p>面对这些挑战，RankMixer采用了两种互补的训练策略（如图
+<a class="reference internal" href="#rankmixer-arch"><span class="std std-numref">图6.4.1</span></a> 右上角所示）。首先是<strong>ReLU
+Routing</strong>。标准MoE使用Top-<span class="math notranslate nohighlight">\(k\)</span> + Softmax
+routing，所有token分配到的expert数量固定为<span class="math notranslate nohighlight">\(k\)</span>个。RankMixer采用ReLU
+Routing允许每个token激活不同数量的expert：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-4-rankmixer-5">
+<span class="eqno">(6.4.6)<a class="headerlink" href="#equation-chapter-6-scaling-4-rankmixer-5" title="Permalink to this equation">¶</a></span>\[G_{i,j} = \text{ReLU}(h(\mathbf{s}_i)), \quad \mathbf{v}_i = \sum_{j=1}^{N_e} G_{i,j} \cdot e_{i,j}(\mathbf{s}_i)\]</div>
+<p>其中<span class="math notranslate nohighlight">\(h(\cdot)\)</span>是router网络，<span class="math notranslate nohighlight">\(N_e\)</span>是每个token可用的expert数量，<span class="math notranslate nohighlight">\(G_{i,j}\)</span>是token
+<span class="math notranslate nohighlight">\(i\)</span>对expert
+<span class="math notranslate nohighlight">\(j\)</span>的gate值。ReLU的特性使得输出可以为0（不激活）或正值（激活），高信息量token可能激活更多expert。为控制稀疏度，添加正则化项：<span class="math notranslate nohighlight">\(\mathcal{L} = \mathcal{L}_{\text{task}} + \lambda \mathcal{L}_{\text{reg}}\)</span>，其中<span class="math notranslate nohighlight">\(\mathcal{L}_{\text{reg}} = \sum_{i=1}^{N_t} \sum_{j=1}^{N_e} G_{i,j}\)</span>，系数<span class="math notranslate nohighlight">\(\lambda\)</span>控制平均激活expert数量。</p>
+<p>其次是<strong>Dense-Training /
+Sparse-Inference（DTSI-MoE）</strong>策略。Per-Token
+FFN已将参数量增加<span class="math notranslate nohighlight">\(T\)</span>倍，再加上MoE会进一步扩大expert数量，容易导致expert
+under-training。DTSI-MoE使用两个router：训练时使用dense router
+<span class="math notranslate nohighlight">\(h_{\text{train}}\)</span>激活所有或大部分expert确保充分训练，推理时使用sparse
+router
+<span class="math notranslate nohighlight">\(h_{\text{infer}}\)</span>只激活少数expert降低计算成本。两个router同时训练，但只有<span class="math notranslate nohighlight">\(h_{\text{infer}}\)</span>受到<span class="math notranslate nohighlight">\(\mathcal{L}_{\text{reg}}\)</span>约束：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-6-scaling-4-rankmixer-6">
+<span class="eqno">(6.4.7)<a class="headerlink" href="#equation-chapter-6-scaling-4-rankmixer-6" title="Permalink to this equation">¶</a></span>\[G_{i,j}^{\text{train}} = \text{ReLU}(h_{\text{train}}(\mathbf{s}_i)), \quad G_{i,j}^{\text{infer}} = \text{ReLU}(h_{\text{infer}}(\mathbf{s}_i))\]</div>
+<p>训练时前向传播使用<span class="math notranslate nohighlight">\(G_{i,j}^{\text{train}}\)</span>，但同时计算<span class="math notranslate nohighlight">\(G_{i,j}^{\text{infer}}\)</span>并对其施加稀疏正则。推理时只使用<span class="math notranslate nohighlight">\(h_{\text{infer}}\)</span>。这种设计实现了训练充分、推理高效和策略一致。</p>
+<p>负载均衡通过正则化项<span class="math notranslate nohighlight">\(\mathcal{L}_{\text{reg}}\)</span>的软约束实现。对于expert
+<span class="math notranslate nohighlight">\(j\)</span>，其在batch中的总激活量为<span class="math notranslate nohighlight">\(A_j = \sum_{i=1}^{N_t} G_{i,j}\)</span>。正则化项可重写为<span class="math notranslate nohighlight">\(\mathcal{L}_{\text{reg}} = \sum_j A_j\)</span>，当某个expert的<span class="math notranslate nohighlight">\(A_j\)</span>过大时，梯度<span class="math notranslate nohighlight">\(\frac{\partial \mathcal{L}_{\text{reg}}}{\partial h_{\text{infer}}}\)</span>会抑制该expert的激活概率，从而实现负载均衡。相比硬约束（如capacity限制），这种软约束不会因expert满载而强制将样本分配给次优expert，保持了路由的灵活性。</p>
+<p>RankMixer实现高MFU的关键在于：<strong>所有核心操作都是compute-bound的大矩阵乘法</strong>。Token
+Mixing和PFFN占据约85%计算时间，全部是矩阵乘法（GEMM）操作，可高效利用GPU的Tensor
+Core（单个GEMM kernel的MFU可达60-80%）。相比之下，传统DLRM中Embedding
+lookup（40%时间，memory-bound）、小kernel操作（35%时间，MFU &lt;
+10%）和kernel launch
+overhead（20%时间）占据主导，有效GEMM计算仅占5%，这解释了为什么传统DLRM的MFU只有4-5%，而RankMixer可达45%。</p>
+<p>通过hardware-aware的架构设计，RankMixer将推荐模型从碎片化设计转变为统一架构范式。算法层面，Token
+Mixing将复杂度从<span class="math notranslate nohighlight">\(O(T^2D)\)</span>降低到<span class="math notranslate nohighlight">\(O(TD^2)\)</span>，Per-Token
+FFN捕捉特征异质性，Sparse MoE通过ReLU
+Routing和DTSI-MoE实现参数高效扩展。系统层面，将所有核心操作统一为矩阵乘法，MFU从4-5%提升到45%，让推荐模型真正成为GPU的“第一类公民”，可直接利用Tensor
+Core和LLM领域的成熟工具链，打开了可持续的scaling路径。RankMixer验证了Transformer统一架构同样适用于推荐场景，关键在于针对性定制。但其主要聚焦于模型内部的计算效率优化，推荐系统pipeline中仍存在其他碎片化问题：序列建模与特征交互的分离、召回与排序的分离、多任务之间的碎片化。下一节将介绍OneTrans如何进一步突破这些壁垒，在统一的Transformer框架中实现端到端的联合优化。</p>
 </section>
 </section>
 
@@ -643,16 +539,11 @@ OneTrans，推荐系统架构演进的两个关键方向清晰可见：hardware-
       <span class="caption-text">Table Of Contents</span>
     </p>
     <ul>
-<li><a class="reference internal" href="#">6.5. OneTrans:统一序列与特征交差</a><ul>
-<li><a class="reference internal" href="#tokenization">6.5.1. 统一 Tokenization</a></li>
-<li><a class="reference internal" href="#mixed-parameterization">6.5.2. Mixed Parameterization 的核心机制</a><ul>
-<li><a class="reference internal" href="#mixed-causal-attention">6.5.2.1. Mixed Causal Attention</a></li>
-<li><a class="reference internal" href="#mixed-ffn">6.5.2.2. Mixed FFN</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pyramid-stack">6.5.3. Pyramid Stack 渐进式蒸馏</a></li>
-<li><a class="reference internal" href="#cross-request-kv-caching">6.5.4. Cross-Request KV Caching</a></li>
-<li><a class="reference internal" href="#id3">6.5.5. 统一建模的本质</a></li>
+<li><a class="reference internal" href="#">6.4. Rankmixer: 硬件效率优化</a><ul>
+<li><a class="reference internal" href="#id3">6.4.1. RankMixer整体架构</a></li>
+<li><a class="reference internal" href="#token-mixing">6.4.2. Token Mixing机制</a></li>
+<li><a class="reference internal" href="#per-token-ffn">6.4.3. Per-Token FFN</a></li>
+<li><a class="reference internal" href="#sparse-moe">6.4.4. Sparse MoE扩展</a></li>
 </ul>
 </li>
 </ul>
@@ -663,18 +554,18 @@ OneTrans，推荐系统架构演进的两个关键方向清晰可见：hardware-
 
       <div class="clearer"></div>
     </div><div class="pagenation">
-     <a id="button-prev" href="1.rankmixer.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+     <a id="button-prev" href="3.mtgr.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
          <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
          <div class="pagenation-text">
             <span class="pagenation-direction">Previous</span>
-            <div>6.4. Rankmixer:硬件效率优化</div>
+            <div>6.3. MTGR: 混合范式建模</div>
          </div>
      </a>
-     <a id="button-next" href="3.summary.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+     <a id="button-next" href="5.one_trans.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
          <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
         <div class="pagenation-text">
             <span class="pagenation-direction">Next</span>
-            <div>6.6. 本章总结</div>
+            <div>6.5. OneTrans: 统一序列与特征交差</div>
         </div>
      </a>
   </div>

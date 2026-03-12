@@ -1,8 +1,8 @@
 
 .. _onetrans:
 
-统一序列与特征交叉建模
-======================
+OneTrans: 统一序列与特征交差
+============================
 
 
 RankMixer 通过 hardware-aware 架构设计解决了 GPU
@@ -24,7 +24,7 @@ LLM 系统优化奠定基础。
 
 .. _onetrans-compare:
 
-.. figure:: ../../img/onetrans-compare.png
+.. figure:: ../img/onetrans-compare.png
    :width: 500px
 
    架构对比
@@ -92,7 +92,7 @@ token 形式存在，使得两类特征可以在同一个 attention 矩阵中交
 
 .. _onetrans-arch:
 
-.. figure:: ../../img/onetrans-arch.png
+.. figure:: ../img/onetrans-arch.png
    :width: 500px
 
    OneTrans 整体架构

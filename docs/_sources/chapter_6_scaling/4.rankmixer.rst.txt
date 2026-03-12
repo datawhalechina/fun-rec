@@ -1,8 +1,8 @@
 
 .. _rankmixer:
 
-Hardware-Aware统一架构
-======================
+Rankmixer: 硬件效率优化
+=======================
 
 
 传统深度学习推荐模型（DLRM）在GPU上的Model FLOPs
@@ -31,7 +31,7 @@ pooling产生最终输出。
 
 .. _rankmixer-arch:
 
-.. figure:: ../../img/rankmixer_arch.png
+.. figure:: ../img/rankmixer_arch.png
    :width: 500px
 
    RankMixer整体架构

@@ -179,7 +179,7 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
@@ -325,7 +325,7 @@ Show Source
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. oneTrans:统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
@@ -376,7 +376,7 @@ Show Source
         
   <section id="id1">
 <h1><span class="section-number">2. </span>快速候选召回<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
-<p>召回是推荐漏斗的第一个环节，需要在有限延迟内从海量候选中筛选出千级规模的初选集合，为后续排序提供高质量输入。本章沿着技术演进的脉络，分五节展开：协同过滤从用户-物品交互矩阵出发建立相似性，并通过矩阵分解引入向量化表示；I2I召回将序列建模思想从NLP迁移到推荐场景，学习物品间的相似性向量；双塔模型将用户和物品分别编码为向量，实现高效的U2I匹配；序列召回利用行为的时间顺序捕捉用户兴趣的多样性和动态变化；流式索引召回从结构层面突破压缩机制和静态索引的局限。</p>
+<p>召回是推荐漏斗的第一个环节，需要在有限延迟内从海量候选中筛选出千级规模的初选集合，为后续排序提供高质量输入。本章沿着技术演进的脉络，分五节展开：协同过滤（<a class="reference internal" href="1.cf/index.html#sec-cf"><span class="std std-numref">2.1节</span></a>）从用户-物品交互矩阵出发建立相似性，并通过矩阵分解引入向量化表示；I2I召回（<a class="reference internal" href="2.i2i/index.html#i2i"><span class="std std-numref">2.2节</span></a>）将序列建模思想从NLP迁移到推荐场景，学习物品间的相似性向量；双塔模型（<a class="reference internal" href="3.two_tower/index.html#two-tower"><span class="std std-numref">2.3节</span></a>）将用户和物品分别编码为向量，实现高效的U2I匹配；序列召回（<a class="reference internal" href="4.sequence/index.html#sec-sequence"><span class="std std-numref">2.4节</span></a>）利用行为的时间顺序捕捉用户兴趣的多样性和动态变化；流式索引召回（<a class="reference internal" href="5.streaming_index/index.html#streaming-index"><span class="std std-numref">2.5节</span></a>）从结构层面突破压缩机制和静态索引的局限。</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="1.cf/index.html">2.1. 协同过滤</a><ul>
