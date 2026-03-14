@@ -177,10 +177,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -323,10 +323,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -377,7 +377,7 @@ Show Source
   <section id="id1">
 <h1><span class="section-number">4. </span>重排多样性建模<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>在推荐系统流程中，召回阶段从海量物品中筛选出数百到数千候选，精排阶段利用复杂模型对候选集精准打分，输出按预估分数降序排列的候选列表。</p>
-<p>然而，仅按预估分数排序的列表往往并非最优推荐结果，直接呈现给用户会面临关键挑战：</p>
+<p>然而，仅按预估分数排序的列表往往并非最优推荐结果，直接呈现给用户会面临以下关键挑战。</p>
 <ol class="arabic simple">
 <li><p><strong>多样性缺失与审美疲劳</strong>：列表顶部高度同质化，连续推荐相似内容易引发用户厌倦，降低平台粘性和长尾内容发现机会。</p></li>
 <li><p><strong>上下文与整体性忽略</strong>：精排模型较少考虑列表物品间的关联性、互补性或排斥性，缺乏对整体逻辑和流畅度的考量。</p></li>

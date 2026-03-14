@@ -180,10 +180,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -326,10 +326,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -393,7 +393,7 @@ Show Source
 <p>在推荐系统的用户行为链中，存在严格的时序依赖关系。以电商场景为例：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-0">
 <span class="eqno">(3.4.6)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-0" title="Permalink to this equation">¶</a></span>\[\text{曝光(Impression)} \rightarrow \text{点击(Click)} \rightarrow \text{转化(Conversion)}\]</div>
-<p>这种链式结构导致两个关键问题：</p>
+<p>这种链式结构导致以下两个关键问题。</p>
 <ol class="arabic simple">
 <li><p>样本选择偏差(Sample Selection
 Bias)：传统CVR模型仅在点击样本（CTR正样本）上训练，但线上预估需覆盖全量曝光样本，训练/预估样本分布差异导致泛化能力下降</p></li>
@@ -410,17 +410,17 @@ CVR，典型场景：CTR≈2%, CVR≈0.5% →
 </figcaption>
 </figure>
 <ul class="simple">
-<li><p>输入层：全量曝光样本特征 <span class="math notranslate nohighlight">\(\mathbf{x}\)</span></p></li>
+<li><p>输入层：全量曝光样本特征 <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span></p></li>
 <li><p>共享表征层：基础特征提取模块（原论文中采用的是Shared-Bottom的简单共享结构，也可将其直接替换成MMoE、PLE等复杂的底层共享模型）</p></li>
-<li><p>任务塔层：</p>
+<li><p>任务塔层</p>
 <ul>
-<li><p>CTR Tower：预测点击概率 <span class="math notranslate nohighlight">\(pCTR = f_{ctr}(\mathbf{h})\)</span></p></li>
-<li><p>CVR Tower：预测转化概率 <span class="math notranslate nohighlight">\(pCVR = f_{cvr}(\mathbf{h})\)</span></p></li>
+<li><p>CTR Tower：预测点击概率 <span class="math notranslate nohighlight">\(pCTR = f_{ctr}(\boldsymbol{h})\)</span></p></li>
+<li><p>CVR Tower：预测转化概率 <span class="math notranslate nohighlight">\(pCVR = f_{cvr}(\boldsymbol{h})\)</span></p></li>
 </ul>
 </li>
 <li><p>输出层：</p>
 <ul>
-<li><p><span class="math notranslate nohighlight">\(pCTR = f_{ctr}(\mathbf{h})\)</span>，<span class="math notranslate nohighlight">\(pCVR = f_{cvr}(\mathbf{h})\)</span>，其中<span class="math notranslate nohighlight">\(pCVR\)</span>不用用来计算Loss</p></li>
+<li><p><span class="math notranslate nohighlight">\(pCTR = f_{ctr}(\boldsymbol{h})\)</span>，<span class="math notranslate nohighlight">\(pCVR = f_{cvr}(\boldsymbol{h})\)</span>，其中<span class="math notranslate nohighlight">\(pCVR\)</span>不用用来计算Loss</p></li>
 <li><p><span class="math notranslate nohighlight">\(pCTCVR = pCTR \times pCVR\)</span>，该值用来计算从曝光空间到转化的Loss</p></li>
 </ul>
 </li>
@@ -428,23 +428,18 @@ CVR，典型场景：CTR≈2%, CVR≈0.5% →
 <p>损失函数的设计：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-1">
 <span class="eqno">(3.4.7)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-1" title="Permalink to this equation">¶</a></span>\[\mathcal{L} = \mathcal{L}_{CTR} + \mathcal{L}_{CTCVR}\]</div>
-<p>其中：</p>
-<ul>
-<li><p><span class="math notranslate nohighlight">\(\mathcal{L}_{CTR}\)</span>
-是标准的二分类交叉熵损失，使用全量曝光样本：</p>
+<p>其中各项含义如下。</p>
+<p><span class="math notranslate nohighlight">\(\mathcal{L}_{CTR}\)</span> 是标准的二分类交叉熵损失，使用全量曝光样本：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-2">
 <span class="eqno">(3.4.8)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-2" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{CTR} = - \frac{1}{N} \sum_{i=1}^N \left[ y_i^{click} \log(pCTR_i) + (1 - y_i^{click}) \log(1 - pCTR_i) \right]\]</div>
-</li>
-<li><p><span class="math notranslate nohighlight">\(\mathcal{L}_{CTCVR}\)</span> 是CTCVR任务的交叉熵损失，
-通过概率转化公式<span class="math notranslate nohighlight">\(pCTCVR = pCTR \times pCVR\)</span>，<strong>使得CVR
+<p><span class="math notranslate nohighlight">\(\mathcal{L}_{CTCVR}\)</span>
+是CTCVR任务的交叉熵损失，通过概率转化公式<span class="math notranslate nohighlight">\(pCTCVR = pCTR \times pCVR\)</span>，<strong>使得CVR
 Tower的参数更新是在曝光空间下进行的</strong>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-3">
 <span class="eqno">(3.4.9)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-3" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{CTCVR} = - \frac{1}{N} \sum_{i=1}^N \left[ y_i^{click} \cdot y_i^{conv} \log(pCTCVR_i) + (1 - y_i^{click} \cdot y_i^{conv}) \log(1 - pCTCVR_i) \right]\]</div>
-</li>
-</ul>
 <p>ESMM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-4">
-<span class="eqno">(3.4.10)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-4" title="Permalink to this equation">¶</a></span>\[\nabla_{CVR} = \underbrace{\frac{\partial \mathcal{L}_{CTCVR}}{\partial pCTCVR} \cdot pCTR}_{\text{全空间梯度}} + \underbrace{\frac{\partial \mathcal{L}_{shared}}{\partial \mathbf{h}}}_{\text{共享层梯度}}\]</div>
+<span class="eqno">(3.4.10)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-4" title="Permalink to this equation">¶</a></span>\[\nabla_{CVR} = \underbrace{\frac{\partial \mathcal{L}_{CTCVR}}{\partial pCTCVR} \cdot pCTR}_{\text{全空间梯度}} + \underbrace{\frac{\partial \mathcal{L}_{shared}}{\partial \boldsymbol{h}}}_{\text{共享层梯度}}\]</div>
 <p><strong>MMOE代码实践</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_esmm_model</span><span class="p">(</span>
         <span class="n">feature_columns</span><span class="p">,</span>
@@ -480,7 +475,7 @@ Tower的参数更新是在曝光空间下进行的</strong>：</p>
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-------------+-----------------+----------------+--------------+---------------------+--------------------+</span>
 <span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>
 <span class="o">+================+===============+=============+=================+================+==============+=====================+====================+</span>
-<span class="o">|</span>         <span class="mf">0.5996</span> <span class="o">|</span>        <span class="mf">0.6939</span> <span class="o">|</span>      <span class="mf">0.6468</span> <span class="o">|</span>          <span class="mf">0.5729</span> <span class="o">|</span>         <span class="mf">0.5834</span> <span class="o">|</span>       <span class="mf">0.5782</span> <span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.5967</span> <span class="o">|</span>        <span class="mf">0.6857</span> <span class="o">|</span>      <span class="mf">0.6412</span> <span class="o">|</span>          <span class="mf">0.5742</span> <span class="o">|</span>         <span class="mf">0.5808</span> <span class="o">|</span>       <span class="mf">0.5775</span> <span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>
 <span class="o">+----------------+---------------+-------------+-----------------+----------------+--------------+---------------------+--------------------+</span>
 </pre></div>
 </div>
@@ -519,24 +514,24 @@ Action，DAction），将其余行为归并为其他行为（Other Action，OAct
 </figure>
 <p>ESM2模型 <span id="id3">(<a class="reference internal" href="../../chapter_references/references.html#id94" title="Wen, H., Zhang, J., Wang, Y., Lv, F., Bao, W., Lin, Q., &amp; Yang, K. (2020). Entire space multi-task modeling via post-click behavior decomposition for conversion rate prediction. Proceedings of the 43rd International ACM SIGIR conference on research and development in Information Retrieval (pp. 2377–2386).">Wen <em>et al.</em>, 2020</a>)</span>
 有四个塔，分别用来预测上述的<span class="math notranslate nohighlight">\(y_1,y_2,y_3\)</span>和<span class="math notranslate nohighlight">\(y_4\)</span>，对于这四个塔的输出并不是算4个Loss，而是分别计算<code class="docutils literal notranslate"><span class="pre">曝光-&gt;点击</span></code>、<code class="docutils literal notranslate"><span class="pre">曝光-&gt;决定行为</span></code>和<code class="docutils literal notranslate"><span class="pre">曝光-&gt;购买</span></code>这三个Loss。可以很明显的看出，这三个Loss都是在曝光空间上计算的，和ESMM在曝光空间优化CVR有着异曲同工之处。下面对于上述的三个Loss做简单的介绍，下面的<span class="math notranslate nohighlight">\(BCE_{Loss}\)</span>表示的是二元交叉熵损失。</p>
-<p><span class="math notranslate nohighlight">\(L_{ctr}\)</span>点击率预估损失：</p>
+<p><span class="math notranslate nohighlight">\(\mathcal{L}_{ctr}\)</span>点击率预估损失：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-5">
 <span class="eqno">(3.4.11)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-5" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-L_{ctr}
+\mathcal{L}_{ctr}
     &amp;= \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isClick}}^i, \text{pCTR}_i) \\
     &amp; = \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isClick}}^i, \text{y}_1^i)
 \end{aligned}\end{split}\]</div>
-<p><span class="math notranslate nohighlight">\(L_{ctavr}\)</span>点击且决定行为概率预估损失：</p>
+<p><span class="math notranslate nohighlight">\(\mathcal{L}_{ctavr}\)</span>点击且决定行为概率预估损失：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-6">
 <span class="eqno">(3.4.12)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-6" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-L_{ctavr}
+\mathcal{L}_{ctavr}
     &amp;= \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isDAction}}^i, \text{pCTAVR}_i) \\
     &amp; = \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isDAction}}^i, \text{y}_1^i \cdot \text{y}_2^i)
 \end{aligned}\end{split}\]</div>
-<p><span class="math notranslate nohighlight">\(L_{ctcvr}\)</span>转化率预估损失：</p>
+<p><span class="math notranslate nohighlight">\(\mathcal{L}_{ctcvr}\)</span>转化率预估损失：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-7">
 <span class="eqno">(3.4.13)<a class="headerlink" href="#equation-chapter-2-ranking-4-multi-objective-2-dependency-modeling-7" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-L_{ctcvr}
+\mathcal{L}_{ctcvr}
     &amp;= \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isPurchuse}}^i, \text{pCTCVR}_i) \\
     &amp; = \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isPurchuse}}^i, \text{y}_1^i (\text{y}_2^i \cdot \text{y}_3^i + (1 - \text{y}_2^i) \cdot \text{y}_4^i))
 \end{aligned}\end{split}\]</div>

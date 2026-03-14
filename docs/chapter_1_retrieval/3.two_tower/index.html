@@ -179,10 +179,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -325,10 +325,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -387,7 +387,7 @@ Show Source
 <p>这种拆分带来了工程上的优势：所有物品向量可以离线预计算并存入向量检索系统（如Faiss），线上只需实时计算用户向量，再通过近似最近邻搜索找到最匹配的物品。原本
 <span class="math notranslate nohighlight">\(O(U \times I)\)</span> 的匹配复杂度降到了 <span class="math notranslate nohighlight">\(O(U + I)\)</span>
 的向量计算复杂度。</p>
-<p>本章沿着双塔模型的演进轨迹介绍三个模型：</p>
+<p>本章沿着双塔模型的演进轨迹介绍以下三个模型。</p>
 <p><strong>FM（因子分解机）：双塔模型的雏形</strong>。FM诞生于深度学习兴起之前，但它首次将用户-物品的复杂交互分解为两个低维向量的内积操作，在思想上是双塔的原型。</p>
 <p><strong>DSSM：深度结构化语义模型</strong>。FM本质上仍是线性模型，DSSM用深度神经网络替代线性变换，让双塔具备了非线性的特征学习能力。</p>
 <p><strong>YouTubeDNN：从匹配到预测用户下一行为</strong>。YouTubeDNN在架构上延续了双塔设计，但引入了一个关键的思想转变——把召回任务重新定义为“预测用户下一个会观看的视频”。</p>

@@ -32,7 +32,7 @@ ID）**\ 来解决这一难题 :cite:`deng2025onerec`\ 。
 :math:`N_t`\ ，这使得总的编码空间为
 :math:`N_t^{L_t}`\ 。这个编码空间远大于实际物品数量，确保了所有物品都能被覆盖，同时较大的词表引入了更多参数，有助于提升模型性能。
 
-语义 ID 的生成过程分为两个阶段：
+语义 ID 的生成过程分为两个阶段。
 
 **阶段一：协同感知的多模态表示学习**\ 。每个视频包含丰富的多模态信息，包括标题、标签、语音转文字（ASR）、图像转文字（OCR）、封面图和采样帧。这些信息通过视觉语言模型（如
 miniCPM-V-8B）处理后，生成 1280 个 Token 向量。为了实现高效处理，采用
@@ -42,7 +42,7 @@ QFormer 模块将这些向量压缩为 4 个可学习的查询向量。
 引入了\ **物品对对比学习**\ ：从用户行为中提取高协同相似度的物品对（如同一用户正向点击的物品），通过对比损失拉近这些物品对的表示，使语义
 ID 能够同时编码内容语义和行为模式：
 
-.. math:: \mathcal{L}_{I2I} = -\frac{1}{|\mathcal{B}|} \sum_{(i,j) \in \mathcal{B}} \log \frac{\exp(\text{sim}(\tilde{\mathbf{M}}_i, \tilde{\mathbf{M}}_j) / \tau)}{\sum_{(i',j') \in \mathcal{B}} \exp(\text{sim}(\tilde{\mathbf{M}}_i, \tilde{\mathbf{M}}_{j'}) / \tau)}
+.. math:: \mathcal{L}_{I2I} = -\frac{1}{|\mathcal{B}|} \sum_{(i,j) \in \mathcal{B}} \log \frac{\exp(\text{sim}(\tilde{\boldsymbol{M}}_i, \tilde{\boldsymbol{M}}_j) / \tau)}{\sum_{(i',j') \in \mathcal{B}} \exp(\text{sim}(\tilde{\boldsymbol{M}}_i, \tilde{\boldsymbol{M}}_{j'}) / \tau)}
 
 同时，为防止表示退化，还加入了标题生成的辅助任务，确保表示保留内容理解能力。
 
@@ -51,9 +51,9 @@ ID 能够同时编码内容语义和行为模式：
 K-means（RQ-Kmeans）将连续表示离散化为语义 ID。不同于端到端训练的
 RQ-VAE，RQ-Kmeans 直接在残差上应用 K-means 聚类构建码本：
 
-.. math:: \mathcal{R}^{(1)} = \{\tilde{\mathbf{M}}_i\}, \quad \mathcal{C}^{(l)} = \text{K-means}(\mathcal{R}^{(l)}, N_t)
+.. math:: \mathcal{R}^{(1)} = \{\tilde{\boldsymbol{M}}_i\}, \quad \mathcal{C}^{(l)} = \text{K-means}(\mathcal{R}^{(l)}, N_t)
 
-.. math:: s_i^l = \arg\min_k \|\mathcal{R}_i^{(l)} - \mathbf{c}_k^{(l)}\|, \quad \mathcal{R}_i^{(l+1)} = \mathcal{R}_i^{(l)} - \mathbf{c}_{s_i^l}^{(l)}
+.. math:: s_i^l = \arg\min_k \|\mathcal{R}_i^{(l)} - \boldsymbol{c}_k^{(l)}\|, \quad \mathcal{R}_i^{(l+1)} = \mathcal{R}_i^{(l)} - \boldsymbol{c}_{s_i^l}^{(l)}
 
 经过 3 层量化，每个视频 :math:`m` 获得由粗到细的语义标识符序列
 :math:`\{s_m^1, s_m^2, s_m^3\}`\ ，这将成为生成式推荐模型的输出目标。
@@ -76,21 +76,21 @@ ID 序列。
 
 **编码器设计**
 
-编码器的设计体现了对用户兴趣多时间尺度特性的深刻理解：
+编码器的设计体现了对用户兴趣多时间尺度特性的深刻理解，具体包含以下四个通路。
 
 1. **用户静态特征通路（User Static Pathway）**\ ：处理用户
    ID、年龄、性别等基础画像信息，经过两层密集层变换后得到表示
-   :math:`\mathbf{h}_u \in \mathbb{R}^{1 \times d_{model}}`\ 。
+   :math:`\boldsymbol{h}_u \in \mathbb{R}^{1 \times d_{model}}`\ 。
 
 2. **短期行为通路（Short-term Pathway）**\ ：处理用户最近 20
    次交互（\ :math:`L_s=20`\ ）。每个交互包含丰富的上下文信息：物品
    ID（可以是原子 ID ``vid`` 或语义 ID ``sid``\ ）、作者
    ID、标签、时间戳、播放时长、物品时长，以及各类交互标签（点赞、关注、转发、不喜欢等）。这些特征拼接后经过非线性变换得到
-   :math:`\mathbf{h}_s \in \mathbb{R}^{L_s \times d_{model}}`\ 。
+   :math:`\boldsymbol{h}_s \in \mathbb{R}^{L_s \times d_{model}}`\ 。
 
 3. **正反馈行为通路（Positive-feedback Pathway）**\ ：处理用户 256
    次高参与度交互（\ :math:`L_p=256`\ ），特征构成与短期通路类似，得到
-   :math:`\mathbf{h}_p \in \mathbb{R}^{L_p \times d_{model}}`\ 。
+   :math:`\boldsymbol{h}_p \in \mathbb{R}^{L_p \times d_{model}}`\ 。
 
 4. **超长期历史通路（Lifelong Pathway）**\ ：这是 OneRec-V1
    的一大创新。用户可能有多达 10
@@ -100,17 +100,17 @@ ID 序列。
    :math:`\lfloor\sqrt[3]{|D|}\rfloor`\ ），选择最接近中心的代表物品；然后使用
    QFormer 模块，通过 128 个可学习查询向量对压缩后的 2000
    长度序列进行交叉注意力处理，最终得到紧凑表示
-   :math:`\mathbf{h}_l \in \mathbb{R}^{128 \times d_{model}}`\ 。
+   :math:`\boldsymbol{h}_l \in \mathbb{R}^{128 \times d_{model}}`\ 。
 
 四个通路的输出被拼接成完整的上下文序列，通过 :math:`L_{enc}` 层
 Transformer 编码器处理：
 
-.. math:: \mathbf{z}^{(1)} = [\mathbf{h}_u; \mathbf{h}_s; \mathbf{h}_p; \mathbf{h}_l] + \mathbf{e}_{pos}
+.. math:: \boldsymbol{z}^{(1)} = [\boldsymbol{h}_u; \boldsymbol{h}_s; \boldsymbol{h}_p; \boldsymbol{h}_l] + \boldsymbol{e}_{pos}
 
-.. math:: \mathbf{z}^{(i+1)} = \mathbf{z}^{(i)} + \text{SelfAttn}(\text{RMSNorm}(\mathbf{z}^{(i)})), \quad \mathbf{z}^{(i+1)} = \mathbf{z}^{(i+1)} + \text{FFN}(\text{RMSNorm}(\mathbf{z}^{(i+1)}))
+.. math:: \boldsymbol{z}^{(i+1)} = \boldsymbol{z}^{(i)} + \text{SelfAttn}(\text{RMSNorm}(\boldsymbol{z}^{(i)})), \quad \boldsymbol{z}^{(i+1)} = \boldsymbol{z}^{(i+1)} + \text{FFN}(\text{RMSNorm}(\boldsymbol{z}^{(i+1)}))
 
 最终编码器输出
-:math:`\mathbf{z}_{enc} \in \mathbb{R}^{(1+L_s+L_p+128) \times d_{model}}`
+:math:`\boldsymbol{z}_{enc} \in \mathbb{R}^{(1+L_s+L_p+128) \times d_{model}}`
 提供全面的用户上下文表示。
 
 **解码器设计**
@@ -119,11 +119,11 @@ Transformer 编码器处理：
 :math:`m`\ ，解码器输入由起始 Token ``[BOS]`` 和该物品的语义 ID
 序列组成。每层解码器包含三个关键组件：
 
-.. math:: \mathbf{d}_m^{(i+1)} = \mathbf{d}_m^{(i)} + \text{CausalSelfAttn}(\mathbf{d}_m^{(i)})
+.. math:: \boldsymbol{d}_m^{(i+1)} = \boldsymbol{d}_m^{(i)} + \text{CausalSelfAttn}(\boldsymbol{d}_m^{(i)})
 
-.. math:: \mathbf{d}_m^{(i+1)} = \mathbf{d}_m^{(i+1)} + \text{CrossAttn}(\mathbf{d}_m^{(i+1)}, \mathbf{z}_{enc}, \mathbf{z}_{enc})
+.. math:: \boldsymbol{d}_m^{(i+1)} = \boldsymbol{d}_m^{(i+1)} + \text{CrossAttn}(\boldsymbol{d}_m^{(i+1)}, \boldsymbol{z}_{enc}, \boldsymbol{z}_{enc})
 
-.. math:: \mathbf{d}_m^{(i+1)} = \mathbf{d}_m^{(i+1)} + \text{MoE}(\text{RMSNorm}(\mathbf{d}_m^{(i+1)}))
+.. math:: \boldsymbol{d}_m^{(i+1)} = \boldsymbol{d}_m^{(i+1)} + \text{MoE}(\text{RMSNorm}(\boldsymbol{d}_m^{(i+1)}))
 
 其中因果自注意力捕获已生成 Token
 间的依赖，交叉注意力让解码器关注编码器的上下文，混合专家前馈网络（MoE
@@ -257,7 +257,7 @@ Token 被映射到维度：
 Context Processor 将上下文表示沿特征维度切分成 :math:`L_{kv}`
 组，每组经过 RMSNorm 归一化后生成对应的键值对：
 
-.. math:: \mathbf{k}_l = \text{RMSNorm}_{k,l}(\mathbf{C}_{l \cdot S_{kv}}), \quad \mathbf{v}_l = \begin{cases} \text{RMSNorm}_{v,l}(\mathbf{C}_{l \cdot S_{kv} + 1}), & S_{kv} = 2 \\ \mathbf{k}_l, & S_{kv} = 1 \end{cases}
+.. math:: \boldsymbol{k}_l = \text{RMSNorm}_{k,l}(\boldsymbol{C}_{l \cdot S_{kv}}), \quad \boldsymbol{v}_l = \begin{cases} \text{RMSNorm}_{v,l}(\boldsymbol{C}_{l \cdot S_{kv} + 1}), & S_{kv} = 2 \\ \boldsymbol{k}_l, & S_{kv} = 1 \end{cases}
 
 这种设计的巧妙之处在于：\ **这些键值对对于同一上下文在整个前向传播过程中保持不变**\ ，因此可以被多个解码器层共享，而无需在每一层重新计算。实验表明，即使采用极致的共享策略（\ :math:`L_{kv}=1, S_{kv}=1`\ ），模型性能也不会受到明显影响。
 
@@ -271,10 +271,10 @@ Token 位置计算损失，而不对整个序列的每个位置都计算下一 T
 在训练时，目标物品的前两个语义 ID 加上一个 ``[BOS]`` Token
 组成输入序列（仅 3 个 Token！）：
 
-.. math:: \mathbf{h}^{(0)} = \text{Embed}([\text{BOS}, s^1, s^2]) \in \mathbb{R}^{3 \times d_{model}}
+.. math:: \boldsymbol{h}^{(0)} = \text{Embed}([\text{BOS}, s^1, s^2]) \in \mathbb{R}^{3 \times d_{model}}
 
 这个紧凑的序列通过 :math:`N_{layer}` 层 Lazy Decoder Block
-处理，每层包含三个步骤：
+处理，每层包含以下三个步骤。
 
 1. **Lazy Cross-Attention**\ ：让解码器隐藏状态关注 Context Processor
    提供的键值对。“惰性”体现在两个方面：(1)
@@ -289,11 +289,11 @@ Token 位置计算损失，而不对整个序列的每个位置都计算下一 T
 3. **Feed-Forward Network**\ ：对注意力输出进行非线性变换，在更深层可用
    MoE 替代。
 
-.. math:: \mathbf{h}_{cross}^{(l)} = \mathbf{h}^{(l-1)} + \text{CrossAttn}(\text{RMSNorm}(\mathbf{h}^{(l-1)}), \mathbf{k}_{l_{kv}}, \mathbf{v}_{l_{kv}})
+.. math:: \boldsymbol{h}_{cross}^{(l)} = \boldsymbol{h}^{(l-1)} + \text{CrossAttn}(\text{RMSNorm}(\boldsymbol{h}^{(l-1)}), \boldsymbol{k}_{l_{kv}}, \boldsymbol{v}_{l_{kv}})
 
-.. math:: \mathbf{h}_{self}^{(l)} = \mathbf{h}_{cross}^{(l)} + \text{SelfAttn}(\text{RMSNorm}(\mathbf{h}_{cross}^{(l)}))
+.. math:: \boldsymbol{h}_{self}^{(l)} = \boldsymbol{h}_{cross}^{(l)} + \text{SelfAttn}(\text{RMSNorm}(\boldsymbol{h}_{cross}^{(l)}))
 
-.. math:: \mathbf{h}^{(l)} = \mathbf{h}_{self}^{(l)} + \text{FFN}^{(l)}(\text{RMSNorm}(\mathbf{h}_{self}^{(l)}))
+.. math:: \boldsymbol{h}^{(l)} = \boldsymbol{h}_{self}^{(l)} + \text{FFN}^{(l)}(\text{RMSNorm}(\boldsymbol{h}_{self}^{(l)}))
 
 **效率提升量化**
 
@@ -347,7 +347,8 @@ OneRec-V2
 App Stay Time 和 7 日留存 LT7）高度相关。
 
 然而，原始播放时长存在固有偏差：长视频天然倾向于累积更长的播放时长，无论用户兴趣如何。为解决这一偏差，OneRec-V2
-提出\ **时长感知奖励塑形（Duration-Aware Reward Shaping）**\ ：
+提出了\ **时长感知奖励塑形（Duration-Aware Reward
+Shaping）**\ ，具体步骤如下。
 
 1. **对数分桶**\ ：由于视频时长呈长尾分布，采用对数策略将历史视频划分到不同桶中：
 

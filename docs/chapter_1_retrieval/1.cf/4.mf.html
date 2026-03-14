@@ -180,10 +180,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -326,10 +326,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -392,7 +392,7 @@ Show Source
 <p><span class="caption-number">图2.1.6 </span><span class="caption-text">基于用户行为统计的方法。张三喜欢左边的三部电影。为了对他进行预测，系统会找到也喜欢这些电影的相似用户，然后确定他们还喜欢哪些其他电影。在这种情况下，所有三位用户都喜欢《拯救大兵瑞恩》，因此这是首个推荐。接着，其中两位用户喜欢《沙丘》，所以它排在第二位，依此类推。</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>但这种方法有一个根本性的弱点：当评分数据非常稀疏时，很难找到足够的共同评分来计算可靠的相似度。矩阵分解的核心想法建立在两个关键假设上：</p>
+<p>但这种方法有一个根本性的弱点：当评分数据非常稀疏时，很难找到足够的共同评分来计算可靠的相似度。矩阵分解的核心想法建立在以下两个关键假设上。</p>
 <ul class="simple">
 <li><p>第一个是低秩假设：虽然评分矩阵看起来很复杂，但实际上可能只受少数几个隐含因素影响，比如“面向男性vs面向女性”、“严肃vs逃避现实”等维度。</p></li>
 <li><p>第二个是隐向量假设：每个用户和每部电影都能用一个包含这些隐含因子的向量来表示，用户向量反映了其对各种因子的偏好程度，而电影向量则描述了该电影在各个因子上的特征强度。</p></li>
@@ -466,7 +466,7 @@ Show Source
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0008</span> <span class="o">|</span>       <span class="mf">0.0002</span> <span class="o">|</span>    <span class="mf">0.0003</span> <span class="o">|</span>   <span class="mf">0.0001</span> <span class="o">|</span>         <span class="mf">0.0001</span> <span class="o">|</span>             <span class="mi">0</span> <span class="o">|</span>
+<span class="o">|</span>        <span class="mf">0.0015</span> <span class="o">|</span>       <span class="mf">0.0008</span> <span class="o">|</span>    <span class="mf">0.0006</span> <span class="o">|</span>   <span class="mf">0.0004</span> <span class="o">|</span>         <span class="mf">0.0001</span> <span class="o">|</span>        <span class="mf">0.0002</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>
@@ -545,7 +545,7 @@ Show Source
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">ndcg</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
 <span class="o">+===============+==============+===========+==========+================+===============+</span>
-<span class="o">|</span>        <span class="mf">0.0013</span> <span class="o">|</span>       <span class="mf">0.0012</span> <span class="o">|</span>    <span class="mf">0.0008</span> <span class="o">|</span>   <span class="mf">0.0008</span> <span class="o">|</span>         <span class="mf">0.0001</span> <span class="o">|</span>        <span class="mf">0.0002</span> <span class="o">|</span>
+<span class="o">|</span>         <span class="mf">0.001</span> <span class="o">|</span>       <span class="mf">0.0003</span> <span class="o">|</span>    <span class="mf">0.0003</span> <span class="o">|</span>   <span class="mf">0.0001</span> <span class="o">|</span>         <span class="mf">0.0001</span> <span class="o">|</span>        <span class="mf">0.0001</span> <span class="o">|</span>
 <span class="o">+---------------+--------------+-----------+----------+----------------+---------------+</span>
 </pre></div>
 </div>

@@ -180,10 +180,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -326,10 +326,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -407,13 +407,13 @@ Show Source
 <span class="math notranslate nohighlight">\(w_{ij}\)</span> 无法得到有效学习。</p>
 <p>FM 模型巧妙地解决了这个问题。它将交互权重 <span class="math notranslate nohighlight">\(w_{ij}\)</span>
 分解为两个低维隐向量的内积，即
-<span class="math notranslate nohighlight">\(w_{ij}=\langle\mathbf{v}_i,\mathbf{v}_j\rangle\)</span>。这样，模型的预测公式就演变为：</p>
+<span class="math notranslate nohighlight">\(w_{ij}=\langle\boldsymbol{v}_i,\boldsymbol{v}_j\rangle\)</span>。这样，模型的预测公式就演变为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-1">
-<span class="eqno">(3.2.2)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-1" title="Permalink to this equation">¶</a></span>\[y = w_0 + \sum_{i=1}^n w_i x_i + \sum_{i=1}^{n-1} \sum_{j=i+1}^n \langle \mathbf{v}_i, \mathbf{v}_j \rangle x_i x_j\]</div>
-<p>其中<span class="math notranslate nohighlight">\(\mathbf{v}_i,\mathbf{v}_j\)</span> 分别是特征 <span class="math notranslate nohighlight">\(i\)</span> 和特征
-<span class="math notranslate nohighlight">\(j\)</span> 的 <span class="math notranslate nohighlight">\(k\)</span> 维隐向量（Embedding）。<span class="math notranslate nohighlight">\(k\)</span>
+<span class="eqno">(3.2.2)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-1" title="Permalink to this equation">¶</a></span>\[y = w_0 + \sum_{i=1}^n w_i x_i + \sum_{i=1}^{n-1} \sum_{j=i+1}^n \langle \boldsymbol{v}_i, \boldsymbol{v}_j \rangle x_i x_j\]</div>
+<p>其中<span class="math notranslate nohighlight">\(\boldsymbol{v}_i,\boldsymbol{v}_j\)</span> 分别是特征 <span class="math notranslate nohighlight">\(i\)</span>
+和特征 <span class="math notranslate nohighlight">\(j\)</span> 的 <span class="math notranslate nohighlight">\(k\)</span> 维隐向量（Embedding）。<span class="math notranslate nohighlight">\(k\)</span>
 是一个远小于特征数量 <span class="math notranslate nohighlight">\(n\)</span>
-的超参数，<span class="math notranslate nohighlight">\(\langle \mathbf{v}_i,\mathbf{v}_j \rangle\)</span>
+的超参数，<span class="math notranslate nohighlight">\(\langle \boldsymbol{v}_i,\boldsymbol{v}_j \rangle\)</span>
 表示两个隐向量的内积，计算方式为
 <span class="math notranslate nohighlight">\(\sum_{f=1}^k v_{i,f} \cdot v_{j,f}\)</span>。</p>
 <p>这种<strong>参数共享</strong>的设计是 FM 的精髓所在。原本需要学习 <span class="math notranslate nohighlight">\(O(n^2)\)</span>
@@ -476,21 +476,22 @@ Interaction Layer）。</p>
 <span class="math notranslate nohighlight">\((v_i \odot v_j)\)</span> 的重要性得分 <span class="math notranslate nohighlight">\(a_{ij}\)</span>。</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-3">
 <span class="eqno">(3.2.4)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-a_{ij}' &amp;= \textbf{h}^T \text{ReLU}(\textbf{W} (\mathbf{v}_i \odot \mathbf{v}_j) x_i x_j + \textbf{b}) \\
+a_{ij}' &amp;= \boldsymbol{h}^T \text{ReLU}(\boldsymbol{W} (\boldsymbol{v}_i \odot \boldsymbol{v}_j) x_i x_j + \boldsymbol{b}) \\
 a_{ij} &amp;= \frac{\exp(a_{ij}')}{\sum_{(i,k) \in \mathcal{R}_x} \exp(a_{ik}')}
 \end{aligned}\end{split}\]</div>
-<p>其中，<span class="math notranslate nohighlight">\(\textbf{W}\)</span> 是注意力网络的权重矩阵，<span class="math notranslate nohighlight">\(\textbf{b}\)</span>
-是偏置向量，<span class="math notranslate nohighlight">\(\textbf{h}\)</span> 是输出层向量。这个得分 <span class="math notranslate nohighlight">\(a_{ij}\)</span>
-经过 Softmax
+<p>其中，<span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>
+是注意力网络的权重矩阵，<span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span>
+是偏置向量，<span class="math notranslate nohighlight">\(\boldsymbol{h}\)</span> 是输出层向量。这个得分
+<span class="math notranslate nohighlight">\(a_{ij}\)</span> 经过 Softmax
 归一化后，被用作加权求和的权重，与原始的交叉特征向量相乘，最终汇总成一个向量。这个过程被称为注意力池化层（Attention-based
 Pooling）。</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-4">
-<span class="eqno">(3.2.5)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-4" title="Permalink to this equation">¶</a></span>\[f_{Att} = \sum_{(i,j) \in \mathcal{R}_x} a_{ij} (\mathbf{v}_i \odot \mathbf{v}_j) x_i x_j\]</div>
+<span class="eqno">(3.2.5)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-4" title="Permalink to this equation">¶</a></span>\[f_{Att} = \sum_{(i,j) \in \mathcal{R}_x} a_{ij} (\boldsymbol{v}_i \odot \boldsymbol{v}_j) x_i x_j\]</div>
 <p>最后，AFM
 的完整预测公式由一阶线性部分和经过注意力加权的二阶交叉部分组成：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-5">
-<span class="eqno">(3.2.6)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-5" title="Permalink to this equation">¶</a></span>\[\hat{y}_{afm}(x) = w_0 + \sum_{i=1}^n w_i x_i + \textbf{p}^T f_{Att}\]</div>
-<p>其中 <span class="math notranslate nohighlight">\(\textbf{p}\)</span>
+<span class="eqno">(3.2.6)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-5" title="Permalink to this equation">¶</a></span>\[\hat{y}_{afm}(x) = w_0 + \sum_{i=1}^n w_i x_i + \boldsymbol{p}^T f_{Att}\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(\boldsymbol{p}\)</span>
 是一个投影向量，用于将最终的交叉结果映射为标量。通过引入注意力机制，<strong>AFM
 不仅提升了模型的表达能力，还通过可视化注意力权重</strong> <span class="math notranslate nohighlight">\(a_{ij}\)</span>
 <strong>赋予了模型更好的可解释性</strong>，让我们可以洞察哪些特征交叉对预测结果的贡献最大。</p>
@@ -533,24 +534,24 @@ DNN，由 DNN 来自动学习这些交叉特征之间的高阶组合关系</stro
 Pooling
 Layer），这一层的作用很直接——把所有特征对的交叉信息汇总成一个向量，然后送给后面的神经网络去学习更复杂的模式。具体的计算过程如下：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-6">
-<span class="eqno">(3.2.7)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-6" title="Permalink to this equation">¶</a></span>\[f_{BI}(V_x) = \sum_{i=1}^n \sum_{j=i+1}^n x_i \mathbf{v}_i \odot x_j \mathbf{v}_j\]</div>
+<span class="eqno">(3.2.7)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-6" title="Permalink to this equation">¶</a></span>\[f_{BI}(V_x) = \sum_{i=1}^n \sum_{j=i+1}^n x_i \boldsymbol{v}_i \odot x_j \boldsymbol{v}_j\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(V_x = \{x_1 v_1, x_2 v_2, ..., x_n v_n\}\)</span>
 是输入样本中所有非零特征的 Embedding 向量集合，<span class="math notranslate nohighlight">\(\odot\)</span>
 仍然是元素积操作。这个操作的结果是一个与 Embedding
 维度相同的向量，它有效地编码了所有的二阶特征交叉信息。值得注意的是，与FM中的变换类似，这一层的计算同样可以被优化到线性时间复杂度，非常高效：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-7">
-<span class="eqno">(3.2.8)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-7" title="Permalink to this equation">¶</a></span>\[f_{BI}(V_x) = \frac{1}{2} \left[\left(\sum_{i=1}^n x_i \mathbf{v}_i\right)^2 - \sum_{i=1}^n (x_i \mathbf{v}_i)^2\right].\]</div>
+<span class="eqno">(3.2.8)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-7" title="Permalink to this equation">¶</a></span>\[f_{BI}(V_x) = \frac{1}{2} \left[\left(\sum_{i=1}^n x_i \boldsymbol{v}_i\right)^2 - \sum_{i=1}^n (x_i \boldsymbol{v}_i)^2\right].\]</div>
 <p>得到特征交叉池化层的输出向量 <span class="math notranslate nohighlight">\(f_{BI}(V_x)\)</span> 后，NFM
 将其送入一个标准的多层前馈神经网络（MLP）：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-8">
-<span class="eqno">(3.2.9)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-8" title="Permalink to this equation">¶</a></span>\[z_1 = \sigma_1(\textbf{W}_1 f_{BI}(V_x) + \textbf{b}_1),\ \ldots,\ z_L = \sigma_L(\textbf{W}_L z_{L-1} + \textbf{b}_L)\]</div>
-<p>其中 <span class="math notranslate nohighlight">\(\textbf{W}_l, \textbf{b}_l, \sigma_l\)</span> 分别是第 <span class="math notranslate nohighlight">\(l\)</span>
-个隐藏层的权重、偏置和非线性激活函数。最后，NFM 将一阶线性部分与 DNN
-部分的输出结合起来，得到最终的预测结果：</p>
+<span class="eqno">(3.2.9)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-8" title="Permalink to this equation">¶</a></span>\[z_1 = \sigma_1(\boldsymbol{W}_1 f_{BI}(V_x) + \boldsymbol{b}_1),\ \ldots,\ z_L = \sigma_L(\boldsymbol{W}_L z_{L-1} + \boldsymbol{b}_L)\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(\boldsymbol{W}_l, \boldsymbol{b}_l, \sigma_l\)</span> 分别是第
+<span class="math notranslate nohighlight">\(l\)</span> 个隐藏层的权重、偏置和非线性激活函数。最后，NFM
+将一阶线性部分与 DNN 部分的输出结合起来，得到最终的预测结果：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-9">
-<span class="eqno">(3.2.10)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-9" title="Permalink to this equation">¶</a></span>\[\hat{y}_{NFM}(x) = w_0 + \sum_{i=1}^n w_i x_i + \textbf{h}^T z_L\]</div>
-<p>其中 <span class="math notranslate nohighlight">\(\textbf{h}\)</span> 是预测层的权重向量。通过这种方式，NFM 巧妙地将
-FM 的二阶交叉能力与 DNN 的高阶非线性建模能力结合在了一起。FM
+<span class="eqno">(3.2.10)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-9" title="Permalink to this equation">¶</a></span>\[\hat{y}_{NFM}(x) = w_0 + \sum_{i=1}^n w_i x_i + \boldsymbol{h}^T z_L\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(\boldsymbol{h}\)</span> 是预测层的权重向量。通过这种方式，NFM
+巧妙地将 FM 的二阶交叉能力与 DNN 的高阶非线性建模能力结合在了一起。FM
 可以被看作是 NFM 在没有隐藏层时的特例，这表明 NFM 是对 FM
 的一个自然扩展和深度化。</p>
 <p><strong>核心代码</strong></p>
@@ -593,56 +594,56 @@ Layer），这一层会对特征 Embedding
 </figcaption>
 </figure>
 <p>PNN 的乘积层会产生两部分信号，一部分是线性信号
-<span class="math notranslate nohighlight">\(\mathbf{l}_z\)</span>，直接来自于各特征的 Embedding 向量，定义为：</p>
+<span class="math notranslate nohighlight">\(\boldsymbol{l}_z\)</span>，直接来自于各特征的 Embedding 向量，定义为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-10">
-<span class="eqno">(3.2.11)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-10" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_z^n = \sum_{i=1}^N\sum_{k=1}^M (\mathbf{W}_z^n)_{i,k} \mathbf{f}_i^k\]</div>
-<p>其中 <span class="math notranslate nohighlight">\(\mathbf{f}_i\)</span> 是特征的 Embedding
-向量，<span class="math notranslate nohighlight">\(\mathbf{W}_z^n\)</span> 是第 <span class="math notranslate nohighlight">\(n\)</span>
+<span class="eqno">(3.2.11)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-10" title="Permalink to this equation">¶</a></span>\[\boldsymbol{l}_z^n = \sum_{i=1}^N\sum_{k=1}^M (\boldsymbol{W}_z^n)_{i,k} \boldsymbol{f}_i^k\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(\boldsymbol{f}_i\)</span> 是特征的 Embedding
+向量，<span class="math notranslate nohighlight">\(\boldsymbol{W}_z^n\)</span> 是第 <span class="math notranslate nohighlight">\(n\)</span>
 个神经元对应的线性信号权重矩阵。<span class="math notranslate nohighlight">\(N\)</span> 为特征字段数量，<span class="math notranslate nohighlight">\(M\)</span>
 为 Embedding 维数。</p>
-<p>另一部分是二次信号 <span class="math notranslate nohighlight">\(\mathbf{l}_p\)</span>，来自于特征 Embedding
-之间的两两交互。根据交互方式的不同，PNN 的二次信号分为两种主要的变体：</p>
+<p>另一部分是二次信号 <span class="math notranslate nohighlight">\(\boldsymbol{l}_p\)</span>，来自于特征 Embedding
+之间的两两交互。根据交互方式的不同，PNN 的二次信号分为两种主要的变体。</p>
 <p><strong>IPNN (Inner Product-based Neural Network)</strong>: 这种变体使用特征
 Embedding 之间的<strong>内积</strong>来计算二次信号。一个直接的计算方式是：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-11">
-<span class="eqno">(3.2.12)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-11" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p^n = \sum_{i=1}^N \sum_{j=1}^N (\textbf{W}_p^n)_{i,j} \langle \mathbf{f}_i, \mathbf{f}_j \rangle\]</div>
-<p><span class="math notranslate nohighlight">\(\textbf{W}_p^n\)</span> 是第 <span class="math notranslate nohighlight">\(n\)</span>
+<span class="eqno">(3.2.12)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-11" title="Permalink to this equation">¶</a></span>\[\boldsymbol{l}_p^n = \sum_{i=1}^N \sum_{j=1}^N (\boldsymbol{W}_p^n)_{i,j} \langle \boldsymbol{f}_i, \boldsymbol{f}_j \rangle\]</div>
+<p><span class="math notranslate nohighlight">\(\boldsymbol{W}_p^n\)</span> 是第 <span class="math notranslate nohighlight">\(n\)</span>
 个神经元对应的权重矩阵。这种计算方式的复杂度是
 <span class="math notranslate nohighlight">\(O(N^2)\)</span>，<span class="math notranslate nohighlight">\(N\)</span> 为特征字段数量，开销巨大。为了优化，PNN
-引入了矩阵分解技巧，将权重矩阵 <span class="math notranslate nohighlight">\(\textbf{W}_p^n\)</span> 分解为
+引入了矩阵分解技巧，将权重矩阵 <span class="math notranslate nohighlight">\(\boldsymbol{W}_p^n\)</span> 分解为
 <span class="math notranslate nohighlight">\(\theta_n \theta_n^T\)</span>，即
-<span class="math notranslate nohighlight">\((\textbf{W}_p^n)_{i,j} = \theta_{i,n} \theta_{j,n}\)</span>。于是，计算过程可以被重写和简化：</p>
+<span class="math notranslate nohighlight">\((\boldsymbol{W}_p^n)_{i,j} = \theta_{i,n} \theta_{j,n}\)</span>。于是，计算过程可以被重写和简化：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-12">
-<span class="eqno">(3.2.13)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-12" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p^n = \sum_{i=1}^N \sum_{j=1}^N \theta_i^n \theta_j^n \langle \mathbf{f}_i, \mathbf{f}_j \rangle = \sum_{i=1}^N \sum_{j=1}^N \langle \theta_i^n \mathbf{f}_i, \theta_j^n \mathbf{f}_j \rangle = \langle \sum_{i=1}^N \theta_i^n \mathbf{f}_i, \sum_{j=1}^N \theta_j^n \mathbf{f}_j \rangle = \left\|\sum_{i=1}^N \theta_i^n \mathbf{f}_i\right\|^2\]</div>
+<span class="eqno">(3.2.13)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-12" title="Permalink to this equation">¶</a></span>\[\boldsymbol{l}_p^n = \sum_{i=1}^N \sum_{j=1}^N \theta_i^n \theta_j^n \langle \boldsymbol{f}_i, \boldsymbol{f}_j \rangle = \sum_{i=1}^N \sum_{j=1}^N \langle \theta_i^n \boldsymbol{f}_i, \theta_j^n \boldsymbol{f}_j \rangle = \langle \sum_{i=1}^N \theta_i^n \boldsymbol{f}_i, \sum_{j=1}^N \theta_j^n \boldsymbol{f}_j \rangle = \left\|\sum_{i=1}^N \theta_i^n \boldsymbol{f}_i\right\|^2\]</div>
 <p>通过这个变换，<strong>计算所有内积对的加权和，转变成了先对 Embedding
 进行加权求和，然后计算一次向量的 L2 范数平方</strong>，复杂度成功地从
 <span class="math notranslate nohighlight">\(O(N^2M)\)</span> 降低到了 <span class="math notranslate nohighlight">\(O(NM)\)</span>。</p>
 <p>优化后的完整计算公式为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-13">
-<span class="eqno">(3.2.14)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-13" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p = \left(\left\|\sum_{i=1}^N \theta_i^1 \mathbf{f}_i\right\|^2, \left\|\sum_{i=1}^N \theta_i^2 \mathbf{f}_i\right\|^2, \ldots, \left\|\sum_{i=1}^N \theta_i^n \mathbf{f}_i\right\|^2\right)\]</div>
+<span class="eqno">(3.2.14)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-13" title="Permalink to this equation">¶</a></span>\[\boldsymbol{l}_p = \left(\left\|\sum_{i=1}^N \theta_i^1 \boldsymbol{f}_i\right\|^2, \left\|\sum_{i=1}^N \theta_i^2 \boldsymbol{f}_i\right\|^2, \ldots, \left\|\sum_{i=1}^N \theta_i^n \boldsymbol{f}_i\right\|^2\right)\]</div>
 <p><strong>OPNN (Outer Product-based Neural Network)</strong>: 这种变体使用特征
-Embedding 之间的<strong>外积</strong> <span class="math notranslate nohighlight">\(\mathbf{f}_i\mathbf{f}_j^T\)</span>
+Embedding 之间的<strong>外积</strong> <span class="math notranslate nohighlight">\(\boldsymbol{f}_i\boldsymbol{f}_j^T\)</span>
 来捕捉更丰富的交互信息。外积会产生一个矩阵，如果对所有外积对进行加权求和
-<span class="math notranslate nohighlight">\(\sum_{i=1}^N \sum_{j=1}^N \mathbf{f}_i \mathbf{f}_j^T\)</span>，计算复杂度会达到
+<span class="math notranslate nohighlight">\(\sum_{i=1}^N \sum_{j=1}^N \boldsymbol{f}_i \boldsymbol{f}_j^T\)</span>，计算复杂度会达到
 <span class="math notranslate nohighlight">\(O(N^2M^2)\)</span>（<span class="math notranslate nohighlight">\(M\)</span> 为 Embedding
 维数），这在实践中是不可行的。OPNN
 采用了一种称为“叠加”（superposition）的近似方法来大幅降低复杂度。它不再计算所有成对的外积，而是<strong>先将所有特征的
 Embedding 向量相加，然后再计算一次外积</strong>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-14">
-<span class="eqno">(3.2.15)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-14" title="Permalink to this equation">¶</a></span>\[\sum_{i=1}^N \sum_{j=1}^N \mathbf{f}_i \mathbf{f}_j^T = (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\]</div>
+<span class="eqno">(3.2.15)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-14" title="Permalink to this equation">¶</a></span>\[\sum_{i=1}^N \sum_{j=1}^N \boldsymbol{f}_i \boldsymbol{f}_j^T = (\sum_{i=1}^N \boldsymbol{f}_i)(\sum_{j=1}^N \boldsymbol{f}_j)^T\]</div>
 <p>这样，计算量得到了节省 <span class="math notranslate nohighlight">\(O(M(M+N))\)</span>。优化后的完整计算公式为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-15">
-<span class="eqno">(3.2.16)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-15" title="Permalink to this equation">¶</a></span>\[\mathbf{l}_p = \left(\langle\mathbf{W}_p^1, (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\rangle, \langle\mathbf{W}_p^2, (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\rangle, \ldots, \langle\mathbf{W}_p^n, (\sum_{i=1}^N \mathbf{f}_i)(\sum_{j=1}^N \mathbf{f}_j)^T\rangle\right)\]</div>
-<p>其中 对称矩阵<span class="math notranslate nohighlight">\(\mathbf{W}_p^n \in \mathbb{R}^{M \times M}\)</span> 是第
-<span class="math notranslate nohighlight">\(n\)</span>
-个神经元对应的权重矩阵，矩阵内积<span class="math notranslate nohighlight">\(\langle \mathbf{A}, \mathbf{B} \rangle = \sum_{i=1}^M \sum_{j=1}^M \mathbf{A}_{i,j} \mathbf{B}_{i,j}\)</span>。</p>
+<span class="eqno">(3.2.16)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-15" title="Permalink to this equation">¶</a></span>\[\boldsymbol{l}_p = \left(\langle\boldsymbol{W}_p^1, (\sum_{i=1}^N \boldsymbol{f}_i)(\sum_{j=1}^N \boldsymbol{f}_j)^T\rangle, \langle\boldsymbol{W}_p^2, (\sum_{i=1}^N \boldsymbol{f}_i)(\sum_{j=1}^N \boldsymbol{f}_j)^T\rangle, \ldots, \langle\boldsymbol{W}_p^n, (\sum_{i=1}^N \boldsymbol{f}_i)(\sum_{j=1}^N \boldsymbol{f}_j)^T\rangle\right)\]</div>
+<p>其中 对称矩阵<span class="math notranslate nohighlight">\(\boldsymbol{W}_p^n \in \mathbb{R}^{M \times M}\)</span>
+是第 <span class="math notranslate nohighlight">\(n\)</span>
+个神经元对应的权重矩阵，矩阵内积<span class="math notranslate nohighlight">\(\langle \boldsymbol{A}, \boldsymbol{B} \rangle = \sum_{i=1}^M \sum_{j=1}^M \boldsymbol{A}_{i,j} \boldsymbol{B}_{i,j}\)</span>。</p>
 <p>在得到线性信号 <span class="math notranslate nohighlight">\(l_z\)</span> 和经过优化的二次信号 <span class="math notranslate nohighlight">\(l_p\)</span> 后，PNN
 将它们合并，并送入后续的全连接层进行高阶非线性变换：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-16">
 <span class="eqno">(3.2.17)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-16" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-\mathbf{l}_1 &amp;= \text{ReLU}(\mathbf{l}_z + \mathbf{l}_p + \mathbf{b}_1) \\
-\mathbf{l}_2 &amp;= \text{ReLU}(\mathbf{W}_2 \mathbf{l}_1 + \mathbf{b}_2) \\
-\hat{y} &amp;= \sigma(\textbf{W}_3 \mathbf{l}_2 + b_3)
+\boldsymbol{l}_1 &amp;= \text{ReLU}(\boldsymbol{l}_z + \boldsymbol{l}_p + \boldsymbol{b}_1) \\
+\boldsymbol{l}_2 &amp;= \text{ReLU}(\boldsymbol{W}_2 \boldsymbol{l}_1 + \boldsymbol{b}_2) \\
+\hat{y} &amp;= \sigma(\boldsymbol{W}_3 \boldsymbol{l}_2 + b_3)
 \end{aligned}\end{split}\]</div>
 <p>PNN
 的独特之处在于，它将“乘积”操作（无论是内积还是外积）作为了网络中的一个核心计算单元，认为这种操作比传统
@@ -700,38 +701,39 @@ Network)</strong> <span id="id6">(<a class="reference internal" href="../../chap
 <p><span class="caption-number">图3.2.5 </span><span class="caption-text">SENET层结构详解</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>SENET 的工作流程分为三个步骤：</p>
+<p>SENET 的工作流程分为三个步骤。</p>
 <ol class="arabic">
 <li><p><strong>Squeeze (压缩)</strong>: 把每个特征的 <span class="math notranslate nohighlight">\(k\)</span> 维向量
-<span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span> 压缩成一个数值，方法是计算向量的平均值：</p>
+<span class="math notranslate nohighlight">\(\boldsymbol{e}_i\)</span> 压缩成一个数值，方法是计算向量的平均值：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-17">
-<span class="eqno">(3.2.18)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-17" title="Permalink to this equation">¶</a></span>\[\mathbf{z}_i = F_{\text{sq}}(\mathbf{e}_i) = \frac{1}{k} \sum_{t=1}^k \mathbf{e}_i(t)\]</div>
+<span class="eqno">(3.2.18)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-17" title="Permalink to this equation">¶</a></span>\[\boldsymbol{z}_i = F_{\text{sq}}(\boldsymbol{e}_i) = \frac{1}{k} \sum_{t=1}^k \boldsymbol{e}_i(t)\]</div>
 </li>
 <li><p><strong>Excitation (激活)</strong>:
 用两层神经网络来学习特征之间的关系，输出每个特征的重要性分数：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-18">
-<span class="eqno">(3.2.19)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-18" title="Permalink to this equation">¶</a></span>\[\mathbf{A} = F_{\text{ex}}(\mathbf{Z}) = \sigma_2(\mathbf{W}_2 \sigma_1(\mathbf{W}_1 \mathbf{Z}))\]</div>
-<p>这里 <span class="math notranslate nohighlight">\(\mathbf{W}_1 \in \mathbb{R}^{f \times \frac{f}{r}}\)</span> 和
-<span class="math notranslate nohighlight">\(\mathbf{W}_2 \in \mathbb{R}^{\frac{f}{r} \times f}\)</span>
+<span class="eqno">(3.2.19)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-18" title="Permalink to this equation">¶</a></span>\[\boldsymbol{A} = F_{\text{ex}}(\boldsymbol{Z}) = \sigma_2(\boldsymbol{W}_2 \sigma_1(\boldsymbol{W}_1 \boldsymbol{Z}))\]</div>
+<p>这里 <span class="math notranslate nohighlight">\(\boldsymbol{W}_1 \in \mathbb{R}^{f \times \frac{f}{r}}\)</span>
+和 <span class="math notranslate nohighlight">\(\boldsymbol{W}_2 \in \mathbb{R}^{\frac{f}{r} \times f}\)</span>
 是网络的权重，<span class="math notranslate nohighlight">\(r\)</span> 是控制网络大小的参数。</p>
 </li>
 <li><p><strong>Re-weight (重新加权)</strong>: 用学到的重要性分数来调整原始特征向量：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-19">
-<span class="eqno">(3.2.20)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-19" title="Permalink to this equation">¶</a></span>\[\mathbf{V} = F_{\text{ReWeight}}(\mathbf{A}, \mathbf{E}) = [\mathbf{a}_1 \cdot \mathbf{e}_1, \mathbf{a}_2 \cdot \mathbf{e}_2, \ldots, \mathbf{a}_f \cdot \mathbf{e}_f]\]</div>
+<span class="eqno">(3.2.20)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-19" title="Permalink to this equation">¶</a></span>\[\boldsymbol{V} = F_{\text{ReWeight}}(\boldsymbol{A}, \boldsymbol{E}) = [\boldsymbol{a}_1 \cdot \boldsymbol{e}_1, \boldsymbol{a}_2 \cdot \boldsymbol{e}_2, \ldots, \boldsymbol{a}_f \cdot \boldsymbol{e}_f]\]</div>
 </li>
 </ol>
 <p><strong>双线性交互层</strong></p>
-<p>有了原始嵌入 <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> 和 SENET 加权后的嵌入
-<span class="math notranslate nohighlight">\(\mathbf{V}\)</span>，FiBiNET
+<p>有了原始嵌入 <span class="math notranslate nohighlight">\(\boldsymbol{E}\)</span> 和 SENET 加权后的嵌入
+<span class="math notranslate nohighlight">\(\boldsymbol{V}\)</span>，FiBiNET
 接下来要解决如何更好地建模特征交互的问题。传统的 FM 使用内积，PNN
 使用元素积，而 FiBiNET
 采用了双线性交互的方式。它引入一个可学习的变换矩阵
-<span class="math notranslate nohighlight">\(\mathbf{W} \in \mathbb{R}^{k \times k}\)</span>：</p>
+<span class="math notranslate nohighlight">\(\boldsymbol{W} \in \mathbb{R}^{k \times k}\)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-20">
-<span class="eqno">(3.2.21)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-20" title="Permalink to this equation">¶</a></span>\[\mathbf{p}_{ij} = \mathbf{v}_i \cdot \mathbf{W} \circ \mathbf{v}_j\]</div>
-<p>其中 <span class="math notranslate nohighlight">\(\circ\)</span> 表示哈达玛积。这个变换矩阵 <span class="math notranslate nohighlight">\(\mathbf{W}\)</span>
+<span class="eqno">(3.2.21)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-20" title="Permalink to this equation">¶</a></span>\[\boldsymbol{p}_{ij} = \boldsymbol{v}_i \cdot \boldsymbol{W} \circ \boldsymbol{v}_j\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(\circ\)</span> 表示哈达玛积。这个变换矩阵 <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span>
 的作用是在计算特征交互前，先对其中一个特征向量进行线性变换，从而打破了传统方法中特征向量各维度对称交互的限制。</p>
-<p>FiBiNET 分别对原始嵌入 <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> 和加权嵌入 <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>
+<p>FiBiNET 分别对原始嵌入 <span class="math notranslate nohighlight">\(\boldsymbol{E}\)</span> 和加权嵌入
+<span class="math notranslate nohighlight">\(\boldsymbol{V}\)</span>
 进行双线性交互，再将两组交互结果与原始特征、深度网络输出一起送入最终的预测层。这样，<strong>FiBiNET
 既考虑了特征重要性，又增强了特征交互的表达能力</strong>。</p>
 <p><strong>核心代码</strong></p>
@@ -800,12 +802,12 @@ Embedding 的方式使得模型训练更加高效。</p>
 <p>其中 <span class="math notranslate nohighlight">\(e_i\)</span> 是第 <span class="math notranslate nohighlight">\(i\)</span> 个特征字段的 Embedding
 向量。这个拼接后的向量随后被送入一个标准的前馈神经网络，前向传播公式为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-23">
-<span class="eqno">(3.2.24)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-23" title="Permalink to this equation">¶</a></span>\[a^{(l+1)} = \sigma(\textbf{W}^{(l)} a^{(l)} + \textbf{b}^{(l)})\]</div>
+<span class="eqno">(3.2.24)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-23" title="Permalink to this equation">¶</a></span>\[a^{(l+1)} = \sigma(\boldsymbol{W}^{(l)} a^{(l)} + \boldsymbol{b}^{(l)})\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(l\)</span> 是层深度，<span class="math notranslate nohighlight">\(\sigma\)</span>
-是激活函数，<span class="math notranslate nohighlight">\(\textbf{W}^{(l)}\)</span>、<span class="math notranslate nohighlight">\(\textbf{b}^{(l)}\)</span>分别是第
+是激活函数，<span class="math notranslate nohighlight">\(\boldsymbol{W}^{(l)}\)</span>、<span class="math notranslate nohighlight">\(\boldsymbol{b}^{(l)}\)</span>分别是第
 <span class="math notranslate nohighlight">\(l\)</span> 层的权重和偏置。最后输出为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-1-second-order-24">
-<span class="eqno">(3.2.25)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-24" title="Permalink to this equation">¶</a></span>\[y_{Deep} = \textbf{W}^{|H|+1} \cdot a^{|H|} + \textbf{b}^{|H|+1}\]</div>
+<span class="eqno">(3.2.25)<a class="headerlink" href="#equation-chapter-2-ranking-2-feature-crossing-1-second-order-24" title="Permalink to this equation">¶</a></span>\[y_{Deep} = \boldsymbol{W}^{|H|+1} \cdot a^{|H|} + \boldsymbol{b}^{|H|+1}\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(H\)</span> 是隐藏层数量.</p>
 <p>最终，DeepFM 把 FM 部分和 Deep 部分的输出的 Logits 直接相加，再通过
 Sigmoid 函数得到点击率预测：</p>
@@ -851,17 +853,17 @@ Wide &amp; Deep 需要专家手工构造 Wide 部分的特征，DeepFM 用 FM
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------+--------+--------+------------+</span>
 <span class="o">|</span> <span class="n">模型</span>    <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">val_user</span> <span class="o">|</span>
 <span class="o">+=========+========+========+============+</span>
-<span class="o">|</span> <span class="n">fm</span>      <span class="o">|</span> <span class="mf">0.5887</span> <span class="o">|</span> <span class="mf">0.5736</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fm</span>      <span class="o">|</span> <span class="mf">0.5833</span> <span class="o">|</span> <span class="mf">0.571</span>  <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
-<span class="o">|</span> <span class="n">afm</span>     <span class="o">|</span> <span class="mf">0.5784</span> <span class="o">|</span> <span class="mf">0.5653</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">afm</span>     <span class="o">|</span> <span class="mf">0.5716</span> <span class="o">|</span> <span class="mf">0.5582</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
-<span class="o">|</span> <span class="n">nfm</span>     <span class="o">|</span> <span class="mf">0.5928</span> <span class="o">|</span> <span class="mf">0.5586</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">nfm</span>     <span class="o">|</span> <span class="mf">0.5873</span> <span class="o">|</span> <span class="mf">0.5654</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
-<span class="o">|</span> <span class="n">pnn</span>     <span class="o">|</span> <span class="mf">0.6001</span> <span class="o">|</span> <span class="mf">0.5733</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">pnn</span>     <span class="o">|</span> <span class="mf">0.5929</span> <span class="o">|</span> <span class="mf">0.5745</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
-<span class="o">|</span> <span class="n">fibinet</span> <span class="o">|</span> <span class="mf">0.6048</span> <span class="o">|</span> <span class="mf">0.5696</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fibinet</span> <span class="o">|</span> <span class="mf">0.5993</span> <span class="o">|</span> <span class="mf">0.5723</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
-<span class="o">|</span> <span class="n">deepfm</span>  <span class="o">|</span> <span class="mf">0.5893</span> <span class="o">|</span> <span class="mf">0.577</span>  <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">deepfm</span>  <span class="o">|</span> <span class="mf">0.5963</span> <span class="o">|</span> <span class="mf">0.5759</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
 </pre></div>
 </div>

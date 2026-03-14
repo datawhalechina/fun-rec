@@ -179,10 +179,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -325,10 +325,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -391,22 +391,22 @@ Diffusion Probabilistic Models） <span id="id4">(<a class="reference internal" 
 <p><strong>潜在空间扩散模型（Latent Diffusion Models, LDM）</strong></p>
 <p>为了解决数据空间扩散的效率问题，潜在空间扩散模型首先使用编码器（通常是VAE或自编码器）将原始数据压缩到低维的<strong>潜在表示空间</strong>，然后在这个压缩空间中进行扩散和去噪，最后通过解码器还原到原始空间。<strong>Stable
 Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="reference internal" href="../chapter_references/references.html#id118" title="Rombach, R., Blattmann, A., Lorenz, D., Esser, P., &amp; Ommer, B. (2022). High-resolution image synthesis with latent diffusion models. Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (pp. 10684–10695).">Rombach <em>et al.</em>, 2022</a>)</span>。</p>
-<p>潜在空间扩散的具体流程如下：</p>
+<p>潜在空间扩散的具体流程如下。</p>
 <ol class="arabic simple">
 <li><p><strong>编码阶段</strong>：使用预训练的编码器 <span class="math notranslate nohighlight">\(\mathcal{E}\)</span> 将原始数据
-<span class="math notranslate nohighlight">\(\mathbf{x}\)</span> 映射到低维潜在表示
-<span class="math notranslate nohighlight">\(\mathbf{z} = \mathcal{E}(\mathbf{x})\)</span></p></li>
-<li><p><strong>扩散阶段</strong>：在潜在空间 <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>
+<span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> 映射到低维潜在表示
+<span class="math notranslate nohighlight">\(\boldsymbol{z} = \mathcal{E}(\boldsymbol{x})\)</span></p></li>
+<li><p><strong>扩散阶段</strong>：在潜在空间 <span class="math notranslate nohighlight">\(\boldsymbol{z}\)</span>
 上执行前向扩散和反向去噪</p></li>
 <li><p><strong>解码阶段</strong>：使用解码器 <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>
 将去噪后的潜在表示还原为原始空间
-<span class="math notranslate nohighlight">\(\hat{\mathbf{x}} = \mathcal{D}(\mathbf{z}_0)\)</span></p></li>
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{x}} = \mathcal{D}(\boldsymbol{z}_0)\)</span></p></li>
 </ol>
 <p>这种设计显著降低了计算复杂度。例如，若编码器将数据维度从 <span class="math notranslate nohighlight">\(d\)</span> 降到
 <span class="math notranslate nohighlight">\(d'\)</span>（<span class="math notranslate nohighlight">\(d' \ll d\)</span>），则扩散过程的计算量可以减少
 <span class="math notranslate nohighlight">\((d/d')^2\)</span> 倍。</p>
 <p><strong>推荐场景中的架构选择</strong></p>
-<p>在推荐系统场景中，<strong>潜在空间扩散模型的应用更为普遍</strong>。主要原因有三点：</p>
+<p>在推荐系统场景中，<strong>潜在空间扩散模型的应用更为普遍</strong>。主要原因有以下三点。</p>
 <ul class="simple">
 <li><p><strong>效率优势</strong>：推荐系统通常需要处理大规模的用户行为序列和物品特征，直接在原始空间操作会导致不可接受的计算开销。通过在低维潜在空间操作，可以显著降低计算成本，满足工业界对实时性的要求。</p></li>
 <li><p><strong>语义表示</strong>：推荐任务本质上是对用户兴趣和物品语义的建模。潜在空间天然提供了更加紧凑、语义化的特征表示，更适合捕捉用户偏好和物品属性之间的复杂关系。</p></li>
@@ -420,44 +420,44 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <section id="id7">
 <h3><span class="section-number">9.1.2.1. </span>前向扩散过程<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <p>给定一个数据样本
-<span class="math notranslate nohighlight">\(\mathbf{x}_0 \sim q(\mathbf{x}_0)\)</span>，前向过程通过 <span class="math notranslate nohighlight">\(T\)</span>
-步逐渐添加高斯噪声，构建一系列潜在变量
-<span class="math notranslate nohighlight">\(\mathbf{x}_{1:T}\)</span>。每一步的转移分布定义为：</p>
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_0 \sim q(\boldsymbol{x}_0)\)</span>，前向过程通过
+<span class="math notranslate nohighlight">\(T\)</span> 步逐渐添加高斯噪声，构建一系列潜在变量
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_{1:T}\)</span>。每一步的转移分布定义为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-0">
-<span class="eqno">(9.1.1)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-0" title="Permalink to this equation">¶</a></span>\[q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1-\beta_t}\mathbf{x}_{t-1}, \beta_t\mathbf{I})\]</div>
+<span class="eqno">(9.1.1)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-0" title="Permalink to this equation">¶</a></span>\[q(\boldsymbol{x}_t | \boldsymbol{x}_{t-1}) = \mathcal{N}(\boldsymbol{x}_t; \sqrt{1-\beta_t}\boldsymbol{x}_{t-1}, \beta_t\boldsymbol{I})\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\beta_t \in (0,1)\)</span> 控制第 <span class="math notranslate nohighlight">\(t\)</span> 步添加的噪声强度。当
-<span class="math notranslate nohighlight">\(T \to \infty\)</span> 时，<span class="math notranslate nohighlight">\(\mathbf{x}_T\)</span> 趋近于标准高斯分布。</p>
+<span class="math notranslate nohighlight">\(T \to \infty\)</span> 时，<span class="math notranslate nohighlight">\(\boldsymbol{x}_T\)</span> 趋近于标准高斯分布。</p>
 <p>利用<strong>重参数化技巧</strong> (reparameterization trick)
-和高斯噪声的可加性，我们可以从 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> 直接采样得到任意时刻
-<span class="math notranslate nohighlight">\(t\)</span> 的加噪数据：</p>
+和高斯噪声的可加性，我们可以从 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>
+直接采样得到任意时刻 <span class="math notranslate nohighlight">\(t\)</span> 的加噪数据：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-1">
-<span class="eqno">(9.1.2)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-1" title="Permalink to this equation">¶</a></span>\[q(\mathbf{x}_t | \mathbf{x}_0) = \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alpha}_t}\mathbf{x}_0, (1-\bar{\alpha}_t)\mathbf{I})\]</div>
+<span class="eqno">(9.1.2)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-1" title="Permalink to this equation">¶</a></span>\[q(\boldsymbol{x}_t | \boldsymbol{x}_0) = \mathcal{N}(\boldsymbol{x}_t; \sqrt{\bar{\alpha}_t}\boldsymbol{x}_0, (1-\bar{\alpha}_t)\boldsymbol{I})\]</div>
 <p>这等价于：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-2">
-<span class="eqno">(9.1.3)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-2" title="Permalink to this equation">¶</a></span>\[\mathbf{x}_t = \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1-\bar{\alpha}_t}\boldsymbol{\epsilon}, \quad \boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})\]</div>
+<span class="eqno">(9.1.3)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-2" title="Permalink to this equation">¶</a></span>\[\boldsymbol{x}_t = \sqrt{\bar{\alpha}_t}\boldsymbol{x}_0 + \sqrt{1-\bar{\alpha}_t}\boldsymbol{\epsilon}, \quad \boldsymbol{\epsilon} \sim \mathcal{N}(\boldsymbol{0}, \boldsymbol{I})\]</div>
 <p>其中
 <span class="math notranslate nohighlight">\(\alpha_t = 1 - \beta_t\)</span>，<span class="math notranslate nohighlight">\(\bar{\alpha}_t = \prod_{i=1}^{t}\alpha_i\)</span>。这个性质使得训练时可以高效地采样任意时间步的加噪数据，而无需逐步执行前向过程
 <span id="id8">(<a class="reference internal" href="../chapter_references/references.html#id117" title="Ho, J., Jain, A., &amp; Abbeel, P. (2020). Denoising diffusion probabilistic models. Advances in neural information processing systems, 33, 6840–6851.">Ho <em>et al.</em>, 2020</a>)</span>。</p>
 </section>
 <section id="id9">
 <h3><span class="section-number">9.1.2.2. </span>反向去噪过程<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
-<p>反向过程从 <span class="math notranslate nohighlight">\(\mathbf{x}_T\)</span>
+<p>反向过程从 <span class="math notranslate nohighlight">\(\boldsymbol{x}_T\)</span>
 出发，通过学习到的去噪网络逐步恢复原始数据。每一步的去噪转移定义为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-3">
-<span class="eqno">(9.1.4)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-3" title="Permalink to this equation">¶</a></span>\[p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \boldsymbol{\mu}_\theta(\mathbf{x}_t, t), \boldsymbol{\Sigma}_\theta(\mathbf{x}_t, t))\]</div>
+<span class="eqno">(9.1.4)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-3" title="Permalink to this equation">¶</a></span>\[p_\theta(\boldsymbol{x}_{t-1} | \boldsymbol{x}_t) = \mathcal{N}(\boldsymbol{x}_{t-1}; \boldsymbol{\mu}_\theta(\boldsymbol{x}_t, t), \boldsymbol{\Sigma}_\theta(\boldsymbol{x}_t, t))\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\boldsymbol{\mu}_\theta\)</span> 和
 <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_\theta\)</span>
 是由神经网络参数化的均值和协方差。在实际应用中，协方差通常设为固定值
-<span class="math notranslate nohighlight">\(\sigma^2(t)\mathbf{I}\)</span>，重点学习均值函数。</p>
+<span class="math notranslate nohighlight">\(\sigma^2(t)\boldsymbol{I}\)</span>，重点学习均值函数。</p>
 <figure class="align-default" id="id29">
 <span id="ddpm-forward-backward"></span><a class="reference internal image-reference" href="../_images/ddpm_forward_backward.png"><img alt="../_images/ddpm_forward_backward.png" src="../_images/ddpm_forward_backward.png" style="width: 500px;" /></a>
 <figcaption>
 <p><span class="caption-number">图9.1.1 </span><span class="caption-text">前向扩散和反向去噪过程的示意图</span><a class="headerlink" href="#id29" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>图片展示了用户交互向量从 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> 逐步添加噪声变为
-<span class="math notranslate nohighlight">\(\mathbf{x}_T\)</span> 的过程（前向扩散），以及从 <span class="math notranslate nohighlight">\(\mathbf{x}_T\)</span>
-逐步恢复 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>
+<p>图片展示了用户交互向量从 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span> 逐步添加噪声变为
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_T\)</span> 的过程（前向扩散），以及从
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_T\)</span> 逐步恢复 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>
 的过程（反向去噪）。图片来源：<span id="id10">(<a class="reference internal" href="../chapter_references/references.html#id149" title="Luo, C. (2022). Understanding diffusion models: a unified perspective. arXiv preprint arXiv:2208.11970.">Luo, 2022</a>)</span>。</p>
 </section>
 </section>
@@ -465,66 +465,67 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <h2><span class="section-number">9.1.3. </span>扩散模型的训练与采样<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h2>
 <section id="elbo">
 <h3><span class="section-number">9.1.3.1. </span>训练目标：从ELBO到简化损失<a class="headerlink" href="#elbo" title="Permalink to this heading">¶</a></h3>
-<p>扩散模型通过最大化观测数据 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>
+<p>扩散模型通过最大化观测数据 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>
 的对数似然下界（ELBO）进行训练：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-4">
 <span class="eqno">(9.1.5)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-4" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-\log p(\mathbf{x}_0) &amp;\geq \underbrace{\mathbb{E}_{q(\mathbf{x}_1|\mathbf{x}_0)}[\log p_\theta(\mathbf{x}_0|\mathbf{x}_1)]}_{\text{重建项}} \\
-&amp;- \sum_{t=2}^{T}\underbrace{\mathbb{E}_{q(\mathbf{x}_t|\mathbf{x}_0)}[D_{\text{KL}}(q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0) \| p_\theta(\mathbf{x}_{t-1}|\mathbf{x}_t))]}_{\text{去噪匹配项}}
+\log p(\boldsymbol{x}_0) &amp;\geq \underbrace{\mathbb{E}_{q(\boldsymbol{x}_1|\boldsymbol{x}_0)}[\log p_\theta(\boldsymbol{x}_0|\boldsymbol{x}_1)]}_{\text{重建项}} \\
+&amp;- \sum_{t=2}^{T}\underbrace{\mathbb{E}_{q(\boldsymbol{x}_t|\boldsymbol{x}_0)}[D_{\text{KL}}(q(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t,\boldsymbol{x}_0) \| p_\theta(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t))]}_{\text{去噪匹配项}}
 \end{aligned}\end{split}\]</div>
-<p>重建项衡量从 <span class="math notranslate nohighlight">\(\mathbf{x}_1\)</span> 恢复 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>
+<p>重建项衡量从 <span class="math notranslate nohighlight">\(\boldsymbol{x}_1\)</span> 恢复 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>
 的能力，而去噪匹配项则约束学习到的反向转移
-<span class="math notranslate nohighlight">\(p_\theta(\mathbf{x}_{t-1}|\mathbf{x}_t)\)</span> 与真实后验
-<span class="math notranslate nohighlight">\(q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0)\)</span>
+<span class="math notranslate nohighlight">\(p_\theta(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t)\)</span> 与真实后验
+<span class="math notranslate nohighlight">\(q(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t,\boldsymbol{x}_0)\)</span>
 对齐。去噪匹配项中的真实后验
-<span class="math notranslate nohighlight">\(q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0)\)</span> 代表了已知原始数据
-<span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> 时的最优去噪方式，而推理时我们并不知道
-<span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>，因此需要训练网络 <span class="math notranslate nohighlight">\(p_\theta\)</span>
-来近似这个理想过程，使其在没有 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>
+<span class="math notranslate nohighlight">\(q(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t,\boldsymbol{x}_0)\)</span>
+代表了已知原始数据 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>
+时的最优去噪方式，而推理时我们并不知道
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>，因此需要训练网络 <span class="math notranslate nohighlight">\(p_\theta\)</span>
+来近似这个理想过程，使其在没有 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>
 的情况下也能做出接近最优的去噪决策。</p>
 </section>
 <section id="id12">
 <h3><span class="section-number">9.1.3.2. </span>两种参数化方式<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
-<p>在实际实现中，去噪网络可以采用两种不同的参数化方式：</p>
+<p>在实际实现中，去噪网络可以采用两种不同的参数化方式。</p>
 <p><strong>1. 预测噪声</strong> <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span>：网络
-<span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t)\)</span> 学习预测添加到
-<span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> 上的噪声。这是DDPM <span id="id13">(<a class="reference internal" href="../chapter_references/references.html#id117" title="Ho, J., Jain, A., &amp; Abbeel, P. (2020). Denoising diffusion probabilistic models. Advances in neural information processing systems, 33, 6840–6851.">Ho <em>et al.</em>, 2020</a>)</span>
+<span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}_\theta(\boldsymbol{x}_t, t)\)</span> 学习预测添加到
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span> 上的噪声。这是DDPM <span id="id13">(<a class="reference internal" href="../chapter_references/references.html#id117" title="Ho, J., Jain, A., &amp; Abbeel, P. (2020). Denoising diffusion probabilistic models. Advances in neural information processing systems, 33, 6840–6851.">Ho <em>et al.</em>, 2020</a>)</span>
 的标准做法，损失函数为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-5">
-<span class="eqno">(9.1.6)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-5" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\epsilon} = \mathbb{E}_{t, \mathbf{x}_0, \boldsymbol{\epsilon}}[\|\boldsymbol{\epsilon} - \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t)\|^2]\]</div>
-<p><strong>2. 预测原始数据</strong><span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>：网络
-<span class="math notranslate nohighlight">\(\hat{\mathbf{x}}_\theta(\mathbf{x}_t, t)\)</span> 直接预测原始数据
-<span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>。损失函数为：</p>
+<span class="eqno">(9.1.6)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-5" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\epsilon} = \mathbb{E}_{t, \boldsymbol{x}_0, \boldsymbol{\epsilon}}[\|\boldsymbol{\epsilon} - \boldsymbol{\epsilon}_\theta(\boldsymbol{x}_t, t)\|^2]\]</div>
+<p><strong>2. 预测原始数据</strong><span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>：网络
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{x}}_\theta(\boldsymbol{x}_t, t)\)</span>
+直接预测原始数据 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>。损失函数为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-6">
-<span class="eqno">(9.1.7)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-6" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{x_0} = \mathbb{E}_{t, \mathbf{x}_0, \boldsymbol{\epsilon}}[\|\mathbf{x}_0 - \hat{\mathbf{x}}_\theta(\mathbf{x}_t, t)\|^2]\]</div>
+<span class="eqno">(9.1.7)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-6" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{x_0} = \mathbb{E}_{t, \boldsymbol{x}_0, \boldsymbol{\epsilon}}[\|\boldsymbol{x}_0 - \hat{\boldsymbol{x}}_\theta(\boldsymbol{x}_t, t)\|^2]\]</div>
 <p>这两种参数化在数学上是等价的，因为
-<span class="math notranslate nohighlight">\(\mathbf{x}_t = \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1-\bar{\alpha}_t}\boldsymbol{\epsilon}\)</span>，知道其中任一个都可以推导出另一个。然而，<strong>在推荐场景中，预测</strong>
-<span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> <strong>的方式往往更为合适</strong>
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_t = \sqrt{\bar{\alpha}_t}\boldsymbol{x}_0 + \sqrt{1-\bar{\alpha}_t}\boldsymbol{\epsilon}\)</span>，知道其中任一个都可以推导出另一个。然而，<strong>在推荐场景中，预测</strong>
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span> <strong>的方式往往更为合适</strong>
 <span id="id14">(<a class="reference internal" href="../chapter_references/references.html#id137" title="Wang, W., Xu, Y., Feng, F., Lin, X., He, X., &amp; Chua, T.-S. (2023). Diffusion recommender model. Proceedings of the 46th international ACM SIGIR conference on research and development in information retrieval (pp. 832–841).">Wang <em>et al.</em>, 2023</a>)</span>。这是因为推荐的核心目标是从加噪的交互向量中恢复用户的原始交互
-<span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>，并用模型输出 <span class="math notranslate nohighlight">\(\hat{\mathbf{x}}_0\)</span>
-作为交互预测分数进行排序推荐。直接优化 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>，并用模型输出 <span class="math notranslate nohighlight">\(\hat{\boldsymbol{x}}_0\)</span>
+作为交互预测分数进行排序推荐。直接优化 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>
 的重建更符合这一任务目标。此外，随机采样的噪声
-<span class="math notranslate nohighlight">\(\boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})\)</span>
+<span class="math notranslate nohighlight">\(\boldsymbol{\epsilon} \sim \mathcal{N}(\boldsymbol{0}, \boldsymbol{I})\)</span>
 具有较大的方差，迫使网络估计这样不稳定的目标会增加训练难度。</p>
 <!-- **[图片描述]** 建议插入一张对比两种参数化方式的示意图。上半部分展示 $\epsilon$-prediction 的数据流，下半部分展示 $x_0$-prediction 的数据流，并标注各自的损失函数形式和适用场景。 --></section>
 <section id="id15">
 <h3><span class="section-number">9.1.3.3. </span>采样过程<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h3>
-<p>训练完成后，生成新样本的过程如下：</p>
+<p>训练完成后，生成新样本的过程如下。</p>
 <ol class="arabic">
-<li><p>从标准正态分布采样初始噪声：<span class="math notranslate nohighlight">\(\mathbf{x}_T \sim \mathcal{N}(\mathbf{0}, \mathbf{I})\)</span></p></li>
+<li><p>从标准正态分布采样初始噪声：<span class="math notranslate nohighlight">\(\boldsymbol{x}_T \sim \mathcal{N}(\boldsymbol{0}, \boldsymbol{I})\)</span></p></li>
 <li><p>对于 <span class="math notranslate nohighlight">\(t = T, T-1, \ldots, 1\)</span>，迭代执行去噪步骤：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-7">
-<span class="eqno">(9.1.8)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-7" title="Permalink to this equation">¶</a></span>\[\mathbf{x}_{t-1} = \frac{1}{\sqrt{1-\beta_t}}\left(\mathbf{x}_t - \frac{\beta_t}{\sqrt{1-\bar{\alpha}_t}}\boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t)\right) + \sigma_t \mathbf{z}\]</div>
+<span class="eqno">(9.1.8)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-7" title="Permalink to this equation">¶</a></span>\[\boldsymbol{x}_{t-1} = \frac{1}{\sqrt{1-\beta_t}}\left(\boldsymbol{x}_t - \frac{\beta_t}{\sqrt{1-\bar{\alpha}_t}}\boldsymbol{\epsilon}_\theta(\boldsymbol{x}_t, t)\right) + \sigma_t \boldsymbol{z}\]</div>
 <p>其中
-<span class="math notranslate nohighlight">\(\mathbf{z} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})\)</span>，<span class="math notranslate nohighlight">\(\sigma_t\)</span>
+<span class="math notranslate nohighlight">\(\boldsymbol{z} \sim \mathcal{N}(\boldsymbol{0}, \boldsymbol{I})\)</span>，<span class="math notranslate nohighlight">\(\sigma_t\)</span>
 控制采样的随机性。</p>
 </li>
-<li><p>最终得到生成样本 <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span>。</p></li>
+<li><p>最终得到生成样本 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>。</p></li>
 </ol>
 </section>
 <section id="id16">
 <h3><span class="section-number">9.1.3.4. </span>推荐场景的特殊设计<a class="headerlink" href="#id16" title="Permalink to this heading">¶</a></h3>
-<p>与图像生成不同，推荐场景中的扩散模型通常采用以下特殊设计：</p>
+<p>与图像生成不同，推荐场景中的扩散模型通常采用以下特殊设计。</p>
 <p><strong>噪声尺度控制</strong>：标准 DDPM 的前向过程会将数据逐步扩散至纯高斯噪声，即
 <span class="math notranslate nohighlight">\(\bar{\alpha}_T \to 0\)</span>。这在推荐场景中并不理想，因为完全丢失用户的历史偏好信息后，模型需要从零开始重建用户兴趣，增加了生成难度。为此，推荐系统通常通过噪声尺度参数
 <span class="math notranslate nohighlight">\(s\)</span> 来限制最大噪声强度，使得即使在 <span class="math notranslate nohighlight">\(t=T\)</span>
@@ -535,35 +536,35 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 控制整体噪声强度，<span class="math notranslate nohighlight">\(\alpha_{\min} &lt; \alpha_{\max}\)</span>
 定义噪声的上下界。</p>
 <p><strong>推理起点选择</strong>：在推理时，我们可以从部分加噪的状态
-<span class="math notranslate nohighlight">\(\mathbf{x}_{T'}\)</span>（<span class="math notranslate nohighlight">\(T' &lt; T\)</span>）开始反向去噪，而非从纯噪声开始。这样既能利用去噪过程的纠错能力处理原始交互中的噪声，又能保留足够的个性化信息。</p>
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_{T'}\)</span>（<span class="math notranslate nohighlight">\(T' &lt; T\)</span>）开始反向去噪，而非从纯噪声开始。这样既能利用去噪过程的纠错能力处理原始交互中的噪声，又能保留足够的个性化信息。</p>
 </section>
 </section>
 <section id="id17">
 <h2><span class="section-number">9.1.4. </span>条件生成与可控性<a class="headerlink" href="#id17" title="Permalink to this heading">¶</a></h2>
 <p>在推荐场景中，我们希望生成过程能够受到用户历史行为、上下文信息等条件的控制。条件扩散模型通过在去噪过程中引入条件信息
-<span class="math notranslate nohighlight">\(\mathbf{c}\)</span> 来实现这一目标。</p>
+<span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> 来实现这一目标。</p>
 <section id="id18">
 <h3><span class="section-number">9.1.4.1. </span>条件信息的注入<a class="headerlink" href="#id18" title="Permalink to this heading">¶</a></h3>
-<p>条件信息可以通过多种方式融入去噪网络：</p>
+<p>条件信息可以通过多种方式融入去噪网络，常见方式如下。</p>
 <ul class="simple">
-<li><p><strong>直接拼接</strong>：将条件 <span class="math notranslate nohighlight">\(\mathbf{c}\)</span> 与加噪数据
-<span class="math notranslate nohighlight">\(\mathbf{x}_t\)</span> 拼接后输入网络</p></li>
+<li><p><strong>直接拼接</strong>：将条件 <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> 与加噪数据
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_t\)</span> 拼接后输入网络</p></li>
 <li><p><strong>加性融合</strong>：将条件编码后与时间步嵌入相加，注入到网络的各层</p></li>
 <li><p><strong>交叉注意力</strong>：在Transformer架构中使用cross-attention机制融合条件信息</p></li>
 </ul>
 <p>训练时的损失函数相应修改为条件形式：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-9">
-<span class="eqno">(9.1.10)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-9" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{cond}} = \mathbb{E}_{t, \mathbf{x}_0, \boldsymbol{\epsilon}, \mathbf{c}}[\|\boldsymbol{\epsilon} - \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t, \mathbf{c})\|^2]\]</div>
+<span class="eqno">(9.1.10)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-9" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{cond}} = \mathbb{E}_{t, \boldsymbol{x}_0, \boldsymbol{\epsilon}, \boldsymbol{c}}[\|\boldsymbol{\epsilon} - \boldsymbol{\epsilon}_\theta(\boldsymbol{x}_t, t, \boldsymbol{c})\|^2]\]</div>
 </section>
 <section id="id19">
 <h3><span class="section-number">9.1.4.2. </span>两种引导策略<a class="headerlink" href="#id19" title="Permalink to this heading">¶</a></h3>
 <p>在推理阶段控制生成方向的主要有两种策略：</p>
 <p><strong>1. Classifier-Guided（分类器引导）</strong></p>
 <p>该方法由Dhariwal和Nichol <span id="id20">(<a class="reference internal" href="../chapter_references/references.html#id135" title="Dhariwal, P., &amp; Nichol, A. (2021). Diffusion models beat gans on image synthesis. Advances in neural information processing systems, 34, 8780–8794.">Dhariwal and Nichol, 2021</a>)</span>
-提出，使用一个预训练的分类器 <span class="math notranslate nohighlight">\(p_\phi(y|\mathbf{x}_t)\)</span>
+提出，使用一个预训练的分类器 <span class="math notranslate nohighlight">\(p_\phi(y|\boldsymbol{x}_t)\)</span>
 来引导生成方向。修改后的噪声预测为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-10">
-<span class="eqno">(9.1.11)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-10" title="Permalink to this equation">¶</a></span>\[\hat{\boldsymbol{\epsilon}} = \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t) - \gamma \cdot \sqrt{1-\bar{\alpha}_t} \nabla_{\mathbf{x}_t} \log p_\phi(y|\mathbf{x}_t)\]</div>
+<span class="eqno">(9.1.11)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-10" title="Permalink to this equation">¶</a></span>\[\hat{\boldsymbol{\epsilon}} = \boldsymbol{\epsilon}_\theta(\boldsymbol{x}_t, t) - \gamma \cdot \sqrt{1-\bar{\alpha}_t} \nabla_{\boldsymbol{x}_t} \log p_\phi(y|\boldsymbol{x}_t)\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\gamma\)</span> 控制引导强度。分类器的梯度将去噪过程推向目标类别
 <span class="math notranslate nohighlight">\(y\)</span>
 的方向。在推荐场景中，可以用序列推荐模型作为“分类器”，引导生成与用户历史一致的交互序列
@@ -571,10 +572,10 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <p><strong>2. Classifier-Free Guidance（无分类器引导）</strong></p>
 <p>该方法由Ho和Salimans <span id="id22">(<a class="reference internal" href="../chapter_references/references.html#id136" title="Ho, J., &amp; Salimans, T. (2022). Classifier-free diffusion guidance. arXiv preprint arXiv:2207.12598.">Ho and Salimans, 2022</a>)</span>
 提出，无需额外的分类器，而是在训练时同时学习条件和无条件两个模型。具体做法是以一定概率
-<span class="math notranslate nohighlight">\(p_u\)</span> 将条件 <span class="math notranslate nohighlight">\(\mathbf{c}\)</span> 替换为空占位符
+<span class="math notranslate nohighlight">\(p_u\)</span> 将条件 <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> 替换为空占位符
 <span class="math notranslate nohighlight">\(\Phi\)</span>。推理时的噪声预测为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-11">
-<span class="eqno">(9.1.12)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-11" title="Permalink to this equation">¶</a></span>\[\hat{\boldsymbol{\epsilon}} = (1 + \gamma) \cdot \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t, \mathbf{c}) - \gamma \cdot \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t, \Phi)\]</div>
+<span class="eqno">(9.1.12)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-11" title="Permalink to this equation">¶</a></span>\[\hat{\boldsymbol{\epsilon}} = (1 + \gamma) \cdot \boldsymbol{\epsilon}_\theta(\boldsymbol{x}_t, t, \boldsymbol{c}) - \gamma \cdot \boldsymbol{\epsilon}_\theta(\boldsymbol{x}_t, t, \Phi)\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\gamma\)</span> 控制条件的影响强度。较大的 <span class="math notranslate nohighlight">\(\gamma\)</span>
 会增强个性化程度，但可能损害生成质量；较小的 <span class="math notranslate nohighlight">\(\gamma\)</span>
 则生成更多样但个性化程度较低的结果。</p>
@@ -582,12 +583,12 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <section id="id23">
 <h3><span class="section-number">9.1.4.3. </span>推荐中的条件设计示例<a class="headerlink" href="#id23" title="Permalink to this heading">¶</a></h3>
 <p>以序列推荐为例，条件信息通常是用户的历史交互序列。一种典型的设计是使用Transformer编码器将历史序列
-<span class="math notranslate nohighlight">\(\mathbf{e}_{1:n-1}\)</span> 编码为条件向量：</p>
+<span class="math notranslate nohighlight">\(\boldsymbol{e}_{1:n-1}\)</span> 编码为条件向量：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-12">
-<span class="eqno">(9.1.13)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-12" title="Permalink to this equation">¶</a></span>\[\mathbf{c}_{n-1} = \text{T-enc}(\mathbf{e}_{1:n-1})\]</div>
+<span class="eqno">(9.1.13)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-12" title="Permalink to this equation">¶</a></span>\[\boldsymbol{c}_{n-1} = \text{T-enc}(\boldsymbol{e}_{1:n-1})\]</div>
 <p>然后用这个条件向量引导扩散过程生成目标物品的嵌入：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-13">
-<span class="eqno">(9.1.14)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-13" title="Permalink to this equation">¶</a></span>\[p_\theta(\mathbf{e}_n^{t-1} | \mathbf{e}_n^t, \mathbf{c}_{n-1}) = \mathcal{N}(\mathbf{e}_n^{t-1}; \boldsymbol{\mu}_\theta(\mathbf{e}_n^t, \mathbf{c}_{n-1}, t), \boldsymbol{\Sigma}_\theta)\]</div>
+<span class="eqno">(9.1.14)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-13" title="Permalink to this equation">¶</a></span>\[p_\theta(\boldsymbol{e}_n^{t-1} | \boldsymbol{e}_n^t, \boldsymbol{c}_{n-1}) = \mathcal{N}(\boldsymbol{e}_n^{t-1}; \boldsymbol{\mu}_\theta(\boldsymbol{e}_n^t, \boldsymbol{c}_{n-1}, t), \boldsymbol{\Sigma}_\theta)\]</div>
 <p>这种设计将序列建模（Transformer）与生成建模（Diffusion）有机结合，充分发挥两者的优势。DreamRec
 <span id="id24">(<a class="reference internal" href="../chapter_references/references.html#id139" title="Yang, Z., Wu, J., Wang, Z., Wang, X., Yuan, Y., &amp; He, X. (2023). Generate what you prefer: reshaping sequential recommendation via guided diffusion. Advances in Neural Information Processing Systems.">Yang <em>et al.</em>, 2023</a>)</span> 正是采用了这种架构。</p>
 <p>本节回顾了扩散模型的核心技术，并讨论了将其应用于推荐场景时的特殊考量。在接下来的章节中，我们将看到这些技术如何被具体应用于数据与场景增强（DiffuASR

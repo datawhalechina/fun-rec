@@ -178,10 +178,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -324,10 +324,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -389,7 +389,7 @@ PostgreSQL、Redis、Elasticsearch
 等软件，配置网络连接，处理版本兼容问题。这个过程繁琐且容易出错，不同机器上的环境差异也会导致各种问题。</p>
 <p>Docker Compose 提供了一种声明式的方式来定义和运行多容器应用。通过一个
 YAML
-配置文件描述所有服务及其依赖关系，然后使用一条命令即可启动整个系统。容器化部署的优势包括：</p>
+配置文件描述所有服务及其依赖关系，然后使用一条命令即可启动整个系统。容器化部署的主要优势如下。</p>
 <ol class="arabic simple">
 <li><p><strong>环境一致性</strong>：每个服务运行在独立的容器中，容器镜像包含了服务所需的全部依赖。无论在开发机、测试机还是生产服务器上，运行环境都是一致的。</p></li>
 <li><p><strong>快速启动</strong>：只需执行 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span></code>
@@ -421,7 +421,7 @@ YAML
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">funrec-network</span>
 </pre></div>
 </div>
-<p>配置说明：</p>
+<p>各配置项说明如下。</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">image:</span> <span class="pre">postgres:15-alpine</span></code>：使用 PostgreSQL 15 的 Alpine
 版本镜像。Alpine 是一个轻量级 Linux 发行版，镜像体积较小。</p></li>
@@ -481,7 +481,7 @@ YAML
 <span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 </pre></div>
 </div>
-<p>配置说明：</p>
+<p>各配置项说明如下。</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">discovery.type=single-node</span></code>：单节点模式，适合开发和小规模部署。生产环境通常需要多节点集群。</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">xpack.security.enabled=false</span></code>：禁用安全功能，简化开发环境配置。生产环境应该启用并配置认证。</p></li>
@@ -520,7 +520,7 @@ YAML
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">funrec-network</span>
 </pre></div>
 </div>
-<p>配置说明：</p>
+<p>各配置项说明如下。</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">build</span></code>：指定构建上下文和 Dockerfile 路径。Docker Compose 会根据
 Dockerfile 构建镜像。</p></li>
@@ -620,7 +620,7 @@ PostgreSQL、Redis 等服务，再启动后端。</p></li>
 <h2><span class="section-number">10.6.3. </span>环境准备与启动流程<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
 <section id="id7">
 <h3><span class="section-number">10.6.3.1. </span>前置条件<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
-<p>在开始部署之前，需要确保系统已安装以下工具：</p>
+<p>在开始部署之前，需要确保系统已安装以下工具。</p>
 <ul class="simple">
 <li><p><strong>Docker</strong>：容器运行时。可以从 <a class="reference external" href="https://docs.docker.com/get-docker/">Docker
 官网</a> 下载安装。</p></li>
@@ -706,7 +706,7 @@ uv<span class="w"> </span>sync
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>run-offline-pipeline
 </pre></div>
 </div>
-<p>这个命令会执行以下步骤：</p>
+<p>这个命令会依次执行以下步骤。</p>
 <ol class="arabic simple">
 <li><p>特征工程：处理原始数据，生成训练样本</p></li>
 <li><p>模型训练：训练 YoutubeDNN 召回模型和 DeepFM 排序模型</p></li>
@@ -765,7 +765,7 @@ uv<span class="w"> </span>sync
 </tr>
 </tbody>
 </table>
-<p>使用测试账号登录前端应用：</p>
+<p>使用测试账号登录前端应用，账号信息如下。</p>
 <ul class="simple">
 <li><p>Email: <code class="docutils literal notranslate"><span class="pre">test&#64;funrec.com</span></code></p></li>
 <li><p>Password: <code class="docutils literal notranslate"><span class="pre">test123456</span></code></p></li>
@@ -844,7 +844,7 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>backend
 </pre></div>
 </div>
-<p>常见原因：</p>
+<p>常见原因如下。</p>
 <ol class="arabic simple">
 <li><p>环境变量未配置：检查 <code class="docutils literal notranslate"><span class="pre">.env</span></code> 文件是否存在且路径正确</p></li>
 <li><p>端口被占用：检查 5432、6379、8000、9200 等端口是否被其他程序占用</p></li>

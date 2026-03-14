@@ -70,7 +70,7 @@ Skip-gram
 在以上条件概率公式中，容易引起误会的是 中心词的向量 :math:`v_{w_t}` 和
 上下文词的向量 :math:`v_{w_{t+j}}` 实际并不在一个向量空间中
 :cite:`rong2014word2vec`\ 。以 Skip-gram
-模型为例，假设向量空间的维度为\ :math:`D`\ ，中心词向量表\ :math:`\mathbf{W} \in \mathbb{R}^{V \times D}`\ ，上下文词向量表\ :math:`\mathbf{W}^c \in \mathbb{R}^{V \times D}`\ ，其中\ :math:`V`\ 是词汇表的大小。Word2vec
+模型为例，假设向量空间的维度为\ :math:`D`\ ，中心词向量表\ :math:`\boldsymbol{W} \in \mathbb{R}^{V \times D}`\ ，上下文词向量表\ :math:`\boldsymbol{W}^c \in \mathbb{R}^{V \times D}`\ ，其中\ :math:`V`\ 是词汇表的大小。Word2vec
 的模型结构如下：
 
 .. figure:: ../img/w2v_model.svg
@@ -80,15 +80,15 @@ Skip-gram
 
 
 从左到右，输入给定一个中心词的one-hot表示
-:math:`\mathbf{x}_t \in \{0, 1\}^V`\ ，中心词的向量
-:math:`\mathbf{w}_{t}` 可以表示为：
+:math:`\boldsymbol{x}_t \in \{0, 1\}^V`\ ，中心词的向量
+:math:`\boldsymbol{w}_{t}` 可以表示为：
 
-.. math:: \mathbf{v}_{w_t} = \mathbf{x}_t^T \mathbf{W}
+.. math:: \boldsymbol{v}_{w_t} = \boldsymbol{x}_t^T \boldsymbol{W}
 
-再将中心词的向量 :math:`\mathbf{v}_{w_t}` 与 上下文向量词表
-:math:`\mathbf{W}^o`
+再将中心词的向量 :math:`\boldsymbol{v}_{w_t}` 与 上下文向量词表
+:math:`\boldsymbol{W}^o`
 第\ :math:`t+j`\ 行相乘，得到softmax的分母的输入。而分子输入为上下文向量词表
-:math:`\mathbf{W}^o` 整个与中心词向量 :math:`\mathbf{v}_{w_t}`
+:math:`\boldsymbol{W}^o` 整个与中心词向量 :math:`\boldsymbol{v}_{w_t}`
 的乘积。最后，通过softmax, 可以对上下文词的概率进行预测。
 
 **负采样**

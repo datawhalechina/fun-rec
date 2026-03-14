@@ -177,10 +177,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -323,10 +323,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -378,7 +378,7 @@ Show Source
 <h1><span class="section-number">5. </span>生成式推荐基础<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>近年来，大型语言模型（Large Language Models,
 LLMs）的突破性进展为推荐系统领域带来了新的研究范式。以GPT、LLaMA等为代表的生成式模型，展现出强大的语义理解、推理能力和知识整合能力，推动着推荐系统从传统的判别式架构向生成式范式转变。这种转变不仅仅是模型结构的更新，更是推荐建模思路的根本性革新：从“在候选集中评分排序”转向“直接生成推荐结果”。</p>
-<p>然而，需要指出的是，<strong>完全采用端到端的生成式推荐在工业界仍面临诸多挑战</strong>，包括训练成本、推理延迟、系统稳定性等问题。因此，当前的研究呈现出多元化的发展路径：</p>
+<p>然而，需要指出的是，<strong>完全采用端到端的生成式推荐在工业界仍面临诸多挑战</strong>，包括训练成本、推理延迟、系统稳定性等问题。因此，当前的研究呈现出多元化的发展路径。</p>
 <ol class="arabic simple">
 <li><p><strong>渐进式演进路径</strong>：许多工作选择在传统级联架构（召回-排序-重排）的基础上，借鉴LLM的<strong>模型缩放（Scaling）能力</strong>，通过改进模型结构来提升传统推荐模型的表达能力和参数规模，在保持原有系统架构的同时获得性能提升。</p></li>
 <li><p><strong>知识增强路径</strong>：另一些研究则专注于利用LLM蕴含的<strong>丰富世界知识</strong>，通过语义对齐、特征增强等方式，将LLM的语言理解能力注入到传统推荐模型中，提升推荐系统的语义理解能力和内容建模质量。</p></li>

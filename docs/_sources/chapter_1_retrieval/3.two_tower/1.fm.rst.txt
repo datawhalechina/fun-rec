@@ -14,13 +14,13 @@ FM（因子分解机）：双塔模型的雏形
 
 FM模型的完整数学表达式为：
 
-.. math:: \hat{y}(\mathbf{x}):=w_{0}+\sum_{i=1}^{n} w_{i} x_{i}+\sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j}
+.. math:: \hat{y}(\boldsymbol{x}):=w_{0}+\sum_{i=1}^{n} w_{i} x_{i}+\sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\boldsymbol{v}_{i}, \boldsymbol{v}_{j}\right\rangle x_{i} x_{j}
 
-这个公式看起来复杂，但其核心思想简单而深刻：每个特征\ :math:`i`\ 都对应一个\ :math:`k`\ 维的隐向量\ :math:`\mathbf{v}_i`\ ，特征间的交互通过这些隐向量的内积\ :math:`\langle\mathbf{v}_{i}, \mathbf{v}_{j}\rangle = \sum_{f=1}^{k} v_{i,f} \cdot v_{j,f}`\ 来建模。
+这个公式看起来复杂，但其核心思想简单而深刻：每个特征\ :math:`i`\ 都对应一个\ :math:`k`\ 维的隐向量\ :math:`\boldsymbol{v}_i`\ ，特征间的交互通过这些隐向量的内积\ :math:`\langle\boldsymbol{v}_{i}, \boldsymbol{v}_{j}\rangle = \sum_{f=1}^{k} v_{i,f} \cdot v_{j,f}`\ 来建模。
 
 FM的真正巧妙之处在于一个数学变换技巧。原本\ :math:`O(n^2)`\ 复杂度的二阶交互项，可以通过代数运算重写为：
 
-.. math:: \sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j} = \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right)
+.. math:: \sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\boldsymbol{v}_{i}, \boldsymbol{v}_{j}\right\rangle x_{i} x_{j} = \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right)
    :label: eq-fm-cross
 
 这一变换将计算复杂度从\ :math:`O(kn^2)`\ 降低到\ :math:`O(kn)`\ ，使得FM能够处理大规模稀疏数据。

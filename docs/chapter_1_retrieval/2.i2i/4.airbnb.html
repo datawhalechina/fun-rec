@@ -180,10 +180,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -326,10 +326,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -383,7 +383,7 @@ Show Source
 <section id="id1">
 <h2><span class="section-number">2.2.4.1. </span>面向业务的序列构建<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
 <p>Airbnb重新定义了“序列”的概念
-<span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id19" title="Grbovic, M., &amp; Cheng, H. (2018). Real-time personalization using embeddings for search ranking at airbnb. Proceedings of the 24th ACM SIGKDD international conference on knowledge discovery &amp; data mining (pp. 311–320).">Grbovic and Cheng, 2018</a>)</span>，采用基于会话的序列构建策略。具体而言：</p>
+<span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id19" title="Grbovic, M., &amp; Cheng, H. (2018). Real-time personalization using embeddings for search ranking at airbnb. Proceedings of the 24th ACM SIGKDD international conference on knowledge discovery &amp; data mining (pp. 311–320).">Grbovic and Cheng, 2018</a>)</span>，采用基于会话的序列构建策略，具体方法如下。</p>
 <p><strong>会话切分机制</strong>：系统不再简单地将用户交互过的所有房源串联，而是基于用户的点击会话（Click
 Sessions）构建序列。当用户连续点击间隔超过30分钟时，系统会自动开始一个新的会话。这种时间窗口的设计能够更准确地捕捉用户在特定搜索场景下的连贯意图。</p>
 <p><strong>行为权重差异化</strong>：Airbnb引入了重要的业务洞察——用户行为的信号强度存在显著差异。最终的预订行为相比于简单的点击浏览，包含了更强烈的用户偏好信号，因此在模型训练中应当给予更高的权重。</p>
@@ -401,7 +401,7 @@ listing）与序列中的每一个浏览房源都形成正样本对进行训练�
 <p>针对有预订行为的会话（booked
 sessions），Airbnb修改了优化目标函数，增加了全局上下文项：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-2-i2i-4-airbnb-0">
-<span class="eqno">(2.2.8)<a class="headerlink" href="#equation-chapter-1-retrieval-2-i2i-4-airbnb-0" title="Permalink to this equation">¶</a></span>\[\underset{\theta}{\text{argmax}} \sum_{(l,c) \in \mathcal{D}_p} \log \frac{1}{1 + e^{-v_c^T v_l}} + \sum_{(l,c) \in \mathcal{D}_n} \log \frac{1}{1 + e^{v_c^T v_l}} + \log \frac{1}{1 + e^{-v_{l_b}^T v_l}}\]</div>
+<span class="eqno">(2.2.8)<a class="headerlink" href="#equation-chapter-1-retrieval-2-i2i-4-airbnb-0" title="Permalink to this equation">¶</a></span>\[\underset{\theta}{\arg\max} \sum_{(l,c) \in \mathcal{D}_p} \log \frac{1}{1 + e^{-v_c^T v_l}} + \sum_{(l,c) \in \mathcal{D}_n} \log \frac{1}{1 + e^{v_c^T v_l}} + \log \frac{1}{1 + e^{-v_{l_b}^T v_l}}\]</div>
 <p>在这个公式中，前两项是标准的Skip-Gram目标函数：第一项最大化正样本对<span class="math notranslate nohighlight">\((l,c)\)</span>的相似度，其中<span class="math notranslate nohighlight">\(l\)</span>是目标房源，<span class="math notranslate nohighlight">\(c\)</span>是滑动窗口内的上下文房源；第二项最小化负样本对的相似度。关键的创新在于第三项<span class="math notranslate nohighlight">\(\log \frac{1}{1 + e^{-v_{l_b}^T v_l}}\)</span>，这里<span class="math notranslate nohighlight">\(l_b\)</span>表示用户在该会话中最终预订的房源。</p>
 <p>通过这种全局上下文机制，预订房源为序列中的每个房源都提供了额外的学习信号，使得模型能够更有效地捕捉“什么样的房源组合最终会导致预订”这一关键转化模式。</p>
 </section>

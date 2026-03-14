@@ -179,10 +179,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 端到端生成式建模</a><ul class="current">
@@ -325,10 +325,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 端到端生成式建模</a><ul class="current">
@@ -383,7 +383,7 @@ Show Source
 ID。然而，电商搜索面临着截然不同的挑战：<strong>用户通过明确的文本查询表达意图，系统需要在强相关性约束下从海量商品库中返回精准匹配的结果</strong>。这种“文本查询
 →
 商品结果”的映射涉及开放词表（用户可输入任意查询）与封闭词表（商品库有限）的混合处理，以及查询理解、商品语义匹配、个性化排序等多层次任务。</p>
-<p>传统电商搜索系统同样采用多阶段级联架构（MCA）：查询理解模块负责纠错、改写和意图识别；召回模块通过倒排索引和向量检索从数亿商品中筛选出数千候选；预排序和精排模块依次进行粗细粒度排序。这种架构在电商场景下的问题尤为突出：</p>
+<p>传统电商搜索系统同样采用多阶段级联架构（MCA）：查询理解模块负责纠错、改写和意图识别；召回模块通过倒排索引和向量检索从数亿商品中筛选出数千候选；预排序和精排模块依次进行粗细粒度排序。这种架构在电商场景下存在以下突出问题。</p>
 <ul class="simple">
 <li><p><strong>查询与商品检索的解耦</strong>：查询理解、召回、排序各自优化独立目标，导致查询意图在传递过程中损失</p></li>
 <li><p><strong>冷启动与长尾问题</strong>：新上架商品缺乏交互数据，难以通过倒排索引召回；低频查询缺乏历史共现模式，难以精准匹配</p></li>
@@ -403,7 +403,7 @@ Suggestion）是电商搜索的第一道关口：当用户输入前缀“红色�
 <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id150" title="Guo, X., Chen, B., Wang, S., Yang, Y., Lei, C., Ding, Y., &amp; Li, H. (2025). Onesug: the unified end-to-end generative framework for e-commerce query suggestion. arXiv preprint arXiv:2506.06913.">Guo <em>et al.</em>, 2025</a>)</span> ：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-0">
 <span class="eqno">(7.2.1)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-0" title="Permalink to this equation">¶</a></span>\[P(\text{Query} | \text{Prefix}, \text{UserContext})\]</div>
-<p>通过统一的生成式架构直接从前缀和用户上下文生成候选查询，绕过传统的多阶段链路。其核心挑战在于：</p>
+<p>通过统一的生成式架构直接从前缀和用户上下文生成候选查询，绕过传统的多阶段链路。其核心挑战如下。</p>
 <ul class="simple">
 <li><p><strong>短前缀的语义歧义</strong>：前缀通常仅 1-2
 个字（如“苹”可能指水果或手机），缺乏明确意图信号</p></li>
@@ -427,13 +427,13 @@ mT5），将查询补全转化为序列到序列生成任务。编码器需要�
 策略</strong>利用多级交互反馈优化排序能力。</p>
 <p><strong>前缀-查询语义对齐</strong></p>
 <p>对于纯文本前缀 <span class="math notranslate nohighlight">\(p\)</span>，使用预训练的 Text Encoder（BGE）提取语义嵌入
-<span class="math notranslate nohighlight">\(\mathbf{e}_p \in \mathbb{R}^{768}\)</span>。然而，通用 NLP
+<span class="math notranslate nohighlight">\(\boldsymbol{e}_p \in \mathbb{R}^{768}\)</span>。然而，通用 NLP
 模型在电商领域的语义空间与实际业务特性存在偏差。OneSug 对 BGE
 编码器进行领域对齐微调：从搜索日志中挖掘高质量的 prefix-query 和
 query-query 共现对（使用 ItemCF
 类算法），通过对比学习使协同相关的查询在嵌入空间更接近：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-1">
-<span class="eqno">(7.2.2)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-1" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{align}} = -\log \frac{\exp(\text{sim}(\mathbf{e}_{q_i}, \mathbf{e}_{q_j}) / \tau)}{\sum_{q_k \in \mathcal{B}} \exp(\text{sim}(\mathbf{e}_{q_i}, \mathbf{e}_{q_k}) / \tau)}\]</div>
+<span class="eqno">(7.2.2)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-1" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{align}} = -\log \frac{\exp(\text{sim}(\boldsymbol{e}_{q_i}, \boldsymbol{e}_{q_j}) / \tau)}{\sum_{q_k \in \mathcal{B}} \exp(\text{sim}(\boldsymbol{e}_{q_i}, \boldsymbol{e}_{q_k}) / \tau)}\]</div>
 <p>这使编码器同时捕获<strong>语义相似性</strong>（如“连衣裙”与“裙子”）和<strong>行为共现性</strong>（同一用户常搜的查询对）。实验表明，对齐后的
 BGE 模型在查询检索任务上的语义相关性从 0.67 提升至 0.81。</p>
 <p><strong>前缀表示增强（PRE 模块）</strong></p>
@@ -443,9 +443,9 @@ Representation Enhancement (PRE)</strong>
 <p>具体而言，对于前缀 <span class="math notranslate nohighlight">\(p\)</span>，从历史日志中检索与其共现的高质量查询集合
 <span class="math notranslate nohighlight">\(\{q_1^c, q_2^c, ..., q_k^c\}\)</span>（例如，用户输入“红色连”后常继续搜索“红色连衣裙”、“红色连帽卫衣”等）。这些查询的平均嵌入被加权融合到前缀表示中：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-2">
-<span class="eqno">(7.2.3)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-2" title="Permalink to this equation">¶</a></span>\[\bar{\mathbf{e}_q^c} = \frac{1}{k} \sum_{i=1}^{k} \mathbf{e}_{q_i}^c\]</div>
+<span class="eqno">(7.2.3)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-2" title="Permalink to this equation">¶</a></span>\[\bar{\boldsymbol{e}_q^c} = \frac{1}{k} \sum_{i=1}^{k} \boldsymbol{e}_{q_i}^c\]</div>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-3">
-<span class="eqno">(7.2.4)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-3" title="Permalink to this equation">¶</a></span>\[\mathbf{e}_p^* = (1 - w) \cdot \mathbf{e}_p + w \cdot \bar{\mathbf{e}_q^c}, \quad w = 0.5\]</div>
+<span class="eqno">(7.2.4)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-3" title="Permalink to this equation">¶</a></span>\[\boldsymbol{e}_p^* = (1 - w) \cdot \boldsymbol{e}_p + w \cdot \bar{\boldsymbol{e}_q^c}, \quad w = 0.5\]</div>
 <p>OneSug 在训练时设置增强权重 <span class="math notranslate nohighlight">\(w=0.5\)</span>。消融实验表明，该策略使 MRR
 相比无增强版本提升 2.3%，但当 <span class="math notranslate nohighlight">\(w&gt;0.7\)</span>
 时会引入过多噪声导致性能下降。</p>
@@ -454,7 +454,7 @@ Representation Enhancement (PRE)</strong>
 512），在推理时通过从粗到细的层级匹配策略快速定位相关查询，将计算复杂度从向量检索的
 <span class="math notranslate nohighlight">\(O(N \cdot d)\)</span> 降低到码本查找的 <span class="math notranslate nohighlight">\(O(W^C)\)</span>。</p>
 <p><strong>用户行为序列与画像特征</strong></p>
-<p>除了增强后的前缀表示，编码器还整合了两类用户特征：</p>
+<p>除了增强后的前缀表示，编码器还整合了以下两类用户特征。</p>
 <ul class="simple">
 <li><p><strong>短期历史查询</strong>：用户近期 <span class="math notranslate nohighlight">\(n=10\)</span> 条历史查询
 <span class="math notranslate nohighlight">\(\mathcal{H}_u = \{q_1^h, q_2^h, ..., q_n^h\}\)</span>，直接反映当前会话意图。实验表明超过
@@ -465,21 +465,21 @@ Representation Enhancement (PRE)</strong>
 <p>值得注意的是，OneSug
 <strong>不引入商品交互特征</strong>（如点击过的商品类目），因为查询补全发生在用户输入阶段，尚未产生商品曝光行为。编码器的输入构造为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-4">
-<span class="eqno">(7.2.5)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-4" title="Permalink to this equation">¶</a></span>\[x_u = \{t_{\text{[CLS]}}, \mathbf{e}_p^*, t_{\text{[SEP]}}, \mathcal{H}_p, t_{\text{[SEP]}}, \mathcal{H}_u, t_{\text{[SEP]}}, \mathcal{U}\}\]</div>
+<span class="eqno">(7.2.5)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-4" title="Permalink to this equation">¶</a></span>\[x_u = \{t_{\text{[CLS]}}, \boldsymbol{e}_p^*, t_{\text{[SEP]}}, \mathcal{H}_p, t_{\text{[SEP]}}, \mathcal{H}_u, t_{\text{[SEP]}}, \mathcal{U}\}\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\mathcal{H}_p\)</span> 是 PRE
 模块检索到的相关查询序列。编码器输出为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-5">
-<span class="eqno">(7.2.6)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-5" title="Permalink to this equation">¶</a></span>\[\mathbf{Z}_{enc} = \text{Encoder}(x_u)\]</div>
+<span class="eqno">(7.2.6)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-5" title="Permalink to this equation">¶</a></span>\[\boldsymbol{Z}_{enc} = \text{Encoder}(x_u)\]</div>
 <p><strong>解码器：自回归查询生成</strong></p>
 <p>解码器采用标准的 Causal Transformer
 结构，以自回归方式生成目标查询的每个子词（subword）。训练时使用 Teacher
 Forcing 策略，最小化 Next Token Prediction 损失：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-6">
-<span class="eqno">(7.2.7)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-6" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{NTP} = -\sum_{t=1}^{|q|} \log P(q_t | q_{&lt;t}, \mathbf{Z}_{enc})\]</div>
+<span class="eqno">(7.2.7)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-6" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{NTP} = -\sum_{t=1}^{|q|} \log P(q_t | q_{&lt;t}, \boldsymbol{Z}_{enc})\]</div>
 <p>在推理时，OneSug 使用 <strong>Beam Search</strong> 生成多个候选查询（束宽
 <span class="math notranslate nohighlight">\(K=32\)</span>，在候选多样性和推理延迟小于100ms之间达到最佳平衡）。为避免模型偏好生成短查询，引入<strong>长度归一化</strong>评分函数：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-7">
-<span class="eqno">(7.2.8)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-7" title="Permalink to this equation">¶</a></span>\[\text{Score}(q) = \frac{1}{|q|^\alpha} \sum_{t=1}^{|q|} \log P(q_t | q_{&lt;t}, \mathbf{Z}_{enc}), \quad \alpha \in [0.6, 0.8]\]</div>
+<span class="eqno">(7.2.8)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-7" title="Permalink to this equation">¶</a></span>\[\text{Score}(q) = \frac{1}{|q|^\alpha} \sum_{t=1}^{|q|} \log P(q_t | q_{&lt;t}, \boldsymbol{Z}_{enc}), \quad \alpha \in [0.6, 0.8]\]</div>
 <p><strong>奖励加权排序策略（RWR）</strong></p>
 <p>仅依靠 Next Token Prediction
 训练的生成模型往往无法区分不同候选查询的业务价值差异。OneSug
@@ -551,7 +551,7 @@ Forcing 策略，最小化 Next Token Prediction 损失：</p>
 Show&gt;），训练时需要更大的梯度权重以学习细微差异。</p>
 <p><strong>混合偏好对齐损失</strong></p>
 <p>OneSug 在标准的 DPO（Direct Preference
-Optimization）损失基础上引入两项改进：</p>
+Optimization）损失基础上引入以下两项改进。</p>
 <ul class="simple">
 <li><p><strong>奖励加权</strong>：通过 <span class="math notranslate nohighlight">\(rw_{\Delta}\)</span> 动态调整不同样本对的学习权重</p></li>
 <li><p><strong>目标奖励边界 :math:`delta`</strong>：强制正负样本的奖励差异至少为
@@ -571,7 +571,7 @@ Optimization）损失基础上引入两项改进：</p>
 策略，成功地将查询补全从多阶段级联系统转变为端到端的生成式模型。PRE
 模块通过语义和协同查询增强短前缀表示，多视角特征融合捕获用户意图，六级交互反馈构建的奖励系统使模型能够精准理解用户偏好差异。这种统一的生成式框架不仅简化了系统架构，更重要的是实现了全局优化，避免了传统多阶段系统中前序阶段的性能瓶颈。</p>
 <p>然而，当用户完成查询输入后，系统面临着更加复杂的挑战——从数亿商品中检索最相关结果。这要求同时处理<strong>开放词表的查询</strong>和<strong>封闭词表的商品</strong>，并引入更强的相关性约束和个性化排序能力。接下来我们将深入探讨专门针对商品检索的端到端生成模型
-<strong>OneSearch</strong>，它需要解决三个核心问题：</p>
+<strong>OneSearch</strong>，它需要解决以下三个核心问题。</p>
 <ul class="simple">
 <li><p><strong>商品 ID
 设计</strong>：如何为商品构造融合语义与协同信号、同时保留层次结构和单品区分度的
@@ -597,7 +597,7 @@ BERT）在处理这类文本时会被冗余信息淹没，难以识别真正的�
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-12">
 <span class="eqno">(7.2.13)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-12" title="Permalink to this equation">¶</a></span>\[P(\text{商品序列} | \text{查询}, \text{用户上下文})\]</div>
 <p>这意味着模型直接输入查询文本和用户行为特征，输出一个有序的商品列表。为了实现这一目标，OneSearch
-设计了四个核心模块，它们分别解决上述三大挑战：</p>
+设计了以下四个核心模块，它们分别解决上述三大挑战。</p>
 <ol class="arabic simple">
 <li><p><strong>关键词增强的分层量化编码（KHQE）</strong>：为每个商品构造一个融合语义与协同信号的多层离散
 ID，既保留类目层次又突出核心属性，同时增强查询-商品相关性约束</p></li>
@@ -642,7 +642,7 @@ ID）</strong>策略，将每个商品映射为一个多层离散码序列：</p
 <p><strong>商品表示学习</strong></p>
 <p>要构建有意义的语义
 ID，第一步是为每个商品生成一个高质量的嵌入向量。这个向量需要同时捕获两类信息：<strong>内容语义</strong>（商品本身是什么）和<strong>协同信号</strong>（用户如何与商品交互）。</p>
-<p>OneSearch 从搜索日志中收集多源信息作为商品的原始特征：</p>
+<p>OneSearch 从搜索日志中收集以下多源信息作为商品的原始特征。</p>
 <ul class="simple">
 <li><p><strong>文本信息</strong>：商品标题、详情页 OCR 文本、关键词标签</p></li>
 <li><p><strong>结构化属性</strong>：价格区间、类目层级、品牌信息</p></li>
@@ -650,9 +650,9 @@ ID，第一步是为每个商品生成一个高质量的嵌入向量。这个向
 </ul>
 <p>这些异构特征被输入蒸馏后的 BGE
 模型（一个轻量级的文本编码器），生成初始的商品嵌入
-<span class="math notranslate nohighlight">\(\mathbf{e}_i \in \mathbb{R}^{768}\)</span>。但是，通用的文本编码器往往偏向语义相似性，而忽略了电商场景下的协同过滤信号。例如，“苹果手机”和“苹果电脑”在语义上都包含“苹果”品牌，但用户行为模式可能截然不同。</p>
+<span class="math notranslate nohighlight">\(\boldsymbol{e}_i \in \mathbb{R}^{768}\)</span>。但是，通用的文本编码器往往偏向语义相似性，而忽略了电商场景下的协同过滤信号。例如，“苹果手机”和“苹果电脑”在语义上都包含“苹果”品牌，但用户行为模式可能截然不同。</p>
 <p>为了让嵌入同时反映<strong>语义关联</strong>和<strong>行为协同</strong>，OneSearch
-设计了多类对齐任务：</p>
+设计了以下多类对齐任务。</p>
 <ol class="arabic simple">
 <li><p><strong>query-query 和 item-item 对比学习</strong>（<span class="math notranslate nohighlight">\(\mathcal{L}_{q2q}\)</span>,
 <span class="math notranslate nohighlight">\(\mathcal{L}_{i2i}\)</span>）：从搜索日志中挖掘协同相关的查询对和商品对（使用
@@ -673,9 +673,9 @@ LLM（如 GPT-4）基于完整上下文评分相关性，然后让 BGE
 <p>其中 <span class="math notranslate nohighlight">\(\lambda_i\)</span>
 是可调节的权重系数，可以根据不同的业务目标进行调整。</p>
 <p><strong>核心关键词增强</strong></p>
-<p>经过对齐训练后，商品嵌入 <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>
+<p>经过对齐训练后，商品嵌入 <span class="math notranslate nohighlight">\(\boldsymbol{e}_i\)</span>
 已经同时包含语义和协同信号。但电商商品标题中充斥着大量冗余词（如“爆款”“包邮”“限时特价”），这些营销词会稀释真正的核心属性（如品牌、颜色、材质）的表示权重。</p>
-<p>OneSearch 的解决方案是<strong>显式提取并增强核心关键词</strong>。具体而言：</p>
+<p>OneSearch 的解决方案是<strong>显式提取并增强核心关键词</strong>，具体方法如下。</p>
 <ol class="arabic simple">
 <li><p><strong>构建核心属性词表</strong>：快手电商团队通过命名实体识别（NER）技术，从历史搜索日志中识别出
 18
@@ -686,19 +686,19 @@ PV 降序排列，选择高频词作为核心词表</p></li>
 时间内在文本中同时查找多个模式串）在商品标题中快速匹配核心关键词。对于图片类商品，使用多模态模型（Qwen-VL）识别图片中的关键视觉属性</p></li>
 <li><p><strong>关键词增强表示</strong>：假设商品 <span class="math notranslate nohighlight">\(i\)</span> 匹配到 <span class="math notranslate nohighlight">\(n\)</span>
 个核心关键词 <span class="math notranslate nohighlight">\(\{k_1, k_2, ..., k_n\}\)</span>，每个关键词的嵌入为
-<span class="math notranslate nohighlight">\(\mathbf{e}_{k_j}\)</span>。商品的优化表示为：</p></li>
+<span class="math notranslate nohighlight">\(\boldsymbol{e}_{k_j}\)</span>。商品的优化表示为：</p></li>
 </ol>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-15">
-<span class="eqno">(7.2.16)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-15" title="Permalink to this equation">¶</a></span>\[\mathbf{e}^o_i = \frac{1}{2} \left( \mathbf{e}_i + \frac{1}{n} \sum_{j=1}^{n} \mathbf{e}_{k_j} \right)\]</div>
+<span class="eqno">(7.2.16)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-15" title="Permalink to this equation">¶</a></span>\[\boldsymbol{e}^o_i = \frac{1}{2} \left( \boldsymbol{e}_i + \frac{1}{n} \sum_{j=1}^{n} \boldsymbol{e}_{k_j} \right)\]</div>
 <p>这种 50%-50%
 的加权平均使得核心属性在后续量化编码中占据主导地位，同时保留原始嵌入的完整语义信息。查询的表示也使用相同的增强策略，这个简单的技巧在实验中带来了显著提升。</p>
 <p><strong>RQ-Kmeans 语义层次编码</strong></p>
 <p>现在我们有了高质量的商品嵌入
-<span class="math notranslate nohighlight">\(\mathbf{e}^o_i \in \mathbb{R}^{768}\)</span>，下一步是将连续向量转换为离散的分层码。OneSearch
+<span class="math notranslate nohighlight">\(\boldsymbol{e}^o_i \in \mathbb{R}^{768}\)</span>，下一步是将连续向量转换为离散的分层码。OneSearch
 使用<strong>残差量化 K-means（Residual Quantization K-means,
 RQ-Kmeans）</strong>来实现这一目标。</p>
 <p>RQ-Kmeans 的核心思想是<strong>逐层提取语义信息，并将残差传递到下一层</strong>。</p>
-<p>这个过程可以类比为<strong>逐层细化的类目树</strong>：</p>
+<p>这个过程可以类比为<strong>逐层细化的类目树</strong>，各层含义如下。</p>
 <ul class="simple">
 <li><p><strong>L1 层（码本大小
 4096）</strong>：捕获最粗粒度的类目，如“服装”、“数码”、“食品”、“家居”</p></li>
@@ -719,7 +719,7 @@ L2）强制平衡会导致层次聚类崩溃</strong>——细粒度属性不同
 自由聚类捕获主要语义，然后在 L3 层通过平衡约束实现细粒度区分。</p>
 <p><strong>OPQ 商品独特性编码</strong></p>
 <p>经过 3 层 RQ-Kmeans 后，我们得到了商品的分层语义码
-<code class="docutils literal notranslate"><span class="pre">[L1,</span> <span class="pre">L2,</span> <span class="pre">L3]</span></code>。但此时残差向量 <span class="math notranslate nohighlight">\(\mathbf{e}'\)</span>
+<code class="docutils literal notranslate"><span class="pre">[L1,</span> <span class="pre">L2,</span> <span class="pre">L3]</span></code>。但此时残差向量 <span class="math notranslate nohighlight">\(\boldsymbol{e}'\)</span>
 中仍然包含重要信息——这是商品的<strong>独特属性</strong>，如具体款式、品牌、价格段、具体设计细节等。如果直接丢弃这些残差，会导致大量商品被映射到相同的语义
 ID，无法区分。</p>
 <p>例如，两件都是“韩版连衣裙”的商品可能具有相同的 <code class="docutils literal notranslate"><span class="pre">[L1,</span> <span class="pre">L2,</span> <span class="pre">L3]</span></code>
@@ -815,23 +815,23 @@ ID 查表获取 RQ-Kmeans 的聚类中心嵌入（3
 层，每层一个向量），然后按层级分别求和：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-19">
 <span class="eqno">(7.2.20)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-19" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-\mathbf{M}_{\text{click}} &amp;= \left\{ \sum_{i=1}^{m} \mathbf{Item}_{\text{emb}}^{L1}, \sum_{i=1}^{m} \mathbf{Item}_{\text{emb}}^{L2}, \sum_{i=1}^{m} \mathbf{Item}_{\text{emb}}^{L3} \right\} \\
-\mathbf{M}_{\text{order}} &amp;= \left\{ \sum_{i=1}^{n} \mathbf{Item}_{\text{emb}}^{L1}, \sum_{i=1}^{n} \mathbf{Item}_{\text{emb}}^{L2}, \sum_{i=1}^{n} \mathbf{Item}_{\text{emb}}^{L3} \right\} \\
-\mathbf{M}_{\text{RSU}} &amp;= \left\{ \sum_{i=1}^{k} \mathbf{Item}_{\text{emb}}^{L1}, \sum_{i=1}^{k} \mathbf{Item}_{\text{emb}}^{L2}, \sum_{i=1}^{k} \mathbf{Item}_{\text{emb}}^{L3} \right\}
+\boldsymbol{M}_{\text{click}} &amp;= \left\{ \sum_{i=1}^{m} \boldsymbol{Item}_{\text{emb}}^{L1}, \sum_{i=1}^{m} \boldsymbol{Item}_{\text{emb}}^{L2}, \sum_{i=1}^{m} \boldsymbol{Item}_{\text{emb}}^{L3} \right\} \\
+\boldsymbol{M}_{\text{order}} &amp;= \left\{ \sum_{i=1}^{n} \boldsymbol{Item}_{\text{emb}}^{L1}, \sum_{i=1}^{n} \boldsymbol{Item}_{\text{emb}}^{L2}, \sum_{i=1}^{n} \boldsymbol{Item}_{\text{emb}}^{L3} \right\} \\
+\boldsymbol{M}_{\text{RSU}} &amp;= \left\{ \sum_{i=1}^{k} \boldsymbol{Item}_{\text{emb}}^{L1}, \sum_{i=1}^{k} \boldsymbol{Item}_{\text{emb}}^{L2}, \sum_{i=1}^{k} \boldsymbol{Item}_{\text{emb}}^{L3} \right\}
 \end{aligned}\end{split}\]</div>
 <p>这样，无论用户有多少历史行为（可能上千条），都被压缩为
 <span class="math notranslate nohighlight">\(3 \times 3 = 9\)</span> 个向量（3 类行为 × 3 个层级）。</p>
 <p><strong>Q-Former 交叉注意力提取</strong></p>
 <p>接下来，使用 <span class="math notranslate nohighlight">\(N_q=128\)</span> 个可学习的查询向量（Query
-Vectors）<span class="math notranslate nohighlight">\(\mathbf{Q} \in \mathbb{R}^{128 \times 768}\)</span>，通过交叉注意力机制从聚合的行为表示中提取关键信息：</p>
+Vectors）<span class="math notranslate nohighlight">\(\boldsymbol{Q} \in \mathbb{R}^{128 \times 768}\)</span>，通过交叉注意力机制从聚合的行为表示中提取关键信息：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-20">
-<span class="eqno">(7.2.21)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-20" title="Permalink to this equation">¶</a></span>\[\mathbf{Q}_{\text{long}} = \text{Q-Former}([\mathbf{M}_{\text{click}}, \mathbf{M}_{\text{order}}, \mathbf{M}_{\text{RSU}}])\]</div>
+<span class="eqno">(7.2.21)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-20" title="Permalink to this equation">¶</a></span>\[\boldsymbol{Q}_{\text{long}} = \text{Q-Former}([\boldsymbol{M}_{\text{click}}, \boldsymbol{M}_{\text{order}}, \boldsymbol{M}_{\text{RSU}}])\]</div>
 <p>Q-Former 的核心是多层
 Transformer，其中查询向量通过交叉注意力（Cross-Attention）与行为聚合向量交互，学习提取最相关的用户偏好信息。最终得到的
-<span class="math notranslate nohighlight">\(\mathbf{Q}_{\text{long}} \in \mathbb{R}^{128 \times 768}\)</span>
+<span class="math notranslate nohighlight">\(\boldsymbol{Q}_{\text{long}} \in \mathbb{R}^{128 \times 768}\)</span>
 是固定长度的，无论用户历史行为有多少条。</p>
 <p><strong>注入编码器</strong></p>
-<p>压缩后的长期行为表示 <span class="math notranslate nohighlight">\(\mathbf{Q}_{\text{long}}\)</span>
+<p>压缩后的长期行为表示 <span class="math notranslate nohighlight">\(\boldsymbol{Q}_{\text{long}}\)</span>
 作为额外的输入序列，与 User ID、Query、短期序列一起输入
 Encoder。由于长度固定（128 个 Token），不会显著增加计算开销。</p>
 <p><strong>为什么按层级聚合？</strong> 直接对所有商品嵌入求平均会丢失层次信息。按
@@ -863,9 +863,9 @@ ID）和连续向量（Q-Former 输出）：</p>
 查表得到嵌入，连续向量直接使用），加入位置编码，输入 Transformer
 编码器：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-21">
-<span class="eqno">(7.2.22)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-21" title="Permalink to this equation">¶</a></span>\[\mathbf{Z}_{\text{enc}} = \text{Encoder}([\text{UserID}; \mathbf{e}_q; \text{SID}_q; \text{Seq}_q; \text{Seq}_{\text{short}}; \mathbf{Q}_{\text{long}}])\]</div>
+<span class="eqno">(7.2.22)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-21" title="Permalink to this equation">¶</a></span>\[\boldsymbol{Z}_{\text{enc}} = \text{Encoder}([\text{UserID}; \boldsymbol{e}_q; \text{SID}_q; \text{Seq}_q; \text{Seq}_{\text{short}}; \boldsymbol{Q}_{\text{long}}])\]</div>
 <p>编码器的输出
-<span class="math notranslate nohighlight">\(\mathbf{Z}_{\text{enc}} \in \mathbb{R}^{L \times d}\)</span>（<span class="math notranslate nohighlight">\(L\)</span>
+<span class="math notranslate nohighlight">\(\boldsymbol{Z}_{\text{enc}} \in \mathbb{R}^{L \times d}\)</span>（<span class="math notranslate nohighlight">\(L\)</span>
 是序列长度，<span class="math notranslate nohighlight">\(d=768\)</span> 是隐藏维度）包含了所有输入信息的联合表示。</p>
 <p><strong>解码器：自回归生成商品语义 ID</strong></p>
 <p>解码器的任务是逐 Token 生成目标商品的 5 层语义 ID。以生成商品
@@ -879,16 +879,16 @@ ID）和连续向量（Q-Former 输出）：</p>
 </div>
 <p>每一步通过 Causal Self-Attention（只能看到前面的 Token）和
 Cross-Attention（关注编码器输出）生成隐藏状态
-<span class="math notranslate nohighlight">\(\mathbf{h}_t^{\text{dec}}\)</span>，然后通过 Softmax 层预测下一个
+<span class="math notranslate nohighlight">\(\boldsymbol{h}_t^{\text{dec}}\)</span>，然后通过 Softmax 层预测下一个
 Token：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-22">
-<span class="eqno">(7.2.23)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-22" title="Permalink to this equation">¶</a></span>\[P(\text{Token}_t | \text{Token}_{&lt;t}, \mathbf{Z}_{\text{enc}}) = \text{Softmax}(\mathbf{W}_{\text{vocab}} \mathbf{h}_t^{\text{dec}})\]</div>
+<span class="eqno">(7.2.23)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-22" title="Permalink to this equation">¶</a></span>\[P(\text{Token}_t | \text{Token}_{&lt;t}, \boldsymbol{Z}_{\text{enc}}) = \text{Softmax}(\boldsymbol{W}_{\text{vocab}} \boldsymbol{h}_t^{\text{dec}})\]</div>
 <p>训练目标是最大化真实商品语义 ID 的对数似然（Next Token Prediction）：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-2-search-23">
-<span class="eqno">(7.2.24)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-23" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{NTP}} = -\sum_{t=1}^{5} \log P(\text{Token}_t^{\text{true}} | \text{Token}_{&lt;t}, \mathbf{Z}_{\text{enc}})\]</div>
+<span class="eqno">(7.2.24)<a class="headerlink" href="#equation-chapter-7-gr-e2e-2-search-23" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{NTP}} = -\sum_{t=1}^{5} \log P(\text{Token}_t^{\text{true}} | \text{Token}_{&lt;t}, \boldsymbol{Z}_{\text{enc}})\]</div>
 <p><strong>推理：Beam Search 生成 Top-K 商品</strong></p>
 <p>在推理时，OneSearch 使用 <strong>Beam Search</strong> 生成多个商品候选。Beam Search
-一般有两种策略：</p>
+一般有以下两种策略。</p>
 <ul class="simple">
 <li><p><strong>约束搜索</strong>：强制每层 Token 必须来自预先构建的有效 SID
 池（真实商品的 SID 集合），确保生成的 SID
@@ -902,7 +902,7 @@ SID”（不对应真实商品），但推理速度更快</p></li>
 <p>到目前为止，OneSearch 已经可以通过 Next Token Prediction
 生成商品序列。但仅靠 NTP
 训练的模型存在一个关键问题：<strong>它只学习了“哪些商品与查询和用户行为共现”，而没有学习“用户更偏好哪些商品”</strong>。</p>
-<p>举个例子，对于查询“红色连衣裙”，以下两个商品都可能在训练数据中出现： -
+<p>举个例子，对于查询“红色连衣裙”，以下两个商品都可能在训练数据中出现。 -
 商品 A：被展示 100 次，点击 20 次，下单 5 次（CTR=20%, CVR=25%） - 商品
 B：被展示 100 次，点击 5 次，下单 0 次（CTR=5%, CVR=0%）</p>
 <p>如果仅用 NTP
@@ -1100,7 +1100,7 @@ Ctr &amp;= \frac{\log(Cnt_{\text{clk}} + 10)}{Cnt_T}, \quad Cvr = \frac{\log(Cnt
 <p>这里引入了一个关键组件：<strong>离线计算的相关性分数
 :math:`S_{text{Rel}}`</strong>，权重放大 10 倍。这确保了 OneSearch
 生成的商品必须<strong>先满足相关性约束，再优化个性化</strong>，避免了推荐系统中常见的“相关性漂移”问题。</p>
-<p>奖励模型的训练样本构造： - <strong>正样本</strong>：Level 1（搜索下单）和 Level
+<p>奖励模型的训练样本构造如下。 - <strong>正样本</strong>：Level 1（搜索下单）和 Level
 2（推荐场景同类目下单），标签为 <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">1)</span></code>（点击=1, 转化=1,
 联合=1） - <strong>弱正样本</strong>：Level 3（仅点击），标签为 <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">0,</span> <span class="pre">0)</span></code> -
 <strong>负样本</strong>：Level 4-6，标签为 <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code></p>
@@ -1114,7 +1114,7 @@ OneSearch 对齐，确保了偏好信号的一致性。</p>
 <p><strong>基于奖励模型的 DPO</strong></p>
 <p>从真实搜索日志中采样查询，使用 SFT 后的 OneSearch 生成 512
 个候选商品，然后用奖励模型对这些候选重新打分排序。选择<strong>排序发生变化</strong>的样本进行
-List-wise DPO（Direct Preference Optimization）训练：</p>
+List-wise DPO（Direct Preference Optimization）训练，训练样本定义如下。</p>
 <ul class="simple">
 <li><p><strong>正样本</strong>
 <span class="math notranslate nohighlight">\(i_w\)</span>：被奖励模型提升排名的商品，或被用户点击的商品</p></li>
@@ -1137,7 +1137,8 @@ NLL（负对数似然）保持对正样本的生成能力</strong>，形成了�
 <p><strong>基于真实交互的持续学习</strong></p>
 <p>奖励模型虽然有效，但它是在传统 MCA
 系统的数据上训练的，因此存在<strong>性能上界</strong>——OneSearch 很难超越 MCA
-的天花板。为了突破这个限制，OneSearch 在上线后持续收集真实用户交互数据：</p>
+的天花板。为了突破这个限制，OneSearch
+在上线后持续收集以下真实用户交互数据。</p>
 <ul class="simple">
 <li><p><strong>正样本</strong>：Level 1-3（搜索下单、推荐下单、点击）</p></li>
 <li><p><strong>负样本</strong>：Level 4-6（曝光未点击、未展示、随机负样本）</p></li>

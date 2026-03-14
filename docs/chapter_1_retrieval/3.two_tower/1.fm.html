@@ -180,10 +180,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -326,10 +326,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -386,11 +386,11 @@ Show Source
 <h2><span class="section-number">2.3.1.1. </span>从交互矩阵到向量内积<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>FM模型的完整数学表达式为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-two-tower-1-fm-0">
-<span class="eqno">(2.3.2)<a class="headerlink" href="#equation-chapter-1-retrieval-3-two-tower-1-fm-0" title="Permalink to this equation">¶</a></span>\[\hat{y}(\mathbf{x}):=w_{0}+\sum_{i=1}^{n} w_{i} x_{i}+\sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j}\]</div>
-<p>这个公式看起来复杂，但其核心思想简单而深刻：每个特征<span class="math notranslate nohighlight">\(i\)</span>都对应一个<span class="math notranslate nohighlight">\(k\)</span>维的隐向量<span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span>，特征间的交互通过这些隐向量的内积<span class="math notranslate nohighlight">\(\langle\mathbf{v}_{i}, \mathbf{v}_{j}\rangle = \sum_{f=1}^{k} v_{i,f} \cdot v_{j,f}\)</span>来建模。</p>
+<span class="eqno">(2.3.2)<a class="headerlink" href="#equation-chapter-1-retrieval-3-two-tower-1-fm-0" title="Permalink to this equation">¶</a></span>\[\hat{y}(\boldsymbol{x}):=w_{0}+\sum_{i=1}^{n} w_{i} x_{i}+\sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\boldsymbol{v}_{i}, \boldsymbol{v}_{j}\right\rangle x_{i} x_{j}\]</div>
+<p>这个公式看起来复杂，但其核心思想简单而深刻：每个特征<span class="math notranslate nohighlight">\(i\)</span>都对应一个<span class="math notranslate nohighlight">\(k\)</span>维的隐向量<span class="math notranslate nohighlight">\(\boldsymbol{v}_i\)</span>，特征间的交互通过这些隐向量的内积<span class="math notranslate nohighlight">\(\langle\boldsymbol{v}_{i}, \boldsymbol{v}_{j}\rangle = \sum_{f=1}^{k} v_{i,f} \cdot v_{j,f}\)</span>来建模。</p>
 <p>FM的真正巧妙之处在于一个数学变换技巧。原本<span class="math notranslate nohighlight">\(O(n^2)\)</span>复杂度的二阶交互项，可以通过代数运算重写为：</p>
 <div class="math notranslate nohighlight" id="equation-eq-fm-cross">
-<span class="eqno">(2.3.3)<a class="headerlink" href="#equation-eq-fm-cross" title="Permalink to this equation">¶</a></span>\[\sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j} = \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right)\]</div>
+<span class="eqno">(2.3.3)<a class="headerlink" href="#equation-eq-fm-cross" title="Permalink to this equation">¶</a></span>\[\sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\boldsymbol{v}_{i}, \boldsymbol{v}_{j}\right\rangle x_{i} x_{j} = \frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right)\]</div>
 <p>这一变换将计算复杂度从<span class="math notranslate nohighlight">\(O(kn^2)\)</span>降低到<span class="math notranslate nohighlight">\(O(kn)\)</span>，使得FM能够处理大规模稀疏数据。</p>
 </section>
 <section id="id3">

@@ -180,10 +180,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -326,10 +326,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -396,10 +396,10 @@ Amnesia）问题。</p>
 <a class="reference internal" href="#trinity-framework"><span class="std std-numref">图2.5.1</span></a> 所示，训练阶段采用向量量化（Vector
 Quantization） <span id="id6">(<a class="reference internal" href="../../chapter_references/references.html#id107" title="van den Oord, A., Vinyals, O., &amp; Kavukcuoglu, K. (2018). Neural Discrete Representation Learning.">van den Oord <em>et al.</em>, 2018</a>)</span>
 结构来学习物品的聚类归属。对于每个物品，系统首先从用户的长期行为序列中提取与该物品相关的历史交互，得到物品embedding
-<span class="math notranslate nohighlight">\(\mathbf{x}\)</span> 和用户embedding
-<span class="math notranslate nohighlight">\(\mathbf{b}\)</span>。同时，系统维护两级可学习的聚类中心：粗粒度的主聚类
-<span class="math notranslate nohighlight">\(\{\mathbf{e}^1_j\}_{j=1}^J\)</span> 和细粒度的次级聚类
-<span class="math notranslate nohighlight">\(\{\mathbf{e}^2_k\}_{k=1}^K\)</span>，其中
+<span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span> 和用户embedding
+<span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span>。同时，系统维护两级可学习的聚类中心：粗粒度的主聚类
+<span class="math notranslate nohighlight">\(\{\boldsymbol{e}^1_j\}_{j=1}^J\)</span> 和细粒度的次级聚类
+<span class="math notranslate nohighlight">\(\{\boldsymbol{e}^2_k\}_{k=1}^K\)</span>，其中
 <span class="math notranslate nohighlight">\(J=128\)</span>，<span class="math notranslate nohighlight">\(K=1024\)</span>。</p>
 <figure class="align-default" id="id10">
 <span id="trinity-framework"></span><a class="reference internal image-reference" href="../../_images/trinity_framework.png"><img alt="../../_images/trinity_framework.png" src="../../_images/trinity_framework.png" style="width: 500px;" /></a>
@@ -409,10 +409,10 @@ Quantization） <span id="id6">(<a class="reference internal" href="../../chapte
 </figure>
 <p>每个物品通过最近邻搜索被分配到对应的聚类：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-5-streaming-index-1-trinity-0">
-<span class="eqno">(2.5.1)<a class="headerlink" href="#equation-chapter-1-retrieval-5-streaming-index-1-trinity-0" title="Permalink to this equation">¶</a></span>\[\hat{j} = \arg\min_j ||\mathbf{e}^1_j - \mathbf{x}||^2, \quad \hat{k} = \arg\min_k ||\mathbf{e}^2_k - \mathbf{x}||^2\]</div>
+<span class="eqno">(2.5.1)<a class="headerlink" href="#equation-chapter-1-retrieval-5-streaming-index-1-trinity-0" title="Permalink to this equation">¶</a></span>\[\hat{j} = \arg\min_j ||\boldsymbol{e}^1_j - \boldsymbol{x}||^2, \quad \hat{k} = \arg\min_k ||\boldsymbol{e}^2_k - \boldsymbol{x}||^2\]</div>
 <p>训练损失函数同时优化用户-物品匹配和用户-聚类匹配：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-5-streaming-index-1-trinity-1">
-<span class="eqno">(2.5.2)<a class="headerlink" href="#equation-chapter-1-retrieval-5-streaming-index-1-trinity-1" title="Permalink to this equation">¶</a></span>\[L = \sum_p \sum_{\mathbf{A} \in \{\mathbf{x}, \mathbf{e}^1_{\hat{j}}, \mathbf{e}^2_{\hat{k}}\}} y_p \log \sigma(\mathbf{b}_p^T \mathbf{A}_p) + (1-y_p) \log(1-\sigma(\mathbf{b}_p^T \mathbf{A}_p))\]</div>
+<span class="eqno">(2.5.2)<a class="headerlink" href="#equation-chapter-1-retrieval-5-streaming-index-1-trinity-1" title="Permalink to this equation">¶</a></span>\[L = \sum_p \sum_{\boldsymbol{A} \in \{\boldsymbol{x}, \boldsymbol{e}^1_{\hat{j}}, \boldsymbol{e}^2_{\hat{k}}\}} y_p \log \sigma(\boldsymbol{b}_p^T \boldsymbol{A}_p) + (1-y_p) \log(1-\sigma(\boldsymbol{b}_p^T \boldsymbol{A}_p))\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\sigma(\cdot)\)</span> 是sigmoid函数，<span class="math notranslate nohighlight">\(y=1\)</span>
 表示用户完成观看、产生互动（点赞/分享/关注/评论）或观看时长超过10秒。聚类中心的更新采用指数移动平均机制(Exponential
 Moving Average, EMA) <span id="id7">(<a class="reference internal" href="../../chapter_references/references.html#id107" title="van den Oord, A., Vinyals, O., &amp; Kavukcuoglu, K. (2018). Neural Discrete Representation Learning.">van den Oord <em>et al.</em>, 2018</a>)</span>
@@ -422,8 +422,9 @@ Moving Average, EMA) <span id="id7">(<a class="reference internal" href="../../c
 <section id="id8">
 <h2><span class="section-number">2.5.1.3. </span>基于直方图的兴趣召回<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h2>
 <p>有了物品到聚类的映射关系，Trinity就可以将任意长度的用户行为序列转换为固定维度的统计直方图。对于用户的长期行为序列（长度可达2500），系统从键值存储中读取每个物品的聚类ID，然后统计每个聚类的行为计数，形成主聚类直方图
-<span class="math notranslate nohighlight">\(\mathbf{h}^1 = [h^1_1, h^1_2, \ldots, h^1_J]\)</span> 和次级聚类直方图
-<span class="math notranslate nohighlight">\(\mathbf{h}^2 = [h^2_1, h^2_2, \ldots, h^2_K]\)</span>。</p>
+<span class="math notranslate nohighlight">\(\boldsymbol{h}^1 = [h^1_1, h^1_2, \ldots, h^1_J]\)</span>
+和次级聚类直方图
+<span class="math notranslate nohighlight">\(\boldsymbol{h}^2 = [h^2_1, h^2_2, \ldots, h^2_K]\)</span>。</p>
 <p>将直方图按计数降序排列后，用户的兴趣分布一目了然。例如，若排序后的直方图为
 <span class="math notranslate nohighlight">\([50, 20, 20, 4, 2, 0, 0, 0]\)</span>，对应的聚类索引为
 <span class="math notranslate nohighlight">\([10, 33, 100, 91, 62, 21, 5, 83]\)</span>，则聚类10是用户的主要兴趣，聚类33和100构成需要关注的多元兴趣，聚类91和62是探索性兴趣，其余聚类可以忽略。</p>

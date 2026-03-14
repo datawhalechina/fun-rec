@@ -30,7 +30,7 @@ ESMM
 
    \text{曝光(Impression)} \rightarrow \text{点击(Click)} \rightarrow \text{转化(Conversion)}
 
-这种链式结构导致两个关键问题：
+这种链式结构导致以下两个关键问题。
 
 1. 样本选择偏差(Sample Selection
    Bias)：传统CVR模型仅在点击样本（CTR正样本）上训练，但线上预估需覆盖全量曝光样本，训练/预估样本分布差异导致泛化能力下降
@@ -51,18 +51,18 @@ ESMM (Entire Space Multi-task Model) :cite:`ma2018entire`
 
 
 
--  输入层：全量曝光样本特征 :math:`\mathbf{x}`
+-  输入层：全量曝光样本特征 :math:`\boldsymbol{x}`
 
 -  共享表征层：基础特征提取模块（原论文中采用的是Shared-Bottom的简单共享结构，也可将其直接替换成MMoE、PLE等复杂的底层共享模型）
 
--  任务塔层：
+-  任务塔层
 
-   -  CTR Tower：预测点击概率 :math:`pCTR = f_{ctr}(\mathbf{h})`
-   -  CVR Tower：预测转化概率 :math:`pCVR = f_{cvr}(\mathbf{h})`
+   -  CTR Tower：预测点击概率 :math:`pCTR = f_{ctr}(\boldsymbol{h})`
+   -  CVR Tower：预测转化概率 :math:`pCVR = f_{cvr}(\boldsymbol{h})`
 
 -  输出层：
 
-   -  :math:`pCTR = f_{ctr}(\mathbf{h})`\ ，\ :math:`pCVR = f_{cvr}(\mathbf{h})`\ ，其中\ :math:`pCVR`\ 不用用来计算Loss
+   -  :math:`pCTR = f_{ctr}(\boldsymbol{h})`\ ，\ :math:`pCVR = f_{cvr}(\boldsymbol{h})`\ ，其中\ :math:`pCVR`\ 不用用来计算Loss
    -  :math:`pCTCVR = pCTR \times pCVR`\ ，该值用来计算从曝光空间到转化的Loss
 
 损失函数的设计：
@@ -72,31 +72,30 @@ ESMM (Entire Space Multi-task Model) :cite:`ma2018entire`
 
    \mathcal{L} = \mathcal{L}_{CTR} + \mathcal{L}_{CTCVR}
 
-其中：
+其中各项含义如下。
 
--  :math:`\mathcal{L}_{CTR}`
-   是标准的二分类交叉熵损失，使用全量曝光样本：
+:math:`\mathcal{L}_{CTR}` 是标准的二分类交叉熵损失，使用全量曝光样本：
 
-   .. math::
-
-
-      \mathcal{L}_{CTR} = - \frac{1}{N} \sum_{i=1}^N \left[ y_i^{click} \log(pCTR_i) + (1 - y_i^{click}) \log(1 - pCTR_i) \right]
-
--  :math:`\mathcal{L}_{CTCVR}` 是CTCVR任务的交叉熵损失，
-   通过概率转化公式\ :math:`pCTCVR = pCTR \times pCVR`\ ，\ **使得CVR
-   Tower的参数更新是在曝光空间下进行的**\ ：
-
-   .. math::
+.. math::
 
 
-      \mathcal{L}_{CTCVR} = - \frac{1}{N} \sum_{i=1}^N \left[ y_i^{click} \cdot y_i^{conv} \log(pCTCVR_i) + (1 - y_i^{click} \cdot y_i^{conv}) \log(1 - pCTCVR_i) \right]
+   \mathcal{L}_{CTR} = - \frac{1}{N} \sum_{i=1}^N \left[ y_i^{click} \log(pCTR_i) + (1 - y_i^{click}) \log(1 - pCTR_i) \right]
+
+:math:`\mathcal{L}_{CTCVR}`
+是CTCVR任务的交叉熵损失，通过概率转化公式\ :math:`pCTCVR = pCTR \times pCVR`\ ，\ **使得CVR
+Tower的参数更新是在曝光空间下进行的**\ ：
+
+.. math::
+
+
+   \mathcal{L}_{CTCVR} = - \frac{1}{N} \sum_{i=1}^N \left[ y_i^{click} \cdot y_i^{conv} \log(pCTCVR_i) + (1 - y_i^{click} \cdot y_i^{conv}) \log(1 - pCTCVR_i) \right]
 
 ESMM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
 
 .. math::
 
 
-   \nabla_{CVR} = \underbrace{\frac{\partial \mathcal{L}_{CTCVR}}{\partial pCTCVR} \cdot pCTR}_{\text{全空间梯度}} + \underbrace{\frac{\partial \mathcal{L}_{shared}}{\partial \mathbf{h}}}_{\text{共享层梯度}}
+   \nabla_{CVR} = \underbrace{\frac{\partial \mathcal{L}_{CTCVR}}{\partial pCTCVR} \cdot pCTR}_{\text{全空间梯度}} + \underbrace{\frac{\partial \mathcal{L}_{shared}}{\partial \boldsymbol{h}}}_{\text{共享层梯度}}
 
 **MMOE代码实践**
 
@@ -153,7 +152,7 @@ ESMM的核心创新在于CVR塔的梯度来源,CVR塔同时接收两种梯度：
     +----------------+---------------+-------------+-----------------+----------------+--------------+---------------------+--------------------+
     |   auc_is_click |   auc_is_like |   auc_macro |   gauc_is_click |   gauc_is_like |   gauc_macro |   val_user_is_click |   val_user_is_like |
     +================+===============+=============+=================+================+==============+=====================+====================+
-    |         0.5996 |        0.6939 |      0.6468 |          0.5729 |         0.5834 |       0.5782 |                 928 |                530 |
+    |         0.5967 |        0.6857 |      0.6412 |          0.5742 |         0.5808 |       0.5775 |                 928 |                530 |
     +----------------+---------------+-------------+-----------------+----------------+--------------+---------------------+--------------------+
 
 
@@ -205,35 +204,35 @@ Action，DAction），将其余行为归并为其他行为（Other Action，OAct
 ESM2模型 :cite:`wen2020entire`
 有四个塔，分别用来预测上述的\ :math:`y_1,y_2,y_3`\ 和\ :math:`y_4`\ ，对于这四个塔的输出并不是算4个Loss，而是分别计算\ ``曝光->点击``\ 、\ ``曝光->决定行为``\ 和\ ``曝光->购买``\ 这三个Loss。可以很明显的看出，这三个Loss都是在曝光空间上计算的，和ESMM在曝光空间优化CVR有着异曲同工之处。下面对于上述的三个Loss做简单的介绍，下面的\ :math:`BCE_{Loss}`\ 表示的是二元交叉熵损失。
 
-:math:`L_{ctr}`\ 点击率预估损失：
+:math:`\mathcal{L}_{ctr}`\ 点击率预估损失：
 
 .. math::
 
 
    \begin{aligned}
-   L_{ctr} 
+   \mathcal{L}_{ctr} 
        &= \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isClick}}^i, \text{pCTR}_i) \\
        & = \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isClick}}^i, \text{y}_1^i)
    \end{aligned}
 
-:math:`L_{ctavr}`\ 点击且决定行为概率预估损失：
+:math:`\mathcal{L}_{ctavr}`\ 点击且决定行为概率预估损失：
 
 .. math::
 
 
    \begin{aligned}
-   L_{ctavr} 
+   \mathcal{L}_{ctavr} 
        &= \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isDAction}}^i, \text{pCTAVR}_i) \\
        & = \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isDAction}}^i, \text{y}_1^i \cdot \text{y}_2^i)
    \end{aligned}
 
-:math:`L_{ctcvr}`\ 转化率预估损失：
+:math:`\mathcal{L}_{ctcvr}`\ 转化率预估损失：
 
 .. math::
 
 
    \begin{aligned}
-   L_{ctcvr} 
+   \mathcal{L}_{ctcvr} 
        &= \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isPurchuse}}^i, \text{pCTCVR}_i) \\
        & = \frac{1}{N} \text{BCE}_{\text{Loss}}(y_{\text{isPurchuse}}^i, \text{y}_1^i (\text{y}_2^i \cdot \text{y}_3^i + (1 - \text{y}_2^i) \cdot \text{y}_4^i))
    \end{aligned}

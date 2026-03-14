@@ -179,10 +179,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 端到端生成式建模</a><ul class="current">
@@ -325,10 +325,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 端到端生成式建模</a><ul class="current">
@@ -399,7 +399,7 @@ ID）</strong>来解决这一难题 <span id="id2">(<a class="reference internal
 <span class="math notranslate nohighlight">\(L_t = 3\)</span> 个语义 Token，词表大小为
 <span class="math notranslate nohighlight">\(N_t\)</span>，这使得总的编码空间为
 <span class="math notranslate nohighlight">\(N_t^{L_t}\)</span>。这个编码空间远大于实际物品数量，确保了所有物品都能被覆盖，同时较大的词表引入了更多参数，有助于提升模型性能。</p>
-<p>语义 ID 的生成过程分为两个阶段：</p>
+<p>语义 ID 的生成过程分为两个阶段。</p>
 <p><strong>阶段一：协同感知的多模态表示学习</strong>。每个视频包含丰富的多模态信息，包括标题、标签、语音转文字（ASR）、图像转文字（OCR）、封面图和采样帧。这些信息通过视觉语言模型（如
 miniCPM-V-8B）处理后，生成 1280 个 Token 向量。为了实现高效处理，采用
 QFormer 模块将这些向量压缩为 4 个可学习的查询向量。</p>
@@ -407,16 +407,16 @@ QFormer 模块将这些向量压缩为 4 个可学习的查询向量。</p>
 引入了<strong>物品对对比学习</strong>：从用户行为中提取高协同相似度的物品对（如同一用户正向点击的物品），通过对比损失拉近这些物品对的表示，使语义
 ID 能够同时编码内容语义和行为模式：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-0">
-<span class="eqno">(7.1.1)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-0" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{I2I} = -\frac{1}{|\mathcal{B}|} \sum_{(i,j) \in \mathcal{B}} \log \frac{\exp(\text{sim}(\tilde{\mathbf{M}}_i, \tilde{\mathbf{M}}_j) / \tau)}{\sum_{(i',j') \in \mathcal{B}} \exp(\text{sim}(\tilde{\mathbf{M}}_i, \tilde{\mathbf{M}}_{j'}) / \tau)}\]</div>
+<span class="eqno">(7.1.1)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-0" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{I2I} = -\frac{1}{|\mathcal{B}|} \sum_{(i,j) \in \mathcal{B}} \log \frac{\exp(\text{sim}(\tilde{\boldsymbol{M}}_i, \tilde{\boldsymbol{M}}_j) / \tau)}{\sum_{(i',j') \in \mathcal{B}} \exp(\text{sim}(\tilde{\boldsymbol{M}}_i, \tilde{\boldsymbol{M}}_{j'}) / \tau)}\]</div>
 <p>同时，为防止表示退化，还加入了标题生成的辅助任务，确保表示保留内容理解能力。</p>
 <p><strong>阶段二：RQ-Kmeans
 层次化量化</strong>。获得协同感知的多模态表示后，采用残差量化
 K-means（RQ-Kmeans）将连续表示离散化为语义 ID。不同于端到端训练的
 RQ-VAE，RQ-Kmeans 直接在残差上应用 K-means 聚类构建码本：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-1">
-<span class="eqno">(7.1.2)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-1" title="Permalink to this equation">¶</a></span>\[\mathcal{R}^{(1)} = \{\tilde{\mathbf{M}}_i\}, \quad \mathcal{C}^{(l)} = \text{K-means}(\mathcal{R}^{(l)}, N_t)\]</div>
+<span class="eqno">(7.1.2)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-1" title="Permalink to this equation">¶</a></span>\[\mathcal{R}^{(1)} = \{\tilde{\boldsymbol{M}}_i\}, \quad \mathcal{C}^{(l)} = \text{K-means}(\mathcal{R}^{(l)}, N_t)\]</div>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-2">
-<span class="eqno">(7.1.3)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-2" title="Permalink to this equation">¶</a></span>\[s_i^l = \arg\min_k \|\mathcal{R}_i^{(l)} - \mathbf{c}_k^{(l)}\|, \quad \mathcal{R}_i^{(l+1)} = \mathcal{R}_i^{(l)} - \mathbf{c}_{s_i^l}^{(l)}\]</div>
+<span class="eqno">(7.1.3)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-2" title="Permalink to this equation">¶</a></span>\[s_i^l = \arg\min_k \|\mathcal{R}_i^{(l)} - \boldsymbol{c}_k^{(l)}\|, \quad \mathcal{R}_i^{(l+1)} = \mathcal{R}_i^{(l)} - \boldsymbol{c}_{s_i^l}^{(l)}\]</div>
 <p>经过 3 层量化，每个视频 <span class="math notranslate nohighlight">\(m\)</span> 获得由粗到细的语义标识符序列
 <span class="math notranslate nohighlight">\(\{s_m^1, s_m^2, s_m^3\}\)</span>，这将成为生成式推荐模型的输出目标。</p>
 </section>
@@ -432,19 +432,19 @@ ID 序列。</p>
 </figcaption>
 </figure>
 <p><strong>编码器设计</strong></p>
-<p>编码器的设计体现了对用户兴趣多时间尺度特性的深刻理解：</p>
+<p>编码器的设计体现了对用户兴趣多时间尺度特性的深刻理解，具体包含以下四个通路。</p>
 <ol class="arabic simple">
 <li><p><strong>用户静态特征通路（User Static Pathway）</strong>：处理用户
 ID、年龄、性别等基础画像信息，经过两层密集层变换后得到表示
-<span class="math notranslate nohighlight">\(\mathbf{h}_u \in \mathbb{R}^{1 \times d_{model}}\)</span>。</p></li>
+<span class="math notranslate nohighlight">\(\boldsymbol{h}_u \in \mathbb{R}^{1 \times d_{model}}\)</span>。</p></li>
 <li><p><strong>短期行为通路（Short-term Pathway）</strong>：处理用户最近 20
 次交互（<span class="math notranslate nohighlight">\(L_s=20\)</span>）。每个交互包含丰富的上下文信息：物品
 ID（可以是原子 ID <code class="docutils literal notranslate"><span class="pre">vid</span></code> 或语义 ID <code class="docutils literal notranslate"><span class="pre">sid</span></code>）、作者
 ID、标签、时间戳、播放时长、物品时长，以及各类交互标签（点赞、关注、转发、不喜欢等）。这些特征拼接后经过非线性变换得到
-<span class="math notranslate nohighlight">\(\mathbf{h}_s \in \mathbb{R}^{L_s \times d_{model}}\)</span>。</p></li>
+<span class="math notranslate nohighlight">\(\boldsymbol{h}_s \in \mathbb{R}^{L_s \times d_{model}}\)</span>。</p></li>
 <li><p><strong>正反馈行为通路（Positive-feedback Pathway）</strong>：处理用户 256
 次高参与度交互（<span class="math notranslate nohighlight">\(L_p=256\)</span>），特征构成与短期通路类似，得到
-<span class="math notranslate nohighlight">\(\mathbf{h}_p \in \mathbb{R}^{L_p \times d_{model}}\)</span>。</p></li>
+<span class="math notranslate nohighlight">\(\boldsymbol{h}_p \in \mathbb{R}^{L_p \times d_{model}}\)</span>。</p></li>
 <li><p><strong>超长期历史通路（Lifelong Pathway）</strong>：这是 OneRec-V1
 的一大创新。用户可能有多达 10
 万条历史交互记录，直接处理会导致计算量爆炸。OneRec-V1
@@ -453,27 +453,27 @@ ID、标签、时间戳、播放时长、物品时长，以及各类交互标签
 <span class="math notranslate nohighlight">\(\lfloor\sqrt[3]{|D|}\rfloor\)</span>），选择最接近中心的代表物品；然后使用
 QFormer 模块，通过 128 个可学习查询向量对压缩后的 2000
 长度序列进行交叉注意力处理，最终得到紧凑表示
-<span class="math notranslate nohighlight">\(\mathbf{h}_l \in \mathbb{R}^{128 \times d_{model}}\)</span>。</p></li>
+<span class="math notranslate nohighlight">\(\boldsymbol{h}_l \in \mathbb{R}^{128 \times d_{model}}\)</span>。</p></li>
 </ol>
 <p>四个通路的输出被拼接成完整的上下文序列，通过 <span class="math notranslate nohighlight">\(L_{enc}\)</span> 层
 Transformer 编码器处理：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-3">
-<span class="eqno">(7.1.4)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-3" title="Permalink to this equation">¶</a></span>\[\mathbf{z}^{(1)} = [\mathbf{h}_u; \mathbf{h}_s; \mathbf{h}_p; \mathbf{h}_l] + \mathbf{e}_{pos}\]</div>
+<span class="eqno">(7.1.4)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-3" title="Permalink to this equation">¶</a></span>\[\boldsymbol{z}^{(1)} = [\boldsymbol{h}_u; \boldsymbol{h}_s; \boldsymbol{h}_p; \boldsymbol{h}_l] + \boldsymbol{e}_{pos}\]</div>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-4">
-<span class="eqno">(7.1.5)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-4" title="Permalink to this equation">¶</a></span>\[\mathbf{z}^{(i+1)} = \mathbf{z}^{(i)} + \text{SelfAttn}(\text{RMSNorm}(\mathbf{z}^{(i)})), \quad \mathbf{z}^{(i+1)} = \mathbf{z}^{(i+1)} + \text{FFN}(\text{RMSNorm}(\mathbf{z}^{(i+1)}))\]</div>
+<span class="eqno">(7.1.5)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-4" title="Permalink to this equation">¶</a></span>\[\boldsymbol{z}^{(i+1)} = \boldsymbol{z}^{(i)} + \text{SelfAttn}(\text{RMSNorm}(\boldsymbol{z}^{(i)})), \quad \boldsymbol{z}^{(i+1)} = \boldsymbol{z}^{(i+1)} + \text{FFN}(\text{RMSNorm}(\boldsymbol{z}^{(i+1)}))\]</div>
 <p>最终编码器输出
-<span class="math notranslate nohighlight">\(\mathbf{z}_{enc} \in \mathbb{R}^{(1+L_s+L_p+128) \times d_{model}}\)</span>
+<span class="math notranslate nohighlight">\(\boldsymbol{z}_{enc} \in \mathbb{R}^{(1+L_s+L_p+128) \times d_{model}}\)</span>
 提供全面的用户上下文表示。</p>
 <p><strong>解码器设计</strong></p>
 <p>解码器负责基于上下文表示生成目标物品。对于每个目标物品
 <span class="math notranslate nohighlight">\(m\)</span>，解码器输入由起始 Token <code class="docutils literal notranslate"><span class="pre">[BOS]</span></code> 和该物品的语义 ID
 序列组成。每层解码器包含三个关键组件：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-5">
-<span class="eqno">(7.1.6)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-5" title="Permalink to this equation">¶</a></span>\[\mathbf{d}_m^{(i+1)} = \mathbf{d}_m^{(i)} + \text{CausalSelfAttn}(\mathbf{d}_m^{(i)})\]</div>
+<span class="eqno">(7.1.6)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-5" title="Permalink to this equation">¶</a></span>\[\boldsymbol{d}_m^{(i+1)} = \boldsymbol{d}_m^{(i)} + \text{CausalSelfAttn}(\boldsymbol{d}_m^{(i)})\]</div>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-6">
-<span class="eqno">(7.1.7)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-6" title="Permalink to this equation">¶</a></span>\[\mathbf{d}_m^{(i+1)} = \mathbf{d}_m^{(i+1)} + \text{CrossAttn}(\mathbf{d}_m^{(i+1)}, \mathbf{z}_{enc}, \mathbf{z}_{enc})\]</div>
+<span class="eqno">(7.1.7)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-6" title="Permalink to this equation">¶</a></span>\[\boldsymbol{d}_m^{(i+1)} = \boldsymbol{d}_m^{(i+1)} + \text{CrossAttn}(\boldsymbol{d}_m^{(i+1)}, \boldsymbol{z}_{enc}, \boldsymbol{z}_{enc})\]</div>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-7">
-<span class="eqno">(7.1.8)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-7" title="Permalink to this equation">¶</a></span>\[\mathbf{d}_m^{(i+1)} = \mathbf{d}_m^{(i+1)} + \text{MoE}(\text{RMSNorm}(\mathbf{d}_m^{(i+1)}))\]</div>
+<span class="eqno">(7.1.8)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-7" title="Permalink to this equation">¶</a></span>\[\boldsymbol{d}_m^{(i+1)} = \boldsymbol{d}_m^{(i+1)} + \text{MoE}(\text{RMSNorm}(\boldsymbol{d}_m^{(i+1)}))\]</div>
 <p>其中因果自注意力捕获已生成 Token
 间的依赖，交叉注意力让解码器关注编码器的上下文，混合专家前馈网络（MoE
 FFN）采用 top-k
@@ -579,7 +579,7 @@ Token 被映射到维度：</p>
 <p>Context Processor 将上下文表示沿特征维度切分成 <span class="math notranslate nohighlight">\(L_{kv}\)</span>
 组，每组经过 RMSNorm 归一化后生成对应的键值对：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-14">
-<span class="eqno">(7.1.15)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-14" title="Permalink to this equation">¶</a></span>\[\begin{split}\mathbf{k}_l = \text{RMSNorm}_{k,l}(\mathbf{C}_{l \cdot S_{kv}}), \quad \mathbf{v}_l = \begin{cases} \text{RMSNorm}_{v,l}(\mathbf{C}_{l \cdot S_{kv} + 1}), &amp; S_{kv} = 2 \\ \mathbf{k}_l, &amp; S_{kv} = 1 \end{cases}\end{split}\]</div>
+<span class="eqno">(7.1.15)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-14" title="Permalink to this equation">¶</a></span>\[\begin{split}\boldsymbol{k}_l = \text{RMSNorm}_{k,l}(\boldsymbol{C}_{l \cdot S_{kv}}), \quad \boldsymbol{v}_l = \begin{cases} \text{RMSNorm}_{v,l}(\boldsymbol{C}_{l \cdot S_{kv} + 1}), &amp; S_{kv} = 2 \\ \boldsymbol{k}_l, &amp; S_{kv} = 1 \end{cases}\end{split}\]</div>
 <p>这种设计的巧妙之处在于：<strong>这些键值对对于同一上下文在整个前向传播过程中保持不变</strong>，因此可以被多个解码器层共享，而无需在每一层重新计算。实验表明，即使采用极致的共享策略（<span class="math notranslate nohighlight">\(L_{kv}=1, S_{kv}=1\)</span>），模型性能也不会受到明显影响。</p>
 <p><strong>Lazy Decoder Block 设计</strong></p>
 <p>与传统 Decoder-Only
@@ -589,9 +589,9 @@ Token 位置计算损失，而不对整个序列的每个位置都计算下一 T
 <p>在训练时，目标物品的前两个语义 ID 加上一个 <code class="docutils literal notranslate"><span class="pre">[BOS]</span></code> Token
 组成输入序列（仅 3 个 Token！）：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-15">
-<span class="eqno">(7.1.16)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-15" title="Permalink to this equation">¶</a></span>\[\mathbf{h}^{(0)} = \text{Embed}([\text{BOS}, s^1, s^2]) \in \mathbb{R}^{3 \times d_{model}}\]</div>
+<span class="eqno">(7.1.16)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-15" title="Permalink to this equation">¶</a></span>\[\boldsymbol{h}^{(0)} = \text{Embed}([\text{BOS}, s^1, s^2]) \in \mathbb{R}^{3 \times d_{model}}\]</div>
 <p>这个紧凑的序列通过 <span class="math notranslate nohighlight">\(N_{layer}\)</span> 层 Lazy Decoder Block
-处理，每层包含三个步骤：</p>
+处理，每层包含以下三个步骤。</p>
 <ol class="arabic simple">
 <li><p><strong>Lazy Cross-Attention</strong>：让解码器隐藏状态关注 Context Processor
 提供的键值对。“惰性”体现在两个方面：(1)
@@ -605,11 +605,11 @@ Token 位置计算损失，而不对整个序列的每个位置都计算下一 T
 MoE 替代。</p></li>
 </ol>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-16">
-<span class="eqno">(7.1.17)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-16" title="Permalink to this equation">¶</a></span>\[\mathbf{h}_{cross}^{(l)} = \mathbf{h}^{(l-1)} + \text{CrossAttn}(\text{RMSNorm}(\mathbf{h}^{(l-1)}), \mathbf{k}_{l_{kv}}, \mathbf{v}_{l_{kv}})\]</div>
+<span class="eqno">(7.1.17)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-16" title="Permalink to this equation">¶</a></span>\[\boldsymbol{h}_{cross}^{(l)} = \boldsymbol{h}^{(l-1)} + \text{CrossAttn}(\text{RMSNorm}(\boldsymbol{h}^{(l-1)}), \boldsymbol{k}_{l_{kv}}, \boldsymbol{v}_{l_{kv}})\]</div>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-17">
-<span class="eqno">(7.1.18)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-17" title="Permalink to this equation">¶</a></span>\[\mathbf{h}_{self}^{(l)} = \mathbf{h}_{cross}^{(l)} + \text{SelfAttn}(\text{RMSNorm}(\mathbf{h}_{cross}^{(l)}))\]</div>
+<span class="eqno">(7.1.18)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-17" title="Permalink to this equation">¶</a></span>\[\boldsymbol{h}_{self}^{(l)} = \boldsymbol{h}_{cross}^{(l)} + \text{SelfAttn}(\text{RMSNorm}(\boldsymbol{h}_{cross}^{(l)}))\]</div>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-18">
-<span class="eqno">(7.1.19)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-18" title="Permalink to this equation">¶</a></span>\[\mathbf{h}^{(l)} = \mathbf{h}_{self}^{(l)} + \text{FFN}^{(l)}(\text{RMSNorm}(\mathbf{h}_{self}^{(l)}))\]</div>
+<span class="eqno">(7.1.19)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-18" title="Permalink to this equation">¶</a></span>\[\boldsymbol{h}^{(l)} = \boldsymbol{h}_{self}^{(l)} + \text{FFN}^{(l)}(\text{RMSNorm}(\boldsymbol{h}_{self}^{(l)}))\]</div>
 <p><strong>效率提升量化</strong></p>
 <p>通过这种设计，Lazy Decoder-Only 架构实现了<strong>接近 100%
 的计算资源集中在目标 Token 上</strong>：</p>
@@ -695,7 +695,8 @@ MoE 替代。</p></li>
 利用大规模部署后获得的真实用户反馈信号进行强化学习，从根本上解决奖励模型的局限性。在短视频推荐场景中，每个视频的播放时长是最密集的反馈信号，且与最重要的在线指标（如
 App Stay Time 和 7 日留存 LT7）高度相关。</p>
 <p>然而，原始播放时长存在固有偏差：长视频天然倾向于累积更长的播放时长，无论用户兴趣如何。为解决这一偏差，OneRec-V2
-提出<strong>时长感知奖励塑形（Duration-Aware Reward Shaping）</strong>：</p>
+提出了<strong>时长感知奖励塑形（Duration-Aware Reward
+Shaping）</strong>，具体步骤如下。</p>
 <ol class="arabic">
 <li><p><strong>对数分桶</strong>：由于视频时长呈长尾分布，采用对数策略将历史视频划分到不同桶中：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-20">

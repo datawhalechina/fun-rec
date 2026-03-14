@@ -179,10 +179,10 @@ Show Source
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">6. Scaling Law架构探索</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -325,10 +325,10 @@ Show Source
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">6. Scaling Law架构探索</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -493,8 +493,11 @@ block输出为：</p>
 variants），采用了一个更简洁的设计，用element-wise的门控机制替代了显式的FFN：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-6-scaling-1-hstu-4">
 <span class="eqno">(6.1.5)<a class="headerlink" href="#equation-chapter-6-scaling-1-hstu-4" title="Permalink to this equation">¶</a></span>\[\text{HSTU-Block}(X) = \text{LayerNorm}(X + \text{Gate}(X) \odot \text{Attention}(X))\]</div>
-<p>这里的门控函数<span class="math notranslate nohighlight">\(\text{Gate}(X)\)</span>是一个轻量级的变换（如一个单层线性投影加激活）。这个设计有两个好处。</p>
-<p>首先是减少参数量和计算量，避免了4倍隐层维度的FFN。其次是降低激活值内存，更少的中间层意味着反向传播时需要保存的激活值更少。</p>
+<p>这里的门控函数<span class="math notranslate nohighlight">\(\text{Gate}(X)\)</span>是一个轻量级的变换（如一个单层线性投影加激活）。这个设计有两个好处：</p>
+<ul class="simple">
+<li><p><strong>减少参数量和计算量</strong>：避免了4倍隐层维度的FFN。</p></li>
+<li><p><strong>降低激活值内存</strong>：更少的中间层意味着反向传播时需要保存的激活值更少。</p></li>
+</ul>
 <p>后者在推荐场景中尤为重要。工业级推荐模型需要使用非常大的batch
 size（可能到达数万甚至数十万）来稳定训练，这时激活值内存往往成为瓶颈。HSTU的设计将每层的激活值内存从标准Transformer的33倍隐层维度降到14倍，使得我们可以在相同内存预算下训练更深的网络。</p>
 <p>值得注意的是，HSTU名字中的“Hierarchical”指的是模型可以采用分层的token表示：对于超高基数的类别型特征（如物品ID可能有数十亿），可以将其分解为多个sub-token的序列。但这个层次化设计并非HSTU的核心。后续的研究会揭示，在大多数场景下，flat的token表示已经足够。HSTU真正的价值在于前面提到的三个架构创新。</p>

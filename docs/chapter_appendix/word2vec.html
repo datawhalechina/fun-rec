@@ -176,10 +176,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -322,10 +322,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -428,7 +428,7 @@ model (CBOW)</strong>。</p>
 <p>在以上条件概率公式中，容易引起误会的是 中心词的向量 <span class="math notranslate nohighlight">\(v_{w_t}\)</span> 和
 上下文词的向量 <span class="math notranslate nohighlight">\(v_{w_{t+j}}\)</span> 实际并不在一个向量空间中
 <span id="id4">(<a class="reference internal" href="../chapter_references/references.html#id17" title="Rong, X. (2014). Word2vec parameter learning explained. arXiv preprint arXiv:1411.2738.">Rong, 2014</a>)</span>。以 Skip-gram
-模型为例，假设向量空间的维度为<span class="math notranslate nohighlight">\(D\)</span>，中心词向量表<span class="math notranslate nohighlight">\(\mathbf{W} \in \mathbb{R}^{V \times D}\)</span>，上下文词向量表<span class="math notranslate nohighlight">\(\mathbf{W}^c \in \mathbb{R}^{V \times D}\)</span>，其中<span class="math notranslate nohighlight">\(V\)</span>是词汇表的大小。Word2vec
+模型为例，假设向量空间的维度为<span class="math notranslate nohighlight">\(D\)</span>，中心词向量表<span class="math notranslate nohighlight">\(\boldsymbol{W} \in \mathbb{R}^{V \times D}\)</span>，上下文词向量表<span class="math notranslate nohighlight">\(\boldsymbol{W}^c \in \mathbb{R}^{V \times D}\)</span>，其中<span class="math notranslate nohighlight">\(V\)</span>是词汇表的大小。Word2vec
 的模型结构如下：</p>
 <figure class="align-default" id="id6">
 <a class="reference internal image-reference" href="../_images/w2v_model.svg"><img alt="../_images/w2v_model.svg" src="../_images/w2v_model.svg" width="500px" /></a>
@@ -437,14 +437,14 @@ model (CBOW)</strong>。</p>
 </figcaption>
 </figure>
 <p>从左到右，输入给定一个中心词的one-hot表示
-<span class="math notranslate nohighlight">\(\mathbf{x}_t \in \{0, 1\}^V\)</span>，中心词的向量
-<span class="math notranslate nohighlight">\(\mathbf{w}_{t}\)</span> 可以表示为：</p>
+<span class="math notranslate nohighlight">\(\boldsymbol{x}_t \in \{0, 1\}^V\)</span>，中心词的向量
+<span class="math notranslate nohighlight">\(\boldsymbol{w}_{t}\)</span> 可以表示为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-appendix-word2vec-2">
-<span class="eqno">()<a class="headerlink" href="#equation-chapter-appendix-word2vec-2" title="Permalink to this equation">¶</a></span>\[\mathbf{v}_{w_t} = \mathbf{x}_t^T \mathbf{W}\]</div>
-<p>再将中心词的向量 <span class="math notranslate nohighlight">\(\mathbf{v}_{w_t}\)</span> 与 上下文向量词表
-<span class="math notranslate nohighlight">\(\mathbf{W}^o\)</span>
+<span class="eqno">()<a class="headerlink" href="#equation-chapter-appendix-word2vec-2" title="Permalink to this equation">¶</a></span>\[\boldsymbol{v}_{w_t} = \boldsymbol{x}_t^T \boldsymbol{W}\]</div>
+<p>再将中心词的向量 <span class="math notranslate nohighlight">\(\boldsymbol{v}_{w_t}\)</span> 与 上下文向量词表
+<span class="math notranslate nohighlight">\(\boldsymbol{W}^o\)</span>
 第<span class="math notranslate nohighlight">\(t+j\)</span>行相乘，得到softmax的分母的输入。而分子输入为上下文向量词表
-<span class="math notranslate nohighlight">\(\mathbf{W}^o\)</span> 整个与中心词向量 <span class="math notranslate nohighlight">\(\mathbf{v}_{w_t}\)</span>
+<span class="math notranslate nohighlight">\(\boldsymbol{W}^o\)</span> 整个与中心词向量 <span class="math notranslate nohighlight">\(\boldsymbol{v}_{w_t}\)</span>
 的乘积。最后，通过softmax, 可以对上下文词的概率进行预测。</p>
 <p><strong>负采样</strong></p>
 <p>在计算softmax <a class="reference internal" href="#equation-skip-gram-likelihood">()</a> 和

@@ -179,10 +179,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 端到端生成式建模</a><ul class="current">
@@ -325,10 +325,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 端到端生成式建模</a><ul class="current">
@@ -393,7 +393,7 @@ Recommender）</strong>则通过异构层次化解码器和预训练范式，在
 <p>在介绍 EGA
 的技术细节前，我们先通过一个具体场景理解广告与推荐、搜索的本质差异。</p>
 <p>假设用户在本地生活平台刷 feed 流时，系统需要在第 3
-个位置插入一条广告。候选广告包括附近的餐厅、健身房、美容院等商户，每个商户提交了不同的竞价（bid），且每个商户有多张创意图片可选（美食照片、环境照片、优惠券等）。系统需要在一次前向传播中决定：</p>
+个位置插入一条广告。候选广告包括附近的餐厅、健身房、美容院等商户，每个商户提交了不同的竞价（bid），且每个商户有多张创意图片可选（美食照片、环境照片、优惠券等）。系统需要在一次前向传播中完成以下决策。</p>
 <ol class="arabic simple">
 <li><p><strong>展示哪个商户（POI）</strong>：从数百个候选中选择与用户兴趣和竞价综合最优的商户</p></li>
 <li><p><strong>使用哪张创意图</strong>：为选中的商户匹配最能吸引该用户的创意素材</p></li>
@@ -401,14 +401,14 @@ Recommender）</strong>则通过异构层次化解码器和预训练范式，在
 <li><p><strong>如何保证公平</strong>：确保商户如实出价是最优策略（激励相容性）</p></li>
 </ol>
 <p>这个场景揭示了广告生成的三重约束，它们将 EGA 与 OneRec/OneSearch
-区分开来：</p>
+区分开来，具体如下。</p>
 <p><strong>约束一：激励相容性（IC）与个体理性（IR）</strong></p>
 <p>在推荐和搜索场景中，系统只需优化用户满意度和平台指标。但在广告场景下，广告主是独立的博弈方，他们会根据系统规则调整竞价策略。如果系统设计不当，广告主可能通过虚报竞价获取更高收益，导致平台收入下降或广告主流失。</p>
 <p>激励相容性（IC）要求：广告主如实出价是最优策略。数学上，对于广告主
 <span class="math notranslate nohighlight">\(i\)</span> 的真实估值 <span class="math notranslate nohighlight">\(v_i\)</span> 和申报竞价 <span class="math notranslate nohighlight">\(b_i\)</span>，当
 <span class="math notranslate nohighlight">\(b_i = v_i\)</span> 时，其效用最大：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-0">
-<span class="eqno">(7.3.1)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-0" title="Permalink to this equation">¶</a></span>\[u_i(v_i; v_i, \mathbf{b}_{-i}) \geq u_i(v_i; b_i, \mathbf{b}_{-i}), \quad \forall b_i \in \mathbb{R}^+\]</div>
+<span class="eqno">(7.3.1)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-0" title="Permalink to this equation">¶</a></span>\[u_i(v_i; v_i, \boldsymbol{b}_{-i}) \geq u_i(v_i; b_i, \boldsymbol{b}_{-i}), \quad \forall b_i \in \mathbb{R}^+\]</div>
 <p>其中效用定义为
 <span class="math notranslate nohighlight">\(u_i = (v_i - p_i) \cdot \text{pCTR}_i\)</span>，即“点击收益减去支付成本”。个体理性（IR）则要求支付不能超过竞价：<span class="math notranslate nohighlight">\(p_i \leq b_i\)</span>。</p>
 <p>传统的 GSP（Generalized Second
@@ -418,7 +418,7 @@ IC，但这种规则假设广告之间相互独立，无法处理位置外部性
 <p><strong>约束二：POI 与创意的联合生成</strong></p>
 <p>在搜索场景中，OneSearch
 生成的是商品序列，每个商品有固定的标题和图片。但在广告场景下，一个
-POI（如某餐厅）可以关联多张创意图片，且不同用户偏好不同的创意风格。例如：</p>
+POI（如某餐厅）可以关联多张创意图片，且不同用户偏好不同的创意风格，以下是典型的用户偏好场景。</p>
 <ul class="simple">
 <li><p>对美食爱好者：展示精致菜品的特写照片</p></li>
 <li><p>对价格敏感用户：展示“满 100 减 50”的优惠券</p></li>
@@ -444,14 +444,14 @@ POI 和创意感兴趣？”</p>
 Variational AutoEncoder）将连续的 POI 和创意表示离散化为多层语义
 ID。但与它们不同的是，EGA 需要为 POI 和创意构建两套独立的语义空间。</p>
 <p>对于 POI（Point of Interest，如餐厅、健身房），其原始表示
-<span class="math notranslate nohighlight">\(\mathbf{e}_i^{\text{poi}}\)</span> 包含：</p>
+<span class="math notranslate nohighlight">\(\boldsymbol{e}_i^{\text{poi}}\)</span> 包含：</p>
 <ul class="simple">
 <li><p>类目信息（餐饮、娱乐、生活服务）</p></li>
 <li><p>地理位置（经纬度、商圈）</p></li>
 <li><p>统计特征（历史 CTR、平均客单价、评分）</p></li>
 <li><p>文本描述（商户名称、主营业务）</p></li>
 </ul>
-<p>对于创意图片，其表示 <span class="math notranslate nohighlight">\(\mathbf{e}_i^{\text{img}}\)</span>
+<p>对于创意图片，其表示 <span class="math notranslate nohighlight">\(\boldsymbol{e}_i^{\text{img}}\)</span>
 通过预训练的视觉模型提取：</p>
 <ul class="simple">
 <li><p>视觉特征（物体、场景、颜色风格）</p></li>
@@ -462,12 +462,12 @@ ID。但与它们不同的是，EGA 需要为 POI 和创意构建两套独立的
 层残差量化，每层码本大小为 <span class="math notranslate nohighlight">\(W=1024\)</span>，则每个 POI 被编码为 3 个
 token 的序列：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-1">
-<span class="eqno">(7.3.2)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-1" title="Permalink to this equation">¶</a></span>\[\mathbf{a}_i^{\text{poi}} = (a_i^{1}, a_i^{2}, a_i^{3}), \quad a_i^{j} \in \{1, 2, \ldots, 1024\}\]</div>
+<span class="eqno">(7.3.2)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-1" title="Permalink to this equation">¶</a></span>\[\boldsymbol{a}_i^{\text{poi}} = (a_i^{1}, a_i^{2}, a_i^{3}), \quad a_i^{j} \in \{1, 2, \ldots, 1024\}\]</div>
 <p>创意同理得到
-<span class="math notranslate nohighlight">\(\mathbf{a}_i^{\text{img}}\)</span>。用户历史序列中的每个交互可以表示为一个
+<span class="math notranslate nohighlight">\(\boldsymbol{a}_i^{\text{img}}\)</span>。用户历史序列中的每个交互可以表示为一个
 (POI, 创意) 对：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-2">
-<span class="eqno">(7.3.3)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-2" title="Permalink to this equation">¶</a></span>\[\mathcal{S}^u = \{(\mathbf{a}_1^{\text{poi}}, \mathbf{a}_1^{\text{img}}), (\mathbf{a}_2^{\text{poi}}, \mathbf{a}_2^{\text{img}}), \ldots, (\mathbf{a}_B^{\text{poi}}, \mathbf{a}_B^{\text{img}})\}\]</div>
+<span class="eqno">(7.3.3)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-2" title="Permalink to this equation">¶</a></span>\[\mathcal{S}^u = \{(\boldsymbol{a}_1^{\text{poi}}, \boldsymbol{a}_1^{\text{img}}), (\boldsymbol{a}_2^{\text{poi}}, \boldsymbol{a}_2^{\text{img}}), \ldots, (\boldsymbol{a}_B^{\text{poi}}, \boldsymbol{a}_B^{\text{img}})\}\]</div>
 <p><strong>概率分解的生成策略：先 POI 后创意</strong></p>
 <p>一个直观的想法是将 POI 和创意的 6 个
 token（3+3）拼接成一个序列，让模型自回归生成。但 EGA
@@ -475,7 +475,7 @@ token（3+3）拼接成一个序列，让模型自回归生成。但 EGA
 健身房 B 的创意”这种无效组合。</p>
 <p>EGA 采用<strong>概率分解</strong>策略，将生成过程拆分为两个阶段：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-3">
-<span class="eqno">(7.3.4)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-3" title="Permalink to this equation">¶</a></span>\[P(\mathbf{a}_{t+1}^{\text{poi}}, \mathbf{a}_{t+1}^{\text{img}} \mid \mathcal{S}^u_{1:t}) = P(\mathbf{a}_{t+1}^{\text{poi}} \mid \mathcal{S}^u_{1:t}) \cdot P(\mathbf{a}_{t+1}^{\text{img}} \mid \mathbf{a}_{t+1}^{\text{poi}}, \mathcal{S}^u_{1:t})\]</div>
+<span class="eqno">(7.3.4)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-3" title="Permalink to this equation">¶</a></span>\[P(\boldsymbol{a}_{t+1}^{\text{poi}}, \boldsymbol{a}_{t+1}^{\text{img}} \mid \mathcal{S}^u_{1:t}) = P(\boldsymbol{a}_{t+1}^{\text{poi}} \mid \mathcal{S}^u_{1:t}) \cdot P(\boldsymbol{a}_{t+1}^{\text{img}} \mid \boldsymbol{a}_{t+1}^{\text{poi}}, \mathcal{S}^u_{1:t})\]</div>
 <p>这种分解的直觉是：POI
 决定“展示什么内容”，创意决定“如何呈现内容”。模型先根据用户兴趣生成
 POI，再根据 POI 的特性和用户偏好选择匹配的创意。例如：</p>
@@ -497,13 +497,13 @@ POI，再根据 POI 的特性和用户偏好选择匹配的创意。例如：</p
 <p><strong>编码器</strong>处理用户的历史行为序列。与 OneRec 不同，EGA
 的输入序列包含广告和有机内容的混合：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-4">
-<span class="eqno">(7.3.5)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-4" title="Permalink to this equation">¶</a></span>\[\mathcal{S}^u = \{(\mathbf{a}_1^{\text{poi}}, \mathbf{a}_1^{\text{img}}, \text{type}_1), \ldots, (\mathbf{a}_B^{\text{poi}}, \mathbf{a}_B^{\text{img}}, \text{type}_B)\}\]</div>
+<span class="eqno">(7.3.5)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-4" title="Permalink to this equation">¶</a></span>\[\mathcal{S}^u = \{(\boldsymbol{a}_1^{\text{poi}}, \boldsymbol{a}_1^{\text{img}}, \text{type}_1), \ldots, (\boldsymbol{a}_B^{\text{poi}}, \boldsymbol{a}_B^{\text{img}}, \text{type}_B)\}\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\text{type}_i \in \{\text{ad}, \text{organic}\}\)</span>
 标识该项是广告还是有机内容。编码器通过多层 Transformer 生成上下文表示：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-5">
 <span class="eqno">(7.3.6)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-5" title="Permalink to this equation">¶</a></span>\[\mathcal{S}^e = \text{Encoder}(\mathcal{S}^u) \in \mathbb{R}^{B \times d}\]</div>
 <p><strong>POI 解码器</strong>先生成目标 POI 的语义 ID。在训练时，假设目标 POI 为
-<span class="math notranslate nohighlight">\(\mathbf{a}_{\text{target}}^{\text{poi}} = (a^1, a^2, a^3)\)</span>，解码器自回归生成每一层的
+<span class="math notranslate nohighlight">\(\boldsymbol{a}_{\text{target}}^{\text{poi}} = (a^1, a^2, a^3)\)</span>，解码器自回归生成每一层的
 token：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-6">
 <span class="eqno">(7.3.7)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-6" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
@@ -516,7 +516,7 @@ ID。关键设计是：创意解码器的输入包含 POI 的 token
 序列，这使得模型能够根据 POI 的语义信息选择匹配的创意：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-7">
 <span class="eqno">(7.3.8)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-7" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-\mathbf{a}^{\text{img}} &amp;= \text{Creative-Decoder}(\mathbf{a}^{\text{poi}}, \mathcal{S}^e) \\
+\boldsymbol{a}^{\text{img}} &amp;= \text{Creative-Decoder}(\boldsymbol{a}^{\text{poi}}, \mathcal{S}^e) \\
 &amp;= \text{Creative-Decoder}([a^1, a^2, a^3], \mathcal{S}^e)
 \end{aligned}\end{split}\]</div>
 <p><strong>MTP（Multi-Token Prediction）模块的作用</strong></p>
@@ -528,8 +528,8 @@ ID。关键设计是：创意解码器的输入包含 POI 的 token
 <p>其中：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-9">
 <span class="eqno">(7.3.10)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-9" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-\mathcal{L}_{\text{NTP}}^{\text{POI}} &amp;= -\frac{1}{K}\sum_{i=1}^K \sum_{j=1}^3 \log P(a_i^j \mid \mathbf{a}_i^{&lt;j}, \mathcal{Y}_{1:i-1}, \mathcal{S}^e) \\
-\mathcal{L}_{\text{MTP}}^{\text{Creative}} &amp;= -\frac{1}{K}\sum_{i=1}^K \sum_{j=1}^3 \log P(a_i^{j, \text{img}} \mid \mathbf{a}_i^{\text{poi}}, \mathcal{Y}_{1:i-1}, \mathcal{S}^e)
+\mathcal{L}_{\text{NTP}}^{\text{POI}} &amp;= -\frac{1}{K}\sum_{i=1}^K \sum_{j=1}^3 \log P(a_i^j \mid \boldsymbol{a}_i^{&lt;j}, \mathcal{Y}_{1:i-1}, \mathcal{S}^e) \\
+\mathcal{L}_{\text{MTP}}^{\text{Creative}} &amp;= -\frac{1}{K}\sum_{i=1}^K \sum_{j=1}^3 \log P(a_i^{j, \text{img}} \mid \boldsymbol{a}_i^{\text{poi}}, \mathcal{Y}_{1:i-1}, \mathcal{S}^e)
 \end{aligned}\end{split}\]</div>
 <p>这里 <span class="math notranslate nohighlight">\(K\)</span> 是目标序列长度（通常为
 10），<span class="math notranslate nohighlight">\(\mathcal{Y}_{1:i-1}\)</span> 是已生成的 (POI, 创意) 对。MTP
@@ -565,32 +565,34 @@ DeepFM、Wide&amp;Deep）无法建模这种序列级依赖，因为它们是 poi
 <p>EGA 的奖励模型采用 <strong>permutation-aware（排列感知）</strong>设计，通过
 Self-Attention 让每个广告“看到”序列中的其他广告。</p>
 <p>输入构造是关键。对于生成的序列
-<span class="math notranslate nohighlight">\(\mathcal{Y} = \{(\mathbf{a}_1^{\text{poi}}, \mathbf{a}_1^{\text{img}}), \ldots, (\mathbf{a}_K^{\text{poi}}, \mathbf{a}_K^{\text{img}})\}\)</span>，奖励模型需要同时利用：
-- <strong>Token 表示</strong>：<span class="math notranslate nohighlight">\(\mathbf{a}_i\)</span> 通过 Embedding 层映射为向量 -
-<strong>原始特征</strong>：<span class="math notranslate nohighlight">\(\mathbf{e}_i^{\text{poi}}\)</span> 包含 POI
-的连续特征（位置、类目、统计信息）</p>
+<span class="math notranslate nohighlight">\(\mathcal{Y} = \{(\boldsymbol{a}_1^{\text{poi}}, \boldsymbol{a}_1^{\text{img}}), \ldots, (\boldsymbol{a}_K^{\text{poi}}, \boldsymbol{a}_K^{\text{img}})\}\)</span>，奖励模型需要同时利用以下信息。
+- <strong>Token 表示</strong>：<span class="math notranslate nohighlight">\(\boldsymbol{a}_i\)</span> 通过 Embedding
+层映射为向量 - <strong>原始特征</strong>：<span class="math notranslate nohighlight">\(\boldsymbol{e}_i^{\text{poi}}\)</span>
+包含 POI 的连续特征（位置、类目、统计信息）</p>
 <p>两者拼接后输入 Self-Attention 层：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-11">
-<span class="eqno">(7.3.12)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-11" title="Permalink to this equation">¶</a></span>\[\mathbf{h}_i = [\text{Embed}(\mathbf{a}_i^{\text{poi}}); \text{Embed}(\mathbf{a}_i^{\text{img}}); \mathbf{e}_i^{\text{poi}}]\]</div>
+<span class="eqno">(7.3.12)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-11" title="Permalink to this equation">¶</a></span>\[\boldsymbol{h}_i = [\text{Embed}(\boldsymbol{a}_i^{\text{poi}}); \text{Embed}(\boldsymbol{a}_i^{\text{img}}); \boldsymbol{e}_i^{\text{poi}}]\]</div>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-12">
-<span class="eqno">(7.3.13)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-12" title="Permalink to this equation">¶</a></span>\[\mathbf{h}_f = \text{SelfAttention}(\mathbf{h} W^Q, \mathbf{h} W^K, \mathbf{h} W^V)\]</div>
+<span class="eqno">(7.3.13)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-12" title="Permalink to this equation">¶</a></span>\[\boldsymbol{h}_f = \text{SelfAttention}(\boldsymbol{h} W^Q, \boldsymbol{h} W^K, \boldsymbol{h} W^V)\]</div>
 <p>Self-Attention 的效果是：每个广告 <span class="math notranslate nohighlight">\(i\)</span> 的表示
-<span class="math notranslate nohighlight">\(\mathbf{h}_f^{(i)}\)</span> 融合了序列中其他广告的信息。例如，如果位置 3
-和位置 4 都是餐饮广告，Self-Attention 会让两者的表示相互抑制（Attention
+<span class="math notranslate nohighlight">\(\boldsymbol{h}_f^{(i)}\)</span>
+融合了序列中其他广告的信息。例如，如果位置 3 和位置 4
+都是餐饮广告，Self-Attention 会让两者的表示相互抑制（Attention
 权重分散），从而降低各自的 pCTR 预估。</p>
 <p><strong>多任务塔设计：三个独立的预估目标</strong></p>
-<p>奖励模型需要预测多个业务指标。EGA 采用多塔架构，每个塔专注于一个目标：</p>
+<p>奖励模型需要预测多个业务指标。EGA
+采用多塔架构，三个塔分别专注于不同目标。</p>
 <ol class="arabic simple">
 <li><p><strong>POI-CTR 塔</strong>：预测用户点击该 POI 的概率</p></li>
 <li><p><strong>Creative-CTR 塔</strong>：预测用户点击该创意的概率（与 POI 解耦）</p></li>
 <li><p><strong>CVR 塔</strong>：预测点击后的转化概率（下单、到店等）</p></li>
 </ol>
-<p>每个塔从 <span class="math notranslate nohighlight">\(\mathbf{h}_f\)</span> 出发，通过独立的 MLP 输出概率：</p>
+<p>每个塔从 <span class="math notranslate nohighlight">\(\boldsymbol{h}_f\)</span> 出发，通过独立的 MLP 输出概率：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-13">
 <span class="eqno">(7.3.14)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-13" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-\hat{r}_i^{\text{pctr-poi}} &amp;= \text{Sigmoid}(\text{MLP}_{\text{poi}}(\mathbf{h}_f^{(i)})) \\
-\hat{r}_i^{\text{pctr-img}} &amp;= \text{Sigmoid}(\text{MLP}_{\text{img}}(\mathbf{h}_f^{(i)})) \\
-\hat{r}_i^{\text{pcvr}} &amp;= \text{Sigmoid}(\text{MLP}_{\text{cvr}}(\mathbf{h}_f^{(i)}))
+\hat{r}_i^{\text{pctr-poi}} &amp;= \text{Sigmoid}(\text{MLP}_{\text{poi}}(\boldsymbol{h}_f^{(i)})) \\
+\hat{r}_i^{\text{pctr-img}} &amp;= \text{Sigmoid}(\text{MLP}_{\text{img}}(\boldsymbol{h}_f^{(i)})) \\
+\hat{r}_i^{\text{pcvr}} &amp;= \text{Sigmoid}(\text{MLP}_{\text{cvr}}(\boldsymbol{h}_f^{(i)}))
 \end{aligned}\end{split}\]</div>
 <p>多塔设计的好处是：可以为不同目标分配不同的权重。例如，平台可以调整
 <span class="math notranslate nohighlight">\(\lambda_{\text{ctr}}\)</span> 和 <span class="math notranslate nohighlight">\(\lambda_{\text{cvr}}\)</span>
@@ -650,14 +652,14 @@ differentiable 的竞价函数（因为涉及 argmax
 <p>EGA
 的解决方案是<strong>将分配和支付解耦</strong>：分配阶段使用竞价引导生成（如上所述），支付阶段通过独立的神经网络学习满足
 IC 约束的支付函数。</p>
-<p>支付网络的输入包含三部分：</p>
+<p>支付网络的输入包含以下三部分。</p>
 <ol class="arabic simple">
 <li><p><strong>POI 序列表示</strong>
 <span class="math notranslate nohighlight">\(\mathcal{S}^* = \{y_1, y_2, \ldots, y_K\} \in \mathbb{R}^{K \times d}\)</span>：生成的
 POI 序列的连续表示</p></li>
 <li><p><strong>自排除竞价矩阵</strong>
-<span class="math notranslate nohighlight">\(\mathcal{B}^- = \{\mathbf{b}_{-1}, \mathbf{b}_{-2}, \ldots, \mathbf{b}_{-K}\} \in \mathbb{R}^{K \times (K-1)}\)</span>：对于
-POI <span class="math notranslate nohighlight">\(i\)</span>，<span class="math notranslate nohighlight">\(\mathbf{b}_{-i}\)</span> 是其他所有 POI
+<span class="math notranslate nohighlight">\(\mathcal{B}^- = \{\boldsymbol{b}_{-1}, \boldsymbol{b}_{-2}, \ldots, \boldsymbol{b}_{-K}\} \in \mathbb{R}^{K \times (K-1)}\)</span>：对于
+POI <span class="math notranslate nohighlight">\(i\)</span>，<span class="math notranslate nohighlight">\(\boldsymbol{b}_{-i}\)</span> 是其他所有 POI
 的竞价向量。这是 IC 约束的关键输入：根据机制设计理论，一个机制满足 IC
 当且仅当广告主 <span class="math notranslate nohighlight">\(i\)</span> 的支付仅依赖于其他人的竞价和自己的分配结果</p></li>
 <li><p><strong>期望价值</strong>
@@ -681,18 +683,18 @@ regret</strong> 概念来量化 IC 违反程度。</p>
 <p>对于广告主 <span class="math notranslate nohighlight">\(i\)</span>，假设其真实估值为 <span class="math notranslate nohighlight">\(v_i\)</span>，如实申报为
 <span class="math notranslate nohighlight">\(b_i = v_i\)</span>，其效用为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-21">
-<span class="eqno">(7.3.22)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-21" title="Permalink to this equation">¶</a></span>\[u_i(v_i; v_i, \mathbf{b}_{-i}) = (v_i - p_i) \cdot \text{pCTR}_i\]</div>
+<span class="eqno">(7.3.22)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-21" title="Permalink to this equation">¶</a></span>\[u_i(v_i; v_i, \boldsymbol{b}_{-i}) = (v_i - p_i) \cdot \text{pCTR}_i\]</div>
 <p>如果广告主谎报为 <span class="math notranslate nohighlight">\(b'_i\)</span>，效用变为
-<span class="math notranslate nohighlight">\(u_i(v_i; b'_i, \mathbf{b}_{-i})\)</span>。Ex-post regret
+<span class="math notranslate nohighlight">\(u_i(v_i; b'_i, \boldsymbol{b}_{-i})\)</span>。Ex-post regret
 定义为“谎报的最大收益”：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-22">
-<span class="eqno">(7.3.23)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-22" title="Permalink to this equation">¶</a></span>\[\text{rgt}_i(v_i, \mathcal{Y}, u) = \max_{b'_i} \{u_i(v_i; b'_i, \mathbf{b}_{-i}) - u_i(v_i; v_i, \mathbf{b}_{-i})\}\]</div>
+<span class="eqno">(7.3.23)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-22" title="Permalink to this equation">¶</a></span>\[\text{rgt}_i(v_i, \mathcal{Y}, u) = \max_{b'_i} \{u_i(v_i; b'_i, \boldsymbol{b}_{-i}) - u_i(v_i; v_i, \boldsymbol{b}_{-i})\}\]</div>
 <p>如果
 <span class="math notranslate nohighlight">\(\text{rgt}_i = 0\)</span>，则该广告主如实出价是最优的。在实践中，EGA
 通过采样多个候选竞价 <span class="math notranslate nohighlight">\(\{b'_1, b'_2, \ldots, b'_{N_v}\}\)</span> 近似计算
 regret：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-23">
-<span class="eqno">(7.3.24)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-23" title="Permalink to this equation">¶</a></span>\[\widehat{\text{rgt}}_i = \frac{1}{N_v} \sum_{j=1}^{N_v} \max(0, u_i(v_i; b'_j, \mathbf{b}_{-i}) - u_i(v_i; v_i, \mathbf{b}_{-i}))\]</div>
+<span class="eqno">(7.3.24)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-23" title="Permalink to this equation">¶</a></span>\[\widehat{\text{rgt}}_i = \frac{1}{N_v} \sum_{j=1}^{N_v} \max(0, u_i(v_i; b'_j, \boldsymbol{b}_{-i}) - u_i(v_i; v_i, \boldsymbol{b}_{-i}))\]</div>
 <p><strong>Lagrangian 优化：平衡收益与 IC</strong></p>
 <p>支付网络的训练目标是最大化平台收益，同时将 ex-post regret 约束到接近
 0。这是一个约束优化问题：</p>
@@ -705,7 +707,7 @@ regret：</p>
 <span class="math notranslate nohighlight">\(\lambda_i\)</span> 和惩罚项系数 <span class="math notranslate nohighlight">\(\rho\)</span>，损失函数变为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-26">
 <span class="eqno">(7.3.27)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-26" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{Pay}} = -\frac{1}{|\mathcal{D}|}\sum_{d \in \mathcal{D}} \left( \sum_{i} p_i \hat{r}_i^{\text{pctr}} - \sum_{i} \lambda_i \widehat{\text{rgt}}_i - \frac{\rho}{2} \sum_{i} (\widehat{\text{rgt}}_i)^2 \right)\]</div>
-<p>训练过程交替更新：</p>
+<p>训练过程交替更新，步骤如下。</p>
 <ol class="arabic simple">
 <li><p><strong>固定</strong> <span class="math notranslate nohighlight">\(\lambda\)</span> <strong>，优化支付网络参数</strong>
 <span class="math notranslate nohighlight">\(\boldsymbol{\theta}_{\text{Pay}}\)</span> <strong>：最小化</strong>
@@ -738,13 +740,13 @@ Prediction（MTP）的联合损失：</p>
 <p>具体而言：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-28">
 <span class="eqno">(7.3.29)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-28" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-\mathcal{L}_{\text{NTP}}^{\text{POI}} &amp;= -\frac{1}{K}\sum_{i=1}^K \log P(\mathbf{a}_i^{\text{poi}} \mid \mathcal{Y}_{1:i-1}, \mathcal{S}^e) \\
-\mathcal{L}_{\text{MTP}}^{\text{Creative}} &amp;= -\frac{1}{K}\sum_{i=1}^K \log P(\mathbf{a}_i^{\text{img}} \mid \mathbf{a}_i^{\text{poi}}, \mathcal{Y}_{1:i-1}, \mathcal{S}^e)
+\mathcal{L}_{\text{NTP}}^{\text{POI}} &amp;= -\frac{1}{K}\sum_{i=1}^K \log P(\boldsymbol{a}_i^{\text{poi}} \mid \mathcal{Y}_{1:i-1}, \mathcal{S}^e) \\
+\mathcal{L}_{\text{MTP}}^{\text{Creative}} &amp;= -\frac{1}{K}\sum_{i=1}^K \log P(\boldsymbol{a}_i^{\text{img}} \mid \boldsymbol{a}_i^{\text{poi}}, \mathcal{Y}_{1:i-1}, \mathcal{S}^e)
 \end{aligned}\end{split}\]</div>
 <p>这一阶段训练的模型记为
 <span class="math notranslate nohighlight">\(\mathcal{F}\)</span>，它具备基础的生成能力，但尚未对齐业务目标。</p>
 <p><strong>阶段二：Auction-based Post-training</strong></p>
-<p>这一阶段引入竞价、奖励模型和支付网络，通过三个子任务联合优化：</p>
+<p>这一阶段引入竞价、奖励模型和支付网络，通过以下三个子任务联合优化。</p>
 <p><strong>子任务 1：奖励模型训练</strong></p>
 <p>奖励模型 <span class="math notranslate nohighlight">\(\mathcal{R}\)</span>
 使用用户的真实反馈（点击、转化）作为监督信号。对于生成的序列
@@ -780,7 +782,7 @@ Prediction（MTP）的联合损失：</p>
 和支付网络。</p>
 <p><strong>与 OneRec 奖励系统的对比</strong></p>
 <p>OneRec 的奖励系统通过 P-Score 模型预测用户偏好，然后用 ECPO
-算法进行策略优化。EGA 的核心差异在于：</p>
+算法进行策略优化。EGA 的核心差异如下。</p>
 <ol class="arabic simple">
 <li><p><strong>引入竞价信号</strong>：奖励不仅包含用户反馈（pCTR、pCVR），还包含广告主的竞价
 <span class="math notranslate nohighlight">\(b_i\)</span>，平台收益
@@ -806,9 +808,9 @@ IC，但有两个局限：</p>
 <h3><span class="section-number">7.3.1.6. </span>EGA 的局限与新挑战<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <p>EGA
 成功地将竞价机制整合到端到端生成框架中，在本地生活广告场景取得了显著效果。但在更复杂的应用场景中，EGA
-面临三个核心挑战：</p>
+面临以下三个核心挑战。</p>
 <p><strong>挑战一：跨场景异构性</strong></p>
-<p>现代广告平台通常包含多个场景：信息流、短视频、搜索、电商详情页等。每个场景的用户行为模式和内容形态差异巨大：</p>
+<p>现代广告平台通常包含多个场景：信息流、短视频、搜索、电商详情页等。每个场景的用户行为模式和内容形态差异巨大，具体体现如下。</p>
 <ul class="simple">
 <li><p>信息流：用户被动浏览，广告需要强视觉冲击力</p></li>
 <li><p>搜索：用户主动查询，广告需要高相关性</p></li>
@@ -826,7 +828,7 @@ Transformer，输入长度受限于显存和计算复杂度（Self-Attention 是
 <p><strong>挑战三：推理效率瓶颈</strong></p>
 <p>EGA 在推理时使用 Beam Search
 生成多个候选序列，然后通过奖励模型筛选最优序列。但 Beam Search
-会生成大量无效候选：</p>
+会生成大量以下类型的无效候选。</p>
 <ul class="simple">
 <li><p><strong>预算耗尽</strong>：某些广告的当日预算已用完，但模型仍可能生成</p></li>
 <li><p><strong>定向不匹配</strong>：广告定向要求“20-30 岁女性”，但用户是 40 岁男性</p></li>
@@ -849,14 +851,14 @@ Trie 约束 Beam Search 提升推理效率。</p>
 <section id="id8">
 <h3><span class="section-number">7.3.2.1. </span>统一输入表示设计<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
 <p><strong>多场景融合的挑战</strong></p>
-<p>微信生态的广告场景包含：</p>
+<p>微信生态的广告场景主要包含以下几个。</p>
 <ul class="simple">
 <li><p><strong>视频号</strong>：用户刷短视频，广告形式为视频或图文卡片</p></li>
 <li><p><strong>朋友圈</strong>：用户浏览好友动态，广告穿插其中，强调原生性</p></li>
 <li><p><strong>公众号</strong>：用户阅读文章，广告位于文章底部或中部</p></li>
 <li><p><strong>小程序</strong>：用户使用小程序时，广告以 Banner 或插屏形式展示</p></li>
 </ul>
-<p>每个场景的内容形态、用户意图、交互模式都不同。传统做法是为每个场景训练独立的模型，但这会导致：</p>
+<p>每个场景的内容形态、用户意图、交互模式都不同。传统做法是为每个场景训练独立的模型，但这会导致以下问题。</p>
 <ol class="arabic simple">
 <li><p><strong>数据孤岛</strong>：无法利用跨场景的用户行为协同信号（如用户在公众号阅读美食文章后，在视频号观看烹饪视频）</p></li>
 <li><p><strong>模型碎片化</strong>：维护多个模型的训练和部署成本高</p></li>
@@ -865,7 +867,7 @@ Trie 约束 Beam Search 提升推理效率。</p>
 <p>GPR
 的目标是构建统一的输入表示框架，让一个模型能够同时处理多个场景的广告生成任务。</p>
 <p><strong>四类 Token 设计：异构序列的统一语言</strong></p>
-<p>GPR 将用户的完整行为旅程编码为四类 Token 的混合序列：</p>
+<p>GPR 将用户的完整行为旅程编码为以下四类 Token 的混合序列。</p>
 <ol class="arabic simple">
 <li><p><strong>U-Token（User Token）</strong>：编码用户的静态属性和长期偏好</p>
 <ul class="simple">
@@ -908,7 +910,7 @@ Trie 约束 Beam Search 提升推理效率。</p>
 <span class="o">...</span>
 </pre></div>
 </div>
-<p>这种表示的优势在于：</p>
+<p>这种表示具有以下优势。</p>
 <ul class="simple">
 <li><p><strong>场景统一</strong>：不同场景的内容都用同一套 Token 体系表示</p></li>
 <li><p><strong>时序连贯</strong>：跨场景的用户行为形成完整的时间线</p></li>
@@ -921,10 +923,10 @@ ID。传统的 RQ-VAE 在处理广告数据时面临<strong>codebook
 collapse</strong>问题：随机初始化的码本中，某些码字从未被激活，导致码本利用率低（可能只有
 60-70%）。</p>
 <p>GPR 提出 <strong>RQ-Kmeans+</strong>，结合 RQ-Kmeans 的高质量初始化和 RQ-VAE
-的端到端优化：</p>
+的端到端优化，步骤如下。</p>
 <p><strong>步骤 1：RQ-Kmeans 初始化</strong></p>
 <p>首先收集大量广告和有机内容的表示
-<span class="math notranslate nohighlight">\(\{\mathbf{e}_1, \mathbf{e}_2, \ldots, \mathbf{e}_N\}\)</span>，通过残差
+<span class="math notranslate nohighlight">\(\{\boldsymbol{e}_1, \boldsymbol{e}_2, \ldots, \boldsymbol{e}_N\}\)</span>，通过残差
 K-means 构建初始码本
 <span class="math notranslate nohighlight">\(\mathcal{V} = \{\mathcal{V}^1, \mathcal{V}^2, \ldots, \mathcal{V}^C\}\)</span>（<span class="math notranslate nohighlight">\(C\)</span>
 层，每层 <span class="math notranslate nohighlight">\(W\)</span> 个码字）。</p>
@@ -932,17 +934,17 @@ K-means 构建初始码本
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-33">
 <span class="eqno">(7.3.34)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-33" title="Permalink to this equation">¶</a></span>\[\mathcal{C}^{(l)} = \text{K-means}(\mathcal{R}^{(l)}, W)\]</div>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-34">
-<span class="eqno">(7.3.35)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-34" title="Permalink to this equation">¶</a></span>\[s_i^l = \arg\min_k \|\mathcal{R}_i^{(l)} - \mathbf{c}_k^{(l)}\|, \quad \mathcal{R}_i^{(l+1)} = \mathcal{R}_i^{(l)} - \mathbf{c}_{s_i^l}^{(l)}\]</div>
+<span class="eqno">(7.3.35)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-34" title="Permalink to this equation">¶</a></span>\[s_i^l = \arg\min_k \|\mathcal{R}_i^{(l)} - \boldsymbol{c}_k^{(l)}\|, \quad \mathcal{R}_i^{(l+1)} = \mathcal{R}_i^{(l)} - \boldsymbol{c}_{s_i^l}^{(l)}\]</div>
 <p>这种初始化保证每个码字至少被分配到一些样本，避免“死码字”。</p>
 <p><strong>步骤 2：残差连接 + 端到端微调</strong></p>
 <p>使用 RQ-Kmeans 的码本作为 RQ-VAE 的初始权重，但在编码器侧加入残差连接：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-35">
-<span class="eqno">(7.3.36)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-35" title="Permalink to this equation">¶</a></span>\[\mathbf{z} = \text{Encoder}(\mathbf{e}) + \alpha \cdot \mathbf{e}\]</div>
+<span class="eqno">(7.3.36)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-35" title="Permalink to this equation">¶</a></span>\[\boldsymbol{z} = \text{Encoder}(\boldsymbol{e}) + \alpha \cdot \boldsymbol{e}\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\alpha \in [0, 1]\)</span>
 是可学习的权重。残差连接确保在训练早期，输出分布接近输入分布，加速收敛并稳定潜在空间的对齐。</p>
 <p>然后用标准的 RQ-VAE 损失进行端到端训练：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-36">
-<span class="eqno">(7.3.37)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-36" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{RQ-VAE}} = \|\mathbf{e} - \text{Decoder}(\text{Quantize}(\mathbf{z}))\|^2 + \|\text{sg}[\mathbf{z}] - \text{Codebook}\|^2 + \|\mathbf{z} - \text{sg}[\text{Codebook}]\|^2\]</div>
+<span class="eqno">(7.3.37)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-36" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{RQ-VAE}} = \|\boldsymbol{e} - \text{Decoder}(\text{Quantize}(\boldsymbol{z}))\|^2 + \|\text{sg}[\boldsymbol{z}] - \text{Codebook}\|^2 + \|\boldsymbol{z} - \text{sg}[\text{Codebook}]\|^2\]</div>
 <p>其中 <code class="docutils literal notranslate"><span class="pre">sg</span></code> 表示 stop-gradient 算子。</p>
 <p><strong>效果</strong>：RQ-Kmeans+ 将码本利用率从 EGA 的 65% 提升至
 92%，同时重构误差下降 15%，说明表示能力显著增强。</p>
@@ -963,7 +965,7 @@ token 时都需要通过 Cross-Attention
 <p><strong>第一层：HSD（Heterogeneous Sequence-wise Decoder）—— 意图理解层</strong></p>
 <p>HSD 的任务是从异构的输入序列中提炼出用户的<strong>意图表示（Intent
 Embeddings）</strong>。这一层采用改进的 HSTU（Heterogeneous Sequential
-Transduction Unit）架构，包含三个关键设计：</p>
+Transduction Unit）架构，包含以下三个关键设计。</p>
 <p><strong>设计 1：Hybrid Attention Mask——区分 Prompt 和 Target</strong></p>
 <p>在 GPR 的输入序列中，U-Token、O-Token、E-Token
 构成“Prompt”（条件信息），I-Token
@@ -976,7 +978,7 @@ Transduction Unit）架构，包含三个关键设计：</p>
 0, &amp; \text{if } i &lt; j \text{ or } X_i, X_j \in \{\text{U/O/E-Token}\} \\
 -\infty, &amp; \text{if } j &gt; i
 \end{cases}\end{split}\]</div>
-<p>具体效果：</p>
+<p>具体效果如下。</p>
 <ul class="simple">
 <li><p><strong>Prompt
 区域内部（U/O/E-Token）</strong>：双向注意力，<span class="math notranslate nohighlight">\(M_{ij} = 0\)</span>，任意两个
@@ -1010,10 +1012,10 @@ LayerNorm，会导致归一化参数无法适应异构分布。GPR 为每种 tok
 分配独立的归一化层和前馈网络（FFN）：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-38">
 <span class="eqno">(7.3.39)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-38" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-\mathbf{h}^{\text{U}} &amp;= \text{LayerNorm}_{\text{U}}(\mathbf{h}^{\text{U}}) + \text{FFN}_{\text{U}}(\mathbf{h}^{\text{U}}) \\
-\mathbf{h}^{\text{O}} &amp;= \text{LayerNorm}_{\text{O}}(\mathbf{h}^{\text{O}}) + \text{FFN}_{\text{O}}(\mathbf{h}^{\text{O}}) \\
-\mathbf{h}^{\text{E}} &amp;= \text{LayerNorm}_{\text{E}}(\mathbf{h}^{\text{E}}) + \text{FFN}_{\text{E}}(\mathbf{h}^{\text{E}}) \\
-\mathbf{h}^{\text{I}} &amp;= \text{LayerNorm}_{\text{I}}(\mathbf{h}^{\text{I}}) + \text{FFN}_{\text{I}}(\mathbf{h}^{\text{I}})
+\boldsymbol{h}^{\text{U}} &amp;= \text{LayerNorm}_{\text{U}}(\boldsymbol{h}^{\text{U}}) + \text{FFN}_{\text{U}}(\boldsymbol{h}^{\text{U}}) \\
+\boldsymbol{h}^{\text{O}} &amp;= \text{LayerNorm}_{\text{O}}(\boldsymbol{h}^{\text{O}}) + \text{FFN}_{\text{O}}(\boldsymbol{h}^{\text{O}}) \\
+\boldsymbol{h}^{\text{E}} &amp;= \text{LayerNorm}_{\text{E}}(\boldsymbol{h}^{\text{E}}) + \text{FFN}_{\text{E}}(\boldsymbol{h}^{\text{E}}) \\
+\boldsymbol{h}^{\text{I}} &amp;= \text{LayerNorm}_{\text{I}}(\boldsymbol{h}^{\text{I}}) + \text{FFN}_{\text{I}}(\boldsymbol{h}^{\text{I}})
 \end{aligned}\end{split}\]</div>
 <p>这将每种 token 投影到各自的语义子空间，充分捕获语义多样性。</p>
 <p><strong>设计 3：MoR（Mixture-of-Recursions）——增加推理深度</strong></p>
@@ -1021,7 +1023,7 @@ LayerNorm，会导致归一化参数无法适应异构分布。GPR 为每种 tok
 机制：在不增加参数的情况下，让某些层递归调用自身多次。</p>
 <p>具体而言，对于第 <span class="math notranslate nohighlight">\(l\)</span> 层，输出为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-39">
-<span class="eqno">(7.3.40)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-39" title="Permalink to this equation">¶</a></span>\[\mathbf{h}^{(l)} = \sum_{r=1}^{R} w_r \cdot \text{Block}^{(l)}(\mathbf{h}^{(l-1)}, r)\]</div>
+<span class="eqno">(7.3.40)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-39" title="Permalink to this equation">¶</a></span>\[\boldsymbol{h}^{(l)} = \sum_{r=1}^{R} w_r \cdot \text{Block}^{(l)}(\boldsymbol{h}^{(l-1)}, r)\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(r\)</span> 是递归次数，<span class="math notranslate nohighlight">\(w_r\)</span>
 是可学习的权重。每次递归调用同一层的参数，但输入是上一次递归的输出。这类似于“多轮思考”，模型对同一信息反复处理，逐步提炼关键信号。</p>
 <p><strong>可选增强：LLM 思维链注入</strong></p>
@@ -1043,10 +1045,10 @@ ID。GPR 设计了<strong>“Thinking-Refining-Generation”</strong>三段式�
 不对应具体的广告内容，而是用于“思考”，从意图嵌入中筛选关键信息。</p>
 <p>Thinking Tokens 通过可学习的查询向量初始化：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-40">
-<span class="eqno">(7.3.41)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-40" title="Permalink to this equation">¶</a></span>\[\mathbf{q}_{\text{think}} \in \mathbb{R}^{K \times d}\]</div>
+<span class="eqno">(7.3.41)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-40" title="Permalink to this equation">¶</a></span>\[\boldsymbol{q}_{\text{think}} \in \mathbb{R}^{K \times d}\]</div>
 <p>然后通过 Cross-Attention 从意图嵌入中提取信息：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-41">
-<span class="eqno">(7.3.42)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-41" title="Permalink to this equation">¶</a></span>\[\mathbf{h}_{\text{think}} = \text{CrossAttention}(\mathbf{q}_{\text{think}}, \mathcal{S}^e, \mathcal{S}^e)\]</div>
+<span class="eqno">(7.3.42)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-41" title="Permalink to this equation">¶</a></span>\[\boldsymbol{h}_{\text{think}} = \text{CrossAttention}(\boldsymbol{q}_{\text{think}}, \mathcal{S}^e, \mathcal{S}^e)\]</div>
 <p>Cross-Attention 的效果是：Thinking Tokens
 学会关注意图嵌入中与广告生成相关的部分，过滤掉无关信息。例如，如果当前要生成餐饮广告，Thinking
 Tokens 会关注用户历史中的美食相关行为，而忽略健身、科技等无关行为。</p>
@@ -1054,18 +1056,18 @@ Tokens 会关注用户历史中的美食相关行为，而忽略健身、科技�
 <p>Thinking Tokens 提取的信息可能仍然不够精确。GPR 借鉴大语言模型中的
 <strong>Self-Reflection</strong> 机制，引入基于扩散模型的 Refining
 模块对推理结果进行迭代优化。</p>
-<p>Refining 模块的设计受到 Stable Diffusion 的启发，包含两个步骤：</p>
+<p>Refining 模块的设计受到 Stable Diffusion 的启发，包含以下两个步骤。</p>
 <ol class="arabic">
 <li><p><strong>加噪过程</strong>：对 Thinking Tokens 添加高斯噪声</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-42">
-<span class="eqno">(7.3.43)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-42" title="Permalink to this equation">¶</a></span>\[\mathbf{h}_{\text{noisy}} = \mathbf{h}_{\text{think}} + \epsilon, \quad \epsilon \sim \mathcal{N}(0, \sigma^2 I)\]</div>
+<span class="eqno">(7.3.43)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-42" title="Permalink to this equation">¶</a></span>\[\boldsymbol{h}_{\text{noisy}} = \boldsymbol{h}_{\text{think}} + \epsilon, \quad \epsilon \sim \mathcal{N}(0, \sigma^2 I)\]</div>
 </li>
 <li><p><strong>去噪过程</strong>：通过条件去噪 Transformer 迭代移除噪声</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-43">
-<span class="eqno">(7.3.44)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-43" title="Permalink to this equation">¶</a></span>\[\mathbf{h}_{\text{refined}} = \text{DenoisingTransformer}(\mathbf{h}_{\text{noisy}}, \mathbf{c})\]</div>
-<p>其中条件 <span class="math notranslate nohighlight">\(\mathbf{c}\)</span> 是 Thinking Tokens 的聚合表示：</p>
+<span class="eqno">(7.3.44)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-43" title="Permalink to this equation">¶</a></span>\[\boldsymbol{h}_{\text{refined}} = \text{DenoisingTransformer}(\boldsymbol{h}_{\text{noisy}}, \boldsymbol{c})\]</div>
+<p>其中条件 <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span> 是 Thinking Tokens 的聚合表示：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-44">
-<span class="eqno">(7.3.45)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-44" title="Permalink to this equation">¶</a></span>\[\mathbf{c} = \text{SumPooling}(\mathbf{h}_{\text{think}})\]</div>
+<span class="eqno">(7.3.45)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-44" title="Permalink to this equation">¶</a></span>\[\boldsymbol{c} = \text{SumPooling}(\boldsymbol{h}_{\text{think}})\]</div>
 </li>
 </ol>
 <p>为什么这样设计？加噪-去噪的过程强迫模型“重新组织”推理结果，类似于人类在做决策时的“二次确认”。实验表明，Refining
@@ -1076,9 +1078,9 @@ Tokens 会关注用户历史中的美食相关行为，而忽略健身、科技�
 ID。假设使用 3 层 RQ 编码，生成过程为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-45">
 <span class="eqno">(7.3.46)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-45" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-a^1 &amp;= \text{Softmax}(\text{Linear}([\mathbf{h}_{\text{refined}}; \text{BOS}])) \\
-a^2 &amp;= \text{Softmax}(\text{Linear}([\mathbf{h}_{\text{refined}}; \text{Embed}(a^1)])) \\
-a^3 &amp;= \text{Softmax}(\text{Linear}([\mathbf{h}_{\text{refined}}; \text{Embed}(a^1, a^2)]))
+a^1 &amp;= \text{Softmax}(\text{Linear}([\boldsymbol{h}_{\text{refined}}; \text{BOS}])) \\
+a^2 &amp;= \text{Softmax}(\text{Linear}([\boldsymbol{h}_{\text{refined}}; \text{Embed}(a^1)])) \\
+a^3 &amp;= \text{Softmax}(\text{Linear}([\boldsymbol{h}_{\text{refined}}; \text{Embed}(a^1, a^2)]))
 \end{aligned}\end{split}\]</div>
 <p>每一步生成的 token 都作为下一步的输入，形成自回归链。</p>
 <p><strong>第三层：HTE（Hierarchical Token-wise Evaluator）—— 价值评估层</strong></p>
@@ -1088,13 +1090,13 @@ a^3 &amp;= \text{Softmax}(\text{Linear}([\mathbf{h}_{\text{refined}}; \text{Embe
 <p>对于第 <span class="math notranslate nohighlight">\(l\)</span> 层生成的 token <span class="math notranslate nohighlight">\(a^l\)</span>，HTE 输出该 token
 对应的期望价值：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-46">
-<span class="eqno">(7.3.47)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-46" title="Permalink to this equation">¶</a></span>\[v^l = \text{MLP}_{\text{value}}([\mathbf{h}^{(l)}; \text{Embed}(a^l)])\]</div>
+<span class="eqno">(7.3.47)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-46" title="Permalink to this equation">¶</a></span>\[v^l = \text{MLP}_{\text{value}}([\boldsymbol{h}^{(l)}; \text{Embed}(a^l)])\]</div>
 <p>最终广告的价值是各层价值的聚合：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-47">
 <span class="eqno">(7.3.48)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-47" title="Permalink to this equation">¶</a></span>\[\text{final\_value} = w_{1} \cdot \text{pCTR} + w_{2} \cdot \text{pCVR} + w_{3} \cdot \text{eCPM}\]</div>
 <p>其中 pCTR、pCVR 通过类似 EGA 的多任务塔预测，eCPM（effective Cost Per
 Mille）是广告主的竞价乘以 pCTR。</p>
-<p>HTE 在推理时有两个用途：</p>
+<p>HTE 在推理时有以下两个用途。</p>
 <ol class="arabic simple">
 <li><p><strong>Beam Search 剪枝</strong>：低价值的 token 分支提前终止</p></li>
 <li><p><strong>Policy Optimization 的 Critic</strong>：在强化学习阶段，HTE
@@ -1110,9 +1112,9 @@ Search</strong>，将价值估计和约束过滤直接集成到解码过程中�
 <p>Trie（字典树）是一种前缀树数据结构，常用于字符串匹配。GPR 将其扩展到语义
 ID 空间：根据当前用户的画像和广告的投放约束，构建一棵 Trie
 树，其中只包含有效的广告 ID 序列。</p>
-<p><strong>构建过程</strong>：</p>
+<p><strong>构建过程</strong></p>
 <ol class="arabic">
-<li><p><strong>收集约束条件</strong>：</p>
+<li><p><strong>收集约束条件</strong></p>
 <ul class="simple">
 <li><p>用户画像：年龄 25 岁、女性、北京、美食爱好者</p></li>
 <li><p>广告定向：某餐厅广告定向“20-30 岁女性，一线城市”</p></li>
@@ -1161,7 +1163,7 @@ ID 空间：根据当前用户的画像和广告的投放约束，构建一棵 T
 </ul>
 <p>直觉：如果某个 token
 的价值远高于平均值（如对应高竞价的热门品类），该分支会被分配更宽的束宽，探索更多可能性；反之，低价值分支提前收缩，节省计算。</p>
-<p><strong>实际效果</strong>：</p>
+<p><strong>实际效果</strong></p>
 <ul class="simple">
 <li><p><strong>推理延迟</strong>：从 EGA 的 150ms 降至 80ms（降低 47%）</p></li>
 <li><p><strong>有效候选占比</strong>：从 40% 提升至 95%（大部分无效候选在解码早期被
@@ -1174,7 +1176,7 @@ Trie 树过滤）</p></li>
 <p>GPR 的训练分为三个阶段，每个阶段有明确的目标和数据来源。</p>
 <p><strong>阶段一：MTP 预训练——学习通用兴趣表示</strong></p>
 <p>这一阶段的目标是从海量的用户行为序列中学习兴趣表示，不引入任何广告特有的信号（如竞价、转化率）。</p>
-<p><strong>数据来源</strong>：微信生态的全量用户行为日志，包括：</p>
+<p><strong>数据来源</strong>：微信生态的全量用户行为日志，包括以下内容。</p>
 <ul class="simple">
 <li><p>视频号：观看、点赞、评论、分享</p></li>
 <li><p>朋友圈：浏览、点赞、评论</p></li>
@@ -1189,8 +1191,8 @@ Trie 树过滤）</p></li>
 <p>具体而言：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-50">
 <span class="eqno">(7.3.51)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-50" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-\mathcal{L}_{\text{NTP}}^{\text{POI}} &amp;= -\sum_{t=1}^K \log P(\mathbf{a}_t^{\text{poi}} \mid \mathcal{S}^u_{&lt;t}, \mathcal{S}^e) \\
-\mathcal{L}_{\text{MTP}}^{\text{Creative}} &amp;= -\sum_{t=1}^K \log P(\mathbf{a}_t^{\text{img}} \mid \mathbf{a}_t^{\text{poi}}, \mathcal{S}^u_{&lt;t}, \mathcal{S}^e)
+\mathcal{L}_{\text{NTP}}^{\text{POI}} &amp;= -\sum_{t=1}^K \log P(\boldsymbol{a}_t^{\text{poi}} \mid \mathcal{S}^u_{&lt;t}, \mathcal{S}^e) \\
+\mathcal{L}_{\text{MTP}}^{\text{Creative}} &amp;= -\sum_{t=1}^K \log P(\boldsymbol{a}_t^{\text{img}} \mid \boldsymbol{a}_t^{\text{poi}}, \mathcal{S}^u_{&lt;t}, \mathcal{S}^e)
 \end{aligned}\end{split}\]</div>
 <p>预训练阶段使用超大规模数据（数十亿用户、数千亿交互），模型参数规模达到数十亿（GPR
 的最大版本为 8B 参数）。</p>
@@ -1217,7 +1219,7 @@ Optimization）——层次化策略优化</strong></p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-53">
 <span class="eqno">(7.3.54)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-53" title="Permalink to this equation">¶</a></span>\[\nabla \mathcal{J} = \mathbb{E}_{\mathcal{Y} \sim \pi_\theta} [R(\mathcal{Y}) \nabla \log \pi_\theta(\mathcal{Y})]\]</div>
 <p>但这种方法存在高方差问题，尤其当序列长度较大时。HEPO
-将奖励分解到两个层次：</p>
+将奖励分解为以下两个层次。</p>
 <p><strong>Token 级奖励</strong>：每生成一个 token，HTE 输出该 token 的即时价值
 <span class="math notranslate nohighlight">\(v^l\)</span>。Token 级优势为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-54">
@@ -1238,7 +1240,7 @@ Optimization）——层次化策略优化</strong></p>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-3-ad-58">
 <span class="eqno">(7.3.59)<a class="headerlink" href="#equation-chapter-7-gr-e2e-3-ad-58" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{HEPO}} = -\mathbb{E} \left[ \sum_{l=1}^C A_{\text{token}}^l \log \pi_\theta(a^l) + \beta \cdot A_{\text{item}} \log \pi_\theta(\text{item}) \right]\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\beta\)</span> 控制 token 级和 item 级优化的权重。</p>
-<p>这种层次化设计的好处：</p>
+<p>这种层次化设计具有以下好处。</p>
 <ol class="arabic simple">
 <li><p><strong>低方差</strong>：Token 级优势的方差远小于 Item 级（因为 token 空间小）</p></li>
 <li><p><strong>精细控制</strong>：可以识别“哪一层 token 的生成导致了低价值”，针对性优化</p></li>
@@ -1248,7 +1250,7 @@ Optimization）——层次化策略优化</strong></p>
 <section id="id11">
 <h3><span class="section-number">7.3.2.5. </span>设计权衡与实际效果<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
 <p>GPR
-在微信视频号广告系统全量上线，相比传统的多阶段级联系统（召回→排序→创意→竞价→分配），取得了显著的业务提升：</p>
+在微信视频号广告系统全量上线，相比传统的多阶段级联系统（召回→排序→创意→竞价→分配），取得了以下显著的业务提升。</p>
 <ul class="simple">
 <li><p><strong>GMV（Gross Merchandise Volume）</strong>：提升 X%</p></li>
 <li><p><strong>CTCVR（点击转化率）</strong>：提升 Y%</p></li>
@@ -1256,7 +1258,7 @@ Optimization）——层次化策略优化</strong></p>
 <li><p><strong>模型维护成本</strong>：从 5
 个独立模型（召回、排序、创意、竞价、分配）简化为 1 个统一模型</p></li>
 </ul>
-<p>但 GPR 的设计也有其权衡：</p>
+<p>但 GPR 的设计也有其权衡，具体如下。</p>
 <p><strong>架构复杂度 vs 场景通用性</strong>：HHD 的三层解码器和
 Thinking-Refining-Generation 范式增加了模型复杂度，训练和推理的代码量是
 EGA 的 2 倍以上。但这种复杂度换来了跨场景的通用性：同一个 GPR

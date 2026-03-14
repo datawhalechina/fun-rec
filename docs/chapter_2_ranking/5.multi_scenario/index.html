@@ -178,10 +178,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -324,10 +324,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -377,7 +377,7 @@ Show Source
         
   <section id="sec-multi-scenario">
 <span id="id1"></span><h1><span class="section-number">3.5. </span>多场景建模<a class="headerlink" href="#sec-multi-scenario" title="Permalink to this heading">¶</a></h1>
-<p>在现代大规模推荐系统中，用户的行为和兴趣往往呈现出高度的<strong>场景依赖性</strong>。这里的“场景”可以指不同的业务形态（如电商APP的首页推荐、商品详情页的“猜你喜欢”、购物车页的“你可能还想要”）、不同的流量入口（如主站、独立子频道）、不同的用户状态（如新用户、老用户、活跃用户、沉默用户）、甚至不同的设备或时间上下文。传统的单一全局模型，试图用一个“万能”的模型覆盖所有场景，常常面临<strong>场景特性淹没</strong>与<strong>数据稀疏性</strong>的双重困境：</p>
+<p>在现代大规模推荐系统中，用户的行为和兴趣往往呈现出高度的<strong>场景依赖性</strong>。这里的“场景”可以指不同的业务形态（如电商APP的首页推荐、商品详情页的“猜你喜欢”、购物车页的“你可能还想要”）、不同的流量入口（如主站、独立子频道）、不同的用户状态（如新用户、老用户、活跃用户、沉默用户）、甚至不同的设备或时间上下文。传统的单一全局模型，试图用一个“万能”的模型覆盖所有场景，常常面临<strong>场景特性淹没</strong>与<strong>数据稀疏性</strong>的双重困境。</p>
 <ol class="arabic simple">
 <li><p><strong>共性淹没特性：</strong>
 强行融合所有场景数据训练，模型容易被数据量大的主导场景所主导，难以捕捉和适应小场景或特性鲜明场景的独特模式。</p></li>
@@ -389,7 +389,7 @@ Show Source
 <p><strong>多场景建模（Multi-scenario Modeling / Multi-domain Modeling）</strong>
 正是为了解决这些核心挑战而提出的关键技术范式。其核心思想在于：<strong>充分利用多个场景数据之间的潜在“共性”来提升模型的泛化能力和鲁棒性，同时精细地识别和建模不同场景的“特性”差异，以实现场景间的差异化精准推荐。</strong></p>
 <p>简单来说，多场景建模的目标是：<strong>既要“合”得好（共享有益知识），也要“分”得清（保留独有特性）</strong>。</p>
-<p>实现这一目标的技术路径丰富多样，但根据其处理“共性”与“特性”的核心机制，大致可以归纳为以下两大类主流且互补的范式，这也是本章重点探讨的内容：</p>
+<p>实现这一目标的技术路径丰富多样，但根据其处理“共性”与“特性”的核心机制，大致可以归纳为以下两大类主流且互补的范式，这也是本章重点探讨的内容。</p>
 <ol class="arabic simple">
 <li><p><strong>多塔结构建模范式：</strong>在模型结构层面进行显式划分，为共享的“共性”知识构建一个或多个<strong>公共塔（Shared
 Tower）</strong>，同时为每个场景（或场景组）的“特性”知识构建独立的<strong>场景塔（Scenario-Specific

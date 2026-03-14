@@ -176,10 +176,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -322,10 +322,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -384,7 +384,7 @@ Show Source
 代表了对“输入”理解的深化，它不再满足于简单的物品ID序列，而是将用户的所有异构信息——属性、行为类型、时间戳等——统一编码为一个复杂的“事件流”。这种设计的核心思想是学习条件分布<span class="math notranslate nohighlight">\(p(\Phi_{i+1}|u_i)\)</span>，其中<span class="math notranslate nohighlight">\(u_i\)</span>是用户在当前时刻的综合表示，<span class="math notranslate nohighlight">\(\Phi_{i+1}\)</span>是下一个候选物品。</p>
 <p>HSTU的技术创新主要体现在两个方面。首先是<strong>特征统一化处理</strong>：对于类别特征，按时间戳将所有信息拉平成统一序列，如<code class="docutils literal notranslate"><span class="pre">[(特征:年龄,值:30),</span> <span class="pre">(行为:登录),</span> <span class="pre">(行为:浏览,物品:A)]</span></code>；对于数值特征，则采用隐式建模让模型自动推断。其次是<strong>点向聚合机制</strong>：摒弃传统Transformer中的softmax归一化，采用点向聚合<span class="math notranslate nohighlight">\(A(X)V(X) = \phi_2(Q(X)K(X)^T + \text{rab}^{p,t})V(X)\)</span>来保持用户偏好的强度信息。这种设计的动机在于，推荐场景中用户兴趣的“强度”是关键信号，而softmax归一化会将所有历史行为的注意力权重强制归一化，从而扭曲真实的偏好强度。值得注意的是，HSTU通过切换预测目标和训练头，也可以从召回任务转换为排序任务，体现了生成式架构的灵活性。</p>
 <p><strong>TIGER模型</strong> <span id="id4">(<a class="reference internal" href="../chapter_references/references.html#id58" title="Rajput, S., Mehta, N., Singh, A., Hulikal Keshavan, R., Vu, T., Heldt, L., … others. (2023). Recommender systems with generative retrieval. Advances in Neural Information Processing Systems, 36, 10299–10315.">Rajput <em>et al.</em>, 2023</a>)</span>
-则代表了对“输出”定义的根本性重塑。它认为预测一个无语义的原子ID效率低下且存在泛化问题，转而提出生成结构化的“语义ID”来代表物品。TIGER的工作流程分为两个阶段：首先利用残差量化变分自编码器（RQ-VAE）为每个物品生成语义ID。具体而言，对于物品的内容特征向量<span class="math notranslate nohighlight">\(\mathbf{x}\)</span>，编码器将其映射为潜在表示<span class="math notranslate nohighlight">\(\mathbf{z} := \mathcal{E}(\mathbf{x})\)</span>，然后通过<span class="math notranslate nohighlight">\(m\)</span>层量化过程，在每层<span class="math notranslate nohighlight">\(d\)</span>中寻找最接近当前残差<span class="math notranslate nohighlight">\(\mathbf{r}_d\)</span>的码字：<span class="math notranslate nohighlight">\(c_d = \arg\min_{k} \|\mathbf{r}_d - \mathbf{e}_k\|^2\)</span>，并更新残差<span class="math notranslate nohighlight">\(\mathbf{r}_{d+1} := \mathbf{r}_d - \mathbf{e}_{c_d}\)</span>，最终得到语义ID元组<span class="math notranslate nohighlight">\((c_0, c_1, ..., c_{m-1})\)</span>。</p>
+则代表了对“输出”定义的根本性重塑。它认为预测一个无语义的原子ID效率低下且存在泛化问题，转而提出生成结构化的“语义ID”来代表物品。TIGER的工作流程分为两个阶段：首先利用残差量化变分自编码器（RQ-VAE）为每个物品生成语义ID。具体而言，对于物品的内容特征向量<span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>，编码器将其映射为潜在表示<span class="math notranslate nohighlight">\(\boldsymbol{z} := \mathcal{E}(\boldsymbol{x})\)</span>，然后通过<span class="math notranslate nohighlight">\(m\)</span>层量化过程，在每层<span class="math notranslate nohighlight">\(d\)</span>中寻找最接近当前残差<span class="math notranslate nohighlight">\(\boldsymbol{r}_d\)</span>的码字：<span class="math notranslate nohighlight">\(c_d = \arg\min_{k} \|\boldsymbol{r}_d - \boldsymbol{e}_k\|^2\)</span>，并更新残差<span class="math notranslate nohighlight">\(\boldsymbol{r}_{d+1} := \boldsymbol{r}_d - \boldsymbol{e}_{c_d}\)</span>，最终得到语义ID元组<span class="math notranslate nohighlight">\((c_0, c_1, ..., c_{m-1})\)</span>。</p>
 <p>在第二阶段，TIGER将推荐任务转化为标准的序列到序列生成问题。用户历史交互序列被转换为对应的语义ID序列，然后训练Encoder-Decoder
 Transformer模型自回归地生成下一个物品的语义ID。这种设计的优势在于：<strong>语义共享</strong>使得内容相似的物品拥有相似的语义ID，从而实现知识共享；<strong>冷启动优势</strong>允许为新物品生成语义ID并进行推荐；<strong>结构化表示</strong>通过多层码字高效表示大规模物品库。然而，这种方法也面临生成无效ID和推理代价较高的挑战，需要在表达能力和计算效率间进行权衡。</p>
 </section>

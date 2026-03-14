@@ -21,7 +21,7 @@ PostgreSQL、Redis、Elasticsearch
 
 Docker Compose 提供了一种声明式的方式来定义和运行多容器应用。通过一个
 YAML
-配置文件描述所有服务及其依赖关系，然后使用一条命令即可启动整个系统。容器化部署的优势包括：
+配置文件描述所有服务及其依赖关系，然后使用一条命令即可启动整个系统。容器化部署的主要优势如下。
 
 1. **环境一致性**\ ：每个服务运行在独立的容器中，容器镜像包含了服务所需的全部依赖。无论在开发机、测试机还是生产服务器上，运行环境都是一致的。
 
@@ -64,7 +64,7 @@ PostgreSQL 是系统的主数据库，存储用户信息、电影信息和评分
        networks:
          - funrec-network
 
-配置说明：
+各配置项说明如下。
 
 -  ``image: postgres:15-alpine``\ ：使用 PostgreSQL 15 的 Alpine
    版本镜像。Alpine 是一个轻量级 Linux 发行版，镜像体积较小。
@@ -137,7 +137,7 @@ Elasticsearch 提供电影的全文搜索功能，支持标题、类型、演员
          timeout: 10s
          retries: 5
 
-配置说明：
+各配置项说明如下。
 
 -  ``discovery.type=single-node``\ ：单节点模式，适合开发和小规模部署。生产环境通常需要多节点集群。
 -  ``xpack.security.enabled=false``\ ：禁用安全功能，简化开发环境配置。生产环境应该启用并配置认证。
@@ -182,7 +182,7 @@ Elasticsearch 提供电影的全文搜索功能，支持标题、类型、演员
        networks:
          - funrec-network
 
-配置说明：
+各配置项说明如下。
 
 -  ``build``\ ：指定构建上下文和 Dockerfile 路径。Docker Compose 会根据
    Dockerfile 构建镜像。
@@ -309,7 +309,7 @@ Dockerfile
 前置条件
 ~~~~~~~~
 
-在开始部署之前，需要确保系统已安装以下工具：
+在开始部署之前，需要确保系统已安装以下工具。
 
 -  **Docker**\ ：容器运行时。可以从 `Docker
    官网 <https://docs.docker.com/get-docker/>`__ 下载安装。
@@ -448,7 +448,7 @@ Dockerfile
 
    make run-offline-pipeline
 
-这个命令会执行以下步骤：
+这个命令会依次执行以下步骤。
 
 1. 特征工程：处理原始数据，生成训练样本
 2. 模型训练：训练 YoutubeDNN 召回模型和 DeepFM 排序模型
@@ -505,7 +505,7 @@ API 文档      http://localhost:8000/docs Swagger 文档
 Elasticsearch http://localhost:9200      搜索服务
 ============= ========================== ============
 
-使用测试账号登录前端应用：
+使用测试账号登录前端应用，账号信息如下。
 
 -  Email: ``test@funrec.com``
 -  Password: ``test123456``
@@ -643,7 +643,7 @@ Elasticsearch http://localhost:9200      搜索服务
 
    docker compose logs backend
 
-常见原因：
+常见原因如下。
 
 1. 环境变量未配置：检查 ``.env`` 文件是否存在且路径正确
 2. 端口被占用：检查 5432、6379、8000、9200 等端口是否被其他程序占用

@@ -24,10 +24,10 @@ Trinity的基础是一套层次化的物品聚类系统。如
 :numref:`trinity-framework` 所示，训练阶段采用向量量化（Vector
 Quantization） :cite:`oord2017neural`
 结构来学习物品的聚类归属。对于每个物品，系统首先从用户的长期行为序列中提取与该物品相关的历史交互，得到物品embedding
-:math:`\mathbf{x}` 和用户embedding
-:math:`\mathbf{b}`\ 。同时，系统维护两级可学习的聚类中心：粗粒度的主聚类
-:math:`\{\mathbf{e}^1_j\}_{j=1}^J` 和细粒度的次级聚类
-:math:`\{\mathbf{e}^2_k\}_{k=1}^K`\ ，其中
+:math:`\boldsymbol{x}` 和用户embedding
+:math:`\boldsymbol{b}`\ 。同时，系统维护两级可学习的聚类中心：粗粒度的主聚类
+:math:`\{\boldsymbol{e}^1_j\}_{j=1}^J` 和细粒度的次级聚类
+:math:`\{\boldsymbol{e}^2_k\}_{k=1}^K`\ ，其中
 :math:`J=128`\ ，\ :math:`K=1024`\ 。
 
 .. _trinity-framework:
@@ -41,11 +41,11 @@ Quantization） :cite:`oord2017neural`
 
 每个物品通过最近邻搜索被分配到对应的聚类：
 
-.. math:: \hat{j} = \arg\min_j ||\mathbf{e}^1_j - \mathbf{x}||^2, \quad \hat{k} = \arg\min_k ||\mathbf{e}^2_k - \mathbf{x}||^2
+.. math:: \hat{j} = \arg\min_j ||\boldsymbol{e}^1_j - \boldsymbol{x}||^2, \quad \hat{k} = \arg\min_k ||\boldsymbol{e}^2_k - \boldsymbol{x}||^2
 
 训练损失函数同时优化用户-物品匹配和用户-聚类匹配：
 
-.. math:: L = \sum_p \sum_{\mathbf{A} \in \{\mathbf{x}, \mathbf{e}^1_{\hat{j}}, \mathbf{e}^2_{\hat{k}}\}} y_p \log \sigma(\mathbf{b}_p^T \mathbf{A}_p) + (1-y_p) \log(1-\sigma(\mathbf{b}_p^T \mathbf{A}_p))
+.. math:: L = \sum_p \sum_{\boldsymbol{A} \in \{\boldsymbol{x}, \boldsymbol{e}^1_{\hat{j}}, \boldsymbol{e}^2_{\hat{k}}\}} y_p \log \sigma(\boldsymbol{b}_p^T \boldsymbol{A}_p) + (1-y_p) \log(1-\sigma(\boldsymbol{b}_p^T \boldsymbol{A}_p))
 
 其中 :math:`\sigma(\cdot)` 是sigmoid函数，\ :math:`y=1`
 表示用户完成观看、产生互动（点赞/分享/关注/评论）或观看时长超过10秒。聚类中心的更新采用指数移动平均机制(Exponential
@@ -58,8 +58,9 @@ Moving Average, EMA) :cite:`oord2017neural`
 --------------------
 
 有了物品到聚类的映射关系，Trinity就可以将任意长度的用户行为序列转换为固定维度的统计直方图。对于用户的长期行为序列（长度可达2500），系统从键值存储中读取每个物品的聚类ID，然后统计每个聚类的行为计数，形成主聚类直方图
-:math:`\mathbf{h}^1 = [h^1_1, h^1_2, \ldots, h^1_J]` 和次级聚类直方图
-:math:`\mathbf{h}^2 = [h^2_1, h^2_2, \ldots, h^2_K]`\ 。
+:math:`\boldsymbol{h}^1 = [h^1_1, h^1_2, \ldots, h^1_J]`
+和次级聚类直方图
+:math:`\boldsymbol{h}^2 = [h^2_1, h^2_2, \ldots, h^2_K]`\ 。
 
 将直方图按计数降序排列后，用户的兴趣分布一目了然。例如，若排序后的直方图为
 :math:`[50, 20, 20, 4, 2, 0, 0, 0]`\ ，对应的聚类索引为

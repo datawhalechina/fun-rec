@@ -28,7 +28,7 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.3. MTGR:混合范式建模" href="3.mtgr.html" />
+    <link rel="next" title="6.3. MTGR: 混合范式建模" href="3.mtgr.html" />
     <link rel="prev" title="6.1. Scaling Law的首次探索" href="1.hstu.html" /> 
   </head>
 <body>
@@ -179,10 +179,10 @@ Show Source
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">6. Scaling Law架构探索</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -325,10 +325,10 @@ Show Source
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">6. Scaling Law架构探索</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -503,7 +503,7 @@ Biases)的思想。其核心思想是：在attention中给距离较远的query-k
 Attention kernel）。GenRank扩展到同时考虑位置和时间：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-6-scaling-2-gen-rank-5">
 <span class="eqno">(6.2.6)<a class="headerlink" href="#equation-chapter-6-scaling-2-gen-rank-5" title="Permalink to this equation">¶</a></span>\[\text{bias}_{i,j} = -m_p \cdot (p_i - p_j) - m_t \cdot \text{bucket}(t_i - t_j)\]</div>
-<p>用一个简单例子理解ALiBi的作用。假设你现在要预测用户对第8个候选的行为，模型需要综合考虑历史上的7次交互。在计算attention时：
+<p>用一个简单例子理解ALiBi的作用。假设你现在要预测用户对第8个候选的行为，模型需要综合考虑历史上的7次交互。在计算attention时，各交互的权重分布如下。
 - 第7次交互（最近）：距离差=1，时间差=5分钟，bias惩罚很小，attention
 weight高 - 第5次交互（中等距离）：距离差=3，时间差=1小时，bias惩罚中等 -
 第1次交互（很久之前）：距离差=7，时间差=1天，bias惩罚很大，attention
@@ -560,7 +560,7 @@ scaling、推荐foundation model等方向提供了可能性。</p>
          <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
         <div class="pagenation-text">
             <span class="pagenation-direction">Next</span>
-            <div>6.3. MTGR:混合范式建模</div>
+            <div>6.3. MTGR: 混合范式建模</div>
         </div>
      </a>
   </div>

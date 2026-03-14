@@ -179,10 +179,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -325,10 +325,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -416,7 +416,7 @@ Laws）</strong> <span id="id4">(<a class="reference internal" href="../chapter_
 ：模型的性能随着参数量、数据量、计算量的增加而持续提升，甚至出现零样本学习、少样本学习等<strong>涌现能力（Emergent
 Abilities）</strong>。</p>
 <p><strong>训练数据：多样化的文本语料</strong></p>
-<p>预训练数据通常包括：</p>
+<p>预训练数据通常包括以下几类。</p>
 <ul class="simple">
 <li><p><strong>网页文本</strong>：从互联网抓取的大量网页内容（如Common Crawl）</p></li>
 <li><p><strong>书籍</strong>：各类书籍的电子版本</p></li>
@@ -428,7 +428,7 @@ Abilities）</strong>。</p>
 <p><strong>模型架构：Decoder-Only为主</strong></p>
 <p>当前主流的LLM主要采用<strong>Decoder-Only架构</strong>（如GPT、LLaMA），即纯自回归的Transformer解码器。这种架构简洁高效，特别适合大规模训练。也有一些模型采用Encoder-Decoder架构（如T5、BART），但在超大规模模型中，Decoder-Only架构已成为主流。</p>
 <p><strong>训练规模：从亿到万亿参数</strong></p>
-<p>现代LLM的参数规模从数十亿到数万亿不等：</p>
+<p>现代LLM的参数规模从数十亿到数万亿不等，代表模型如下。</p>
 <ul class="simple">
 <li><p>GPT-3：1750亿参数</p></li>
 <li><p>PaLM：5400亿参数</p></li>
@@ -450,7 +450,7 @@ SFT）</strong>，就是第二阶段要解决的问题：让模型学会<strong>
 输出（Output）：[人工智能从1950年代诞生至今，经历了符号主义、连接主义等多个发展阶段...]
 </pre></div>
 </div>
-<p>在InstructGPT的工作中，研究人员收集了大量由人类标注者编写的高质量指令-输出对，涵盖了多种任务类型：</p>
+<p>在InstructGPT的工作中，研究人员收集了大量由人类标注者编写的高质量指令-输出对，涵盖了以下多种任务类型。</p>
 <ul class="simple">
 <li><p><strong>生成类任务</strong>：写作、翻译、摘要、创作</p></li>
 <li><p><strong>问答类任务</strong>：开放域问答、常识推理、数学问题</p></li>
@@ -461,8 +461,8 @@ SFT）</strong>，就是第二阶段要解决的问题：让模型学会<strong>
 <p><strong>训练目标：条件语言建模</strong></p>
 <p>指令微调的损失函数是<strong>条件语言建模损失</strong>，即只对输出部分计算损失：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-3-llm-base-1">
-<span class="eqno">(5.3.2)<a class="headerlink" href="#equation-chapter-5-gr-basic-3-llm-base-1" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{SFT}} = -\sum_{i=1}^{m} \log p_\theta(y_i | y_{&lt;i}, \mathbf{c})\]</div>
-<p>其中 <span class="math notranslate nohighlight">\(\mathbf{c}\)</span>
+<span class="eqno">(5.3.2)<a class="headerlink" href="#equation-chapter-5-gr-basic-3-llm-base-1" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{SFT}} = -\sum_{i=1}^{m} \log p_\theta(y_i | y_{&lt;i}, \boldsymbol{c})\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(\boldsymbol{c}\)</span>
 是条件信息（指令+输入），<span class="math notranslate nohighlight">\(y = (y_1, y_2, \ldots, y_m)\)</span>
 是目标输出序列。关键在于，<strong>损失只在输出token上计算</strong>，指令和输入部分不参与梯度更新。这样模型会专注于学习“给定指令和输入，如何生成正确的输出”。</p>
 <p><strong>训练策略：全参数微调或高效微调</strong></p>
@@ -473,7 +473,7 @@ Fine-tuning），也可以采用参数高效的方法（如LoRA），后者在�
 </section>
 <section id="id7">
 <h3><span class="section-number">5.3.1.3. </span>偏好对齐：价值观匹配<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
-<p>即使经过指令微调，LLM生成的内容可能仍然存在一些问题：</p>
+<p>即使经过指令微调，LLM生成的内容可能仍然存在以下一些问题。</p>
 <ul class="simple">
 <li><p><strong>有用性不足</strong>：回答可能过于冗长、偏离重点、包含无关信息</p></li>
 <li><p><strong>真实性问题</strong>：可能编造不存在的事实（幻觉问题）</p></li>
@@ -484,23 +484,23 @@ Alignment）</strong>就是第三阶段要解决的问题：让模型的输出�
 <span id="id8">(<a class="reference internal" href="../chapter_references/references.html#id120" title="Ouyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C., Mishkin, P., … others. (2022). Training language models to follow instructions with human feedback. Advances in neural information processing systems, 35, 27730–27744.">Ouyang <em>et al.</em>, 2022</a>)</span> 。</p>
 <p><strong>基于人类反馈的强化学习（RLHF）</strong></p>
 <p>InstructGPT提出的偏好对齐方法是<strong>RLHF（Reinforcement Learning from
-Human Feedback）</strong>，其流程包括三个步骤：</p>
+Human Feedback）</strong>，其流程包括以下三个步骤。</p>
 <p><strong>步骤1：收集人类偏好数据</strong></p>
 <p>对于同一个输入提示（prompt），让指令微调后的模型生成多个不同的输出（通常通过调整采样温度或使用不同的解码策略）。然后，让人类标注者对这些输出进行<strong>排序</strong>，标注哪个输出更好、哪个更差。这样就得到了偏好对数据
-<span class="math notranslate nohighlight">\(\mathcal{D} = \{(\mathbf{c}, y_w, y_l)\}\)</span>，其中 <span class="math notranslate nohighlight">\(y_w\)</span>
+<span class="math notranslate nohighlight">\(\mathcal{D} = \{(\boldsymbol{c}, y_w, y_l)\}\)</span>，其中 <span class="math notranslate nohighlight">\(y_w\)</span>
 是更优的输出（chosen），<span class="math notranslate nohighlight">\(y_l\)</span> 是较差的输出（rejected）。</p>
 <p><strong>步骤2：训练奖励模型（Reward Model）</strong></p>
 <p>使用收集到的偏好数据训练一个<strong>奖励模型</strong>
-<span class="math notranslate nohighlight">\(r_\phi(\mathbf{c}, y)\)</span>，用于预测“人类会给这个输出打多少分”。奖励模型通常基于预训练模型初始化，训练目标是让模型对更优输出给出更高的奖励分数：</p>
+<span class="math notranslate nohighlight">\(r_\phi(\boldsymbol{c}, y)\)</span>，用于预测“人类会给这个输出打多少分”。奖励模型通常基于预训练模型初始化，训练目标是让模型对更优输出给出更高的奖励分数：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-3-llm-base-2">
-<span class="eqno">(5.3.3)<a class="headerlink" href="#equation-chapter-5-gr-basic-3-llm-base-2" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{RM}} = -\mathbb{E}_{(\mathbf{c}, y_w, y_l) \sim \mathcal{D}} \left[ \log \sigma(r_\phi(\mathbf{c}, y_w) - r_\phi(\mathbf{c}, y_l)) \right]\]</div>
+<span class="eqno">(5.3.3)<a class="headerlink" href="#equation-chapter-5-gr-basic-3-llm-base-2" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{RM}} = -\mathbb{E}_{(\boldsymbol{c}, y_w, y_l) \sim \mathcal{D}} \left[ \log \sigma(r_\phi(\boldsymbol{c}, y_w) - r_\phi(\boldsymbol{c}, y_l)) \right]\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\sigma\)</span>
 是sigmoid函数。训练好的奖励模型可以自动评估任意输出的质量，无需每次都请人类标注。</p>
 <p><strong>步骤3：策略优化（Policy Optimization）</strong></p>
 <p>使用强化学习算法（通常是PPO，Proximal Policy
 Optimization）来优化生成策略。训练目标是最大化奖励模型的评分，同时通过<strong>KL散度约束</strong>防止模型偏离原始指令微调模型过远（避免奖励模型被“欺骗”或生成质量退化）：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-3-llm-base-3">
-<span class="eqno">(5.3.4)<a class="headerlink" href="#equation-chapter-5-gr-basic-3-llm-base-3" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{RL}} = \mathbb{E}_{\mathbf{c} \sim \mathcal{D}_{\text{prompt}}, y \sim p_\theta(\cdot|\mathbf{c})} [r_\phi(\mathbf{c}, y)] - \beta \cdot \mathbb{E}_{\mathbf{c}} [D_{\text{KL}}(p_\theta(\cdot|\mathbf{c}) \| p_{\text{ref}}(\cdot|\mathbf{c}))]\]</div>
+<span class="eqno">(5.3.4)<a class="headerlink" href="#equation-chapter-5-gr-basic-3-llm-base-3" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{RL}} = \mathbb{E}_{\boldsymbol{c} \sim \mathcal{D}_{\text{prompt}}, y \sim p_\theta(\cdot|\boldsymbol{c})} [r_\phi(\boldsymbol{c}, y)] - \beta \cdot \mathbb{E}_{\boldsymbol{c}} [D_{\text{KL}}(p_\theta(\cdot|\boldsymbol{c}) \| p_{\text{ref}}(\cdot|\boldsymbol{c}))]\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(p_{\text{ref}}\)</span>
 是参考模型（通常是指令微调后的模型），<span class="math notranslate nohighlight">\(\beta\)</span>
 是控制约束强度的超参数。</p>
@@ -523,7 +523,7 @@ Model），从而保持生成质量的稳定性。整个流程通过奖励信号
 Preference Optimization）</strong> <span id="id9">(<a class="reference internal" href="../chapter_references/references.html#id88" title="Rafailov, R., Sharma, A., Mitchell, E., Manning, C. D., Ermon, S., &amp; Finn, C. (2023). Direct preference optimization: your language model is secretly a reward model. Advances in neural information processing systems, 36, 53728–53741.">Rafailov <em>et al.</em>, 2023</a>)</span> 。</p>
 <p>DPO的核心思想是：<strong>奖励模型可以用策略模型本身隐式表示</strong>。通过数学推导，可以直接从偏好对数据优化策略，无需显式训练奖励模型和使用强化学习：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-5-gr-basic-3-llm-base-4">
-<span class="eqno">(5.3.5)<a class="headerlink" href="#equation-chapter-5-gr-basic-3-llm-base-4" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{DPO}} = -\mathbb{E}_{(\mathbf{c}, y_w, y_l) \sim \mathcal{D}} \left[ \log \sigma \left( \beta \log \frac{p_\theta(y_w|\mathbf{c})}{p_{\text{ref}}(y_w|\mathbf{c})} - \beta \log \frac{p_\theta(y_l|\mathbf{c})}{p_{\text{ref}}(y_l|\mathbf{c})} \right) \right]\]</div>
+<span class="eqno">(5.3.5)<a class="headerlink" href="#equation-chapter-5-gr-basic-3-llm-base-4" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{DPO}} = -\mathbb{E}_{(\boldsymbol{c}, y_w, y_l) \sim \mathcal{D}} \left[ \log \sigma \left( \beta \log \frac{p_\theta(y_w|\boldsymbol{c})}{p_{\text{ref}}(y_w|\boldsymbol{c})} - \beta \log \frac{p_\theta(y_l|\boldsymbol{c})}{p_{\text{ref}}(y_l|\boldsymbol{c})} \right) \right]\]</div>
 <p>DPO的训练过程类似监督学习，更加简单稳定，在多个任务上取得了与RLHF相当甚至更好的效果，因此在最近的LLM训练中被广泛采用。</p>
 <p><strong>效果：更有用、更安全、更符合人类意图</strong></p>
 <p>经过偏好对齐的模型，在实际应用中展现出明显更好的表现：</p>

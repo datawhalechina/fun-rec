@@ -5,7 +5,7 @@
 ==============
 
 
-基于物品的协同过滤（ItemCF）:cite:`linden2003amazon`
+基于物品的协同过滤（ItemCF） :cite:`linden2003amazon`
 的核心思想是：用户的兴趣具有连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。ItemCF关注的问题是“和你喜欢的物品相似的还有什么”，通过计算物品之间的相似度来生成推荐。
 
 .. _itemcf_illustration:

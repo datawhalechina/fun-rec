@@ -176,10 +176,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -322,10 +322,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -434,11 +434,11 @@ Score）是关键概念，它定义为用户<span class="math notranslate nohigh
 <p><strong>应用到模型训练</strong></p>
 <p>IPS不仅可以用于模型评估，还可以直接应用到模型训练中。以矩阵分解为例，传统的目标函数是：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-1-debias-2">
-<span class="eqno">()<a class="headerlink" href="#equation-chapter-4-trends-1-debias-2" title="Permalink to this equation">¶</a></span>\[\text{argmin}_{U,V} \sum_{(u,i) \in D_O} (Y_{u,i} - (u_u^T v_i + a_u + b_i + c))^2 + \lambda(||U||^2 + ||V||^2)\]</div>
+<span class="eqno">()<a class="headerlink" href="#equation-chapter-4-trends-1-debias-2" title="Permalink to this equation">¶</a></span>\[\arg\min_{U,V} \sum_{(u,i) \in D_O} (Y_{u,i} - (u_u^T v_i + a_u + b_i + c))^2 + \lambda(||U||^2 + ||V||^2)\]</div>
 <p>其中，<span class="math notranslate nohighlight">\(a_u\)</span>和<span class="math notranslate nohighlight">\(b_i\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>和物品<span class="math notranslate nohighlight">\(i\)</span>的偏置项，<span class="math notranslate nohighlight">\(c\)</span>是全局偏置项。</p>
 <p>加入IPS权重后，目标函数变为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-4-trends-1-debias-3">
-<span class="eqno">()<a class="headerlink" href="#equation-chapter-4-trends-1-debias-3" title="Permalink to this equation">¶</a></span>\[\text{argmin}_{U,V} \sum_{(u,i) \in D_O} \frac{1}{P(O_{u,i}=1)} (Y_{u,i} - (u_u^T v_i + a_u + b_i + c))^2 + \lambda(||U||^2 + ||V||^2)\]</div>
+<span class="eqno">()<a class="headerlink" href="#equation-chapter-4-trends-1-debias-3" title="Permalink to this equation">¶</a></span>\[\arg\min_{U,V} \sum_{(u,i) \in D_O} \frac{1}{P(O_{u,i}=1)} (Y_{u,i} - (u_u^T v_i + a_u + b_i + c))^2 + \lambda(||U||^2 + ||V||^2)\]</div>
 <p>这个改动非常简洁，可以方便地集成到现有的优化算法中。</p>
 <p><strong>倾向得分估计</strong></p>
 <p>IPS方法的<strong>关键挑战</strong>在于如何准确估计倾向得分。在实际应用中，倾向得分通常是未知的，需要通过额外的模型来估计。一种简单的估计方法是<strong>朴素贝叶斯方法</strong>，它假设观测概率只与评分值相关，例如5分评价被观测到的概率远高于1分评价。另一种更精确的方法是<strong>逻辑回归方法</strong>，它利用用户特征、物品特征等丰富信息建立预测“是否被观测到”的分类模型。这种方法能够捕捉到更复杂的观测模式，通常能获得更准确的倾向得分估计。</p>

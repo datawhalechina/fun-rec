@@ -180,10 +180,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -326,10 +326,10 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_6_scaling/index.html">6. Scaling Law架构探索</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.hstu.html">6.1. Scaling Law的首次探索</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.gen_rank.html">6.2. HSTU的工程突破</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR:混合范式建模</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/1.rankmixer.html">6.4. Rankmixer:硬件效率优化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/2.one_trans.html">6.5. OneTrans:统一序列与特征交差</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.summary.html">6.6. 本章总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/3.mtgr.html">6.3. MTGR: 混合范式建模</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/4.rankmixer.html">6.4. Rankmixer: 硬件效率优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/5.one_trans.html">6.5. OneTrans: 统一序列与特征交差</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../chapter_6_scaling/6.summary.html">6.6. 本章总结</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_7_gr_e2e/index.html">7. 端到端生成式建模</a><ul>
@@ -379,22 +379,22 @@ Show Source
         
   <section id="usercf">
 <span id="id1"></span><h1><span class="section-number">2.1.3. </span>用户的协同过滤<a class="headerlink" href="#usercf" title="Permalink to this heading">¶</a></h1>
-<p>基于用户的协同过滤（UserCF）:cite:<cite>resnick1994grouplens</cite>
+<p>基于用户的协同过滤（UserCF） <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id3" title="Resnick, P., Iacovou, N., Suchak, M., Bergstrom, P., &amp; Riedl, J. (1994). Grouplens: an open architecture for collaborative filtering of netnews. Proceedings of the 1994 ACM conference on Computer supported cooperative work (pp. 175–186).">Resnick <em>et al.</em>, 1994</a>)</span>
 的核心思想是：具有相似历史行为的用户，未来偏好也相似。它先找到与目标用户偏好最接近的“邻居用户”，再基于这些邻居的行为来预测目标用户的兴趣。如
 <a class="reference internal" href="#usercf-illustration"><span class="std std-numref">图2.1.5</span></a>
 所示，如果用户A和用户B都购买了衣服和帽子，那么当用户B还购买了裤子和鞋子时，我们就可以推测用户A可能也会对这些商品感兴趣。</p>
-<figure class="align-default" id="id8">
+<figure class="align-default" id="id9">
 <span id="usercf-illustration"></span><a class="reference internal image-reference" href="../../_images/usercf_illustration.svg"><img alt="../../_images/usercf_illustration.svg" src="../../_images/usercf_illustration.svg" width="400px" /></a>
 <figcaption>
-<p><span class="caption-number">图2.1.5 </span><span class="caption-text">UserCF 原理示意图</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">图2.1.5 </span><span class="caption-text">UserCF 原理示意图</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<section id="id2">
-<h2><span class="section-number">2.1.3.1. </span>UserCF核心算法<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <section id="id3">
-<h3><span class="section-number">2.1.3.1.1. </span>用户相似度计算<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
+<h2><span class="section-number">2.1.3.1. </span>UserCF核心算法<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
+<section id="id4">
+<h3><span class="section-number">2.1.3.1.1. </span>用户相似度计算<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
 <p>假设用户 <span class="math notranslate nohighlight">\(u\)</span> 和用户 <span class="math notranslate nohighlight">\(v\)</span> 分别对应物品集合 <span class="math notranslate nohighlight">\(N(u)\)</span> 和
-<span class="math notranslate nohighlight">\(N(v)\)</span>（即他们各自有过行为的物品），常用的相似度计算方法有三种：</p>
+<span class="math notranslate nohighlight">\(N(v)\)</span>（即他们各自有过行为的物品），常用的相似度计算方法有以下三种。</p>
 <p><strong>杰卡德相似系数</strong>：如果你的系统只记录用户是否对物品有过行为（比如是否点击、购买），而没有具体的评分，那么杰卡德系数是个好选择：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-usercf-0">
 <span class="eqno">(2.1.13)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-0" title="Permalink to this equation">¶</a></span>\[w_{uv} = \frac{|N(u) \cap N(v)|}{|N(u) \cup N(v)|}\]</div>
@@ -409,8 +409,8 @@ Show Source
 <p>这里<span class="math notranslate nohighlight">\(r_{ui}\)</span>表示用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的评分，<span class="math notranslate nohighlight">\(\bar{r}_u\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>的平均评分，<span class="math notranslate nohighlight">\(I\)</span>是两个用户都评价过的物品集合。皮尔逊系数通过中心化处理，有效消除了个人评分习惯的差异。有些人习惯给高分（“好人”），有些人比较严格，通过减去各自的平均分，我们关注的是评分的相对变化趋势，而不是绝对数值。</p>
 <p>计算完相似度后，选择相似度最高的 K 个用户作为“邻居”。</p>
 </section>
-<section id="id4">
-<h3><span class="section-number">2.1.3.1.2. </span>候选物品推荐<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
+<section id="id5">
+<h3><span class="section-number">2.1.3.1.2. </span>候选物品推荐<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <p>有了相似用户，利用他们的偏好来预测目标用户对未交互物品的兴趣。</p>
 <p><strong>简单加权平均</strong>：最直接的方法是用相似度作为权重，对邻居的评分进行加权平均：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-usercf-2">
@@ -421,8 +421,8 @@ Show Source
 <span class="eqno">(2.1.17)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-3" title="Permalink to this equation">¶</a></span>\[\hat{r}_{u,p} = \bar{r}_{u} + \frac{\sum_{v \in S_u} w_{uv} \, (r_{v,p} - \bar{r}_{v})}{\sum_{v \in S_u} w_{uv}}\]</div>
 <p>这里<span class="math notranslate nohighlight">\(\bar{r}_u\)</span>和<span class="math notranslate nohighlight">\(\bar{r}_v\)</span>分别是用户<span class="math notranslate nohighlight">\(u\)</span>和<span class="math notranslate nohighlight">\(v\)</span>的平均评分。这个公式的思路是：先看邻居们对这个物品的评分相比他们平均水平如何，然后根据目标用户的平均评分水平进行调整。</p>
 </section>
-<section id="id5">
-<h3><span class="section-number">2.1.3.1.3. </span>计算效率优化<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
+<section id="id6">
+<h3><span class="section-number">2.1.3.1.3. </span>计算效率优化<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
 <p>直接计算所有用户对相似度的复杂度为
 <span class="math notranslate nohighlight">\(O(|U|^2)\)</span>，但很多用户对之间没有共同行为的物品，相似度必然为
 0。基于物品倒排表可以大幅提速：为每个物品维护一个用户列表，遍历时将列表中的用户两两配对，累加共现矩阵
@@ -441,12 +441,12 @@ Show Source
 <span class="math notranslate nohighlight">\(O(|U|^2)\)</span>。</p>
 </section>
 </section>
-<section id="id6">
-<h2><span class="section-number">2.1.3.2. </span>UserCF评分预测示例<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
+<section id="id7">
+<h2><span class="section-number">2.1.3.2. </span>UserCF评分预测示例<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
 <p>表格 <a class="reference internal" href="#table-usercf-data"><span class="std std-numref">表2.1.2</span></a>
 里是5个用户对5个物品的评分数据，可以理解为用户对物品的偏好程度。</p>
-<span id="table-usercf-data"></span><table class="docutils align-default" id="id9">
-<caption><span class="caption-number">表2.1.2 </span><span class="caption-text">用户评分数据</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<span id="table-usercf-data"></span><table class="docutils align-default" id="id10">
+<caption><span class="caption-number">表2.1.2 </span><span class="caption-text">用户评分数据</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p></p></th>
 <th class="head"><p>物品1</p></th>
@@ -507,8 +507,8 @@ Show Source
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-usercf-5">
 <span class="eqno">(2.1.19)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-5" title="Permalink to this equation">¶</a></span>\[P_{user1, item5}=\bar{r}_{user1}+\frac{\sum_{k=1}^{2}\left(w_{user1,user k}\left(r_{userk, item5}-\bar{r}_{userk}\right)\right)}{\sum_{k=1}^{2} w_{user1, userk}}=4+\frac{0.85*(3-2.4)+0.7*(5-3.8)}{0.85+0.7}=4.87\]</div>
 </section>
-<section id="id7">
-<h2><span class="section-number">2.1.3.3. </span>代码实践<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
+<section id="id8">
+<h2><span class="section-number">2.1.3.3. </span>代码实践<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="n">user_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;user1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;item1&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;item2&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;item3&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;item4&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
@@ -603,14 +603,14 @@ Show Source
     </p>
     <ul>
 <li><a class="reference internal" href="#">2.1.3. 用户的协同过滤</a><ul>
-<li><a class="reference internal" href="#id2">2.1.3.1. UserCF核心算法</a><ul>
-<li><a class="reference internal" href="#id3">2.1.3.1.1. 用户相似度计算</a></li>
-<li><a class="reference internal" href="#id4">2.1.3.1.2. 候选物品推荐</a></li>
-<li><a class="reference internal" href="#id5">2.1.3.1.3. 计算效率优化</a></li>
+<li><a class="reference internal" href="#id3">2.1.3.1. UserCF核心算法</a><ul>
+<li><a class="reference internal" href="#id4">2.1.3.1.1. 用户相似度计算</a></li>
+<li><a class="reference internal" href="#id5">2.1.3.1.2. 候选物品推荐</a></li>
+<li><a class="reference internal" href="#id6">2.1.3.1.3. 计算效率优化</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id6">2.1.3.2. UserCF评分预测示例</a></li>
-<li><a class="reference internal" href="#id7">2.1.3.3. 代码实践</a></li>
+<li><a class="reference internal" href="#id7">2.1.3.2. UserCF评分预测示例</a></li>
+<li><a class="reference internal" href="#id8">2.1.3.3. 代码实践</a></li>
 </ul>
 </li>
 </ul>

@@ -7,11 +7,11 @@
 
 多目标往往伴随着多个损失的联合优化，这类优化方法更多的考虑的是在模型结构已经确定的条件下，结合任务的特点对模型进行训练和参数优化。简单的多目标Loss优化，是通过手工结合业务经验设定不同损失的权重，将多个损失加权为一个进行优化，如下所示：
 
-.. math:: Loss_{total} = \sum_i w_i L_i
+.. math:: \mathcal{L}_{total} = \sum_i w_i \mathcal{L}_i
 
-其中，\ :math:`L_i`\ 和\ :math:`w_i`\ 分别表示第i个任务的损失及对应的权重。
+其中，\ :math:`\mathcal{L}_i`\ 和\ :math:`w_i`\ 分别表示第i个任务的损失及对应的权重。
 
-在多目标建模中，当模型结构确定后，损失函数融合策略成为决定模型性能的关键因素。传统的手工加权方法存在三个本质性缺陷：
+在多目标建模中，当模型结构确定后，损失函数融合策略成为决定模型性能的关键因素。传统的手工加权方法存在以下三个本质性缺陷。
 
 -  量级失衡问题：不同任务的损失值量级差异显著（如CTR损失通常在0.1-0.5，CVR损失可达2.0+），导致大损失主导优化方向
 
@@ -34,9 +34,9 @@ uncertainty），源于数据本身或任务本身的特性。
 .. math::
 
 
-   Loss = \frac{1}{2\sigma_1^2} \mathcal{L}_1(\mathbf{W}) + \frac{1}{\sigma_2^2} \mathcal{L}_2(\mathbf{W}) + \log \sigma_1 + \log \sigma_2
+   \mathcal{L} = \frac{1}{2\sigma_1^2} \mathcal{L}_1(\boldsymbol{W}) + \frac{1}{\sigma_2^2} \mathcal{L}_2(\boldsymbol{W}) + \log \sigma_1 + \log \sigma_2
 
-其中，\ :math:`\sigma`\ 表示的是任务的不确定性(uncertainty),是可学习的参数。从公式可以看出，当loss较大且\ :math:`\sigma`\ 较小时，\ :math:`\frac{1}{2\sigma^2} \mathcal{L}(\mathbf{W})`\ 会很大，损失函数在优化的时候就会将其往小了优化。可以直观的理解为，模型不会让任务往不确定性较大的方向大幅更新参数。
+其中，\ :math:`\sigma`\ 表示的是任务的不确定性(uncertainty),是可学习的参数。从公式可以看出，当loss较大且\ :math:`\sigma`\ 较小时，\ :math:`\frac{1}{2\sigma^2} \mathcal{L}(\boldsymbol{W})`\ 会很大，损失函数在优化的时候就会将其往小了优化。可以直观的理解为，模型不会让任务往不确定性较大的方向大幅更新参数。
 
 GradNorm：梯度标准化方法
 ------------------------
@@ -52,12 +52,12 @@ loss之前，我们先来看一下如何定义梯度的量级和loss的学习速
 .. math::
 
 
-   G_{W}^{(i)}(t) \, = \, \|\nabla_{W} w_{i}(t) L_{i}(t)\|_{2}
+   G_{W}^{(i)}(t) \, = \, \|\nabla_{W} w_{i}(t) \mathcal{L}_{i}(t)\|_{2}
 
 .. math::
 
 
-   \overline{G}_{W}(t) \, = \, E_{\text{task}}[G_{W}^{(i)}(t)]
+   \overline{G}_{W}(t) \, = \, \mathbb{E}_{\text{task}}[G_{W}^{(i)}(t)]
 
 其中\ :math:`W`\ 是所有任务loss对多个任务最后一层共享参数，\ :math:`G_{W}^{(i)}(t)`\ 表示任务\ :math:`i`\ 加权后的Loss，对共享参数\ :math:`W`\ 的梯度，该值较大时表示loss
 :math:`i`\ 当前的梯度量级较大，\ :math:`\overline{G}_{W}(t)`\ 表示所有任务对共享参数梯度的均值。
@@ -65,18 +65,18 @@ loss之前，我们先来看一下如何定义梯度的量级和loss的学习速
 .. math::
 
 
-   \tilde{L}_i(\tilde{t}) = L_i(t) / L_i(0)
+   \tilde{\mathcal{L}}_i(\tilde{t}) = \mathcal{L}_i(t) / \mathcal{L}_i(0)
 
-.. math:: r_i(t) = \frac{\tilde{L}_i(t)}{E_{\text{task}}[\tilde{L}_i(t)]}
+.. math:: r_i(t) = \frac{\tilde{\mathcal{L}}_i(t)}{\mathbb{E}_{\text{task}}[\tilde{\mathcal{L}}_i(t)]}
 
-:math:`L_i(t)`\ 表示的是训练的第t时刻，任务\ :math:`i`\ 的Loss值，所以\ :math:`\tilde{L}_i(\tilde{t})`\ 表示的是任务\ :math:`i`\ 在第t时刻的相对第0时刻的损失比率，该值如果越小的话则代表该任务loss收敛的比较快，训练速度较大。\ :math:`r_i(t)`\ 则是在\ :math:`L_i(t)`\ 的基础上做了一次归一化，让所有任务之间的速率相对可以比较，同样也是值越小表示任务的训练速度越快。
+:math:`\mathcal{L}_i(t)`\ 表示的是训练的第t时刻，任务\ :math:`i`\ 的Loss值，所以\ :math:`\tilde{\mathcal{L}}_i(\tilde{t})`\ 表示的是任务\ :math:`i`\ 在第t时刻的相对第0时刻的损失比率，该值如果越小的话则代表该任务loss收敛的比较快，训练速度较大。\ :math:`r_i(t)`\ 则是在\ :math:`\mathcal{L}_i(t)`\ 的基础上做了一次归一化，让所有任务之间的速率相对可以比较，同样也是值越小表示任务的训练速度越快。
 
 最终的梯度损失函数定义为如下表达式：
 
 .. math::
 
 
-   L_{\text{grad}}(t; w_i(t)) = \sum_i \left| G_W^{(i)}(t) - \overline{G}_W(t) \times [r_i(t)]^\alpha \right|_1
+   \mathcal{L}_{\text{grad}}(t; w_i(t)) = \sum_i \left| G_W^{(i)}(t) - \overline{G}_W(t) \times [r_i(t)]^\alpha \right|_1
 
 梯度损失函数综合了上述定义的梯度量级和学习速度，直观理解就是当某个loss的梯度非常大时，该loss的值也会较大进而会将该loss的权重降的更小，避免了梯度大的loss主导了模型的学习。同理当某个任务学习的速度较快时，即\ :math:`r_i(t)`\ 较小，梯度loss也会变得更大，进而使得该loss的权重会变得更小，阻止某个任务过快的收敛。
 
@@ -89,7 +89,7 @@ Pareto Optimization：帕累托优化框架
 .. math::
 
 
-   \min_{\theta} \mathbf{L}(\theta) = \min_{\theta} (\mathcal{L}_1(\theta), \mathcal{L}_2(\theta), ..., \mathcal{L}_T(\theta))
+   \min_{\theta} \boldsymbol{\mathcal{L}}(\theta) = \min_{\theta} (\mathcal{L}_1(\theta), \mathcal{L}_2(\theta), ..., \mathcal{L}_T(\theta))
 
 其中帕累托最优解定义为：不存在其他解能在不损害至少一个任务的情况下改进任一任务。
 

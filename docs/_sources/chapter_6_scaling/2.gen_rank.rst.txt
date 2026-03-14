@@ -194,7 +194,7 @@ Attention kernel）。GenRank扩展到同时考虑位置和时间：
 
 .. math:: \text{bias}_{i,j} = -m_p \cdot (p_i - p_j) - m_t \cdot \text{bucket}(t_i - t_j)
 
-用一个简单例子理解ALiBi的作用。假设你现在要预测用户对第8个候选的行为，模型需要综合考虑历史上的7次交互。在计算attention时：
+用一个简单例子理解ALiBi的作用。假设你现在要预测用户对第8个候选的行为，模型需要综合考虑历史上的7次交互。在计算attention时，各交互的权重分布如下。
 - 第7次交互（最近）：距离差=1，时间差=5分钟，bias惩罚很小，attention
 weight高 - 第5次交互（中等距离）：距离差=3，时间差=1小时，bias惩罚中等 -
 第1次交互（很久之前）：距离差=7，时间差=1天，bias惩罚很大，attention
