@@ -589,6 +589,11 @@ CONFIG: Dict[str, Any] = {
     },
     "evaluation": {
         "model_type": "ranking",
+        "task_names": [
+            "is_click",
+            # "long_view",
+            # "is_like",
+        ],
     },
 }
 

@@ -137,8 +137,7 @@ CONFIG: Dict[str, Any] = {
     "evaluation": {
         "model_type": "rerank",
         "k_list": [
-            5,
-            10,
+            5,            
         ],
     },
 }

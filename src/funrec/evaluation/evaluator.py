@@ -712,24 +712,51 @@ def evaluate_ranking_model(
     metrics: Dict[str, float] = {}
 
     if isinstance(predictions, (list, tuple)):
-        # 确定任务名称
-        task_names = evaluation_config.get("task_names")
-        if not task_names and isinstance(test_labels, dict):
-            task_names = list(test_labels.keys())
+        eval_task_names = evaluation_config.get("task_names")
+        if isinstance(eval_task_names, str):
+            eval_task_names = [eval_task_names]
 
+        # 当配置中的task_names和模型输出数量一致时，按顺序显式映射（兼容旧行为）；
+        # 否则将其视为过滤列表，只评估命中的任务。
+        explicit_order_mapping = (
+            isinstance(eval_task_names, list)
+            and len(eval_task_names) == len(predictions)
+            and len(predictions) > 0
+        )
+        eval_task_name_set = set(eval_task_names) if eval_task_names else None
+
+        evaluated_task_count = 0
         for idx, preds in enumerate(predictions):
             # 映射到正确的标签
             if isinstance(test_labels, dict):
+                label_task_names = list(test_labels.keys())
                 task_name = (
-                    task_names[idx]
-                    if task_names and idx < len(task_names)
-                    else list(test_labels.keys())[idx]
+                    eval_task_names[idx]
+                    if explicit_order_mapping
+                    else (label_task_names[idx] if idx < len(label_task_names) else f"task{idx}")
                 )
+
+                # 过滤模式：仅评估evaluation.task_names中指定的任务
+                if (
+                    eval_task_name_set is not None
+                    and not explicit_order_mapping
+                    and task_name not in eval_task_name_set
+                ):
+                    continue
+
+                if task_name not in test_labels:
+                    logger.warning("任务 '%s' 不在测试标签中，跳过评估。", task_name)
+                    continue
+
                 labels_array = test_labels[task_name]
                 suffix = f"_{task_name}"
             elif isinstance(test_labels, list):
                 labels_array = test_labels[idx]
-                suffix = f"_task{idx}"
+                suffix = (
+                    f"_{eval_task_names[idx]}"
+                    if explicit_order_mapping
+                    else f"_task{idx}"
+                )
             else:
                 labels_array = test_labels
                 suffix = f"_task{idx}"
@@ -742,6 +769,12 @@ def evaluate_ranking_model(
             gauc, valid_users = group_auc(test_features, labels_array, preds)
             metrics[f"gauc{suffix}"] = gauc
             metrics[f"val_user{suffix}"] = valid_users
+            evaluated_task_count += 1
+
+        if evaluated_task_count == 0:
+            raise ValueError(
+                "未评估任何任务：请检查evaluation.task_names是否与测试标签一致。"
+            )
 
         # 如果有多任务，平均AUC和gAUC
         auc_values = [

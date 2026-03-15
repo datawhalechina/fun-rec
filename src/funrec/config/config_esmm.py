@@ -167,7 +167,7 @@ CONFIG: Dict[str, Any] = {
         "model_type": "ranking",
         "task_names": [
             "is_click",
-            "is_like",
+            # "is_like",
         ],
         "model_config": {
             "user_id_col": "user_id",

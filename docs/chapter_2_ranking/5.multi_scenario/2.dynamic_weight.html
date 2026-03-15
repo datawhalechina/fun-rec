@@ -550,14 +550,14 @@ Gredient。</p>
 <p><strong>代码实践</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
-<span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;mmoe&#39;</span><span class="p">)</span>
+<span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;pepnet&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+</span>
-<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>   <span class="n">val_user_long_view</span> <span class="o">|</span>
-<span class="o">+================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+</span>
-<span class="o">|</span>          <span class="mf">0.604</span> <span class="o">|</span>        <span class="mf">0.4338</span> <span class="o">|</span>          <span class="mf">0.4672</span> <span class="o">|</span>      <span class="mf">0.5017</span> <span class="o">|</span>          <span class="mf">0.5732</span> <span class="o">|</span>         <span class="mf">0.4434</span> <span class="o">|</span>           <span class="mf">0.4657</span> <span class="o">|</span>       <span class="mf">0.4941</span> <span class="o">|</span>                 <span class="mi">928</span> <span class="o">|</span>                <span class="mi">530</span> <span class="o">|</span>                  <span class="mi">925</span> <span class="o">|</span>
-<span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+-------------+-----------------+--------------+---------------------+</span>
+<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>
+<span class="o">+================+=============+=================+==============+=====================+</span>
+<span class="o">|</span>         <span class="mf">0.6789</span> <span class="o">|</span>      <span class="mf">0.6789</span> <span class="o">|</span>           <span class="mf">0.634</span> <span class="o">|</span>        <span class="mf">0.634</span> <span class="o">|</span>                 <span class="mi">217</span> <span class="o">|</span>
+<span class="o">+----------------+-------------+-----------------+--------------+---------------------+</span>
 </pre></div>
 </div>
 </section>
@@ -687,7 +687,7 @@ y_{i}=\sigma(\boldsymbol{U}(\boldsymbol{S}_{i}\boldsymbol{V}\boldsymbol{x}_{i}))
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--------+--------+------------+</span>
 <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">val_user</span> <span class="o">|</span>
 <span class="o">+========+========+============+</span>
-<span class="o">|</span> <span class="mf">0.6589</span> <span class="o">|</span> <span class="mf">0.6258</span> <span class="o">|</span>        <span class="mi">217</span> <span class="o">|</span>
+<span class="o">|</span> <span class="mf">0.6659</span> <span class="o">|</span> <span class="mf">0.6236</span> <span class="o">|</span>        <span class="mi">217</span> <span class="o">|</span>
 <span class="o">+--------+--------+------------+</span>
 </pre></div>
 </div>
@@ -770,11 +770,11 @@ y_{i}=\sigma(\boldsymbol{U}(\boldsymbol{S}_{i}\boldsymbol{V}\boldsymbol{x}_{i}))
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;m2m&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+</span>
-<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_is_like</span> <span class="o">|</span>   <span class="n">auc_long_view</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_is_like</span> <span class="o">|</span>   <span class="n">gauc_long_view</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>   <span class="n">val_user_is_like</span> <span class="o">|</span>   <span class="n">val_user_long_view</span> <span class="o">|</span>
-<span class="o">+================+===============+=================+=============+=================+================+==================+==============+=====================+====================+======================+</span>
-<span class="o">|</span>         <span class="mf">0.6376</span> <span class="o">|</span>        <span class="mf">0.6082</span> <span class="o">|</span>          <span class="mf">0.6509</span> <span class="o">|</span>      <span class="mf">0.6322</span> <span class="o">|</span>          <span class="mf">0.5928</span> <span class="o">|</span>         <span class="mf">0.6498</span> <span class="o">|</span>           <span class="mf">0.6134</span> <span class="o">|</span>       <span class="mf">0.6187</span> <span class="o">|</span>                 <span class="mi">217</span> <span class="o">|</span>                <span class="mi">131</span> <span class="o">|</span>                  <span class="mi">217</span> <span class="o">|</span>
-<span class="o">+----------------+---------------+-----------------+-------------+-----------------+----------------+------------------+--------------+---------------------+--------------------+----------------------+</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------------+-------------+-----------------+--------------+---------------------+</span>
+<span class="o">|</span>   <span class="n">auc_is_click</span> <span class="o">|</span>   <span class="n">auc_macro</span> <span class="o">|</span>   <span class="n">gauc_is_click</span> <span class="o">|</span>   <span class="n">gauc_macro</span> <span class="o">|</span>   <span class="n">val_user_is_click</span> <span class="o">|</span>
+<span class="o">+================+=============+=================+==============+=====================+</span>
+<span class="o">|</span>         <span class="mf">0.6331</span> <span class="o">|</span>      <span class="mf">0.6331</span> <span class="o">|</span>          <span class="mf">0.5969</span> <span class="o">|</span>       <span class="mf">0.5969</span> <span class="o">|</span>                 <span class="mi">217</span> <span class="o">|</span>
+<span class="o">+----------------+-------------+-----------------+--------------+---------------------+</span>
 </pre></div>
 </div>
 </section>
