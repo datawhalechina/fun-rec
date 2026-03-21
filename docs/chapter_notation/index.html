@@ -28,7 +28,7 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="1. 推荐系统概述" href="../chapter_0_introduction/index.html" />
+    <link rel="next" title="1. 推荐系统是什么？" href="../chapter_0_introduction/index.html" />
     <link rel="prev" title="准备工作" href="../chapter_installation/index.html" /> 
   </head>
 <body>
@@ -104,13 +104,13 @@ Show Source
 <li class="toctree-l1 current"><a class="current reference internal" href="#">符号</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -250,13 +250,13 @@ Show Source
 <li class="toctree-l1 current"><a class="current reference internal" href="#">符号</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -422,8 +422,8 @@ Show Source
 <li><p><span class="math notranslate nohighlight">\(r_{ui}\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 对物品 <span class="math notranslate nohighlight">\(i\)</span> 的评分或反馈</p></li>
 <li><p><span class="math notranslate nohighlight">\(\hat{r}_{ui}\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 对物品 <span class="math notranslate nohighlight">\(i\)</span> 的预测评分</p></li>
 <li><p><span class="math notranslate nohighlight">\(\hat{y}\)</span>：模型预测输出（如点击率预估值）</p></li>
-<li><p><span class="math notranslate nohighlight">\(N(u)\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 有过交互的物品集合</p></li>
-<li><p><span class="math notranslate nohighlight">\(N(i)\)</span>：与物品 <span class="math notranslate nohighlight">\(i\)</span> 有过交互的用户集合</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{N}(u)\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 有过交互的物品集合</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{N}(i)\)</span>：与物品 <span class="math notranslate nohighlight">\(i\)</span> 有过交互的用户集合</p></li>
 <li><p><span class="math notranslate nohighlight">\(w_{ij}\)</span>：物品 <span class="math notranslate nohighlight">\(i\)</span> 与物品 <span class="math notranslate nohighlight">\(j\)</span> 之间的相似度</p></li>
 <li><p><span class="math notranslate nohighlight">\(w_{uv}\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 与用户 <span class="math notranslate nohighlight">\(v\)</span> 之间的相似度</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{p}_u\)</span>：用户 <span class="math notranslate nohighlight">\(u\)</span> 的隐向量（潜在特征向量）</p></li>
@@ -450,12 +450,12 @@ Show Source
 <li><p><span class="math notranslate nohighlight">\(h\)</span>：多头注意力的头数</p></li>
 <li><p><span class="math notranslate nohighlight">\(d_k\)</span>：注意力机制中查询/键的维度</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{Q}\)</span>，<span class="math notranslate nohighlight">\(\boldsymbol{K}\)</span>，<span class="math notranslate nohighlight">\(\boldsymbol{V}\)</span>：注意力机制中的查询（Query）、键（Key）、值（Value）矩阵</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{W}^Q\)</span>，<span class="math notranslate nohighlight">\(\boldsymbol{W}^K\)</span>，<span class="math notranslate nohighlight">\(\boldsymbol{W}^V\)</span>：查询、键、值的投影权重矩阵</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{W}^{\text{Q}}\)</span>，<span class="math notranslate nohighlight">\(\boldsymbol{W}^{\text{K}}\)</span>，<span class="math notranslate nohighlight">\(\boldsymbol{W}^{\text{V}}\)</span>：查询、键、值的投影权重矩阵</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{e}_i\)</span>：第 <span class="math notranslate nohighlight">\(i\)</span> 个特征域或第 <span class="math notranslate nohighlight">\(i\)</span>
 个物品的嵌入向量</p></li>
 <li><p><span class="math notranslate nohighlight">\(\boldsymbol{E}\)</span>：码本矩阵，包含 <span class="math notranslate nohighlight">\(K\)</span> 个码字（codeword）</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{z}_e\)</span>：编码器的连续潜在输出向量</p></li>
-<li><p><span class="math notranslate nohighlight">\(\boldsymbol{z}_q\)</span>：向量量化后的离散近似向量</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{z}_{\text{e}}\)</span>：编码器的连续潜在输出向量</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{z}_{\text{q}}\)</span>：向量量化后的离散近似向量</p></li>
 <li><p><span class="math notranslate nohighlight">\(K\)</span>：码本大小（码字数量）或专家网络数量</p></li>
 <li><p><span class="math notranslate nohighlight">\(L\)</span>：残差量化（RQ-VAE）的量化层数</p></li>
 <li><p><span class="math notranslate nohighlight">\(\text{sg}[\cdot]\)</span>：停止梯度算子（stop-gradient），阻断梯度传递</p></li>
@@ -508,8 +508,7 @@ Show Source
 <li><p><span class="math notranslate nohighlight">\(z \sim P\)</span>：随机变量 <span class="math notranslate nohighlight">\(z\)</span> 具有概率分布 <span class="math notranslate nohighlight">\(P\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(P(X \mid Y)\)</span>：<span class="math notranslate nohighlight">\(X\)</span> 给定 <span class="math notranslate nohighlight">\(Y\)</span> 的条件概率</p></li>
 <li><p><span class="math notranslate nohighlight">\(p(x)\)</span>：概率密度函数</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mathbb{E}_{z}[f(x)]\)</span>：函数 <span class="math notranslate nohighlight">\(f\)</span> 对 <span class="math notranslate nohighlight">\(z\)</span>
-的数学期望</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{E}_{z}[f(x)]\)</span>：函数 <span class="math notranslate nohighlight">\(f\)</span> 对 <span class="math notranslate nohighlight">\(z\)</span> 的数学期望</p></li>
 <li><p><span class="math notranslate nohighlight">\(X \perp Y\)</span>：随机变量 <span class="math notranslate nohighlight">\(X\)</span> 和 <span class="math notranslate nohighlight">\(Y\)</span> 是独立的</p></li>
 <li><p><span class="math notranslate nohighlight">\(\text{Var}(X)\)</span>：随机变量 <span class="math notranslate nohighlight">\(X\)</span> 的方差</p></li>
 <li><p><span class="math notranslate nohighlight">\(\text{std}(X)\)</span>：随机变量 <span class="math notranslate nohighlight">\(X\)</span> 的标准差（避免与 Sigmoid
@@ -584,7 +583,7 @@ Show Source
          <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
         <div class="pagenation-text">
             <span class="pagenation-direction">Next</span>
-            <div>1. 推荐系统概述</div>
+            <div>1. 推荐系统是什么？</div>
         </div>
      </a>
   </div>

@@ -105,13 +105,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -251,13 +251,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -383,14 +383,14 @@ Show Source
 利用率远低于大语言模型；各阶段目标分散，模型结构差异导致建模不一致；级联架构阻碍了
 Scaling Law、强化学习对齐等先进技术的应用。</p>
 <p>为解决这些问题，快手团队提出了 <strong>OneRec</strong>
-框架，将推荐系统重新定义为端到端的生成式任务：模型根据用户上下文直接“生成”推荐序列，而非从候选集中“挑选”物品。本节将介绍
+框架，将推荐系统重新定义为端到端的生成式任务：模型根据用户上下文直接”生成”推荐序列，而非从候选集中”挑选”物品。本节将介绍
 OneRec-V1 的技术体系、其部署中暴露的关键瓶颈，以及 OneRec-V2
 如何突破这些瓶颈。</p>
 <section id="onerec-v1">
 <h2><span class="section-number">7.1.1. </span>OneRec-V1：开创性探索<a class="headerlink" href="#onerec-v1" title="Permalink to this heading">¶</a></h2>
 <section id="id">
 <h3><span class="section-number">7.1.1.1. </span>语义 ID 设计<a class="headerlink" href="#id" title="Permalink to this heading">¶</a></h3>
-<p>生成式推荐面临的首要挑战是：如何让模型“说出”一个物品？在传统推荐系统中，物品通过原子
+<p>生成式推荐面临的首要挑战是：如何让模型”说出”一个物品？在传统推荐系统中，物品通过原子
 ID（如视频 ID）来标识，但快手平台拥有数十亿量级的物品，直接生成原子 ID
 会导致 Softmax 层的计算量爆炸。OneRec-V1 采用<strong>语义 ID（Semantic
 ID）</strong>来解决这一难题 <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id84" title="Deng, J., Wang, S., Cai, K., Ren, L., Hu, Q., Ding, W., … Zhou, G. (2025). Onerec: unifying retrieve and rank with generative recommender and iterative preference alignment. arXiv preprint arXiv:2502.18965.">Deng <em>et al.</em>, 2025</a>)</span>。</p>
@@ -485,10 +485,10 @@ FFN）采用 top-k
 <section id="id4">
 <h3><span class="section-number">7.1.1.3. </span>奖励系统设计<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
 <p>预训练模型仅通过 <span class="math notranslate nohighlight">\(\mathcal{L}_{NTP}\)</span>
-拟合历史曝光数据的分布，而这些曝光数据来自传统推荐系统。这导致模型本质上在“模仿”过去系统的行为，<strong>性能上限被传统推荐系统所束缚</strong>。为了突破这一天花板，OneRec-V1
+拟合历史曝光数据的分布，而这些曝光数据来自传统推荐系统。这导致模型本质上在”模仿”过去系统的行为，<strong>性能上限被传统推荐系统所束缚</strong>。为了突破这一天花板，OneRec-V1
 引入了基于奖励系统的强化学习后训练，包含三个层次的奖励设计：</p>
 <p><strong>用户偏好对齐</strong></p>
-<p>在推荐系统中，定义“好的推荐”远比判断数学题的对错复杂。传统方法通过人工调整权重将多个目标（点击率
+<p>在推荐系统中，定义”好的推荐”远比判断数学题的对错复杂。传统方法通过人工调整权重将多个目标（点击率
 CTR、点赞率 LTR、观看时长 VTR
 等）的预测值融合成一个分数，但这种方式既缺乏精准性也缺乏个性化，且容易导致目标间的优化冲突。</p>
 <p>OneRec-V1 提出使用神经网络学习个性化的 <strong>P-Score (Preference
@@ -514,7 +514,7 @@ Token。当对负优势物品应用强化学习时，模型会将概率质量压
 引入<strong>格式奖励</strong>：从生成样本中随机选择部分进行合法性强化学习，对合法样本设置优势为
 1，对非法样本直接丢弃以避免挤压效应。</p>
 <p><strong>工业场景对齐</strong></p>
-<p>传统推荐系统通过在级联架构的某一阶段应用算法处理生态健康、冷启动、商业化等问题，但由于阶段间不一致，容易陷入“打补丁”的恶性循环。OneRec
+<p>传统推荐系统通过在级联架构的某一阶段应用算法处理生态健康、冷启动、商业化等问题，但由于阶段间不一致，容易陷入”打补丁”的恶性循环。OneRec
 的端到端特性使得<strong>只需将优化目标融入奖励系统，通过强化学习进行针对性优化</strong>。</p>
 <p>以快手平台的病毒式内容农场为例：当病毒内容占比超过最优比例 <span class="math notranslate nohighlight">\(f\)</span>
 时，对其 P-Score 奖励进行降权：</p>
@@ -584,7 +584,7 @@ Token 被映射到维度：</p>
 <p><strong>Lazy Decoder Block 设计</strong></p>
 <p>与传统 Decoder-Only
 架构将所有输入拼接成一个长序列进行自注意力处理不同，Lazy Decoder-Only
-架构<strong>不将上下文信息作为序列的一部分</strong>，而是将其视为<strong>静态的条件信息</strong>，仅通过交叉注意力访问。这里“Lazy（惰性）”的含义是：只在目标
+架构<strong>不将上下文信息作为序列的一部分</strong>，而是将其视为<strong>静态的条件信息</strong>，仅通过交叉注意力访问。这里”Lazy（惰性）“的含义是：只在目标
 Token 位置计算损失，而不对整个序列的每个位置都计算下一 Token 预测损失。</p>
 <p>在训练时，目标物品的前两个语义 ID 加上一个 <code class="docutils literal notranslate"><span class="pre">[BOS]</span></code> Token
 组成输入序列（仅 3 个 Token！）：</p>
@@ -708,7 +708,7 @@ Shaping）</strong>，具体步骤如下。</p>
 <span class="eqno">(7.1.22)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-21" title="Permalink to this equation">¶</a></span>\[q_i = \frac{|\{p_j \in P_{u,b} | p_j \le p_i\}|}{|P_{u,b}|}\]</div>
 </li>
 <li><p><strong>优势值分配</strong>：选择排名前 25%
-的视频作为正样本（<span class="math notranslate nohighlight">\(A_i = +1\)</span>），明确负反馈（如“不喜欢”）的视频作为负样本（<span class="math notranslate nohighlight">\(A_i = -1\)</span>），其他样本过滤（<span class="math notranslate nohighlight">\(A_i = 0\)</span>）：</p></li>
+的视频作为正样本（<span class="math notranslate nohighlight">\(A_i = +1\)</span>），明确负反馈（如”不喜欢”）的视频作为负样本（<span class="math notranslate nohighlight">\(A_i = -1\)</span>），其他样本过滤（<span class="math notranslate nohighlight">\(A_i = 0\)</span>）：</p></li>
 </ol>
 <div class="math notranslate nohighlight" id="equation-chapter-7-gr-e2e-1-recommendation-22">
 <span class="eqno">(7.1.23)<a class="headerlink" href="#equation-chapter-7-gr-e2e-1-recommendation-22" title="Permalink to this equation">¶</a></span>\[\begin{split}A_i = \begin{cases} +1, &amp; q_i &gt; \tau_B \text{ and } neg_i = 0 \\ -1, &amp; neg_i = 1 \\ 0, &amp; \text{otherwise} \end{cases}\end{split}\]</div>

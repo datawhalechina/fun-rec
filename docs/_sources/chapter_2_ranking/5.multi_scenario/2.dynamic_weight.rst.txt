@@ -21,10 +21,10 @@ PEPNet（Parameter and Embedding Personalized Network）
 核心目标是解决多场景多任务中的双重跷跷板效应（Double Seesaw
 Phenomenon）。
 
--  场景跷跷板（Domain
-   Seesaw）：混合训练时不同场景数据分布差异导致表征无法对齐；
--  任务跷跷板（Task
-   Seesaw）：多任务间稀疏性与依赖关系失衡导致目标相互抑制；
+- 场景跷跷板（Domain
+  Seesaw）：混合训练时不同场景数据分布差异导致表征无法对齐；
+- 任务跷跷板（Task
+  Seesaw）：多任务间稀疏性与依赖关系失衡导致目标相互抑制；
 
 PEPNet通过两大模块实现动态权重调控，形成“底层场景适配 +
 顶层任务适配”的分层个性化，这也是PEPNet实现参数个性化的核心思路，PEPNet模型结构如下：

@@ -51,19 +51,19 @@ ESMM (Entire Space Multi-task Model) :cite:`ma2018entire`
 
 
 
--  输入层：全量曝光样本特征 :math:`\boldsymbol{x}`
+- 输入层：全量曝光样本特征 :math:`\boldsymbol{x}`
 
--  共享表征层：基础特征提取模块（原论文中采用的是Shared-Bottom的简单共享结构，也可将其直接替换成MMoE、PLE等复杂的底层共享模型）
+- 共享表征层：基础特征提取模块（原论文中采用的是Shared-Bottom的简单共享结构，也可将其直接替换成MMoE、PLE等复杂的底层共享模型）
 
--  任务塔层
+- 任务塔层
 
-   -  CTR Tower：预测点击概率 :math:`pCTR = f_{ctr}(\boldsymbol{h})`
-   -  CVR Tower：预测转化概率 :math:`pCVR = f_{cvr}(\boldsymbol{h})`
+  - CTR Tower：预测点击概率 :math:`pCTR = f_{ctr}(\boldsymbol{h})`
+  - CVR Tower：预测转化概率 :math:`pCVR = f_{cvr}(\boldsymbol{h})`
 
--  输出层：
+- 输出层：
 
-   -  :math:`pCTR = f_{ctr}(\boldsymbol{h})`\ ，\ :math:`pCVR = f_{cvr}(\boldsymbol{h})`\ ，其中\ :math:`pCVR`\ 不用用来计算Loss
-   -  :math:`pCTCVR = pCTR \times pCVR`\ ，该值用来计算从曝光空间到转化的Loss
+  - :math:`pCTR = f_{ctr}(\boldsymbol{h})`\ ，\ :math:`pCVR = f_{cvr}(\boldsymbol{h})`\ ，其中\ :math:`pCVR`\ 不用用来计算Loss
+  - :math:`pCTCVR = pCTR \times pCVR`\ ，该值用来计算从曝光空间到转化的Loss
 
 损失函数的设计：
 
@@ -185,10 +185,10 @@ Action，DAction），将其余行为归并为其他行为（Other Action，OAct
 
 为了更好理解后续建模时的数学表达，先对简化后图中的过程，做进一步的数学表示。
 
--  :math:`y_1=p(\text{点击}|\text{曝光})`
--  :math:`y_2=p(\text{决定行为}|\text{点击})`
--  :math:`y_3=p(\text{购买}|\text{决定行为})`
--  :math:`y_4=p(\text{购买}|\text{其他行为})`
+- :math:`y_1=p(\text{点击}|\text{曝光})`
+- :math:`y_2=p(\text{决定行为}|\text{点击})`
+- :math:`y_3=p(\text{购买}|\text{决定行为})`
+- :math:`y_4=p(\text{购买}|\text{其他行为})`
 
 根据上述定义，更便于理解ESM2模型的结构图：
 
@@ -239,9 +239,9 @@ ESM2模型 :cite:`wen2020entire`
 
 从简化后的用户下单链路图中可以看出，用户最终转化是有两条链路的，分别为：
 
--  ``曝光->点击->决定行为->购买``\ =>\ :math:`y_1 \cdot y_2 \cdot y_3`
+- ``曝光->点击->决定行为->购买``\ =>\ :math:`y_1 \cdot y_2 \cdot y_3`
 
--  ``曝光->点击->其他行为->购买``\ =>\ :math:`y_1 \cdot (1-y_2) \cdot y_4`
+- ``曝光->点击->其他行为->购买``\ =>\ :math:`y_1 \cdot (1-y_2) \cdot y_4`
 
 合并上述两条链路的结果就可以得到\ :math:`pCTCVR=y_1(y_2 \cdot y_3 + (1-y_2) \cdot y_4)`
 

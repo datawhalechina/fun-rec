@@ -104,13 +104,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -250,13 +250,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -377,16 +377,16 @@ Show Source
         
   <section id="id1">
 <h1><span class="section-number">10.7. </span>本章总结<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
-<p>本章通过一个端到端的电影推荐系统实践项目，将前面章节中分散讲解的算法模块整合为一个可运行的完整系统，回答了“如何从零构建一个生产级推荐系统”的核心工程问题。</p>
+<p>本章通过一个端到端的电影推荐系统实践项目，将前面章节中分散讲解的算法模块整合为一个可运行的完整系统，回答了”如何从零构建一个生产级推荐系统”的核心工程问题。</p>
 <p><strong>系统思维的建立</strong>：推荐系统工程实践的核心难点不在于单个算法，而在于将离散的算法模块整合为一个协同运转的系统。本章通过清晰区分离线系统（负责全量数据处理、模型训练、特征计算）与在线系统（负责实时请求响应、低延迟推理、结果组装），建立了推荐系统架构的基本认知框架。两者通过存储层（PostgreSQL、Redis、Elasticsearch）解耦，离线系统周期性产出模型文件与特征索引，在线系统实时加载并提供服务，这种设计在质量与延迟之间取得了工程上的平衡。</p>
-<p><strong>离线流水线的三个核心环节</strong>：离线流水线承担着“生产”的职责。特征工程阶段将原始用户行为数据转换为召回模型和排序模型所需的特征格式；模型训练阶段分别训练YoutubeDNN召回模型（学习用户与物品的向量表示）和DeepFM排序模型（学习CTR预估）；存储部署阶段将训练产出（物品向量、用户特征、模型权重）写入Redis和文件系统，为在线服务做好准备。这一流程将“训练时”和“服务时”的关注点彻底分离，是工业推荐系统的标准范式。</p>
-<p><strong>在线推理链路的完整设计</strong>：在线流水线的核心是在百毫秒级延迟内完成从用户请求到推荐结果的全流程。冷启动模块首先判断用户是否有足够历史，对新用户应用UCB算法在探索（发现用户偏好）与利用（推荐已知高质量内容）之间动态平衡；多路召回融合YoutubeDNN向量召回、物品相似度召回和用户偏好召回三种策略，从不同维度筛选候选；DeepFM排序模型对候选进行CTR预估精排；最终通过多样性打散策略进行重排，避免推荐结果过于同质化。这一设计体现了工业推荐系统“宽召回、精排序、后优化”的经典漏斗结构。</p>
+<p><strong>离线流水线的三个核心环节</strong>：离线流水线承担着”生产”的职责。特征工程阶段将原始用户行为数据转换为召回模型和排序模型所需的特征格式；模型训练阶段分别训练YoutubeDNN召回模型（学习用户与物品的向量表示）和DeepFM排序模型（学习CTR预估）；存储部署阶段将训练产出（物品向量、用户特征、模型权重）写入Redis和文件系统，为在线服务做好准备。这一流程将”训练时”和”服务时”的关注点彻底分离，是工业推荐系统的标准范式。</p>
+<p><strong>在线推理链路的完整设计</strong>：在线流水线的核心是在百毫秒级延迟内完成从用户请求到推荐结果的全流程。冷启动模块首先判断用户是否有足够历史，对新用户应用UCB算法在探索（发现用户偏好）与利用（推荐已知高质量内容）之间动态平衡；多路召回融合YoutubeDNN向量召回、物品相似度召回和用户偏好召回三种策略，从不同维度筛选候选；DeepFM排序模型对候选进行CTR预估精排；最终通过多样性打散策略进行重排，避免推荐结果过于同质化。这一设计体现了工业推荐系统”宽召回、精排序、后优化”的经典漏斗结构。</p>
 <p><strong>完整技术栈的贯通实践</strong>：前端（Vue.js + Tailwind
 CSS）、后端（FastAPI）、数据存储（PostgreSQL + Redis +
 Elasticsearch）和容器化部署（Docker
-Compose）的组合，构成了一个技术选型贴近工业实际的完整栈。前端不仅是展示层，也是用户行为数据的采集入口，用户的评分、浏览和搜索行为通过前端采集后反馈至后端，形成“用户行为→数据采集→特征更新→推荐优化”的闭环。Docker
+Compose）的组合，构成了一个技术选型贴近工业实际的完整栈。前端不仅是展示层，也是用户行为数据的采集入口，用户的评分、浏览和搜索行为通过前端采集后反馈至后端，形成”用户行为→数据采集→特征更新→推荐优化”的闭环。Docker
 Compose的一键部署设计解决了多服务依赖管理的复杂性，使整个系统可以在任意环境下快速复现。</p>
-<p><strong>工程实践的核心价值</strong>：本章的价值不仅在于提供了一个可运行的示例，更在于通过完整系统的搭建，让读者真正理解推荐系统中那些“理所当然”却常被忽视的工程问题：特征如何在离线和在线之间传递？模型如何在不停服的情况下更新？冷启动时系统应该如何降级？这些问题的答案无法从单篇论文中找到，只能在系统层面的实践中获得。</p>
+<p><strong>工程实践的核心价值</strong>：本章的价值不仅在于提供了一个可运行的示例，更在于通过完整系统的搭建，让读者真正理解推荐系统中那些”理所当然”却常被忽视的工程问题：特征如何在离线和在线之间传递？模型如何在不停服的情况下更新？冷启动时系统应该如何降级？这些问题的答案无法从单篇论文中找到，只能在系统层面的实践中获得。</p>
 </section>
 
 

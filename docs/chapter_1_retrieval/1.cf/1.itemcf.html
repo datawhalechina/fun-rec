@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     
-    <title>2.1.1. 物品的协同过滤 &#8212; 深度推荐算法实践: 从级联架构到生成式范式 1.0.0 documentation</title>
+    <title>2.1.1. ItemCF：基于物品相似度的协同过滤 &#8212; 深度推荐算法实践: 从级联架构到生成式范式 1.0.0 documentation</title>
 
     <link rel="stylesheet" href="../../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/sphinx_materialdesign_theme.css" type="text/css" />
@@ -28,7 +28,7 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="2.1.2. Swing：面向工业场景的优化" href="2.swing.html" />
+    <link rel="next" title="2.1.2. Swing：面向工业场景的相似度优化" href="2.swing.html" />
     <link rel="prev" title="2.1. 协同过滤" href="index.html" /> 
   </head>
 <body>
@@ -38,7 +38,7 @@
         <nav class="mdl-navigation breadcrumb">
             <a class="mdl-navigation__link" href="../index.html"><span class="section-number">2. </span>快速候选召回</a><i class="material-icons">navigate_next</i>
             <a class="mdl-navigation__link" href="index.html"><span class="section-number">2.1. </span>协同过滤</a><i class="material-icons">navigate_next</i>
-            <a class="mdl-navigation__link is-active"><span class="section-number">2.1.1. </span>物品的协同过滤</a>
+            <a class="mdl-navigation__link is-active"><span class="section-number">2.1.1. </span>ItemCF：基于物品相似度的协同过滤</a>
         </nav>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
@@ -106,13 +106,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.1. 协同过滤</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -252,13 +252,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.1. 协同过滤</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -378,16 +378,17 @@ Show Source
         <div class="page-content" role="main">
         
   <section id="itemcf">
-<span id="id1"></span><h1><span class="section-number">2.1.1. </span>物品的协同过滤<a class="headerlink" href="#itemcf" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1><span class="section-number">2.1.1. </span>ItemCF：基于物品相似度的协同过滤<a class="headerlink" href="#itemcf" title="Permalink to this heading">¶</a></h1>
 <p>基于物品的协同过滤（ItemCF） <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id6" title="Linden, G., Smith, B., &amp; York, J. (2003). Amazon.com recommendations: item-to-item collaborative filtering. IEEE Internet computing, 7(1), 76–80.">Linden <em>et al.</em>, 2003</a>)</span>
-的核心思想是：用户的兴趣具有连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。ItemCF关注的问题是“和你喜欢的物品相似的还有什么”，通过计算物品之间的相似度来生成推荐。</p>
+的核心思想是：用户的兴趣具有连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。ItemCF关注的问题是”和你喜欢的物品相似的还有什么”，通过计算物品之间的相似度来生成推荐结果。</p>
 <figure class="align-default" id="id11">
 <span id="itemcf-illustration"></span><a class="reference internal image-reference" href="../../_images/itemcf_illustration.svg"><img alt="../../_images/itemcf_illustration.svg" src="../../_images/itemcf_illustration.svg" width="300px" /></a>
 <figcaption>
 <p><span class="caption-number">图2.1.1 </span><span class="caption-text">ItemCF 原理示意图</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>从上图可以看到，当我们要给左方用户推荐物品时，ItemCF会分析T恤和夹克之间的相似性。由于右方三个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么夹克就成为了一个不错的推荐选择。</p>
+<p>从 <a class="reference internal" href="#itemcf-illustration"><span class="std std-numref">图2.1.1</span></a>
+可以看到，当我们要给左侧用户推荐物品时，ItemCF会分析T恤和夹克之间的相似性。由于右侧三个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么夹克就成为了一个不错的推荐选择。</p>
 <section id="id3">
 <h2><span class="section-number">2.1.1.1. </span>ItemCF核心算法<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
 <section id="id4">
@@ -395,50 +396,51 @@ Show Source
 <p>在大多数实际场景中，只有用户是否对物品有过交互行为的数据（如点击、购买、收藏等），而没有具体的评分信息。ItemCF
 使用余弦相似度量化物品间的相似程度：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-0">
-<span class="eqno">(2.1.1)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-0" title="Permalink to this equation">¶</a></span>\[w_{ij} = \frac{C[i][j]}{\sqrt{|N(i)| \cdot |N(j)|}}\]</div>
-<p>其中 <span class="math notranslate nohighlight">\(|N(i)|\)</span> 表示与物品 <span class="math notranslate nohighlight">\(i\)</span>
-有交互的用户总数，<span class="math notranslate nohighlight">\(C[i][j]\)</span>
+<span class="eqno">(2.1.1)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-0" title="Permalink to this equation">¶</a></span>\[w_{ij} = \frac{\boldsymbol{C}[i][j]}{\sqrt{|\mathcal{N}(i)| \cdot |\mathcal{N}(j)|}}\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(|\mathcal{N}(i)|\)</span> 表示与物品 <span class="math notranslate nohighlight">\(i\)</span>
+有交互的用户总数，<span class="math notranslate nohighlight">\(\boldsymbol{C}[i][j]\)</span>
 是两个物品的共现次数（同时对两个物品有过行为的用户数）。分母对共现次数进行标准化，防止热门商品占据绝对优势。</p>
 </section>
 <section id="id5">
 <h3><span class="section-number">2.1.1.1.2. </span>候选物品推荐<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <p>有了物品相似度矩阵，ItemCF 的线上推荐流程如下：</p>
-<p>首先，系统会选取用户最近交互的物品作为兴趣种子（通常是几百个），然后为每个种子物品找到最相似的若干个候选物品（如Top-10），这样可以快速生成大量候选集合。接下来计算用户<span class="math notranslate nohighlight">\(u\)</span>对候选物品<span class="math notranslate nohighlight">\(i\)</span>的兴趣分数：</p>
+<p>首先，系统会选取用户最近交互的物品作为种子物品（通常是几百个），然后为每个种子物品找到最相似的若干个候选物品（如Top-10），这样可以快速生成大量候选集合。接下来计算用户<span class="math notranslate nohighlight">\(u\)</span>对候选物品<span class="math notranslate nohighlight">\(i\)</span>的兴趣分数：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-1">
-<span class="eqno">(2.1.2)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-1" title="Permalink to this equation">¶</a></span>\[p(u, i) = \sum_{j \in N(u)} w_{ij} \cdot r_{uj}\]</div>
-<p>其中<span class="math notranslate nohighlight">\(N(u)\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>交互过的物品集合，<span class="math notranslate nohighlight">\(w_{ij}\)</span>是物品<span class="math notranslate nohighlight">\(i\)</span>和<span class="math notranslate nohighlight">\(j\)</span>的相似度，<span class="math notranslate nohighlight">\(r_{uj}\)</span>表示用户对物品<span class="math notranslate nohighlight">\(j\)</span>的兴趣强度（可以是简单的1，也可以根据交互时间、类型等设置不同权重）。</p>
+<span class="eqno">(2.1.2)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-1" title="Permalink to this equation">¶</a></span>\[p(u, i) = \sum_{j \in \mathcal{N}(u)} w_{ij} \cdot r_{uj}\]</div>
+<p>其中<span class="math notranslate nohighlight">\(\mathcal{N}(u)\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>交互过的物品集合，<span class="math notranslate nohighlight">\(w_{ij}\)</span>是物品<span class="math notranslate nohighlight">\(i\)</span>和<span class="math notranslate nohighlight">\(j\)</span>的相似度，<span class="math notranslate nohighlight">\(r_{uj}\)</span>表示用户对物品<span class="math notranslate nohighlight">\(j\)</span>的兴趣强度（可以是简单的1，也可以根据交互时间、类型等设置不同权重）。</p>
 <p>最终，系统对所有候选物品按兴趣分数排序，选择Top-N物品作为ItemCF通道的推荐结果。</p>
 </section>
 <section id="id6">
 <h3><span class="section-number">2.1.1.1.3. </span>计算效率优化<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
 <p>直接计算所有物品对相似度的复杂度为
-<span class="math notranslate nohighlight">\(O(|I|^2 \cdot |U|)\)</span>，但大多数物品对之间没有共同的用户交互，相似度必然为
+<span class="math notranslate nohighlight">\(O(|\mathcal{I}|^2 \cdot |\mathcal{U}|)\)</span>，但大多数物品对之间没有共同的用户交互，相似度必然为
 0。基于用户-物品倒排表可以大幅提速：为每个用户维护一个物品交互列表，遍历时将列表中的物品两两配对，累加共现矩阵
-<span class="math notranslate nohighlight">\(C[i][j]\)</span>，再除以 <span class="math notranslate nohighlight">\(\sqrt{|N(i)||N(j)|}\)</span>
+<span class="math notranslate nohighlight">\(\boldsymbol{C}[i][j]\)</span>，再除以
+<span class="math notranslate nohighlight">\(\sqrt{|\mathcal{N}(i)||\mathcal{N}(j)|}\)</span>
 得到余弦相似度，只需计算真正有共同用户的物品对。</p>
 <p>优化后的复杂度约为 <span class="math notranslate nohighlight">\(O(R \cdot \bar{m})\)</span>（<span class="math notranslate nohighlight">\(R\)</span>
 为总交互数，<span class="math notranslate nohighlight">\(\bar{m}\)</span>
 为用户平均交互物品数），在稀疏数据场景下由于
-<span class="math notranslate nohighlight">\(\bar{m} \ll |I|\)</span>，效率远高于暴力计算。</p>
+<span class="math notranslate nohighlight">\(\bar{m} \ll |\mathcal{I}|\)</span>，效率远高于暴力计算。</p>
 </section>
 <section id="id7">
 <h3><span class="section-number">2.1.1.1.4. </span>处理评分数据的相似度计算<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
 <p>前面的余弦相似度适用于隐式反馈场景（如点击、浏览），当有显式评分数据（如5星评分）时，皮尔逊相关系数能更好地捕获物品间的相似性模式
 <span id="id8">(<a class="reference internal" href="../../chapter_references/references.html#id4" title="Sarwar, B., Karypis, G., Konstan, J., &amp; Riedl, J. (2001). Item-based collaborative filtering recommendation algorithms. Proceedings of the 10th international conference on World Wide Web (pp. 285–295).">Sarwar <em>et al.</em>, 2001</a>)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-2">
-<span class="eqno">(2.1.3)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-2" title="Permalink to this equation">¶</a></span>\[w_{ij} = \frac{\sum_{u \in U_{ij}}(r_{ui} - \bar{r}_i)(r_{uj} - \bar{r}_j)}{\sqrt{\sum_{u \in U_{ij}}(r_{ui} - \bar{r}_i)^2}\sqrt{\sum_{u \in U_{ij}}(r_{uj} - \bar{r}_j)^2}}\]</div>
-<p>其中<span class="math notranslate nohighlight">\(U_{ij}\)</span>表示同时评价过物品<span class="math notranslate nohighlight">\(i\)</span>和<span class="math notranslate nohighlight">\(j\)</span>的用户集合，<span class="math notranslate nohighlight">\(r_{ui}\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的评分，<span class="math notranslate nohighlight">\(\bar{r}_i\)</span>是物品<span class="math notranslate nohighlight">\(i\)</span>的平均评分。</p>
+<span class="eqno">(2.1.3)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-2" title="Permalink to this equation">¶</a></span>\[w_{ij} = \frac{\sum_{u \in \mathcal{U}_{ij}}(r_{ui} - \bar{r}_i)(r_{uj} - \bar{r}_j)}{\sqrt{\sum_{u \in \mathcal{U}_{ij}}(r_{ui} - \bar{r}_i)^2}\sqrt{\sum_{u \in \mathcal{U}_{ij}}(r_{uj} - \bar{r}_j)^2}}\]</div>
+<p>其中<span class="math notranslate nohighlight">\(\mathcal{U}_{ij}\)</span>表示同时评价过物品<span class="math notranslate nohighlight">\(i\)</span>和<span class="math notranslate nohighlight">\(j\)</span>的用户集合，<span class="math notranslate nohighlight">\(r_{ui}\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的评分，<span class="math notranslate nohighlight">\(\bar{r}_i\)</span>是物品<span class="math notranslate nohighlight">\(i\)</span>的平均评分。</p>
 <p>皮尔逊相关系数通过中心化处理，消除了不同物品评分分布的差异，关注评分的相对趋势而非绝对值。基于它可以预测用户对未接触物品的评分：</p>
 <div class="math notranslate nohighlight" id="equation-eq-itemcf-predict">
-<span class="eqno">(2.1.4)<a class="headerlink" href="#equation-eq-itemcf-predict" title="Permalink to this equation">¶</a></span>\[\hat{r}_{u,j} = \bar{r}_{j} + \frac{\sum_{k \in S_j} w_{jk}\,\left( r_{u,k} - \bar{r}_{k} \right)}{\sum_{k \in S_j} w_{jk}}\]</div>
+<span class="eqno">(2.1.4)<a class="headerlink" href="#equation-eq-itemcf-predict" title="Permalink to this equation">¶</a></span>\[\hat{r}_{u,j} = \bar{r}_{j} + \frac{\sum_{k \in \mathcal{S}_j} w_{jk}\,\left( r_{u,k} - \bar{r}_{k} \right)}{\sum_{k \in \mathcal{S}_j} w_{jk}}\]</div>
 <p>这个公式以物品 <span class="math notranslate nohighlight">\(j\)</span>
 的平均评分为基准，根据用户对相似物品的评分偏好进行调整。在大规模推荐系统中，出于计算复杂度和数据稀疏性的考虑，多数系统仍倾向于使用余弦相似度，辅以加权或归一化来处理评分差异。</p>
 </section>
 </section>
 <section id="id9">
 <h2><span class="section-number">2.1.1.2. </span>ItemCF评分预测示例<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h2>
-<p>表格 <a class="reference internal" href="#table-itemcf-data"><span class="std std-numref">表2.1.1</span></a> 是和 <a class="reference internal" href="3.usercf.html#usercf"><span class="std std-numref">2.1.3节</span></a>
-相同的用户评分数据。</p>
+<p><a class="reference internal" href="#table-itemcf-data"><span class="std std-numref">表2.1.1</span></a> 展示了一组用户评分数据，包含 5 位用户对 5
+个物品的评分，其中用户 1 对物品 5 的评分未知，是我们需要预测的目标。</p>
 <span id="table-itemcf-data"></span><table class="docutils align-default" id="id12">
 <caption><span class="caption-number">表2.1.1 </span><span class="caption-text">用户评分数据</span><a class="headerlink" href="#id12" title="Permalink to this table">¶</a></caption>
 <thead>
@@ -488,19 +490,21 @@ Show Source
 </tr>
 </tbody>
 </table>
-<p>计算物品之间的相似度，以物品5和物品1之间的皮尔逊相关系数为例。<span class="math notranslate nohighlight">\(\hat{r}_{item5}=3.25,\ \hat{r}_{item1}=2.75\)</span>,
-向量减去均值:
-<span class="math notranslate nohighlight">\(\text{item5}:(-0.25, 1.75, 0.75, -2.25) \quad \text{item1}: (0.25, 1.25, 0.25, -1.75)\)</span>.</p>
+<p>接下来以物品 5 和物品 1
+为例，利用前述皮尔逊相关系数公式计算它们之间的相似度。首先计算两个物品的平均评分（仅使用用户
+2～5 的已知评分）：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-3">
-<span class="eqno">(2.1.5)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
-\text{sim}(item5,item1)&amp;=\frac{\sum_{u \in U}(r_{u,item5} - \bar{r}_{item5})(r_{u,item1} - \bar{r}_{item1})}{\sqrt{\sum_{u \in U}(r_{u,item5} - \bar{r}_{item5})^2}\sqrt{\sum_{u \in U}(r_{u,item1} - \bar{r}_{item1})^2}}\\
-&amp;=cos((-0.25,  1.75,  0.75, -2.25),(0.25,  1.25,  0.25, -1.75))\\
-&amp;=0.96946
-\end{aligned}\end{split}\]</div>
+<span class="eqno">(2.1.5)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-3" title="Permalink to this equation">¶</a></span>\[\bar{r}_5 = (3+5+4+1)/4 = 3.25, \quad \bar{r}_1 = (3+4+3+1)/4 = 2.75\]</div>
+<p>将每位用户的评分减去对应物品的均值，得到中心化评分向量：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-4">
+<span class="eqno">(2.1.6)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-4" title="Permalink to this equation">¶</a></span>\[\text{物品5}: (-0.25,\; 1.75,\; 0.75,\; -2.25), \quad \text{物品1}: (0.25,\; 1.25,\; 0.25,\; -1.75)\]</div>
+<p>皮尔逊相关系数等价于中心化向量的余弦相似度，代入计算：</p>
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-5">
+<span class="eqno">(2.1.7)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-5" title="Permalink to this equation">¶</a></span>\[w_{5,1} = \cos\big((-0.25,\; 1.75,\; 0.75,\; -2.25),\;(0.25,\; 1.25,\; 0.25,\; -1.75)\big) = 0.969\]</div>
 <p>根据皮尔逊相关系数，可以找到与物品5最相似的两个物品是物品1和物品4。基于相似物品，根据上面的计算公式
 <a class="reference internal" href="#equation-eq-itemcf-predict">(2.1.4)</a>，可以计算出 用户1 对物品5的最终得分是:</p>
-<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-4">
-<span class="eqno">(2.1.6)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-4" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-1-itemcf-6">
+<span class="eqno">(2.1.8)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-1-itemcf-6" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
 \hat{r}_{user1,item5}&amp;=\bar{r}_{item5}+\frac{\sum_{k=1}^{2}\left(w_{item5,itemk}\left(r_{user1,itemk}-\bar{r}_{itemk}\right)\right)}{\sum_{k=1}^{2} w_{item5,itemk}}\\
 &amp;=\frac{13}{4}+\frac{0.97*(5-3.2)+0.58*(4-3.4)}{0.97+0.58}\\
 &amp;=4.6
@@ -508,6 +512,8 @@ Show Source
 </section>
 <section id="id10">
 <h2><span class="section-number">2.1.1.3. </span>代码实践<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h2>
+<p>下面用 Python 复现上述 ItemCF 评分预测流程。首先构造
+<a class="reference internal" href="#table-itemcf-data"><span class="std std-numref">表2.1.1</span></a> 中的评分数据：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="n">item_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;item1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;user1&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;user2&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;user3&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;user4&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;user5&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
@@ -518,7 +524,7 @@ Show Source
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>计算物品间的相似度矩阵：</p>
+<p>计算物品间相似度矩阵的代码如下所示：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="n">similarity_matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">item_data</span><span class="p">)),</span>
@@ -576,10 +582,18 @@ Show Source
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;用户</span><span class="si">{</span><span class="n">target_user</span><span class="si">}</span><span class="s1">对物品</span><span class="si">{</span><span class="n">target_item</span><span class="si">}</span><span class="s1">的预测评分为：</span><span class="si">{</span><span class="n">target_item_pred</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>下面我们训练和评估完整的ItemCF模型。</p>
+<p>以上代码逐步演示了单个用户-物品对的预测过程。接下来调用封装好的实验框架，在完整数据集上运行
+ItemCF 并查看评估指标：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
 <span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;item_cf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------+--------------+----------------+---------------+</span>
+<span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">hit_rate</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">10</span> <span class="o">|</span>   <span class="n">precision</span><span class="o">@</span><span class="mi">5</span> <span class="o">|</span>
+<span class="o">+===============+==============+================+===============+</span>
+<span class="o">|</span>        <span class="mf">0.6594</span> <span class="o">|</span>       <span class="mf">0.5459</span> <span class="o">|</span>         <span class="mf">0.1444</span> <span class="o">|</span>        <span class="mf">0.1826</span> <span class="o">|</span>
+<span class="o">+---------------+--------------+----------------+---------------+</span>
 </pre></div>
 </div>
 </section>
@@ -594,7 +608,7 @@ Show Source
       <span class="caption-text">Table Of Contents</span>
     </p>
     <ul>
-<li><a class="reference internal" href="#">2.1.1. 物品的协同过滤</a><ul>
+<li><a class="reference internal" href="#">2.1.1. ItemCF：基于物品相似度的协同过滤</a><ul>
 <li><a class="reference internal" href="#id3">2.1.1.1. ItemCF核心算法</a><ul>
 <li><a class="reference internal" href="#id4">2.1.1.1.1. 物品相似度计算</a></li>
 <li><a class="reference internal" href="#id5">2.1.1.1.2. 候选物品推荐</a></li>
@@ -625,7 +639,7 @@ Show Source
          <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
         <div class="pagenation-text">
             <span class="pagenation-direction">Next</span>
-            <div>2.1.2. Swing：面向工业场景的优化</div>
+            <div>2.1.2. Swing：面向工业场景的相似度优化</div>
         </div>
      </a>
   </div>

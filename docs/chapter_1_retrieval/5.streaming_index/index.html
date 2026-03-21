@@ -104,13 +104,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -250,13 +250,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -377,9 +377,9 @@ Show Source
         
   <section id="streaming-index">
 <span id="id1"></span><h1><span class="section-number">2.5. </span>流式索引召回<a class="headerlink" href="#streaming-index" title="Permalink to this heading">¶</a></h1>
-<p>前面介绍的MIND和SDM通过多向量表示或长短期分离来深化用户兴趣建模，但它们仍然是在模型内部做“压缩”——把用户行为序列编码成固定数量的向量。当行为序列增长到数千甚至数万条时，固定容量的表示不可避免地会丢失信息，尤其是那些低频但真实的长尾兴趣。</p>
+<p>前面介绍的MIND和SDM通过多向量表示或长短期分离来深化用户兴趣建模，但它们仍然是在模型内部做”压缩”——把用户行为序列编码成固定数量的向量。当行为序列增长到数千甚至数万条时，固定容量的表示不可避免地会丢失信息，尤其是那些低频但真实的长尾兴趣。</p>
 <p>召回阶段还有另一个问题：索引的时效性。传统的向量索引需要定期重建，重建间隔内新提交的内容和用户兴趣的即时变化都无法被及时捕捉。在内容快速更迭的平台上，这种延迟意味着推荐系统可能错过用户当前的真实需求。</p>
-<p>本章介绍两种跳出“压缩”思路的方法，分别从兴趣覆盖和索引更新两个角度推进：</p>
+<p>本章介绍两种跳出”压缩”思路的方法，分别从兴趣覆盖和索引更新两个角度推进：</p>
 <p><strong>聚类统计的全量兴趣召回</strong>。Trinity不再把用户行为压缩成向量，而是将物品映射到聚类空间，用统计直方图来记录用户在每个聚类上的行为计数。直方图没有容量限制，行为序列再长也不会丢失任何兴趣主题。在此基础上，Trinity设计了多元兴趣、长尾兴趣和长期兴趣三个互补的召回器。</p>
 <p><strong>实时更新的流式索引</strong>。Streaming
 VQ解决的是索引时效性问题。它让物品到聚类的映射关系随训练流程实时更新，聚类中心通过指数移动平均持续适应数据分布的变化，不再需要定期中断重建。同时通过流行度调节和扰动机制保持索引的平衡性，避免热门物品聚集在少数头部聚类。</p>

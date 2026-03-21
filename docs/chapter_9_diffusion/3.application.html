@@ -105,13 +105,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -251,13 +251,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -400,7 +400,7 @@ Show Source
 <span class="math notranslate nohighlight">\(T\)</span> 从均匀分布 <span class="math notranslate nohighlight">\(\text{Uniform}(0, N)\)</span> 中随机采样。</p>
 <p>这一设计的关键在于：经过 <span class="math notranslate nohighlight">\(T\)</span> 步前向过程后，得到的
 <span class="math notranslate nohighlight">\(\boldsymbol{x}_T\)</span> 是一个缺失了 <span class="math notranslate nohighlight">\(T\)</span>
-个特征的样本。这与推荐系统中常见的特征缺失问题高度一致：在实际线上系统中，由于数据采集不完整、用户隐私设置、特征服务故障等原因，大量样本的特征是不完整的。因此，相比于添加高斯噪声，特征dropout作为前向过程的“噪声”更贴合推荐场景的实际情况。</p>
+个特征的样本。这与推荐系统中常见的特征缺失问题高度一致：在实际线上系统中，由于数据采集不完整、用户隐私设置、特征服务故障等原因，大量样本的特征是不完整的。因此，相比于添加高斯噪声，特征dropout作为前向过程的”噪声”更贴合推荐场景的实际情况。</p>
 <p><strong>不对称反向过程</strong></p>
 <p>AsymDiffRec的一个关键创新在于反向过程与前向过程<strong>不在同一个空间</strong>中进行。前向过程在原始特征空间中操作（dropout特征），而反向过程则直接在<strong>潜在表示空间</strong>中完成去噪。</p>
 <p>具体而言，设特征提取器为
@@ -449,7 +449,7 @@ AsymDiffRec使用离散前向过程和不对称的潜在空间反向过程。</s
 <p>其中 <span class="math notranslate nohighlight">\(\mathcal{L}_{\text{main}}\)</span> 是基于完整样本的主任务损失。</p>
 <p>推理阶段：与大多数扩散推荐方法不同，AsymDiffRec在推理阶段也使用扩散模块。在线上推理时，输入样本
 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>
-通常存在特征缺失，可以直接将其视为前向过程产生的“加噪样本”。通过步长嵌入
+通常存在特征缺失，可以直接将其视为前向过程产生的”加噪样本”。通过步长嵌入
 <span class="math notranslate nohighlight">\(\boldsymbol{s}\)</span>
 标记缺失特征的位置，然后用去噪函数生成补全后的表示：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-3-application-3">
@@ -497,7 +497,7 @@ Transformer，用于预测添加到潜在变量的噪声。在推理时，用于
 <p>在第一节中，我们介绍了去噪网络的两种常见参数化方式：预测噪声
 <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> 和预测原始数据
 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>。DMSG采用了第三种参数化方式：<strong>v-prediction</strong>
-<span id="id8">(<a class="reference internal" href="../chapter_references/references.html#id154" title="Salimans, T., &amp; Ho, J. (2022). Progressive distillation for fast sampling of diffusion models. arXiv preprint arXiv:2202.00512.">Salimans and Ho, 2022</a>)</span>，即预测“速度”（velocity）<span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span>。其定义为噪声和数据的线性组合：</p>
+<span id="id8">(<a class="reference internal" href="../chapter_references/references.html#id154" title="Salimans, T., &amp; Ho, J. (2022). Progressive distillation for fast sampling of diffusion models. arXiv preprint arXiv:2202.00512.">Salimans and Ho, 2022</a>)</span>，即预测”速度”（velocity）<span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span>。其定义为噪声和数据的线性组合：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-3-application-5">
 <span class="eqno">(9.3.6)<a class="headerlink" href="#equation-chapter-9-diffusion-3-application-5" title="Permalink to this equation">¶</a></span>\[\boldsymbol{v}_t = \alpha_t \boldsymbol{\epsilon} - \sigma_t \boldsymbol{x}_0\]</div>
 <p>其中
@@ -508,7 +508,7 @@ Transformer，用于预测添加到潜在变量的噪声。在推理时，用于
 <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\epsilon}} = \sigma_t \boldsymbol{x}_t + \alpha_t \hat{\boldsymbol{v}}_\theta\)</span>。预测
 <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> 相比直接预测 <span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> 或
 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>
-的优势在于：其对应的损失权重为“SNR+1”，在高信噪比和低信噪比区域都能给予合理的梯度，训练更加稳定。基于v-prediction的训练损失为：</p>
+的优势在于：其对应的损失权重为”SNR+1”，在高信噪比和低信噪比区域都能给予合理的梯度，训练更加稳定。基于v-prediction的训练损失为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-3-application-6">
 <span class="eqno">(9.3.7)<a class="headerlink" href="#equation-chapter-9-diffusion-3-application-6" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\text{DMSG}} = \mathbb{E}_{t, \boldsymbol{x}_0, \boldsymbol{v}}\left[\|\boldsymbol{v} - \boldsymbol{v}_\theta(\sqrt{\bar{\alpha}_t}\boldsymbol{x}_0 + \sqrt{1-\bar{\alpha}_t}\boldsymbol{\epsilon}, t, \boldsymbol{c})\|^2\right]\]</div>
 <figure class="align-default" id="id12">
@@ -538,7 +538,7 @@ Transformer，用于预测添加到潜在变量的噪声。在推理时，用于
 <p>DMSG在推荐多样性方面具有天然优势，这源于扩散模型的随机采样机制。具体体现在两个方面：</p>
 <p><strong>物品流行度分布</strong>。与BM25等确定性检索方法相比，DMSG倾向于推荐流行度更低的物品。确定性方法在评分时容易偏向高频物品，而扩散模型在连续潜在空间中的随机采样使得低流行度但语义相关的物品也有机会被选中。</p>
 <p><strong>生成结果的新鲜度</strong>。对于相同的prompt，DMSG每次生成的slate都不同，但保持相近的质量水平。实验表明，多次生成的结果在BERTScore上保持稳定（约0.8），同时每次都会包含大量新物品。这意味着即使用户反复请求相同的内容主题，每次获得的推荐列表也是不同的，有助于内容发现和用户留存。</p>
-<p>本节介绍的两种方法展示了扩散模型在推荐系统中除数据增强之外的应用价值。AsymDiffRec通过将特征dropout作为前向过程的“噪声”，将扩散模型的去噪能力转化为特征补全能力，解决了工业推荐中普遍存在的特征缺失问题。DMSG则利用扩散模型的随机采样特性，在保证推荐相关性的同时提升了内容多样性和新鲜度。两者的共同点在于针对推荐场景的实际需求对扩散过程进行了针对性的改造，而非简单套用图像生成的范式。</p>
+<p>本节介绍的两种方法展示了扩散模型在推荐系统中除数据增强之外的应用价值。AsymDiffRec通过将特征dropout作为前向过程的”噪声”，将扩散模型的去噪能力转化为特征补全能力，解决了工业推荐中普遍存在的特征缺失问题。DMSG则利用扩散模型的随机采样特性，在保证推荐相关性的同时提升了内容多样性和新鲜度。两者的共同点在于针对推荐场景的实际需求对扩散过程进行了针对性的改造，而非简单套用图像生成的范式。</p>
 </section>
 </section>
 

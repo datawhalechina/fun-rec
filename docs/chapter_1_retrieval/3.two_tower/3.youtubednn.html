@@ -106,13 +106,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -252,13 +252,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -380,16 +380,16 @@ Show Source
   <section id="youtubednn">
 <h1><span class="section-number">2.3.3. </span>YouTubeDNN：从匹配到预测用户下一行为<a class="headerlink" href="#youtubednn" title="Permalink to this heading">¶</a></h1>
 <p>YouTube深度神经网络推荐系统 <span id="id1">(<a class="reference internal" href="../../chapter_references/references.html#id28" title="Covington, P., Adams, J., &amp; Sargin, E. (2016). Deep neural networks for youtube recommendations. Proceedings of the 10th ACM conference on recommender systems (pp. 191–198).">Covington <em>et al.</em>, 2016</a>)</span>
-代表了双塔模型演进的一个重要里程碑。YouTubeDNN在架构上延续了双塔设计，但引入了一个关键的思想转变：将召回任务重新定义为“预测用户下一个会观看的视频”。</p>
+代表了双塔模型演进的一个重要里程碑。YouTubeDNN在架构上延续了双塔设计，但引入了一个关键的思想转变：将召回任务重新定义为”预测用户下一个会观看的视频”。</p>
 <figure class="align-default" id="id4">
 <span id="youtubednn-candidate"></span><a class="reference internal image-reference" href="../../_images/youtubednn_candidate.png"><img alt="../../_images/youtubednn_candidate.png" src="../../_images/youtubednn_candidate.png" style="width: 450px;" /></a>
 <figcaption>
 <p><span class="caption-number">图2.3.2 </span><span class="caption-text">YouTubeDNN候选生成模型架构</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>YouTubeDNN采用了“非对称”的双塔架构：用户塔集成了观看历史、搜索历史、人口统计学特征等多模态信息，用户观看的视频ID通过嵌入层映射后进行平均池化聚合，模型还引入了“Example
+<p>YouTubeDNN采用了”非对称”的双塔架构：用户塔集成了观看历史、搜索历史、人口统计学特征等多模态信息，用户观看的视频ID通过嵌入层映射后进行平均池化聚合，模型还引入了”Example
 Age”特征来建模内容新鲜度的影响；物品塔则相对简化，本质上是一个巨大的嵌入矩阵，每个视频对应一个可学习的向量，避免了复杂的物品特征工程。</p>
-<p>这种“预测下一个观看视频”的任务设定，本质上类似于NLP中的next
+<p>这种”预测下一个观看视频”的任务设定，本质上类似于NLP中的next
 token预测，可以自然地建模为一个极端多分类问题：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-two-tower-3-youtubednn-0">
 <span class="eqno">(2.3.11)<a class="headerlink" href="#equation-chapter-1-retrieval-3-two-tower-3-youtubednn-0" title="Permalink to this equation">¶</a></span>\[P(w_t=i|U,C) = \frac{e^{v_i \cdot u}}{\sum_{j \in V} e^{v_j \cdot u}}\]</div>
@@ -398,7 +398,7 @@ Softmax进行高效训练。</p>
 <section id="id2">
 <h2><span class="section-number">2.3.3.1. </span>关键的工程技巧<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>YouTubeDNN的成功不仅来自于模型设计，更来自于一系列精心设计的工程技巧。</p>
-<p><strong>非对称的时序分割</strong>：传统协同过滤通常随机保留验证项目，但这种做法存在未来信息泄露问题。视频消费具有明显的不对称模式——剧集通常按顺序观看，用户往往从热门内容开始逐步深入小众领域。因此，YouTubeDNN采用时序分割策略：对于作为预测目标的用户观看记录，只使用该目标之前的历史行为作为输入特征。这种“回滚”机制更符合真实的推荐场景。</p>
+<p><strong>非对称的时序分割</strong>：传统协同过滤通常随机保留验证项目，但这种做法存在未来信息泄露问题。视频消费具有明显的不对称模式——剧集通常按顺序观看，用户往往从热门内容开始逐步深入小众领域。因此，YouTubeDNN采用时序分割策略：对于作为预测目标的用户观看记录，只使用该目标之前的历史行为作为输入特征。这种”回滚”机制更符合真实的推荐场景。</p>
 <figure class="align-default" id="id5">
 <span id="youtubednn-temporal-split"></span><a class="reference internal image-reference" href="../../_images/youtubednn_temporal_split.png"><img alt="../../_images/youtubednn_temporal_split.png" src="../../_images/youtubednn_temporal_split.png" style="width: 600px;" /></a>
 <figcaption>
@@ -411,7 +411,7 @@ Softmax进行高效训练。</p>
 </section>
 <section id="id3">
 <h2><span class="section-number">2.3.3.2. </span>代码实践<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
-<p>YouTubeDNN的用户塔设计体现了“非对称”的思想，它整合了多种用户特征和历史行为序列：</p>
+<p>YouTubeDNN的用户塔设计体现了”非对称”的思想，它整合了多种用户特征和历史行为序列：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 整合用户特征和历史行为序列</span>
 <span class="n">user_feature_embedding</span> <span class="o">=</span> <span class="n">concat_group_embedding</span><span class="p">(</span>
     <span class="n">group_embedding_feature_dict</span><span class="p">,</span> <span class="s2">&quot;user_dnn&quot;</span>

@@ -106,13 +106,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -252,13 +252,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -381,7 +381,7 @@ Show Source
 <h1><span class="section-number">2.4.1. </span>MIND：用多个向量捕捉用户的多元兴趣<a class="headerlink" href="#mind" title="Permalink to this heading">¶</a></h1>
 <p>想象一下，你在淘宝上的购物历史：今天买了一本编程书，昨天买了运动鞋，上周买了咖啡豆。如果推荐系统只用一个数字向量来描述你，就像是用一个标签来概括一个人的全部——显然是不够的。</p>
 <p>MIND (Multi-Interest Network with Dynamic Routing) <span id="id1">(<a class="reference internal" href="../../chapter_references/references.html#id36" title="Li, C., Liu, Z., Wu, M., Xu, Y., Zhao, H., Huang, P., … Lee, D. L. (2019). Multi-interest network with dynamic routing for recommendation at tmall. Proceedings of the 28th ACM international conference on information and knowledge management (pp. 2615–2623).">Li <em>et al.</em>, 2019</a>)</span>
-模型提出了一个更符合直觉的想法：既然用户有多种兴趣，为什么不用多个向量来分别表示呢？就像给每个兴趣爱好都分配一个专门的“代言人”。</p>
+模型提出了一个更符合直觉的想法：既然用户有多种兴趣，为什么不用多个向量来分别表示呢？就像给每个兴趣爱好都分配一个专门的”代言人”。</p>
 <p>这个模型的巧妙之处在于借鉴了胶囊网络的动态路由思想。简单来说，它会自动把你的行为按照兴趣类型进行分组——编程相关的行为归为一类，运动相关的归为另一类，美食相关的又是一类。每一类都会生成一个专门的兴趣向量，这样推荐系统就能更精准地理解你在不同场景下的需求。</p>
 <figure class="align-default" id="id5">
 <span id="mind-model-architecture"></span><a class="reference internal image-reference" href="../../_images/mind_model_architecture.png"><img alt="../../_images/mind_model_architecture.png" src="../../_images/mind_model_architecture.png" style="width: 600px;" /></a>
@@ -502,7 +502,7 @@ Interest，B2I）动态路由：将用户的历史行为视为行为胶囊，将
 （见 <a class="reference internal" href="#mind-model-architecture"><span class="std std-numref">图2.4.1</span></a>
 ）。<span class="math notranslate nohighlight">\(e_i\)</span>是目标商品<span class="math notranslate nohighlight">\(i\)</span>的Embedding向量，<span class="math notranslate nohighlight">\(p\)</span>是控制注意力集中度的超参数。</p>
 <p>参数<span class="math notranslate nohighlight">\(p\)</span>控制注意力分布：当<span class="math notranslate nohighlight">\(p\)</span>接近0时，所有兴趣向量获得均等关注；随着<span class="math notranslate nohighlight">\(p\)</span>增大，注意力逐渐集中于与目标商品最相似的兴趣向量；当<span class="math notranslate nohighlight">\(p\)</span>趋于无穷时，机制退化为硬注意力，只选择相似度最高的兴趣向量。实验表明，使用较大的<span class="math notranslate nohighlight">\(p\)</span>值能够加快模型收敛速度。</p>
-<p>通过标签感知得到用户向量<span class="math notranslate nohighlight">\(v_u\)</span>后，MIND模型的训练目标就是让用户向量与其真实交互的商品尽可能“匹配”。具体来说，模型会最大化用户与正样本商品的相似度，同时最小化与负样本的相似度。由于商品库通常非常庞大，直接计算所有商品的概率分布在计算上不现实，因此MIND采用了和YouTubeDNN相同的策略——使用Sampled
+<p>通过标签感知得到用户向量<span class="math notranslate nohighlight">\(v_u\)</span>后，MIND模型的训练目标就是让用户向量与其真实交互的商品尽可能”匹配”。具体来说，模型会最大化用户与正样本商品的相似度，同时最小化与负样本的相似度。由于商品库通常非常庞大，直接计算所有商品的概率分布在计算上不现实，因此MIND采用了和YouTubeDNN相同的策略——使用Sampled
 Softmax损失函数，通过随机采样一小部分负样本来近似全局的归一化计算。</p>
 <p>标签感知注意力的实现比较直观，核心是使用目标商品向量作为查询，计算与各个兴趣向量的相似度：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

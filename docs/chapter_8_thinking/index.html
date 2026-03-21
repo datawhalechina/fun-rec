@@ -103,13 +103,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -249,13 +249,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -376,13 +376,13 @@ Show Source
         
   <section id="id1">
 <h1><span class="section-number">8. </span>会思考的推荐模型<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
-<p>在上一章中，我们探讨了端到端生成式推荐模型如何通过统一的神经网络架构直接生成推荐结果，突破了传统多阶段级联架构的局限。然而，这些模型虽然能够高效生成推荐，却缺乏<strong>显式的推理能力</strong>。想象一下，当你向朋友推荐一部电影时，你会思考：“这个朋友喜欢科幻类型，最近看过《星际穿越》，而且偏好节奏紧凑的剧情……”这种<strong>先思考再推荐</strong>的过程，正是当前大语言模型（LLM）通过Chain-of-Thought等推理方法取得突破的关键。那么，我们能否让推荐模型也具备这种“思考”能力？</p>
+<p>在上一章中，我们探讨了端到端生成式推荐模型如何通过统一的神经网络架构直接生成推荐结果，突破了传统多阶段级联架构的局限。然而，这些模型虽然能够高效生成推荐，却缺乏<strong>显式的推理能力</strong>。想象一下，当你向朋友推荐一部电影时，你会思考：“这个朋友喜欢科幻类型，最近看过《星际穿越》，而且偏好节奏紧凑的剧情……”这种<strong>先思考再推荐</strong>的过程，正是当前大语言模型（LLM）通过Chain-of-Thought等推理方法取得突破的关键。那么，我们能否让推荐模型也具备这种”思考”能力？</p>
 <p>要让推荐模型具备推理能力，需要攻克两个递进的核心问题：</p>
-<p><strong>第一，如何让LLM“理解”推荐系统中的物品？</strong>
-推荐系统依赖用户行为数据（协同过滤），而LLM擅长理解文本语义，两者说的是不同的“语言”。更具体地说，物品通常用离散ID表示（如item_12345），这些ID既不在LLM的词汇表中，也不携带任何语义信息。这就像让一个只懂中文的人去推理一串无意义的数字序列——即便推理能力再强，也无从下手。解决这一问题的关键在于<strong>协同语义与语言语义的统一</strong>，即将物品的行为模式（协同信号）与内容含义（文本、多模态语义）融合到统一的表征空间中，让LLM既能捕捉“用户看了A也会看B”的协同规律，又能理解“A和B都是科幻电影”的语义关联。</p>
+<p><strong>第一，如何让LLM”理解”推荐系统中的物品？</strong>
+推荐系统依赖用户行为数据（协同过滤），而LLM擅长理解文本语义，两者说的是不同的”语言”。更具体地说，物品通常用离散ID表示（如item_12345），这些ID既不在LLM的词汇表中，也不携带任何语义信息。这就像让一个只懂中文的人去推理一串无意义的数字序列——即便推理能力再强，也无从下手。解决这一问题的关键在于<strong>协同语义与语言语义的统一</strong>，即将物品的行为模式（协同信号）与内容含义（文本、多模态语义）融合到统一的表征空间中，让LLM既能捕捉”用户看了A也会看B”的协同规律，又能理解”A和B都是科幻电影”的语义关联。</p>
 <p><strong>第二，如何激活LLM的推理能力？</strong>
-在表征对齐的基础上，我们需要让模型不仅“认识”物品，还要学会“思考”推荐逻辑。这包括两个方向：一是引入结构化的推理框架，让模型在给出推荐前先完成“分析用户→理解物品→评估匹配”的显式思考过程；二是探索让模型自主学习推理策略，而非依赖人工设计的推理模板或教师模型的指导。</p>
-<p>本章将遵循“从表征到推理”的递进逻辑展开。首先，我们探讨<strong>协同语义与语言语义的统一</strong>（LC-Rec的多任务对齐框架、PLUM的工业级多模态方案），解决LLM如何“认识”推荐物品的基础问题。接着，我们介绍<strong>结构化推理框架</strong>（OneRec-Think的三阶段思考流程），展示如何在对齐基础上激活LLM的显式推理能力。最后，我们探索<strong>自主推理范式</strong>（RecZero的强化学习方法），让模型摆脱对人工设计的依赖，自主摸索出最优的推理策略。通过这些工作，我们将看到推荐模型如何从“隐式预测器”进化为“显式推理者”，如何从“被动匹配”转变为“主动思考”，最终实现可解释、可控、高效的智能推荐。</p>
+在表征对齐的基础上，我们需要让模型不仅”认识”物品，还要学会”思考”推荐逻辑。这包括两个方向：一是引入结构化的推理框架，让模型在给出推荐前先完成”分析用户→理解物品→评估匹配”的显式思考过程；二是探索让模型自主学习推理策略，而非依赖人工设计的推理模板或教师模型的指导。</p>
+<p>本章将遵循”从表征到推理”的递进逻辑展开。首先，我们探讨<strong>协同语义与语言语义的统一</strong>（LC-Rec的多任务对齐框架、PLUM的工业级多模态方案），解决LLM如何”认识”推荐物品的基础问题。接着，我们介绍<strong>结构化推理框架</strong>（OneRec-Think的三阶段思考流程），展示如何在对齐基础上激活LLM的显式推理能力。最后，我们探索<strong>自主推理范式</strong>（RecZero的强化学习方法），让模型摆脱对人工设计的依赖，自主摸索出最优的推理策略。通过这些工作，我们将看到推荐模型如何从”隐式预测器”进化为”显式推理者”，如何从”被动匹配”转变为”主动思考”，最终实现可解释、可控、高效的智能推荐。</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="1.semantic_alignment.html">8.1. 协同语义与语言语义的统一</a></li>

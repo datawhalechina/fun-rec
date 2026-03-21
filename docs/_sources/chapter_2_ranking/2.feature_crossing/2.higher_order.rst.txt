@@ -148,26 +148,26 @@ product）\ :math:`\circ` 来实现的。这个操作会产生
 
 其中：
 
--  :math:`\boldsymbol{X}_k \in \mathbb{R}^{H_k \times D}` 是CIN第
-   :math:`k` 层的输出，可以看作是一个包含了 :math:`H_k`
-   个特征向量的集合，称为“特征图”。\ :math:`H_k` 是第 :math:`k`
-   层特征图的数量。
+- :math:`\boldsymbol{X}_k \in \mathbb{R}^{H_k \times D}` 是CIN第
+  :math:`k` 层的输出，可以看作是一个包含了 :math:`H_k`
+  个特征向量的集合，称为“特征图”。\ :math:`H_k` 是第 :math:`k`
+  层特征图的数量。
 
--  :math:`\boldsymbol{X}_{i,*}^{k-1}` 是第 :math:`k-1` 层输出的第
-   :math:`i` 个 :math:`D` 维向量。
+- :math:`\boldsymbol{X}_{i,*}^{k-1}` 是第 :math:`k-1` 层输出的第
+  :math:`i` 个 :math:`D` 维向量。
 
--  :math:`\boldsymbol{X}_{j,*}^0` 是原始输入矩阵的第 :math:`j` 个
-   :math:`D` 维向量（即第 :math:`j` 个特征域的Embedding）。
+- :math:`\boldsymbol{X}_{j,*}^0` 是原始输入矩阵的第 :math:`j` 个
+  :math:`D` 维向量（即第 :math:`j` 个特征域的Embedding）。
 
--  :math:`\circ` 是哈达玛积，它实现了\ **向量级别的交互**\ ，保留了
-   :math:`D` 维的向量结构。
+- :math:`\circ` 是哈达玛积，它实现了\ **向量级别的交互**\ ，保留了
+  :math:`D` 维的向量结构。
 
--  :math:`\boldsymbol{W}_{k,h} \in \mathbb{R}^{H_{k-1} \times m}`
-   是一个参数矩阵。它为每一个由
-   :math:`(\boldsymbol{X}_{i,*}^{k-1}, \boldsymbol{X}_{j,*}^0)`
-   产生的交互向量都提供了一个权重，通过加权求和的方式，将
-   :math:`H_{k-1} \times m` 个交互向量的信息“压缩”成一个全新的 :math:`D`
-   维向量 :math:`\boldsymbol{X}_{h,*}^k`\ 。
+- :math:`\boldsymbol{W}_{k,h} \in \mathbb{R}^{H_{k-1} \times m}`
+  是一个参数矩阵。它为每一个由
+  :math:`(\boldsymbol{X}_{i,*}^{k-1}, \boldsymbol{X}_{j,*}^0)`
+  产生的交互向量都提供了一个权重，通过加权求和的方式，将
+  :math:`H_{k-1} \times m` 个交互向量的信息“压缩”成一个全新的 :math:`D`
+  维向量 :math:`\boldsymbol{X}_{h,*}^k`\ 。
 
 这个过程清晰地展示了特征交互是如何在向量级别上逐层发生的。第 :math:`k`
 层的输出 :math:`\boldsymbol{X}_k` 包含了所有 :math:`k+1`
@@ -263,7 +263,7 @@ Transformer 中的 Token Embeddings。
 AutoInt
 的核心是其交互层，该层由多头自注意力机制构成。对于任意两个特征的嵌入向量
 :math:`\boldsymbol{e}_m` 和
-:math:`\boldsymbol{e}_k`\ ，自注意力机制会计算它们之间的相关性得分。这个过程在每个“注意力头”（Head）
+:math:`\boldsymbol{e}_k`\ ，自注意力机制会计算它们之间的相关性得分。这个过程在每个”注意力头”（Head）
 :math:`h` 中独立进行。具体来说，对于特征 :math:`m` 和特征
 :math:`k`\ ，它们在第 :math:`h` 个注意力头中的相关性得分
 :math:`\alpha_{m,k}^{(h)}` 计算如下：
@@ -283,10 +283,10 @@ AutoInt
 :math:`\boldsymbol{W}_{\text{Query}}^{(h)} \in \mathbb{R}^{d' \times d}`
 和
 :math:`\boldsymbol{W}_{\text{Key}}^{(h)} \in \mathbb{R}^{d' \times d}`
-是可学习的投影矩阵，它们分别将原始嵌入向量映射到“查询”（Query）和“键”（Key）空间。\ :math:`d'`
+是可学习的投影矩阵，它们分别将原始嵌入向量映射到”查询”（Query）和”键”（Key）空间。\ :math:`d'`
 是投影后的维度。
 
-在计算出所有特征对之间的相关性得分后，模型会利用这些得分来对所有特征的“值”（Value）向量进行加权求和，从而为特征
+在计算出所有特征对之间的相关性得分后，模型会利用这些得分来对所有特征的”值”（Value）向量进行加权求和，从而为特征
 :math:`\boldsymbol{e}_m` 生成一个新的、融合了其他特征信息的表示
 :math:`\boldsymbol{\tilde{e}}_m^{(h)}`\ ：
 

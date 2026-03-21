@@ -104,13 +104,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -250,13 +250,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -378,11 +378,11 @@ Show Source
   <section id="id1">
 <h1><span class="section-number">2.6. </span>本章总结<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>本章围绕推荐系统召回阶段的核心问题——如何从海量候选中高效筛选出与用户相关的候选集——介绍了五类技术方法。</p>
-<p><strong>协同过滤</strong>从用户-物品交互矩阵出发。ItemCF通过物品共现关系建立相似度矩阵，Swing进一步通过二部图中的swing结构过滤热门物品的噪音干扰。UserCF从用户视角出发，用相似用户的行为来预测目标用户的偏好。矩阵分解是这一阶段的关键转折：从FunkSVD到BiasSVD，它将用户和物品映射到连续的低维向量空间，引入了向量化表示的思想，为后续所有基于嵌入的技术奠定了基础。</p>
-<p><strong>I2I召回</strong>将NLP中Word2Vec的序列建模思想迁移到推荐场景，把用户行为序列当作“句子”来学习物品向量。Item2Vec是最直接的迁移，EGES通过融合商品属性信息解决冷启动问题，Airbnb的实践则展示了如何将业务目标（预订转化）融入序列的构建方式。</p>
-<p><strong>双塔模型</strong>将推荐问题拆成用户编码和物品编码两个独立子问题，物品向量离线预计算，用户向量实时生成，通过近似最近邻搜索完成匹配。FM首次实现了用户-物品交互的向量分解，DSSM用深度网络提升表达能力，YouTubeDNN将召回重新定义为“预测用户下一个行为”并在超大规模场景下验证了双塔架构的实用性。</p>
+<p><strong>协同过滤</strong>从用户-物品交互矩阵出发。ItemCF通过物品共现关系建立相似度矩阵，Swing进一步通过二部图中的swing结构过滤热门物品的噪声干扰。UserCF从用户视角出发，用相似用户的行为来预测目标用户的偏好。矩阵分解是这一阶段的关键转折：从FunkSVD到BiasSVD，它将用户和物品映射到连续的低维向量空间，引入了向量化表示的思想，为后续所有基于嵌入的技术奠定了基础。</p>
+<p><strong>I2I召回</strong>将NLP中Word2Vec的序列建模思想迁移到推荐场景，把用户行为序列当作”句子”来学习物品向量。Item2Vec是最直接的迁移，EGES通过融合商品属性信息解决冷启动问题，Airbnb的实践则展示了如何将业务目标（预订转化）融入序列的构建方式。</p>
+<p><strong>双塔模型</strong>将推荐问题拆成用户编码和物品编码两个独立子问题，物品向量离线预计算，用户向量实时生成，通过近似最近邻搜索完成匹配。FM首次实现了用户-物品交互的向量分解，DSSM用深度网络提升表达能力，YouTubeDNN将召回重新定义为”预测用户下一个行为”并在超大规模场景下验证了双塔架构的实用性。</p>
 <p><strong>序列召回</strong>关注的是双塔模型忽略的问题：用户兴趣的多样性和时效性。MIND用多个向量分别捕捉用户的不同兴趣维度，SDM将兴趣显式拆分为短期即时需求和长期稳定偏好，通过门控机制动态融合。</p>
-<p><strong>流式索引召回</strong>跳出了模型内部“压缩”的思路。Trinity将物品映射到聚类空间，用统计直方图完整保留用户的全量历史兴趣，设计了多元兴趣、长尾兴趣和长期兴趣三个互补的召回器。Streaming
+<p><strong>流式索引召回</strong>跳出了模型内部”压缩”的思路。Trinity将物品映射到聚类空间，用统计直方图完整保留用户的全量历史兴趣，设计了多元兴趣、长尾兴趣和长期兴趣三个互补的召回器。Streaming
 VQ则解决索引时效性问题，让物品到聚类的映射关系实时更新，不再需要定期重建。</p>
 <p>这五类方法共享一条演进脉络：协同过滤提出了向量化表示的思想，I2I和双塔将其与深度学习结合并建立了高效的检索范式，序列召回引入时序建模拓展了可利用的信息维度，流式索引从结构层面突破了压缩机制和静态索引的局限。无论哪种方法，召回阶段追求的核心目标始终一致：在保持计算效率的前提下，尽可能全面地理解用户兴趣，为后续的排序模型提供高质量的候选集。</p>
 </section>

@@ -105,13 +105,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -251,13 +251,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -454,8 +454,7 @@ Show Source
 <h3><span class="section-number">10.3.2.1. </span>原始数据加载<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
 <p>MovieLens-1M 数据集包含以下三个核心表。</p>
 <ul class="simple">
-<li><p><strong>users.pkl</strong>：6040
-个用户，包含性别、年龄、职业、邮编等人口统计特征</p></li>
+<li><p><strong>users.pkl</strong>：6040 个用户，包含性别、年龄、职业、邮编等人口统计特征</p></li>
 <li><p><strong>movies.pkl</strong>：3883 部电影，包含标题、类型、年份等属性</p></li>
 <li><p><strong>ratings.pkl</strong>：约 100 万条评分记录，每条记录包含用户 ID、电影
 ID、评分（1-5）和时间戳</p></li>
@@ -517,10 +516,10 @@ ID、性别、类型等。这些特征需要编码为整数，才能输入神经
 </pre></div>
 </div>
 <p>编码时有一个细节：所有编码值都从 1 开始，0 预留给未知值和填充。这是因为
-Embedding 层的第 0 个向量通常用于表示“不存在”或“未知”的情况。</p>
+Embedding 层的第 0 个向量通常用于表示”不存在”或”未知”的情况。</p>
 <p><strong>行为序列构建</strong></p>
 <p>YoutubeDNN
-的核心思想是“预测用户下一个会观看的视频”。因此，我们需要构建滑动窗口形式的训练样本：给定用户的前
+的核心思想是”预测用户下一个会观看的视频”。因此，我们需要构建滑动窗口形式的训练样本：给定用户的前
 <span class="math notranslate nohighlight">\(k\)</span> 次观影记录，预测第 <span class="math notranslate nohighlight">\(k+1\)</span> 次观看的电影。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_train_eval_samples</span><span class="p">(</span>
     <span class="n">data_df</span><span class="p">,</span> <span class="n">user_columns</span><span class="p">,</span> <span class="n">item_columns</span><span class="p">,</span>
@@ -607,9 +606,9 @@ RNN 或 Transformer）来说，这种排列方式更自然。</p>
 <p>正样本直接来自用户的评分记录，但负样本需要额外构造。我们采用以下两种负采样策略。</p>
 <ol class="arabic simple">
 <li><p><strong>困难负样本（Hard
-Negatives）</strong>：用户曝光过但没有产生正向交互的物品。这些样本是“困难”的，因为用户看到了但选择不点击。</p></li>
+Negatives）</strong>：用户曝光过但没有产生正向交互的物品。这些样本是”困难”的，因为用户看到了但选择不点击。</p></li>
 <li><p><strong>随机负样本（Random
-Negatives）</strong>：从用户没有交互过的物品中随机采样。这些样本相对“简单”，用于扩充负样本数量。</p></li>
+Negatives）</strong>：从用户没有交互过的物品中随机采样。这些样本相对”简单”，用于扩充负样本数量。</p></li>
 </ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_negative_samples</span><span class="p">(</span>
     <span class="n">df_merged</span><span class="p">,</span> <span class="n">movie_vocab</span><span class="p">,</span>

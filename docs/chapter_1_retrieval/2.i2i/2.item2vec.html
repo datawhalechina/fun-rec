@@ -106,13 +106,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.2. I2I召回</a><ul class="current">
@@ -252,13 +252,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.2. I2I召回</a><ul class="current">
@@ -383,7 +383,7 @@ Show Source
 <section id="id1">
 <h2><span class="section-number">2.2.2.1. </span>从词语到物品的映射<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
 <p>Item2Vec <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id18" title="Barkan, O., &amp; Koenigstein, N. (2016). Item2vec: neural item embedding for collaborative filtering. 2016 IEEE 26th international workshop on machine learning for signal processing (MLSP) (pp. 1–6).">Barkan and Koenigstein, 2016</a>)</span>
-的核心洞察在于发现了用户行为数据与文本数据的结构相似性。在文本中，一个句子由多个词语组成，词语之间的共现关系反映了语义相似性。类似地，在推荐系统中，每个用户的交互历史可以看作一个“句子”，其中包含的物品就是“词语”。如果两个物品经常被同一个用户交互，那么它们之间就存在相似性。</p>
+的核心洞察在于发现了用户行为数据与文本数据的结构相似性。在文本中，一个句子由多个词语组成，词语之间的共现关系反映了语义相似性。类似地，在推荐系统中，每个用户的交互历史可以看作一个”句子”，其中包含的物品就是”词语”。如果两个物品经常被同一个用户交互，那么它们之间就存在相似性。</p>
 <p>这种映射关系可以表示为：</p>
 <ul class="simple">
 <li><p><strong>词语</strong> → <strong>物品</strong></p></li>
@@ -415,7 +415,7 @@ Show Source
     <span class="p">)</span>
 </pre></div>
 </div>
-<p>这里的<code class="docutils literal notranslate"><span class="pre">train_hist_movie_id_list</span></code>就是前面提到的数据集<span class="math notranslate nohighlight">\(\mathcal{S}\)</span>，其中每个用户的交互历史被视为一个“句子”，物品ID对应“词语”。训练完成后，每个物品都得到一个稠密的向量表示。</p>
+<p>这里的<code class="docutils literal notranslate"><span class="pre">train_hist_movie_id_list</span></code>就是前面提到的数据集<span class="math notranslate nohighlight">\(\mathcal{S}\)</span>，其中每个用户的交互历史被视为一个”句子”，物品ID对应”词语”。训练完成后，每个物品都得到一个稠密的向量表示。</p>
 <p>下面训练Item2Vec并评估召回效果。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 

@@ -1,12 +1,12 @@
 
 .. _itemcf:
 
-物品的协同过滤
-==============
+ItemCF：基于物品相似度的协同过滤
+================================
 
 
 基于物品的协同过滤（ItemCF） :cite:`linden2003amazon`
-的核心思想是：用户的兴趣具有连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。ItemCF关注的问题是“和你喜欢的物品相似的还有什么”，通过计算物品之间的相似度来生成推荐。
+的核心思想是：用户的兴趣具有连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。ItemCF关注的问题是”和你喜欢的物品相似的还有什么”，通过计算物品之间的相似度来生成推荐结果。
 
 .. _itemcf_illustration:
 
@@ -17,7 +17,8 @@
 
 
 
-从上图可以看到，当我们要给左方用户推荐物品时，ItemCF会分析T恤和夹克之间的相似性。由于右方三个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么夹克就成为了一个不错的推荐选择。
+从 :numref:`itemcf_illustration`
+可以看到，当我们要给左侧用户推荐物品时，ItemCF会分析T恤和夹克之间的相似性。由于右侧三个用户都同时喜欢这两种服装，系统判断它们具有较高的相似性。既然左方用户喜欢T恤，那么夹克就成为了一个不错的推荐选择。
 
 ItemCF核心算法
 --------------
@@ -28,10 +29,10 @@ ItemCF核心算法
 在大多数实际场景中，只有用户是否对物品有过交互行为的数据（如点击、购买、收藏等），而没有具体的评分信息。ItemCF
 使用余弦相似度量化物品间的相似程度：
 
-.. math:: w_{ij} = \frac{C[i][j]}{\sqrt{|N(i)| \cdot |N(j)|}}
+.. math:: w_{ij} = \frac{\boldsymbol{C}[i][j]}{\sqrt{|\mathcal{N}(i)| \cdot |\mathcal{N}(j)|}}
 
-其中 :math:`|N(i)|` 表示与物品 :math:`i`
-有交互的用户总数，\ :math:`C[i][j]`
+其中 :math:`|\mathcal{N}(i)|` 表示与物品 :math:`i`
+有交互的用户总数，\ :math:`\boldsymbol{C}[i][j]`
 是两个物品的共现次数（同时对两个物品有过行为的用户数）。分母对共现次数进行标准化，防止热门商品占据绝对优势。
 
 候选物品推荐
@@ -39,11 +40,11 @@ ItemCF核心算法
 
 有了物品相似度矩阵，ItemCF 的线上推荐流程如下：
 
-首先，系统会选取用户最近交互的物品作为兴趣种子（通常是几百个），然后为每个种子物品找到最相似的若干个候选物品（如Top-10），这样可以快速生成大量候选集合。接下来计算用户\ :math:`u`\ 对候选物品\ :math:`i`\ 的兴趣分数：
+首先，系统会选取用户最近交互的物品作为种子物品（通常是几百个），然后为每个种子物品找到最相似的若干个候选物品（如Top-10），这样可以快速生成大量候选集合。接下来计算用户\ :math:`u`\ 对候选物品\ :math:`i`\ 的兴趣分数：
 
-.. math:: p(u, i) = \sum_{j \in N(u)} w_{ij} \cdot r_{uj}
+.. math:: p(u, i) = \sum_{j \in \mathcal{N}(u)} w_{ij} \cdot r_{uj}
 
-其中\ :math:`N(u)`\ 是用户\ :math:`u`\ 交互过的物品集合，\ :math:`w_{ij}`\ 是物品\ :math:`i`\ 和\ :math:`j`\ 的相似度，\ :math:`r_{uj}`\ 表示用户对物品\ :math:`j`\ 的兴趣强度（可以是简单的1，也可以根据交互时间、类型等设置不同权重）。
+其中\ :math:`\mathcal{N}(u)`\ 是用户\ :math:`u`\ 交互过的物品集合，\ :math:`w_{ij}`\ 是物品\ :math:`i`\ 和\ :math:`j`\ 的相似度，\ :math:`r_{uj}`\ 表示用户对物品\ :math:`j`\ 的兴趣强度（可以是简单的1，也可以根据交互时间、类型等设置不同权重）。
 
 最终，系统对所有候选物品按兴趣分数排序，选择Top-N物品作为ItemCF通道的推荐结果。
 
@@ -51,15 +52,16 @@ ItemCF核心算法
 ~~~~~~~~~~~~
 
 直接计算所有物品对相似度的复杂度为
-:math:`O(|I|^2 \cdot |U|)`\ ，但大多数物品对之间没有共同的用户交互，相似度必然为
+:math:`O(|\mathcal{I}|^2 \cdot |\mathcal{U}|)`\ ，但大多数物品对之间没有共同的用户交互，相似度必然为
 0。基于用户-物品倒排表可以大幅提速：为每个用户维护一个物品交互列表，遍历时将列表中的物品两两配对，累加共现矩阵
-:math:`C[i][j]`\ ，再除以 :math:`\sqrt{|N(i)||N(j)|}`
+:math:`\boldsymbol{C}[i][j]`\ ，再除以
+:math:`\sqrt{|\mathcal{N}(i)||\mathcal{N}(j)|}`
 得到余弦相似度，只需计算真正有共同用户的物品对。
 
 优化后的复杂度约为 :math:`O(R \cdot \bar{m})`\ （\ :math:`R`
 为总交互数，\ :math:`\bar{m}`
 为用户平均交互物品数），在稀疏数据场景下由于
-:math:`\bar{m} \ll |I|`\ ，效率远高于暴力计算。
+:math:`\bar{m} \ll |\mathcal{I}|`\ ，效率远高于暴力计算。
 
 处理评分数据的相似度计算
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,13 +69,13 @@ ItemCF核心算法
 前面的余弦相似度适用于隐式反馈场景（如点击、浏览），当有显式评分数据（如5星评分）时，皮尔逊相关系数能更好地捕获物品间的相似性模式
 :cite:`sarwar2001item`\ ：
 
-.. math:: w_{ij} = \frac{\sum_{u \in U_{ij}}(r_{ui} - \bar{r}_i)(r_{uj} - \bar{r}_j)}{\sqrt{\sum_{u \in U_{ij}}(r_{ui} - \bar{r}_i)^2}\sqrt{\sum_{u \in U_{ij}}(r_{uj} - \bar{r}_j)^2}}
+.. math:: w_{ij} = \frac{\sum_{u \in \mathcal{U}_{ij}}(r_{ui} - \bar{r}_i)(r_{uj} - \bar{r}_j)}{\sqrt{\sum_{u \in \mathcal{U}_{ij}}(r_{ui} - \bar{r}_i)^2}\sqrt{\sum_{u \in \mathcal{U}_{ij}}(r_{uj} - \bar{r}_j)^2}}
 
-其中\ :math:`U_{ij}`\ 表示同时评价过物品\ :math:`i`\ 和\ :math:`j`\ 的用户集合，\ :math:`r_{ui}`\ 是用户\ :math:`u`\ 对物品\ :math:`i`\ 的评分，\ :math:`\bar{r}_i`\ 是物品\ :math:`i`\ 的平均评分。
+其中\ :math:`\mathcal{U}_{ij}`\ 表示同时评价过物品\ :math:`i`\ 和\ :math:`j`\ 的用户集合，\ :math:`r_{ui}`\ 是用户\ :math:`u`\ 对物品\ :math:`i`\ 的评分，\ :math:`\bar{r}_i`\ 是物品\ :math:`i`\ 的平均评分。
 
 皮尔逊相关系数通过中心化处理，消除了不同物品评分分布的差异，关注评分的相对趋势而非绝对值。基于它可以预测用户对未接触物品的评分：
 
-.. math:: \hat{r}_{u,j} = \bar{r}_{j} + \frac{\sum_{k \in S_j} w_{jk}\,\left( r_{u,k} - \bar{r}_{k} \right)}{\sum_{k \in S_j} w_{jk}}
+.. math:: \hat{r}_{u,j} = \bar{r}_{j} + \frac{\sum_{k \in \mathcal{S}_j} w_{jk}\,\left( r_{u,k} - \bar{r}_{k} \right)}{\sum_{k \in \mathcal{S}_j} w_{jk}}
    :label: eq-itemcf-predict
 
 这个公式以物品 :math:`j`
@@ -82,8 +84,8 @@ ItemCF核心算法
 ItemCF评分预测示例
 ------------------
 
-表格 :numref:`table-itemcf-data` 是和 :numref:`usercf`
-相同的用户评分数据。
+:numref:`table-itemcf-data` 展示了一组用户评分数据，包含 5 位用户对 5
+个物品的评分，其中用户 1 对物品 5 的评分未知，是我们需要预测的目标。
 
 .. _table-itemcf-data:
 
@@ -100,18 +102,19 @@ ItemCF评分预测示例
    ===== ===== ===== ===== ===== =====
 
 
-计算物品之间的相似度，以物品5和物品1之间的皮尔逊相关系数为例。\ :math:`\hat{r}_{item5}=3.25,\ \hat{r}_{item1}=2.75`,
-向量减去均值:
-:math:`\text{item5}:(-0.25, 1.75, 0.75, -2.25) \quad \text{item1}: (0.25, 1.25, 0.25, -1.75)`.
+接下来以物品 5 和物品 1
+为例，利用前述皮尔逊相关系数公式计算它们之间的相似度。首先计算两个物品的平均评分（仅使用用户
+2～5 的已知评分）：
 
-.. math::
+.. math:: \bar{r}_5 = (3+5+4+1)/4 = 3.25, \quad \bar{r}_1 = (3+4+3+1)/4 = 2.75
 
+将每位用户的评分减去对应物品的均值，得到中心化评分向量：
 
-   \begin{aligned}
-   \text{sim}(item5,item1)&=\frac{\sum_{u \in U}(r_{u,item5} - \bar{r}_{item5})(r_{u,item1} - \bar{r}_{item1})}{\sqrt{\sum_{u \in U}(r_{u,item5} - \bar{r}_{item5})^2}\sqrt{\sum_{u \in U}(r_{u,item1} - \bar{r}_{item1})^2}}\\
-   &=cos((-0.25,  1.75,  0.75, -2.25),(0.25,  1.25,  0.25, -1.75))\\
-   &=0.96946
-   \end{aligned}
+.. math:: \text{物品5}: (-0.25,\; 1.75,\; 0.75,\; -2.25), \quad \text{物品1}: (0.25,\; 1.25,\; 0.25,\; -1.75)
+
+皮尔逊相关系数等价于中心化向量的余弦相似度，代入计算：
+
+.. math:: w_{5,1} = \cos\big((-0.25,\; 1.75,\; 0.75,\; -2.25),\;(0.25,\; 1.25,\; 0.25,\; -1.75)\big) = 0.969
 
 根据皮尔逊相关系数，可以找到与物品5最相似的两个物品是物品1和物品4。基于相似物品，根据上面的计算公式
 :eq:`eq-itemcf-predict`\ ，可以计算出 用户1 对物品5的最终得分是:
@@ -128,6 +131,9 @@ ItemCF评分预测示例
 代码实践
 --------
 
+下面用 Python 复现上述 ItemCF 评分预测流程。首先构造
+:numref:`table-itemcf-data` 中的评分数据：
+
 .. raw:: latex
 
    \diilbookstyleinputcell
@@ -143,7 +149,7 @@ ItemCF评分预测示例
        'item5': {'user2': 3, 'user3': 5, 'user4': 4, 'user5': 1},
    }
 
-计算物品间的相似度矩阵：
+计算物品间相似度矩阵的代码如下所示：
 
 .. raw:: latex
 
@@ -219,7 +225,8 @@ ItemCF评分预测示例
    target_item_pred = target_user_mean_rating + weighted_scores / corr_values_sum
    print(f'用户{target_user}对物品{target_item}的预测评分为：{target_item_pred}')
 
-下面我们训练和评估完整的ItemCF模型。
+以上代码逐步演示了单个用户-物品对的预测过程。接下来调用封装好的实验框架，在完整数据集上运行
+ItemCF 并查看评估指标：
 
 .. raw:: latex
 
@@ -227,6 +234,21 @@ ItemCF评分预测示例
 
 .. code:: python
 
-   from funrec import run_experiment
+    from funrec import run_experiment
+    
+    run_experiment('item_cf')
 
-   run_experiment('item_cf')
+
+.. raw:: latex
+
+   \diilbookstyleoutputcell
+
+.. parsed-literal::
+    :class: output
+
+    +---------------+--------------+----------------+---------------+
+    |   hit_rate@10 |   hit_rate@5 |   precision@10 |   precision@5 |
+    +===============+==============+================+===============+
+    |        0.6594 |       0.5459 |         0.1444 |        0.1826 |
+    +---------------+--------------+----------------+---------------+
+

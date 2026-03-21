@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     
-    <title>2.1.3. 用户的协同过滤 &#8212; 深度推荐算法实践: 从级联架构到生成式范式 1.0.0 documentation</title>
+    <title>2.1.3. UserCF：基于用户相似度的协同过滤 &#8212; 深度推荐算法实践: 从级联架构到生成式范式 1.0.0 documentation</title>
 
     <link rel="stylesheet" href="../../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/sphinx_materialdesign_theme.css" type="text/css" />
@@ -28,8 +28,8 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="2.1.4. 矩阵分解" href="4.mf.html" />
-    <link rel="prev" title="2.1.2. Swing：面向工业场景的优化" href="2.swing.html" /> 
+    <link rel="next" title="2.1.4. 矩阵分解：从相似度计算到向量表示学习" href="4.mf.html" />
+    <link rel="prev" title="2.1.2. Swing：面向工业场景的相似度优化" href="2.swing.html" /> 
   </head>
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
@@ -38,7 +38,7 @@
         <nav class="mdl-navigation breadcrumb">
             <a class="mdl-navigation__link" href="../index.html"><span class="section-number">2. </span>快速候选召回</a><i class="material-icons">navigate_next</i>
             <a class="mdl-navigation__link" href="index.html"><span class="section-number">2.1. </span>协同过滤</a><i class="material-icons">navigate_next</i>
-            <a class="mdl-navigation__link is-active"><span class="section-number">2.1.3. </span>用户的协同过滤</a>
+            <a class="mdl-navigation__link is-active"><span class="section-number">2.1.3. </span>UserCF：基于用户相似度的协同过滤</a>
         </nav>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
@@ -106,13 +106,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.1. 协同过滤</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -252,13 +252,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">2.1. 协同过滤</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -378,11 +378,11 @@ Show Source
         <div class="page-content" role="main">
         
   <section id="usercf">
-<span id="id1"></span><h1><span class="section-number">2.1.3. </span>用户的协同过滤<a class="headerlink" href="#usercf" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1><span class="section-number">2.1.3. </span>UserCF：基于用户相似度的协同过滤<a class="headerlink" href="#usercf" title="Permalink to this heading">¶</a></h1>
 <p>基于用户的协同过滤（UserCF） <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id3" title="Resnick, P., Iacovou, N., Suchak, M., Bergstrom, P., &amp; Riedl, J. (1994). Grouplens: an open architecture for collaborative filtering of netnews. Proceedings of the 1994 ACM conference on Computer supported cooperative work (pp. 175–186).">Resnick <em>et al.</em>, 1994</a>)</span>
-的核心思想是：具有相似历史行为的用户，未来偏好也相似。它先找到与目标用户偏好最接近的“邻居用户”，再基于这些邻居的行为来预测目标用户的兴趣。如
+的核心思想是：具有相似历史行为的用户，未来偏好也相似。它先找到与目标用户偏好最接近的”邻居用户”，再基于这些邻居的行为来预测目标用户的兴趣。如
 <a class="reference internal" href="#usercf-illustration"><span class="std std-numref">图2.1.5</span></a>
-所示，如果用户A和用户B都购买了衣服和帽子，那么当用户B还购买了裤子和鞋子时，我们就可以推测用户A可能也会对这些商品感兴趣。</p>
+所示，左侧用户和右侧用户都喜欢T恤和Polo衫，说明两人爱好相似。右侧用户还喜欢夹克，因此系统推测左侧用户也可能喜欢夹克，将其作为推荐结果。</p>
 <figure class="align-default" id="id9">
 <span id="usercf-illustration"></span><a class="reference internal image-reference" href="../../_images/usercf_illustration.svg"><img alt="../../_images/usercf_illustration.svg" src="../../_images/usercf_illustration.svg" width="400px" /></a>
 <figcaption>
@@ -394,31 +394,35 @@ Show Source
 <section id="id4">
 <h3><span class="section-number">2.1.3.1.1. </span>用户相似度计算<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
 <p>假设用户 <span class="math notranslate nohighlight">\(u\)</span> 和用户 <span class="math notranslate nohighlight">\(v\)</span> 分别对应物品集合 <span class="math notranslate nohighlight">\(N(u)\)</span> 和
-<span class="math notranslate nohighlight">\(N(v)\)</span>（即他们各自有过行为的物品），常用的相似度计算方法有以下三种。</p>
-<p><strong>杰卡德相似系数</strong>：如果你的系统只记录用户是否对物品有过行为（比如是否点击、购买），而没有具体的评分，那么杰卡德系数是个好选择：</p>
+<span class="math notranslate nohighlight">\(N(v)\)</span>（即他们各自有过行为的物品），常用的相似度矩阵的计算方法有以下三种。</p>
+<p><strong>杰卡德相似系数</strong>：当系统只记录用户是否对物品有过行为（比如是否点击、购买），而没有具体的评分时，可以用杰卡德系数来计算用户间的相似度
+<span class="math notranslate nohighlight">\(w_{uv}\)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-usercf-0">
-<span class="eqno">(2.1.13)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-0" title="Permalink to this equation">¶</a></span>\[w_{uv} = \frac{|N(u) \cap N(v)|}{|N(u) \cup N(v)|}\]</div>
+<span class="eqno">(2.1.15)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-0" title="Permalink to this equation">¶</a></span>\[w_{uv} = \frac{|N(u) \cap N(v)|}{|N(u) \cup N(v)|}\]</div>
 <p>这个公式可以直观理解为：分子是两人共同喜欢的物品数量，分母是两人喜欢的物品总数（去重后）。</p>
-<p><strong>余弦相似度</strong>：将每个用户看成一个向量，计算向量间的夹角：</p>
+<p><strong>余弦相似度</strong>：将每个用户的行为记录看作一个向量，通过向量夹角的余弦值来度量用户间的相似度
+<span class="math notranslate nohighlight">\(w_{uv}\)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-usercf-1">
-<span class="eqno">(2.1.14)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-1" title="Permalink to this equation">¶</a></span>\[w_{uv} = \frac{|N(u) \cap N(v)|}{\sqrt{|N(u)|\cdot|N(v)|}}\]</div>
+<span class="eqno">(2.1.16)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-1" title="Permalink to this equation">¶</a></span>\[w_{uv} = \frac{|N(u) \cap N(v)|}{\sqrt{|N(u)|\cdot|N(v)|}}\]</div>
 <p>余弦相似度考虑了用户活跃度的差异。</p>
-<p><strong>皮尔逊相关系数</strong>：当你有具体的评分数据时（比如5星评分），皮尔逊系数能更好地捕捉用户的偏好模式：</p>
+<p><strong>皮尔逊相关系数</strong>：当系统拥有具体的评分数据时（比如5星评分），可以利用用户的评分向量计算皮尔逊相关系数，作为相似度
+<span class="math notranslate nohighlight">\(w_{uv}\)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-eq-usercf-pearson">
-<span class="eqno">(2.1.15)<a class="headerlink" href="#equation-eq-usercf-pearson" title="Permalink to this equation">¶</a></span>\[w_{uv} = \frac{\sum_{i \in I}(r_{ui} - \bar{r}_u)(r_{vi} - \bar{r}_v)}{\sqrt{\sum_{i \in I}(r_{ui} - \bar{r}_u)^2}\sqrt{\sum_{i \in I}(r_{vi} - \bar{r}_v)^2}}\]</div>
+<span class="eqno">(2.1.17)<a class="headerlink" href="#equation-eq-usercf-pearson" title="Permalink to this equation">¶</a></span>\[w_{uv} = \frac{\sum_{i \in I}(r_{ui} - \bar{r}_u)(r_{vi} - \bar{r}_v)}{\sqrt{\sum_{i \in I}(r_{ui} - \bar{r}_u)^2}\sqrt{\sum_{i \in I}(r_{vi} - \bar{r}_v)^2}}\]</div>
 <p>这里<span class="math notranslate nohighlight">\(r_{ui}\)</span>表示用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的评分，<span class="math notranslate nohighlight">\(\bar{r}_u\)</span>是用户<span class="math notranslate nohighlight">\(u\)</span>的平均评分，<span class="math notranslate nohighlight">\(I\)</span>是两个用户都评价过的物品集合。皮尔逊系数通过中心化处理，有效消除了个人评分习惯的差异。有些人习惯给高分（“好人”），有些人比较严格，通过减去各自的平均分，我们关注的是评分的相对变化趋势，而不是绝对数值。</p>
-<p>计算完相似度后，选择相似度最高的 K 个用户作为“邻居”。</p>
 </section>
 <section id="id5">
 <h3><span class="section-number">2.1.3.1.2. </span>候选物品推荐<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
-<p>有了相似用户，利用他们的偏好来预测目标用户对未交互物品的兴趣。</p>
+<p>计算完相似度矩阵后，对目标用户 <span class="math notranslate nohighlight">\(u\)</span> 选择相似度最高的 <span class="math notranslate nohighlight">\(K\)</span>
+个用户作为邻居集合
+<span class="math notranslate nohighlight">\(\mathcal{S}_u\)</span>，再基于这些邻居的已知评分来预测目标用户对未交互物品的兴趣。</p>
 <p><strong>简单加权平均</strong>：最直接的方法是用相似度作为权重，对邻居的评分进行加权平均：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-usercf-2">
-<span class="eqno">(2.1.16)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-2" title="Permalink to this equation">¶</a></span>\[\hat{r}_{u,p} = \frac{\sum_{v \in S_u} w_{uv} \, r_{v,p}}{\sum_{v \in S_u} w_{uv}}\]</div>
+<span class="eqno">(2.1.18)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-2" title="Permalink to this equation">¶</a></span>\[\hat{r}_{u,p} = \frac{\sum_{v \in S_u} w_{uv} \, r_{v,p}}{\sum_{v \in S_u} w_{uv}}\]</div>
 <p>这里<span class="math notranslate nohighlight">\(\hat{r}_{u,p}\)</span>是预测的用户<span class="math notranslate nohighlight">\(u\)</span>对物品<span class="math notranslate nohighlight">\(p\)</span>的评分，<span class="math notranslate nohighlight">\(S_u\)</span>是邻居用户集合，<span class="math notranslate nohighlight">\(w_{uv}\)</span>是相似度权重，<span class="math notranslate nohighlight">\(r_{v,p}\)</span>是邻居<span class="math notranslate nohighlight">\(v\)</span>对物品<span class="math notranslate nohighlight">\(p\)</span>的实际评分。</p>
 <p><strong>考虑评分偏置的版本</strong>：为了进一步消除个人评分习惯的影响，我们可以加入偏置修正：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-usercf-3">
-<span class="eqno">(2.1.17)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-3" title="Permalink to this equation">¶</a></span>\[\hat{r}_{u,p} = \bar{r}_{u} + \frac{\sum_{v \in S_u} w_{uv} \, (r_{v,p} - \bar{r}_{v})}{\sum_{v \in S_u} w_{uv}}\]</div>
+<span class="eqno">(2.1.19)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-3" title="Permalink to this equation">¶</a></span>\[\hat{r}_{u,p} = \bar{r}_{u} + \frac{\sum_{v \in S_u} w_{uv} \, (r_{v,p} - \bar{r}_{v})}{\sum_{v \in S_u} w_{uv}}\]</div>
 <p>这里<span class="math notranslate nohighlight">\(\bar{r}_u\)</span>和<span class="math notranslate nohighlight">\(\bar{r}_v\)</span>分别是用户<span class="math notranslate nohighlight">\(u\)</span>和<span class="math notranslate nohighlight">\(v\)</span>的平均评分。这个公式的思路是：先看邻居们对这个物品的评分相比他们平均水平如何，然后根据目标用户的平均评分水平进行调整。</p>
 </section>
 <section id="id6">
@@ -432,7 +436,7 @@ Show Source
 个用户，收集他们交互过的物品作为候选集，计算目标用户 <span class="math notranslate nohighlight">\(u\)</span>
 对候选物品 <span class="math notranslate nohighlight">\(i\)</span> 的兴趣分数：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-usercf-4">
-<span class="eqno">(2.1.18)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-4" title="Permalink to this equation">¶</a></span>\[p(u, i) = \sum_{v \in S_u \cap N(i)} w_{uv} \cdot r_{vi}\]</div>
+<span class="eqno">(2.1.20)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-4" title="Permalink to this equation">¶</a></span>\[p(u, i) = \sum_{v \in S_u \cap N(i)} w_{uv} \cdot r_{vi}\]</div>
 <p>其中<span class="math notranslate nohighlight">\(S_u\)</span>是与用户<span class="math notranslate nohighlight">\(u\)</span>最相似的K个用户集合，<span class="math notranslate nohighlight">\(N(i)\)</span>是对物品<span class="math notranslate nohighlight">\(i\)</span>有过行为的用户集合，<span class="math notranslate nohighlight">\(w_{uv}\)</span>是用户相似度，<span class="math notranslate nohighlight">\(r_{vi}\)</span>表示用户<span class="math notranslate nohighlight">\(v\)</span>对物品<span class="math notranslate nohighlight">\(i\)</span>的兴趣强度（可以是简单的1，也可以根据评分、交互时间等设置权重）。</p>
 <p>系统对候选物品按兴趣分数排序，选择 Top-N
 作为推荐结果。优化后的复杂度约为
@@ -503,9 +507,9 @@ Show Source
 </ul>
 <p>根据相似用户，计算用户1对物品5的最终得分。用户2对物品5的评分是3，
 用户3对物品5的打分是5， 那么根据上面的计算公式
-<a class="reference internal" href="#equation-eq-usercf-pearson">(2.1.15)</a>，可以计算出 用户1 对物品5的最终得分是:</p>
+<a class="reference internal" href="#equation-eq-usercf-pearson">(2.1.17)</a>，可以计算出 用户1 对物品5的最终得分是:</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-1-cf-3-usercf-5">
-<span class="eqno">(2.1.19)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-5" title="Permalink to this equation">¶</a></span>\[P_{user1, item5}=\bar{r}_{user1}+\frac{\sum_{k=1}^{2}\left(w_{user1,user k}\left(r_{userk, item5}-\bar{r}_{userk}\right)\right)}{\sum_{k=1}^{2} w_{user1, userk}}=4+\frac{0.85*(3-2.4)+0.7*(5-3.8)}{0.85+0.7}=4.87\]</div>
+<span class="eqno">(2.1.21)<a class="headerlink" href="#equation-chapter-1-retrieval-1-cf-3-usercf-5" title="Permalink to this equation">¶</a></span>\[P_{user1, item5}=\bar{r}_{user1}+\frac{\sum_{k=1}^{2}\left(w_{user1,user k}\left(r_{userk, item5}-\bar{r}_{userk}\right)\right)}{\sum_{k=1}^{2} w_{user1, userk}}=4+\frac{0.85*(3-2.4)+0.7*(5-3.8)}{0.85+0.7}=4.87\]</div>
 </section>
 <section id="id8">
 <h2><span class="section-number">2.1.3.3. </span>代码实践<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h2>
@@ -602,7 +606,7 @@ Show Source
       <span class="caption-text">Table Of Contents</span>
     </p>
     <ul>
-<li><a class="reference internal" href="#">2.1.3. 用户的协同过滤</a><ul>
+<li><a class="reference internal" href="#">2.1.3. UserCF：基于用户相似度的协同过滤</a><ul>
 <li><a class="reference internal" href="#id3">2.1.3.1. UserCF核心算法</a><ul>
 <li><a class="reference internal" href="#id4">2.1.3.1.1. 用户相似度计算</a></li>
 <li><a class="reference internal" href="#id5">2.1.3.1.2. 候选物品推荐</a></li>
@@ -625,14 +629,14 @@ Show Source
          <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
          <div class="pagenation-text">
             <span class="pagenation-direction">Previous</span>
-            <div>2.1.2. Swing：面向工业场景的优化</div>
+            <div>2.1.2. Swing：面向工业场景的相似度优化</div>
          </div>
      </a>
      <a id="button-next" href="4.mf.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
          <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
         <div class="pagenation-text">
             <span class="pagenation-direction">Next</span>
-            <div>2.1.4. 矩阵分解</div>
+            <div>2.1.4. 矩阵分解：从相似度计算到向量表示学习</div>
         </div>
      </a>
   </div>

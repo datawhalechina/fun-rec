@@ -106,13 +106,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -252,13 +252,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -580,7 +580,7 @@ Transformer 中的 Token Embeddings。</p>
 <p>AutoInt
 的核心是其交互层，该层由多头自注意力机制构成。对于任意两个特征的嵌入向量
 <span class="math notranslate nohighlight">\(\boldsymbol{e}_m\)</span> 和
-<span class="math notranslate nohighlight">\(\boldsymbol{e}_k\)</span>，自注意力机制会计算它们之间的相关性得分。这个过程在每个“注意力头”（Head）
+<span class="math notranslate nohighlight">\(\boldsymbol{e}_k\)</span>，自注意力机制会计算它们之间的相关性得分。这个过程在每个”注意力头”（Head）
 <span class="math notranslate nohighlight">\(h\)</span> 中独立进行。具体来说，对于特征 <span class="math notranslate nohighlight">\(m\)</span> 和特征
 <span class="math notranslate nohighlight">\(k\)</span>，它们在第 <span class="math notranslate nohighlight">\(h\)</span> 个注意力头中的相关性得分
 <span class="math notranslate nohighlight">\(\alpha_{m,k}^{(h)}\)</span> 计算如下：</p>
@@ -595,9 +595,9 @@ Transformer 中的 Token Embeddings。</p>
 <span class="math notranslate nohighlight">\(\boldsymbol{W}_{\text{Query}}^{(h)} \in \mathbb{R}^{d' \times d}\)</span>
 和
 <span class="math notranslate nohighlight">\(\boldsymbol{W}_{\text{Key}}^{(h)} \in \mathbb{R}^{d' \times d}\)</span>
-是可学习的投影矩阵，它们分别将原始嵌入向量映射到“查询”（Query）和“键”（Key）空间。<span class="math notranslate nohighlight">\(d'\)</span>
+是可学习的投影矩阵，它们分别将原始嵌入向量映射到”查询”（Query）和”键”（Key）空间。<span class="math notranslate nohighlight">\(d'\)</span>
 是投影后的维度。</p>
-<p>在计算出所有特征对之间的相关性得分后，模型会利用这些得分来对所有特征的“值”（Value）向量进行加权求和，从而为特征
+<p>在计算出所有特征对之间的相关性得分后，模型会利用这些得分来对所有特征的”值”（Value）向量进行加权求和，从而为特征
 <span class="math notranslate nohighlight">\(\boldsymbol{e}_m\)</span> 生成一个新的、融合了其他特征信息的表示
 <span class="math notranslate nohighlight">\(\boldsymbol{\tilde{e}}_m^{(h)}\)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-2-higher-order-8">

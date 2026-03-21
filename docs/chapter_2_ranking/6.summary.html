@@ -104,13 +104,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -250,13 +250,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_1_retrieval/index.html">2. 快速候选召回</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chapter_1_retrieval/1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_1_retrieval/2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -377,17 +377,17 @@ Show Source
         
   <section id="id1">
 <h1><span class="section-number">3.6. </span>本章总结<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
-<p>精排是推荐漏斗中决定最终推荐质量的关键环节。相比召回阶段追求“不遗漏”，精排追求的是在千级候选中对用户偏好做出更精准的预测。本章围绕精排模型能力的五个核心维度展开，呈现了从基础架构到复杂业务适配的完整演进路径。</p>
+<p>精排是推荐漏斗中决定最终推荐质量的关键环节。相比召回阶段追求”不遗漏”，精排追求的是在千级候选中对用户偏好做出更精准的预测。本章围绕精排模型能力的五个核心维度展开，呈现了从基础架构到复杂业务适配的完整演进路径。</p>
 <p><strong>记忆与泛化的平衡起点</strong>：Wide &amp;
-Deep模型是本章的逻辑起点。它以一种直观的方式回答了精排模型的基本矛盾：线性Wide部分通过人工交叉特征实现对高频规律的精准记忆，Deep部分通过神经网络挖掘特征间的深层关联实现泛化。这种“联合训练、各司其职”的设计哲学不仅解决了实际问题，更为后续模型的架构设计提供了重要参照。</p>
+Deep模型是本章的逻辑起点。它以一种直观的方式回答了精排模型的基本矛盾：线性Wide部分通过人工交叉特征实现对高频规律的精准记忆，Deep部分通过神经网络挖掘特征间的深层关联实现泛化。这种”联合训练、各司其职”的设计哲学不仅解决了实际问题，更为后续模型的架构设计提供了重要参照。</p>
 <p><strong>特征交叉的自动化演进</strong>：Wide &amp;
-Deep的局限在于Wide部分依赖人工特征工程。以FM为开端的特征交叉研究路线，系统性地探索了如何让模型自动学习特征间的组合关系。二阶方向上，FM用隐向量内积解决参数爆炸，AFM引入注意力区分交叉重要性，NFM和FiBiNET进一步提升了交叉表达的精细程度；高阶方向上，DCN用残差网络实现元素级高阶交叉，xDeepFM的CIN在向量级别保留了更多结构信息，AutoInt借助自注意力机制实现了更灵活的自适应高阶交互。这条技术路线的本质是将特征工程从“人工设计”推向“模型自学习”。</p>
-<p><strong>从静态特征到动态兴趣序列</strong>：特征交叉方法的共同局限是将用户历史行为视为无序集合。序列建模方向认识到用户兴趣具有时序性和动态演化特点。DIN通过注意力机制实现了“目标导向的局部激活”，让用户表示随候选物品而动态变化；DIEN进一步引入GRU建模兴趣随时间的演化过程，并用辅助任务监督中间状态的学习；DSIN则在会话层面捕捉用户在单次购物意图中的行为模式。三者共同揭示了一个洞察：用户对某个候选物品的偏好，并不由其全部历史决定，而是由特定历史片段所激活。</p>
+Deep的局限在于Wide部分依赖人工特征工程。以FM为开端的特征交叉研究路线，系统性地探索了如何让模型自动学习特征间的组合关系。二阶方向上，FM用隐向量内积解决参数爆炸，AFM引入注意力区分交叉重要性，NFM和FiBiNET进一步提升了交叉表达的精细程度；高阶方向上，DCN用残差网络实现元素级高阶交叉，xDeepFM的CIN在向量级别保留了更多结构信息，AutoInt借助自注意力机制实现了更灵活的自适应高阶交互。这条技术路线的本质是将特征工程从”人工设计”推向”模型自学习”。</p>
+<p><strong>从静态特征到动态兴趣序列</strong>：特征交叉方法的共同局限是将用户历史行为视为无序集合。序列建模方向认识到用户兴趣具有时序性和动态演化特点。DIN通过注意力机制实现了”目标导向的局部激活”，让用户表示随候选物品而动态变化；DIEN进一步引入GRU建模兴趣随时间的演化过程，并用辅助任务监督中间状态的学习；DSIN则在会话层面捕捉用户在单次购物意图中的行为模式。三者共同揭示了一个洞察：用户对某个候选物品的偏好，并不由其全部历史决定，而是由特定历史片段所激活。</p>
 <p><strong>多目标协同优化</strong>：现实业务中，精排模型往往需要同时服务于多个目标——点击率、转化率、时长、GMV等。多目标建模的架构演进呈现出清晰的逻辑：Shared-Bottom的参数硬共享容易引发负迁移，MMoE通过专家混合机制让不同任务按需取用共享知识，PLE在此基础上引入任务专属专家实现更彻底的任务解耦。在依赖关系建模方面，ESMM通过CVR任务的概率链式分解解决了样本选择偏差，ESM2将这一思想推广至更复杂的用户行为链路。损失融合策略则从优化角度补充了架构设计，从手工加权到自适应动态平衡，本质都是在不同业务目标间寻找最优权衡点。</p>
-<p><strong>多场景自适应建模</strong>：当推荐系统需要服务于首页、详情页、购物车等差异显著的多个业务场景时，既不能为每个场景独立建模（小场景数据不足、资源消耗高），也不能简单混合训练（场景特性被主流场景淹没）。多塔结构范式（HMoE、STAR）通过显式的参数分离在结构层面保留场景特异性，同时共享底层特征提取能力；动态权重范式（PEPNet、CausalInt）则让共享网络的行为根据场景上下文实时调整，以更小的参数代价实现场景感知。两条路线分别从“结构”和“权重”角度回答了同一个问题：如何在共性与特性之间找到最优平衡。</p>
+<p><strong>多场景自适应建模</strong>：当推荐系统需要服务于首页、详情页、购物车等差异显著的多个业务场景时，既不能为每个场景独立建模（小场景数据不足、资源消耗高），也不能简单混合训练（场景特性被主流场景淹没）。多塔结构范式（HMoE、STAR）通过显式的参数分离在结构层面保留场景特异性，同时共享底层特征提取能力；动态权重范式（PEPNet、CausalInt）则让共享网络的行为根据场景上下文实时调整，以更小的参数代价实现场景感知。两条路线分别从”结构”和”权重”角度回答了同一个问题：如何在共性与特性之间找到最优平衡。</p>
 <p><strong>技术演进的内在脉络</strong>：五个维度并非孤立存在，而是层层递进地扩展了精排模型能够建模的信息范围。从Wide
 &amp;
-Deep的基础架构出发，特征交叉解决了静态特征的自动组合，序列建模引入了时间维度的动态信息，多目标优化统一了多个业务指标的协同学习，多场景建模则进一步将业务场景差异纳入建模范畴。每一步演进都对应着对“影响用户决策的因素”认识的深化，也共同构成了现代工业级精排系统的技术基础。</p>
+Deep的基础架构出发，特征交叉解决了静态特征的自动组合，序列建模引入了时间维度的动态信息，多目标优化统一了多个业务指标的协同学习，多场景建模则进一步将业务场景差异纳入建模范畴。每一步演进都对应着对”影响用户决策的因素”认识的深化，也共同构成了现代工业级精排系统的技术基础。</p>
 </section>
 
 

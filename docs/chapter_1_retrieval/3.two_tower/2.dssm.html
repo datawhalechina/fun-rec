@@ -106,13 +106,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -252,13 +252,13 @@ Show Source
 <li class="toctree-l1"><a class="reference internal" href="../../chapter_notation/index.html">符号</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../chapter_0_introduction/index.html">1. 推荐系统是什么？</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速候选召回</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../1.cf/index.html">2.1. 协同过滤</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. 物品的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的优化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. 用户的协同过滤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/1.itemcf.html">2.1.1. ItemCF：基于物品相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/2.swing.html">2.1.2. Swing：面向工业场景的相似度优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/3.usercf.html">2.1.3. UserCF：基于用户相似度的协同过滤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../1.cf/4.mf.html">2.1.4. 矩阵分解：从相似度计算到向量表示学习</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../2.i2i/index.html">2.2. I2I召回</a><ul>
@@ -407,7 +407,7 @@ Structured Semantic Model, DSSM） <span id="id1">(<a class="reference internal"
 <p><strong>向量归一化</strong>：对用户塔和物品塔输出的Embedding进行L2归一化：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-two-tower-2-dssm-1">
 <span class="eqno">(2.3.8)<a class="headerlink" href="#equation-chapter-1-retrieval-3-two-tower-2-dssm-1" title="Permalink to this equation">¶</a></span>\[u \leftarrow \frac{u}{||u||_2}, \quad v \leftarrow \frac{v}{||v||_2}\]</div>
-<p>归一化的核心作用是解决向量点积的非度量性问题。原始的向量点积不满足三角不等式，可能导致“距离”计算的不一致性。例如，对于三个点<span class="math notranslate nohighlight">\(A=(10,0)\)</span>、<span class="math notranslate nohighlight">\(B=(0,10)\)</span>、<span class="math notranslate nohighlight">\(C=(11,0)\)</span>，使用点积计算会得到<span class="math notranslate nohighlight">\(\text{dist}(A,B) &lt; \text{dist}(A,C)\)</span>，但这与直观的几何距离不符。</p>
+<p>归一化的核心作用是解决向量点积的非度量性问题。原始的向量点积不满足三角不等式，可能导致”距离”计算的不一致性。例如，对于三个点<span class="math notranslate nohighlight">\(A=(10,0)\)</span>、<span class="math notranslate nohighlight">\(B=(0,10)\)</span>、<span class="math notranslate nohighlight">\(C=(11,0)\)</span>，使用点积计算会得到<span class="math notranslate nohighlight">\(\text{dist}(A,B) &lt; \text{dist}(A,C)\)</span>，但这与直观的几何距离不符。</p>
 <p>通过归一化，向量点积被转化为欧式距离的度量形式。对于归一化向量<span class="math notranslate nohighlight">\(u\)</span>和<span class="math notranslate nohighlight">\(v\)</span>，它们的欧式距离为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-two-tower-2-dssm-2">
 <span class="eqno">(2.3.9)<a class="headerlink" href="#equation-chapter-1-retrieval-3-two-tower-2-dssm-2" title="Permalink to this equation">¶</a></span>\[||u - v|| = \sqrt{2-2\langle u,v \rangle}\]</div>
@@ -415,7 +415,7 @@ Structured Semantic Model, DSSM） <span id="id1">(<a class="reference internal"
 <p><strong>温度系数调节</strong>：在归一化后的向量计算内积后，除以温度系数<span class="math notranslate nohighlight">\(\tau\)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-1-retrieval-3-two-tower-2-dssm-3">
 <span class="eqno">(2.3.10)<a class="headerlink" href="#equation-chapter-1-retrieval-3-two-tower-2-dssm-3" title="Permalink to this equation">¶</a></span>\[s(u,v) = \frac{\langle u,v \rangle}{\tau}\]</div>
-<p>这里的温度系数<span class="math notranslate nohighlight">\(\tau\)</span>看起来是个简单的除法操作，但实际上它对模型的训练效果有着深远的影响。从数学角度来看，温度系数本质上是在缩放logits，进而改变Softmax函数的输出分布形状。当我们设置<span class="math notranslate nohighlight">\(\tau &lt; 1\)</span>时，相似度的差异会被放大，这意味着模型会对高分样本给出更高的概率，预测变得更加“确定”；相反，当<span class="math notranslate nohighlight">\(\tau &gt; 1\)</span>时，分布会变得更加平滑，模型的预测也更加保守。</p>
+<p>这里的温度系数<span class="math notranslate nohighlight">\(\tau\)</span>看起来是个简单的除法操作，但实际上它对模型的训练效果有着深远的影响。从数学角度来看，温度系数本质上是在缩放logits，进而改变Softmax函数的输出分布形状。当我们设置<span class="math notranslate nohighlight">\(\tau &lt; 1\)</span>时，相似度的差异会被放大，这意味着模型会对高分样本给出更高的概率，预测变得更加”确定”；相反，当<span class="math notranslate nohighlight">\(\tau &gt; 1\)</span>时，分布会变得更加平滑，模型的预测也更加保守。</p>
 </section>
 <section id="id6">
 <h2><span class="section-number">2.3.2.4. </span>代码实践<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
