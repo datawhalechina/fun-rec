@@ -9,3 +9,6 @@ tests/
 rec_train_set.sample.txt
 .env
 *.egg-info
+.idea/
+web_project/frontend/node_modules/
+web_project/backend/.venv/

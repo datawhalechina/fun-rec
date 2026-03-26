@@ -25,7 +25,7 @@ dependencies = [
     "networkx==3.1",
     # 新闻推荐需要
     "seaborn==0.13.2",
-    "faiss-cpu==1.7.4",
+    "faiss-cpu==1.7.4; platform_system != 'Windows'",
     "lightgbm==4.6.0",
 ]
 
@@ -37,6 +37,9 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+
+
 
 [tool.setuptools.package-data]
 funrec = ["config/*.yaml", "config/*.py"]

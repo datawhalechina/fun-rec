@@ -1,15 +1,21 @@
-import { createRouter, createWebHistory } from 'vue-router'
+﻿import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import MovieDetail from '../views/MovieDetail.vue'
 import Auth from '../views/Auth.vue'
 import Profile from '../views/Profile.vue'
 import AddMovie from '../views/AddMovie.vue'
+import ChatRecommend from '../views/ChatRecommend.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
+  },
+  {
+    path: '/chat',
+    name: 'ChatRecommend',
+    component: ChatRecommend,
   },
   {
     path: '/movie/:id',
@@ -49,15 +55,12 @@ const router = createRouter({
   },
 })
 
-// 路由导航
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
-  
-  // 检查路由是否需要认证
+
   if (to.meta.requiresAuth && !token) {
     next('/auth')
   }
-  // 检查路由是否需要管理员权限
   else if (to.meta.requiresAdmin) {
     const userStr = localStorage.getItem('user')
     if (userStr) {
@@ -66,7 +69,6 @@ router.beforeEach((to, from, next) => {
         if (user.is_superuser === 1) {
           next()
         } else {
-          // 非管理员，重定向到首页
           next('/')
         }
       } catch (e) {
@@ -76,7 +78,6 @@ router.beforeEach((to, from, next) => {
       next('/auth')
     }
   }
-  // 检查路由是否仅供访客使用（已认证用户将被重定向）
   else if (to.meta.guest && token) {
     next('/')
   }
@@ -86,4 +87,3 @@ router.beforeEach((to, from, next) => {
 })
 
 export default router
-

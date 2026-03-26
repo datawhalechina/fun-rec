@@ -4,7 +4,6 @@ test:
 	uv run pytest
 
 test-verbose:
-	# 运行带有详细输出的测试
 	uv run pytest -v
 
 test-specific:
@@ -16,19 +15,17 @@ test-auth:
 launch-api:
 	uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
-
 run-offline-pipeline:
-	# 运行离线流水线
 	uv run python -m offline.pipeline --steps all --flush-redis
 
+run-offline-training:
+	uv run python -m offline.pipeline --steps retrieval_preprocess,ranking_preprocess,retrieval_training,ranking_training
+
 ingest-to-redis:
-	# 将数据导入 Redis
 	uv run python -m offline.pipeline --steps ingest --flush-redis
 
 index-movies-to-elasticsearch:
-	# 索引电影到 Elasticsearch
 	uv run scripts/index_movies_elasticsearch.py
 
 ingest-data-to-database:
-	# 将数据导入数据库
 	uv run scripts/ingest_data_to_database.py --reset --create-test-user

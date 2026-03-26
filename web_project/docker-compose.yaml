@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: funrec123
       POSTGRES_DB: funrec_db
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -22,7 +22,7 @@ services:
     image: redis:7-alpine
     container_name: funrec-redis
     ports:
-      - "6379:6379"
+      - "6380:6379"
     volumes:
       - redis_data:/data
     networks:
@@ -75,7 +75,7 @@ services:
       - PYTHONPATH=/app/src:/app
     volumes:
       - ./backend:/app
-      - ../tmp:/app/tmp      
+      - ${FUNREC_PROCESSED_DATA_PATH}:/app/tmp
       - ${FUNREC_RAW_DATA_PATH}:/data
     depends_on:
       postgres:

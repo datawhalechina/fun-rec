@@ -1,44 +1,84 @@
 """
-FunRec 离线流水线
-
-用于执行特征预处理、模型训练、数据导入和模型部署的离线任务。
+FunRec offline pipeline entrypoint.
 """
 
 import argparse
-from offline.feature.preprocess_retrieval import run_retrieval_preprocessing
-from offline.feature.preprocess_ranking import run_ranking_preprocessing
-from offline.training.train_retrieval import run_retrieval_training
-from offline.training.train_ranking import run_ranking_training
-from offline.storage.redis_ingest import ingest_to_redis
-from offline.storage.local_deploy import deploy_local
+import importlib
+
+
+STEP_HANDLERS = {
+    "retrieval_preprocess": (
+        "offline.feature.preprocess_retrieval",
+        "run_retrieval_preprocessing",
+    ),
+    "ranking_preprocess": (
+        "offline.feature.preprocess_ranking",
+        "run_ranking_preprocessing",
+    ),
+    "retrieval_training": (
+        "offline.training.train_retrieval",
+        "run_retrieval_training",
+    ),
+    "ranking_training": (
+        "offline.training.train_ranking",
+        "run_ranking_training",
+    ),
+    "ingest": ("offline.storage.redis_ingest", "ingest_to_redis"),
+    "deploy": ("offline.storage.local_deploy", "deploy_local"),
+}
+
+
+def _load_handler(step_name: str):
+    module_path, function_name = STEP_HANDLERS[step_name]
+    try:
+        module = importlib.import_module(module_path)
+    except ModuleNotFoundError as exc:
+        missing_name = exc.name or "unknown dependency"
+        raise ModuleNotFoundError(
+            f"Step '{step_name}' requires optional dependency '{missing_name}'. "
+            "For Windows offline training, run only preprocess/train steps or "
+            "install the dependency needed by this step."
+        ) from exc
+    return getattr(module, function_name)
+
 
 def main():
-    parser = argparse.ArgumentParser(description="FunRec 离线流水线")
-    parser.add_argument("--steps", type=str, default="all", help="要执行的步骤: all, preprocess, train, ingest, deploy")
-    parser.add_argument("--flush-redis", action="store_true", help="清空 Redis 数据库")
+    parser = argparse.ArgumentParser(description="FunRec offline pipeline")
+    parser.add_argument(
+        "--steps",
+        type=str,
+        default="all",
+        help="Pipeline steps: all, retrieval_preprocess, ranking_preprocess, "
+        "retrieval_training, ranking_training, ingest, deploy",
+    )
+    parser.add_argument(
+        "--flush-redis",
+        action="store_true",
+        help="Flush Redis before ingest step",
+    )
     args = parser.parse_args()
-    
-    steps = args.steps.split(",")
+
+    steps = [step.strip() for step in args.steps.split(",") if step.strip()]
     if "all" in steps:
-        steps = ["retrieval_preprocess", "ranking_preprocess", "retrieval_training", "ranking_training", "ingest", "deploy"]
-        
-    if "retrieval_preprocess" in steps:
-        run_retrieval_preprocessing()
+        steps = [
+            "retrieval_preprocess",
+            "ranking_preprocess",
+            "retrieval_training",
+            "ranking_training",
+            "ingest",
+            "deploy",
+        ]
 
-    if "ranking_preprocess" in steps:
-        run_ranking_preprocessing()
+    for step in steps:
+        if step not in STEP_HANDLERS:
+            raise ValueError(f"Unknown offline pipeline step: {step}")
 
-    if "retrieval_training" in steps:
-        run_retrieval_training()
+        handler = _load_handler(step)
+        if step == "ingest":
+            handler(flush=args.flush_redis)
+        else:
+            handler()
 
-    if "ranking_training" in steps:
-        run_ranking_training()
-        
-    if "ingest" in steps:
-        ingest_to_redis(flush=args.flush_redis)
-        
-    if "deploy" in steps:
-        deploy_local()
-        
+
 if __name__ == "__main__":
     main()

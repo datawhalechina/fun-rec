@@ -3,6 +3,7 @@
 from fastapi import APIRouter
 
 from app.api.v1.endpoints import auth, users, movies, people, stats, ratings, search, recommendations, genres
+from app.chat.router import router as chat_router
 
 api_router = APIRouter()
 
@@ -16,3 +17,4 @@ api_router.include_router(ratings.router)
 api_router.include_router(search.router)
 api_router.include_router(genres.router)
 api_router.include_router(recommendations.router, prefix="/recommendations", tags=["recommendations"])
+api_router.include_router(chat_router)
