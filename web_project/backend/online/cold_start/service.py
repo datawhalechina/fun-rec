@@ -152,7 +152,7 @@ class ColdStartService:
         """
         UCB: 70% - 主要推荐策略
         Popular: 20% - 保证多样性和新鲜度
-        PreferredGenre: 10% - 尊重用户明确偏好
+        PreferredGenre: 10% - 尊重用户明确偏好,
 
         """
         allocations = []
