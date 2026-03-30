@@ -150,8 +150,10 @@ class ColdStartService:
         top_k: int
     ) -> List[tuple]:
         """
-        UCB 从评分中学习后的分配
-        UCB: 70%, Popular: 30%（用于多样性/新鲜度）
+        UCB: 70% - 主要推荐策略
+        Popular: 20% - 保证多样性和新鲜度
+        PreferredGenre: 10% - 尊重用户明确偏好
+
         """
         allocations = []
         for s in strategies:
