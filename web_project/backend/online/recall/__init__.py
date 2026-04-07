@@ -15,6 +15,8 @@
 
 from .service import RecallService, get_recall_service
 from .base import RecallStrategy
+from app.config import settings
+
 
 __all__ = [
     "get_recall_service",

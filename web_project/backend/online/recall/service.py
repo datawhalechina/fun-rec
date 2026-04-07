@@ -46,9 +46,9 @@ class RecallService:
         # 初始化召回策略
         self.strategies: List[RecallStrategy] = [                                    
             UserPreferenceRecallStrategy(),
-            # ItemEmbeddingRecallStrategy(),
-            # GlobalTrendingRecallStrategy(),
-            # YouTubeDNNRecallStrategy(),
+            ItemEmbeddingRecallStrategy(),
+            GlobalTrendingRecallStrategy(),
+            YouTubeDNNRecallStrategy(),
         ]
         
         self.initialized = True
@@ -153,7 +153,7 @@ class RecallService:
         """
         user_id = user_features.get("user_id")
         
-        # 如果可用，使用 Redis 数据补充
+        # 如果可用，使用 Redis 数据补充    这个是实时数据补充，在进行召回前可能有用户特征数据写入了redis
         if user_id:
             redis_features = self._fetch_user_features_from_redis(user_id)
             # 合并：Redis 覆盖传入的特征还是相反？

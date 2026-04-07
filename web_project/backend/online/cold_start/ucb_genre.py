@@ -178,9 +178,10 @@ class UCBGenreStrategy(ColdStartStrategy):
                     "n": PREFERRED_GENRE_INITIAL_N,
                     "reward": PREFERRED_GENRE_INITIAL_REWARD
                 }
+                #循环把传来的用户偏好放入流水线缓存
                 pipeline.hset(key, genre, json.dumps(stats))
             
-            pipeline.execute()
+            pipeline.execute()  #这里进行统一的命令执行，在网络传输层是原子的
             logger.info(f"已为用户 {user_id} 初始化 UCB 统计数据，偏好类型: {preferred_genres}")
             
         except Exception as e:
