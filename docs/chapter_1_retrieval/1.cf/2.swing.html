@@ -392,7 +392,7 @@ Show Source
 </figcaption>
 </figure>
 <p>Swing分数（Swing
-score）提供了一个新的解题思路。它不再简单地统计共同购买次数，而是深入分析用户-物品二部图中的内部子结构，通过捕捉那些在用户行为中反复出现、具备较强”鲁棒性”的共同购买关系来度量物品相似性。其核心洞察是：<strong>如果多个用户在其他共同购买行为较少的情况下，同时购买了同一对物品，那么这对物品之间的关联性就更可信</strong>。</p>
+score）提供了一个新的解题思路。它不再简单地统计共同购买次数，而是深入分析用户-物品二部图中的内部子结构，通过捕捉那些在用户行为中反复出现、具备较强“鲁棒性”的共同购买关系来度量物品相似性。其核心洞察是：<strong>如果多个用户在其他共同购买行为较少的情况下，同时购买了同一对物品，那么这对物品之间的关联性就更可信</strong>。</p>
 <p>基于这一思想，Swing算法能够构建更准确的产品索引，并在此基础上衍生出Surprise算法来专门处理互补商品推荐的挑战。</p>
 <section id="id4">
 <h3><span class="section-number">2.1.2.1.1. </span>物品相似度计算<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
@@ -522,7 +522,8 @@ score）提供了一个新的解题思路。它不再简单地统计共同购买
     <span class="k">return</span> <span class="n">swing_score</span>
 </pre></div>
 </div>
-<p>以上代码演示了单个物品对的Swing分数计算。接下来调用实验框架，在完整数据集上训练Swing模型并查看评估指标。</p>
+<p>以上代码演示了单个物品对的Swing分数计算。</p>
+<p>接下来调用实验框架，在完整数据集上训练Swing模型并查看评估指标。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
 <span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;swing&#39;</span><span class="p">)</span>

@@ -378,7 +378,7 @@ Show Source
         
   <section id="two-tower">
 <span id="id1"></span><h1><span class="section-number">2.3. </span>双塔模型<a class="headerlink" href="#two-tower" title="Permalink to this heading">¶</a></h1>
-<p>I2I召回通过物品之间的相似性来做推荐，但它始终需要一个”种子物品”作为起点——用户最近交互过什么，就基于什么去扩展。这意味着推荐结果很大程度上被用户的近期行为锁定，难以发现用户潜在但尚未表达过的兴趣。能不能跳过”种子物品”这个中间环节，直接回答”这个用户会喜欢什么”？</p>
+<p>I2I召回通过物品之间的相似性来做推荐，但它始终需要一个“种子物品”作为起点——用户最近交互过什么，就基于什么去扩展。这意味着推荐结果很大程度上被用户的近期行为锁定，难以发现用户潜在但尚未表达过的兴趣。能不能跳过“种子物品”这个中间环节，直接回答“这个用户会喜欢什么”？</p>
 <p>双塔模型（也就是U2I召回）给出的方案是把匹配问题拆成两个独立的编码问题。用户塔处理用户的历史行为、画像特征和上下文信息，输出一个用户向量
 <span class="math notranslate nohighlight">\(u\)</span>；物品塔整合物品的ID、类别和属性特征，输出一个物品向量
 <span class="math notranslate nohighlight">\(v\)</span>。匹配度通过两个向量的内积来衡量：</p>
@@ -390,7 +390,7 @@ Show Source
 <p>本章沿着双塔模型的演进轨迹介绍以下三个模型。</p>
 <p><strong>FM（因子分解机）：双塔模型的雏形</strong>。FM诞生于深度学习兴起之前，但它首次将用户-物品的复杂交互分解为两个低维向量的内积操作，在思想上是双塔的原型。</p>
 <p><strong>DSSM：深度结构化语义模型</strong>。FM本质上仍是线性模型，DSSM用深度神经网络替代线性变换，让双塔具备了非线性的特征学习能力。</p>
-<p><strong>YouTubeDNN：从匹配到预测用户下一行为</strong>。YouTubeDNN在架构上延续了双塔设计，但引入了一个关键的思想转变——把召回任务重新定义为”预测用户下一个会观看的视频”。</p>
+<p><strong>YouTubeDNN：从匹配到预测用户下一行为</strong>。YouTubeDNN在架构上延续了双塔设计，但引入了一个关键的思想转变——把召回任务重新定义为“预测用户下一个会观看的视频”。</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="1.fm.html">2.3.1. FM（因子分解机）：双塔模型的雏形</a></li>

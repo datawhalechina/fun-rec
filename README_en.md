@@ -9,6 +9,9 @@ English | [中文](./README.md)
 
 </div>
 
+> **Note: This project is still under development and is being updated frequently. Pull Requests are not accepted at this moment.**
+> If you have any suggestions or encounter any issues, please feel free to provide feedback via [Issue](https://github.com/datawhalechina/fun-rec/issues).
+
 This book systematically covers the full technical evolution of recommendation systems, from classical cascade architectures to the generative paradigm. It is organized into two parts: the first covers candidate retrieval techniques including collaborative filtering, embedding-based retrieval, and sequential retrieval, along with ranking and re-ranking methods such as feature crossing, multi-objective modeling, and multi-scenario modeling; the second focuses on frontier generative recommendation, encompassing LLM foundations, Scaling Law architecture exploration, end-to-end generative modeling, chain-of-thought reasoning, and diffusion-based recommendation, culminating in a hands-on production-grade system project. Ideal for readers with a machine learning background who want to systematically master both the theory and engineering practice of recommendation algorithms.
 
 ## 📖 Table of Contents

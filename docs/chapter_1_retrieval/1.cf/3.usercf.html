@@ -380,7 +380,7 @@ Show Source
   <section id="usercf">
 <span id="id1"></span><h1><span class="section-number">2.1.3. </span>UserCF：基于用户相似度的协同过滤<a class="headerlink" href="#usercf" title="Permalink to this heading">¶</a></h1>
 <p>基于用户的协同过滤（UserCF） <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id3" title="Resnick, P., Iacovou, N., Suchak, M., Bergstrom, P., &amp; Riedl, J. (1994). Grouplens: an open architecture for collaborative filtering of netnews. Proceedings of the 1994 ACM conference on Computer supported cooperative work (pp. 175–186).">Resnick <em>et al.</em>, 1994</a>)</span>
-的核心思想是：具有相似历史行为的用户，未来偏好也相似。它先找到与目标用户偏好最接近的”邻居用户”，再基于这些邻居的行为来预测目标用户的兴趣。如
+的核心思想是：具有相似历史行为的用户，未来偏好也相似。它先找到与目标用户偏好最接近的“邻居用户”，再基于这些邻居的行为来预测目标用户的兴趣。如
 <a class="reference internal" href="#usercf-illustration"><span class="std std-numref">图2.1.5</span></a>
 所示，左侧用户和右侧用户都喜欢T恤和Polo衫，说明两人爱好相似。右侧用户还喜欢夹克，因此系统推测左侧用户也可能喜欢夹克，将其作为推荐结果。</p>
 <figure class="align-default" id="id9">

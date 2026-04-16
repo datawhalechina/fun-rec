@@ -23,17 +23,13 @@ dependencies = [
     "tabulate==0.9.0",
     "tqdm==4.67.1",
     "networkx==3.1",
-    # 新闻推荐需要
-    "seaborn==0.13.2",
-    "faiss-cpu==1.7.4",
-    "lightgbm==4.6.0",
 ]
 
 [project.urls]
 Homepage = "https://github.com/datawhalechina/fun-rec"
 
-[tool.setuptools]
-package-dir = {"" = "src"}
+[tool.setuptools.package-dir]
+"" = "src"
 
 [tool.setuptools.packages.find]
 where = ["src"]

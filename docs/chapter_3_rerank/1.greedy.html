@@ -573,7 +573,7 @@ DPP）。</p>
 <h3><span class="section-number">4.1.2.1. </span>行列式如何度量多样性<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <p>上述MMR原理中可以看出，MMR通过候选内容和已选内容计算两两相似度，贪心的选择一个和已选所有内容相似度最低的内容。这种方式无法捕捉多个物品间的复杂排斥关系（如三个相似物品的冗余效应），而行列式可以实现这一点。为了解释清楚行列式如何度量多样性，下面会花一定的篇幅做详细的介绍。</p>
 <p>假设我们通过余弦相似度的方式来计算物品之间的相似度，对于每一个物品都有一个向量表示<span class="math notranslate nohighlight">\(x_i\)</span>，那么对于待排序的所有物品<span class="math notranslate nohighlight">\(X\)</span>，很容易得到所有物品两两之间的相似度矩阵<span class="math notranslate nohighlight">\(S=X^TX\)</span>。</p>
-<p>我们知道矩阵行列式的几何意义表示的是，矩阵列向量张成的超面体的”有向体积”。在矩阵<span class="math notranslate nohighlight">\(S\)</span>中，如果列向量都线性相关，意味着列向量”塌缩”在更低维的空间中（在2D中，两个向量共线；在3D中，三个向量共面），此时矩阵<span class="math notranslate nohighlight">\(S\)</span>的行列式<span class="math notranslate nohighlight">\(det(S)=0\)</span>。反之，如果线性不相关，向量张成的高纬空间没有冗余，线性不相关。</p>
+<p>我们知道矩阵行列式的几何意义表示的是，矩阵列向量张成的超面体的“有向体积”。在矩阵<span class="math notranslate nohighlight">\(S\)</span>中，如果列向量都线性相关，意味着列向量“塌缩”在更低维的空间中（在2D中，两个向量共线；在3D中，三个向量共面），此时矩阵<span class="math notranslate nohighlight">\(S\)</span>的行列式<span class="math notranslate nohighlight">\(det(S)=0\)</span>。反之，如果线性不相关，向量张成的高纬空间没有冗余，线性不相关。</p>
 <p>假如我们有4个物品，对应的标签分别为：<span class="math notranslate nohighlight">\(a=\text{科幻动作片},b=\text{科幻喜剧片},c=\text{古装爱情片},d=\text{古装悬疑片}\)</span>，计算物品之间的两两相似度，得到相似度矩阵<span class="math notranslate nohighlight">\(S_t\)</span>，物品<span class="math notranslate nohighlight">\({a,b,c,d}\)</span>的相似度矩阵：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-3-rerank-1-greedy-2">
 <span class="eqno">(4.1.3)<a class="headerlink" href="#equation-chapter-3-rerank-1-greedy-2" title="Permalink to this equation">¶</a></span>\[\begin{split}S = \begin{pmatrix}
@@ -688,8 +688,8 @@ DPP）。</p>
 \end{aligned}\]</div>
 <p>其中：</p>
 <ul class="simple">
-<li><p>第一项只跟”相关性”有关，越相关 <span class="math notranslate nohighlight">\(r_{u,i}^2\)</span> 越大；</p></li>
-<li><p>第二项 <span class="math notranslate nohighlight">\(\log |S|\)</span> 只跟”多样性”有关，S 越接近正交（余弦越接近
+<li><p>第一项只跟“相关性”有关，越相关 <span class="math notranslate nohighlight">\(r_{u,i}^2\)</span> 越大；</p></li>
+<li><p>第二项 <span class="math notranslate nohighlight">\(\log |S|\)</span> 只跟“多样性”有关，S 越接近正交（余弦越接近
 0），行列式越大。</p></li>
 </ul>
 <p>经过上述的简单推到，我们会发现DPP最终优化的目标也变成了类似MMR的相关性和多样性的线形组合。所以在实际应用时会通过一个超参<span class="math notranslate nohighlight">\(\theta\)</span>来平衡相关性和多样性的权重。</p>

@@ -848,7 +848,7 @@ Store 中的状态，状态变化时相关组件会自动更新。</p>
 <div><p>本节代码位于 <code class="docutils literal notranslate"><span class="pre">src/views/Auth.vue</span></code></p>
 </div></blockquote>
 <p>用户认证页面包含登录和注册两个表单，通过 <code class="docutils literal notranslate"><span class="pre">isSignup</span></code> 变量切换显示。</p>
-<p>注册表单中有一个”偏好类型”字段，让用户选择喜欢的电影类型。这与冷启动策略相关：新用户缺乏历史行为数据，推荐系统会优先根据用户设置的偏好类型进行推荐。</p>
+<p>注册表单中有一个“偏好类型”字段，让用户选择喜欢的电影类型。这与冷启动策略相关：新用户缺乏历史行为数据，推荐系统会优先根据用户设置的偏好类型进行推荐。</p>
 <p>Vue 3 提供了 <code class="docutils literal notranslate"><span class="pre">reactive</span></code> 函数来创建响应式对象。与 <code class="docutils literal notranslate"><span class="pre">ref</span></code>
 不同，<code class="docutils literal notranslate"><span class="pre">reactive</span></code> 适合管理包含多个字段的表单数据：</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">reactive</span><span class="p">,</span><span class="w"> </span><span class="nx">ref</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;vue&#39;</span>

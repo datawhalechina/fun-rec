@@ -380,7 +380,7 @@ Show Source
 Models）的前向加噪与反向去噪过程、训练目标的简化形式，以及条件生成的基本机制。这些基础知识为我们理解扩散模型在推荐系统中的具体应用奠定了理论基础。</p>
 <p>本章将聚焦于扩散模型在推荐场景中的实际应用。扩散模型在推荐系统中的应用可以大致分为以下几类：一是将扩散过程直接用于建模用户交互（如DiffRec
 <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id137" title="Wang, W., Xu, Y., Feng, F., Lin, X., He, X., &amp; Chua, T.-S. (2023). Diffusion recommender model. Proceedings of the 46th international ACM SIGIR conference on research and development in information retrieval (pp. 832–841).">Wang <em>et al.</em>, 2023</a>)</span>
-将用户交互向量视为”图像”进行扩散去噪，DreamRec
+将用户交互向量视为“图像”进行扩散去噪，DreamRec
 <span id="id3">(<a class="reference internal" href="../chapter_references/references.html#id139" title="Yang, Z., Wu, J., Wang, Z., Wang, X., Yuan, Y., &amp; He, X. (2023). Generate what you prefer: reshaping sequential recommendation via guided diffusion. Advances in Neural Information Processing Systems.">Yang <em>et al.</em>, 2023</a>)</span>
 通过条件扩散生成目标物品嵌入），这类方法在学术上有一定探索价值，但距离工业落地仍有距离；二是利用扩散模型的生成能力进行数据增强，缓解数据稀疏和冷启动问题；三是将扩散过程融入推荐系统的特征处理和结果生成环节，解决特征缺失、推荐多样性等实际问题。</p>
 <p>本章将重点围绕后两类应用展开，从以下两个维度进行介绍。</p>

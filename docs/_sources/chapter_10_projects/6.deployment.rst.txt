@@ -5,6 +5,24 @@
 ==========
 
 
+
+
+.. only:: latex
+
+   完整系统包含 PostgreSQL、Redis、Elasticsearch、后端 API 和前端应用五个服务，组件之间的依赖关系较为复杂。本项目使用 Docker Compose 通过一个 YAML 配置文件声明式地定义所有服务及其依赖、网络和数据卷，用 ``docker compose up`` 一条命令即可启动整个系统。
+
+   部署配置中有几处值得关注的设计：后端服务通过环境变量引用其他容器的服务名（如 ``postgres``、``redis``），利用 Docker 的 DNS 解析实现容器间通信；共享文件目录通过卷挂载在离线训练环境和在线服务容器之间传递模型文件；前端采用多阶段构建，先用 Node.js 编译静态文件再用 Nginx 提供服务，最终镜像不包含开发依赖。各基础设施服务配置了健康检查机制，确保依赖链的启动顺序正确。
+
+   启动后还需要依次运行离线流程（训练模型并写入特征）、将业务数据加载到 PostgreSQL、将电影索引到 Elasticsearch，之后即可通过浏览器访问完整的推荐系统。
+
+   本节的完整配置文件、Dockerfile 和操作步骤见本书在线版本。
+
+
+
+.. raw:: latex
+
+   % no-pdf-begin
+
 在前面的章节中，我们完成了离线流程、在线流程和前端应用的开发。各个模块在本地开发环境中可以正常运行，但如何将它们组合成一个完整的系统，并且能够在其他机器上快速部署？本节将介绍使用
 Docker Compose 进行容器化部署的方法。
 
@@ -66,15 +84,15 @@ PostgreSQL 是系统的主数据库，存储用户信息、电影信息和评分
 
 各配置项说明如下。
 
-- ``image: postgres:15-alpine``\ ：使用 PostgreSQL 15 的 Alpine
-  版本镜像。Alpine 是一个轻量级 Linux 发行版，镜像体积较小。
-- ``environment``\ ：通过环境变量设置数据库的用户名、密码和数据库名。容器首次启动时会自动创建这些配置。
-- ``ports``\ ：将容器内的 5432 端口映射到宿主机的 5432
-  端口，使得本地开发工具可以直接连接数据库。
-- ``volumes``\ ：使用命名卷 ``postgres_data``
-  持久化数据。容器删除后，数据仍然保留在卷中。
-- ``networks``\ ：将服务加入 ``funrec-network``
-  网络，使其能够与其他服务通信。
+-  ``image: postgres:15-alpine``\ ：使用 PostgreSQL 15 的 Alpine
+   版本镜像。Alpine 是一个轻量级 Linux 发行版，镜像体积较小。
+-  ``environment``\ ：通过环境变量设置数据库的用户名、密码和数据库名。容器首次启动时会自动创建这些配置。
+-  ``ports``\ ：将容器内的 5432 端口映射到宿主机的 5432
+   端口，使得本地开发工具可以直接连接数据库。
+-  ``volumes``\ ：使用命名卷 ``postgres_data``
+   持久化数据。容器删除后，数据仍然保留在卷中。
+-  ``networks``\ ：将服务加入 ``funrec-network``
+   网络，使其能够与其他服务通信。
 
 缓存服务（Redis）
 ~~~~~~~~~~~~~~~~~
@@ -139,10 +157,10 @@ Elasticsearch 提供电影的全文搜索功能，支持标题、类型、演员
 
 各配置项说明如下。
 
-- ``discovery.type=single-node``\ ：单节点模式，适合开发和小规模部署。生产环境通常需要多节点集群。
-- ``xpack.security.enabled=false``\ ：禁用安全功能，简化开发环境配置。生产环境应该启用并配置认证。
-- ``ES_JAVA_OPTS``\ ：限制 JVM 堆内存为 512MB。Elasticsearch
-  默认会使用较多内存，在开发机上需要限制。
+-  ``discovery.type=single-node``\ ：单节点模式，适合开发和小规模部署。生产环境通常需要多节点集群。
+-  ``xpack.security.enabled=false``\ ：禁用安全功能，简化开发环境配置。生产环境应该启用并配置认证。
+-  ``ES_JAVA_OPTS``\ ：限制 JVM 堆内存为 512MB。Elasticsearch
+   默认会使用较多内存，在开发机上需要限制。
 
 后端服务
 ~~~~~~~~
@@ -184,17 +202,17 @@ Elasticsearch 提供电影的全文搜索功能，支持标题、类型、演员
 
 各配置项说明如下。
 
-- ``build``\ ：指定构建上下文和 Dockerfile 路径。Docker Compose 会根据
-  Dockerfile 构建镜像。
-- ``env_file``\ ：从 ``.env`` 文件读取环境变量。
-- ``environment``\ ：覆盖容器内的环境变量。注意数据库和 Redis
-  的地址使用服务名（如 ``postgres``\ 、\ ``redis``\ ）而不是
-  ``localhost``\ ，因为容器之间通过服务名进行 DNS 解析。
-- ``volumes``\ ：挂载本地目录到容器。\ ``./backend:/app``
-  将代码目录挂载进去，配合 ``--reload``
-  参数实现代码热更新。\ ``${FUNREC_RAW_DATA_PATH}`` 挂载数据目录。
-- ``depends_on``\ ：声明依赖关系。Docker Compose 会先启动
-  PostgreSQL、Redis 等服务，再启动后端。
+-  ``build``\ ：指定构建上下文和 Dockerfile 路径。Docker Compose 会根据
+   Dockerfile 构建镜像。
+-  ``env_file``\ ：从 ``.env`` 文件读取环境变量。
+-  ``environment``\ ：覆盖容器内的环境变量。注意数据库和 Redis
+   的地址使用服务名（如 ``postgres``\ 、\ ``redis``\ ）而不是
+   ``localhost``\ ，因为容器之间通过服务名进行 DNS 解析。
+-  ``volumes``\ ：挂载本地目录到容器。\ ``./backend:/app``
+   将代码目录挂载进去，配合 ``--reload``
+   参数实现代码热更新。\ ``${FUNREC_RAW_DATA_PATH}`` 挂载数据目录。
+-  ``depends_on``\ ：声明依赖关系。Docker Compose 会先启动
+   PostgreSQL、Redis 等服务，再启动后端。
 
 后端的 Dockerfile 定义了镜像的构建过程：
 
@@ -311,12 +329,12 @@ Dockerfile
 
 在开始部署之前，需要确保系统已安装以下工具。
 
-- **Docker**\ ：容器运行时。可以从 `Docker
-  官网 <https://docs.docker.com/get-docker/>`__ 下载安装。
-- **Docker Compose**\ ：多容器编排工具。Docker Desktop 已经内置了
-  Compose，Linux 用户可能需要单独安装。
-- **uv**\ ：Python 包管理器，用于运行离线流程。可以通过
-  ``pip install uv`` 安装。
+-  **Docker**\ ：容器运行时。可以从 `Docker
+   官网 <https://docs.docker.com/get-docker/>`__ 下载安装。
+-  **Docker Compose**\ ：多容器编排工具。Docker Desktop 已经内置了
+   Compose，Linux 用户可能需要单独安装。
+-  **uv**\ ：Python 包管理器，用于运行离线流程。可以通过
+   ``pip install uv`` 安装。
 
 验证安装：
 
@@ -507,8 +525,8 @@ Elasticsearch http://localhost:9200      搜索服务
 
 使用测试账号登录前端应用，账号信息如下。
 
-- Email: ``test@funrec.com``
-- Password: ``test123456``
+-  Email: ``test@funrec.com``
+-  Password: ``test123456``
 
 登录后可以看到个性化推荐、搜索电影、查看电影详情、提交评分等功能。
 
@@ -708,3 +726,9 @@ connections”，说明数据库已就绪。
 .. code:: bash
 
    make index-movies-to-elasticsearch
+
+
+
+.. raw:: latex
+
+   % no-pdf-end

@@ -493,7 +493,7 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 的标准做法，损失函数为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-5">
 <span class="eqno">(9.1.6)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-5" title="Permalink to this equation">¶</a></span>\[\mathcal{L}_{\epsilon} = \mathbb{E}_{t, \boldsymbol{x}_0, \boldsymbol{\epsilon}}[\|\boldsymbol{\epsilon} - \boldsymbol{\epsilon}_\theta(\boldsymbol{x}_t, t)\|^2]\]</div>
-<p><strong>2. 预测原始数据</strong> <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>：网络
+<p><strong>2. 预测原始数据</strong><span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>：网络
 <span class="math notranslate nohighlight">\(\hat{\boldsymbol{x}}_\theta(\boldsymbol{x}_t, t)\)</span>
 直接预测原始数据 <span class="math notranslate nohighlight">\(\boldsymbol{x}_0\)</span>。损失函数为：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-9-diffusion-1-basics-6">
@@ -567,7 +567,7 @@ Diffusion</strong>就是这一类模型的代表 <span id="id5">(<a class="refer
 <span class="eqno">(9.1.11)<a class="headerlink" href="#equation-chapter-9-diffusion-1-basics-10" title="Permalink to this equation">¶</a></span>\[\hat{\boldsymbol{\epsilon}} = \boldsymbol{\epsilon}_\theta(\boldsymbol{x}_t, t) - \gamma \cdot \sqrt{1-\bar{\alpha}_t} \nabla_{\boldsymbol{x}_t} \log p_\phi(y|\boldsymbol{x}_t)\]</div>
 <p>其中 <span class="math notranslate nohighlight">\(\gamma\)</span> 控制引导强度。分类器的梯度将去噪过程推向目标类别
 <span class="math notranslate nohighlight">\(y\)</span>
-的方向。在推荐场景中，可以用序列推荐模型作为”分类器”，引导生成与用户历史一致的交互序列
+的方向。在推荐场景中，可以用序列推荐模型作为“分类器”，引导生成与用户历史一致的交互序列
 <span id="id21">(<a class="reference internal" href="../chapter_references/references.html#id138" title="Liu, Q., Yan, F., Zhao, X., Du, Z., Guo, H., Tang, R., &amp; Tian, F. (2023). Diffusion augmentation for sequential recommendation. Proceedings of the 32nd ACM International conference on information and knowledge management (pp. 1576–1586).">Liu <em>et al.</em>, 2023</a>)</span>。</p>
 <p><strong>2. Classifier-Free Guidance（无分类器引导）</strong></p>
 <p>该方法由Ho和Salimans <span id="id22">(<a class="reference internal" href="../chapter_references/references.html#id136" title="Ho, J., &amp; Salimans, T. (2022). Classifier-free diffusion guidance. arXiv preprint arXiv:2207.12598.">Ho and Salimans, 2022</a>)</span>

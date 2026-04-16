@@ -383,7 +383,7 @@ VQ让索引结构实时适应数据分布的变化。</p>
 <p><strong>第三章：精准偏好预测</strong></p>
 <p>经过召回的快速筛选，排序阶段需要对千级候选进行精准的偏好打分。这里是深度学习泛化能力的主战场：模型要将学到的知识推广到训练时未曾见过的用户-物品组合。</p>
 <p>本章从 Wide &amp; Deep
-模型（<a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html#sec-wide-and-deep"><span class="std std-numref">3.1节</span></a>）出发，它通过联合训练线性模型和深度网络，确立了”记忆
+模型（<a class="reference internal" href="../chapter_2_ranking/1.wide_and_deep.html#sec-wide-and-deep"><span class="std std-numref">3.1节</span></a>）出发，它通过联合训练线性模型和深度网络，确立了“记忆
 + 泛化”的基础框架。在此基础上，<strong>特征交叉</strong>
 (<a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/index.html#sec-feature-crossing"><span class="std std-numref">3.2节</span></a>) 技术从 FM
 的二阶交叉（<a class="reference internal" href="../chapter_2_ranking/2.feature_crossing/1.second_order.html#second-order-feature-crossing"><span class="std std-numref">3.2.1节</span></a>）起步，经
@@ -405,20 +405,20 @@ MMR 通过线性组合平衡相关性与多样性，DPP
 <p>本章为后续所有生成式章节奠定基础。我们首先对比判别式与生成式两种范式的本质差异（<a class="reference internal" href="../chapter_5_gr_basic/1.gr_intro.html#gr-intro"><span class="std std-numref">5.1节</span></a>）：前者对候选逐一打分，后者直接生成推荐序列。随后介绍两大架构基石（<a class="reference internal" href="../chapter_5_gr_basic/2.gr_arch_base.html#gr-arch-base"><span class="std std-numref">5.2节</span></a>），Transformer
 的自注意力机制和扩散模型的加噪-去噪过程，以及大语言模型从预训练到偏好对齐的基本流程（<a class="reference internal" href="../chapter_5_gr_basic/3.llm_base.html#llm-base"><span class="std std-numref">5.3节</span></a>）。</p>
 <p>最后深入探讨生成式推荐的核心难题：<strong>物品 Token
-化</strong>（<a class="reference internal" href="../chapter_5_gr_basic/4.codebook.html#tokenizer-techniques"><span class="std std-numref">5.4节</span></a>）。这是从”记忆ID”到”理解内容”的技术枢纽。稀疏
+化</strong>（<a class="reference internal" href="../chapter_5_gr_basic/4.codebook.html#tokenizer-techniques"><span class="std std-numref">5.4节</span></a>）。这是从“记忆ID”到“理解内容”的技术枢纽。稀疏
 ID 面临词表爆炸和零泛化的困境，文本 ID 虽语义丰富却效率低下，基于 VQ-VAE
 和 RQ-VAE 的<strong>语义 ID</strong>
 方案在表示效率与语义丰富度之间找到了平衡，物品不再是不透明的符号，而是被编码为结构化的语义
 Token 序列，使模型能够真正理解物品的内容含义。这一技术贯穿后续所有章节。</p>
 <p><strong>第六章：Scaling Law 架构探索</strong></p>
-<p>大语言模型证明了”更大的模型 + 更多的数据 =
+<p>大语言模型证明了“更大的模型 + 更多的数据 =
 更好的性能”，但传统推荐模型在规模化时遭遇了计算成本与候选数量的线性绑定、GPU
 利用率不足等瓶颈。本章介绍工业界探索出的两条互补路径。<strong>HSTU
 架构演进</strong> (<code class="xref std std-numref docutils literal notranslate"><span class="pre">sec_hstu_optimization</span></code>) 以 Meta 的
 HSTU（<a class="reference internal" href="../chapter_6_scaling/1.hstu.html#hstu"><span class="std std-numref">6.1节</span></a>）为代表，将传统的逐候选打分转变为用户级序列建模，通过
 KV caching
 解除计算成本与候选数量的绑定，支持数万长度的用户行为建模。<strong>硬件感知架构设计</strong>
-(<code class="xref std std-numref docutils literal notranslate"><span class="pre">sec_hardware_optimization</span></code>) 以阿里
+(<code class="xref std std-numref docutils literal notranslate"><span class="pre">sec_hardware_optimization</span></code>) 以字节
 RankMixer（<a class="reference internal" href="../chapter_6_scaling/4.rankmixer.html#rankmixer"><span class="std std-numref">6.4节</span></a>）为代表，用统一的 Transformer
 替代碎片化的手工模块，将 GPU 利用率从传统 DLRM 的 4-5%
 提升至接近大语言模型的水平。</p>
@@ -431,14 +431,14 @@ OneRec 通过语义 ID、Decoder-Only 架构和基于 DPO
 多阶段排序链路。在<strong>广告场景</strong>（<a class="reference internal" href="../chapter_7_gr_e2e/3.ad.html#gr-ad"><span class="std std-numref">7.3节</span></a>），EGA
 将竞价机制融入生成过程，在满足激励相容性约束的同时实现端到端的广告分配。</p>
 <p><strong>第八章：会思考的推荐模型</strong></p>
-<p>前面的生成式模型虽能高效生成推荐，但其决策过程仍是隐式的黑箱。本章要赋予推荐模型”先思考、再推荐”的显式推理能力，完成从”理解”到”推理”的最后一步跨越。</p>
+<p>前面的生成式模型虽能高效生成推荐，但其决策过程仍是隐式的黑箱。本章要赋予推荐模型“先思考、再推荐”的显式推理能力，完成从“理解”到“推理”的最后一步跨越。</p>
 <p>要实现这一目标，需攻克两个递进问题。首先是<strong>语义对齐</strong>（<a class="reference internal" href="../chapter_8_thinking/1.semantic_alignment.html#semantic-alignment"><span class="std std-numref">8.1节</span></a>）：推荐系统的协同过滤信号与
-LLM 的语言语义说着不同的”语言”，LC-Rec
+LLM 的语言语义说着不同的“语言”，LC-Rec
 通过多任务对齐框架将两者融合到统一表征空间。在此基础上，<strong>推理激活</strong>（<a class="reference internal" href="../chapter_8_thinking/2.reasoning_framework.html#reasoning-framework"><span class="std std-numref">8.2节</span></a>）让模型学会显式思考，OneRec-Think
-通过”物品对齐→推理激活→推理增强”三阶段框架，让模型在推荐前生成结构化的推理过程。更进一步，RecZero
+通过“物品对齐→推理激活→推理增强”三阶段框架，让模型在推荐前生成结构化的推理过程。更进一步，RecZero
 探索了<strong>自主推理</strong>（<a class="reference internal" href="../chapter_8_thinking/3.autonomous_reasoning.html#autonomous-reasoning"><span class="std std-numref">8.3节</span></a>）：抛弃人工设计的推理模板，仅靠强化学习的奖励信号，让模型自主演化出推理策略。</p>
 <p><strong>第九章：基于扩散的推荐模型</strong></p>
-<p>与前几章的自回归生成不同，扩散模型通过”加噪-去噪”过程提供了另一种生成范式
+<p>与前几章的自回归生成不同，扩散模型通过“加噪-去噪”过程提供了另一种生成范式
 (<a class="reference internal" href="../chapter_9_diffusion/1.basics.html#sec-diffusion-basics"><span class="std std-numref">9.1节</span></a>)
 。本章展示其在推荐中的两类应用。在<strong>数据增强</strong>（<a class="reference internal" href="../chapter_9_diffusion/2.augmentation.html#sec-diffusion-augmentation"><span class="std std-numref">9.2节</span></a>）方面，DiffuASR
 通过条件扩散生成高质量的用户交互序列前缀，缓解短序列用户的数据稀疏问题。在<strong>特征增强与多样性优化</strong>（<a class="reference internal" href="../chapter_9_diffusion/3.application.html#sec-diffusion-application"><span class="std std-numref">9.3节</span></a>）方面，AsymDiffRec

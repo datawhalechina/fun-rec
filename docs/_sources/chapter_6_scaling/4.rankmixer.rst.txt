@@ -57,7 +57,7 @@ Token Mixing机制
 ----------------
 
 Self-Attention的计算复杂度为\ :math:`O(T^2D)`\ （\ :math:`T`\ 为token数量，\ :math:`D`\ 为隐藏维度），来自于需要计算所有token
-pair之间的相似度矩阵\ :math:`QK^T`\ 。在推荐场景中特征数量可达数百上千，这个\ :math:`T^2`\ 项成为显著瓶颈。RankMixer的核心洞察是：\ **推荐任务需要的是token之间的信息混合（mixing），而非基于相似度的动态加权（attention）**\ 。例如学习”年轻用户在一线城市更喜欢科技类物品”这样的高阶交互，本质是让多个token的信息融合形成新的representation，而不一定需要显式计算token
+pair之间的相似度矩阵\ :math:`QK^T`\ 。在推荐场景中特征数量可达数百上千，这个\ :math:`T^2`\ 项成为显著瓶颈。RankMixer的核心洞察是：\ **推荐任务需要的是token之间的信息混合（mixing），而非基于相似度的动态加权（attention）**\ 。例如学习“年轻用户在一线城市更喜欢科技类物品”这样的高阶交互，本质是让多个token的信息融合形成新的representation，而不一定需要显式计算token
 pair相似度。
 
 Token Mixing的核心思想是：\ **在特征维度而非token维度进行混合**\ 。如图
@@ -84,7 +84,7 @@ mixing**\ 。对每个head，将所有token的该head部分拼接起来：
 
    \boldsymbol{s}^{(h)} = \text{Concat}(\boldsymbol{x}_1^{(h)}, \boldsymbol{x}_2^{(h)}, \ldots, \boldsymbol{x}_T^{(h)}) \in \mathbb{R}^{TD/H}
 
-这个操作的关键在于：\ **它改变了数据的组织方式，从”按token组织”变为”按head组织”**\ 。原始输入\ :math:`\boldsymbol{X}`\ 是\ :math:`T`\ 个长度为\ :math:`D`\ 的向量（每个token一个向量），经过SplitHead和Concat后，变为\ :math:`H`\ 个长度为\ :math:`TD/H`\ 的向量（每个head一个向量）。在每个head内部，不同token的特征紧密排列在一起，为信息混合创造了条件。实际实现中，RankMixer设置\ :math:`H=T`\ ，这样每个”head”实际包含了所有token的一部分特征。经过mixing后，token数量保持不变，便于residual
+这个操作的关键在于：\ **它改变了数据的组织方式，从“按token组织”变为“按head组织”**\ 。原始输入\ :math:`\boldsymbol{X}`\ 是\ :math:`T`\ 个长度为\ :math:`D`\ 的向量（每个token一个向量），经过SplitHead和Concat后，变为\ :math:`H`\ 个长度为\ :math:`TD/H`\ 的向量（每个head一个向量）。在每个head内部，不同token的特征紧密排列在一起，为信息混合创造了条件。实际实现中，RankMixer设置\ :math:`H=T`\ ，这样每个“head”实际包含了所有token的一部分特征。经过mixing后，token数量保持不变，便于residual
 connection。
 
 从复杂度角度看，Token
@@ -95,7 +95,7 @@ kernel），进一步减少了kernel开销。
 
 一个关键问题是：\ **不显式计算token
 pair之间的相似度，如何保证能捕捉它们之间的交互？**\ 答案在于\ **多层堆叠**\ 。单层Token
-Mixing实现的是”feature-level
+Mixing实现的是“feature-level
 mixing”——不同token的同一维度特征会相互影响（因为它们被concat到同一个向量中）。但当堆叠多层Token
 Mixing时，第1层的每个token输出融合了所有token的一阶信息，第2层的输入已经是第1层mixed后的结果，每个token已经包含其他token的信息，第2层再次mixing实现了二阶交互。形式化地，令\ :math:`f(\cdot)`\ 表示单层Token
 Mixing，\ :math:`\boldsymbol{X}_0`\ 为输入，则：
@@ -143,11 +143,11 @@ FFN中每个token有独立的输入和独立的FFN：\ :math:`\boldsymbol{v}_t =
 FFN的总参数量为\ :math:`\text{Param} = 2TkD^2`\ ，相比shared
 FFN（\ :math:`2kD^2`\ ）增加了\ :math:`T`\ 倍。但\ **计算复杂度不变**\ ：\ :math:`\text{FLOPs} = 2TkD^2`\ ，与shared
 FFN相同（shared
-FFN需对\ :math:`T`\ 个token分别计算）。关键在于增加的参数是”专门化”的，每块参数只服务于特定token，学习效率更高。
+FFN需对\ :math:`T`\ 个token分别计算）。关键在于增加的参数是“专门化”的，每块参数只服务于特定token，学习效率更高。
 
 跨特征空间交互通过Token Mixing层实现。Per-Token
 FFN专注于各自特征空间的深度建模，Token
-Mixing确保不同token的信息混合。这种”mixing + per-token
+Mixing确保不同token的信息混合。这种“mixing + per-token
 processing”的组合，在保持参数隔离的同时，通过多层堆叠（\ :math:`\boldsymbol{S}_{n-1} = \text{LN}(\text{TokenMixing}(\boldsymbol{X}_{n-1}) + \boldsymbol{X}_{n-1})`\ ，\ :math:`\boldsymbol{X}_n = \text{LN}(\text{PFFN}(\boldsymbol{S}_{n-1}) + \boldsymbol{S}_{n-1})`\ ）实现了充分的跨空间交互。
 
 Sparse MoE扩展
@@ -207,5 +207,5 @@ overhead（20%时间）占据主导，有效GEMM计算仅占5%，这解释了为
 通过hardware-aware的架构设计，RankMixer将推荐模型从碎片化设计转变为统一架构范式。算法层面，Token
 Mixing将复杂度从\ :math:`O(T^2D)`\ 降低到\ :math:`O(TD^2)`\ ，Per-Token
 FFN捕捉特征异质性，Sparse MoE通过ReLU
-Routing和DTSI-MoE实现参数高效扩展。系统层面，将所有核心操作统一为矩阵乘法，MFU从4-5%提升到45%，让推荐模型真正成为GPU的”第一类公民”，可直接利用Tensor
+Routing和DTSI-MoE实现参数高效扩展。系统层面，将所有核心操作统一为矩阵乘法，MFU从4-5%提升到45%，让推荐模型真正成为GPU的“第一类公民”，可直接利用Tensor
 Core和LLM领域的成熟工具链，打开了可持续的scaling路径。RankMixer验证了Transformer统一架构同样适用于推荐场景，关键在于针对性定制。但其主要聚焦于模型内部的计算效率优化，推荐系统pipeline中仍存在其他碎片化问题：序列建模与特征交互的分离、召回与排序的分离、多任务之间的碎片化。下一节将介绍OneTrans如何进一步突破这些壁垒，在统一的Transformer框架中实现端到端的联合优化。

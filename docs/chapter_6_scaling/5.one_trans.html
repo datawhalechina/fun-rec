@@ -383,7 +383,7 @@ Show Source
 <strong>encode-then-interaction</strong>
 范式：序列建模模块（DIN、LONGER）将行为序列编码为固定长度向量，然后与非序列特征拼接，输入特征交互模块（RankMixer）学习高阶交叉（如图
 <a class="reference internal" href="#onetrans-compare"><span class="std std-numref">图6.5.1</span></a> (a)）。</p>
-<p>这种分离式设计存在两个根本问题：（1）<strong>信息流受限</strong>，序列必须压缩为固定维度向量，静态特征无法在序列编码阶段发挥作用，只能后期”补救式”融合；（2）<strong>执行碎片化</strong>，两模块独立执行，无法享受
+<p>这种分离式设计存在两个根本问题：（1）<strong>信息流受限</strong>，序列必须压缩为固定维度向量，静态特征无法在序列编码阶段发挥作用，只能后期“补救式”融合；（2）<strong>执行碎片化</strong>，两模块独立执行，无法享受
 LLM 的系统优化（KV Caching、FlashAttention），且需分别调优，难以形成统一
 scaling law。</p>
 <p>OneTrans <span id="id2">(<a class="reference internal" href="../chapter_references/references.html#id129" title="Zhang, Z., Pei, H., Guo, J., Wang, T., Feng, Y., Sun, H., … Sun, A. (2025). Onetrans: unified feature interaction and sequence modeling with one transformer in industrial recommender. arXiv preprint arXiv:2510.26104.">Zhang <em>et al.</em>, 2025</a>)</span> 提出根本性架构革新：<strong>用单一
@@ -454,7 +454,7 @@ FFN 参数是合理的。但在 OneTrans 中，S-tokens
 来自行为序列（同质性强，都是用户与物品的交互事件），而 NS-tokens
 来自完全不同的特征空间（用户年龄是人口统计学特征、物品价格是数值特征、查询词是文本特征）。如果强制所有
 token
-共享参数，会导致参数冲突，例如用于捕捉”序列中相邻物品相似性”的参数，对于”用户年龄
+共享参数，会导致参数冲突，例如用于捕捉“序列中相邻物品相似性”的参数，对于“用户年龄
 → 物品类目”的交互可能完全不适用。</p>
 <p>OneTrans 的核心创新是 <strong>Mixed Parameterization</strong>：<strong>S-tokens
 共享一套参数，每个 NS-token 拥有独立的 token-specific
@@ -483,12 +483,12 @@ token
 <li><p><strong>S-side 因果依赖</strong>：每个 S-token 只能 attend 到它之前的
 S-tokens。对于 timestamp-aware 序列，这自然建模了时间因果关系；对于
 timestamp-agnostic 序列（按意图排序），causal mask
-让高意图行为（如下单）的信息可以传递到低意图行为（如点击），实现”从强信号过滤弱信号”的效果。</p></li>
+让高意图行为（如下单）的信息可以传递到低意图行为（如点击），实现“从强信号过滤弱信号”的效果。</p></li>
 <li><p><strong>NS-side 全局 attention</strong>：每个 NS-token 可以 attend 到<strong>所有</strong>
 S-tokens（完整行为历史）以及它之前的
-NS-tokens。这使得非序列特征可以充分利用序列证据，例如”物品类目”token
+NS-tokens。这使得非序列特征可以充分利用序列证据，例如“物品类目”token
 可以 attend
-到所有历史点击的物品类目，自动学习”用户对该类目的历史偏好”。</p></li>
+到所有历史点击的物品类目，自动学习“用户对该类目的历史偏好”。</p></li>
 <li><p><strong>支持 Pyramid</strong>：Causal mask
 的方向性使得信息自然向序列尾部聚集，为后续的 Pyramid Stack
 提供了理论基础（详见下一节）。</p></li>
@@ -527,7 +527,7 @@ mean square 归一化提供更稳定的梯度传播。</p>
 <span class="math notranslate nohighlight">\(i\)</span> 的 token 融合了位置 <span class="math notranslate nohighlight">\(1, \dots, i\)</span> 的信息；到第
 <span class="math notranslate nohighlight">\(n+1\)</span> 层，位置 <span class="math notranslate nohighlight">\(i+1\)</span> 又融合了更新后的位置
 <span class="math notranslate nohighlight">\(1, \dots, i+1\)</span> 的信息。随着层数加深，<strong>靠后的 token
-逐渐成为前面所有 token 信息的”汇聚点”</strong>。特别地，NS-tokens
+逐渐成为前面所有 token 信息的“汇聚点”</strong>。特别地，NS-tokens
 位于序列末尾，它们在深层会积累整个序列和前面 NS-tokens 的信息。</p>
 <p>Pyramid Stack 正是利用这一特性：<strong>逐层减少参与 attention 计算的 query
 token 数量，只保留序列尾部的 token</strong>。具体地，设第 <span class="math notranslate nohighlight">\(n\)</span> 层的输入
@@ -547,7 +547,7 @@ attention 计算中：</p>
 <p>这种设计带来以下两个核心收益。</p>
 <ol class="arabic simple">
 <li><p><strong>Progressive
-Distillation（渐进式蒸馏）</strong>：长行为序列（可能有数百上千个事件）通过逐层收缩，将信息逐步”蒸馏”到少量尾部
+Distillation（渐进式蒸馏）</strong>：长行为序列（可能有数百上千个事件）通过逐层收缩，将信息逐步“蒸馏”到少量尾部
 token 中。浅层 Transformer 学习局部模式（如相邻物品的相似性），深层
 Transformer 在压缩后的 token
 上学习全局模式（如长期兴趣漂移）。最终，所有序列信息都汇聚到

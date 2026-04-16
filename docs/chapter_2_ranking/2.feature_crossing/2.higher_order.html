@@ -580,7 +580,7 @@ Transformer 中的 Token Embeddings。</p>
 <p>AutoInt
 的核心是其交互层，该层由多头自注意力机制构成。对于任意两个特征的嵌入向量
 <span class="math notranslate nohighlight">\(\boldsymbol{e}_m\)</span> 和
-<span class="math notranslate nohighlight">\(\boldsymbol{e}_k\)</span>，自注意力机制会计算它们之间的相关性得分。这个过程在每个”注意力头”（Head）
+<span class="math notranslate nohighlight">\(\boldsymbol{e}_k\)</span>，自注意力机制会计算它们之间的相关性得分。这个过程在每个“注意力头”（Head）
 <span class="math notranslate nohighlight">\(h\)</span> 中独立进行。具体来说，对于特征 <span class="math notranslate nohighlight">\(m\)</span> 和特征
 <span class="math notranslate nohighlight">\(k\)</span>，它们在第 <span class="math notranslate nohighlight">\(h\)</span> 个注意力头中的相关性得分
 <span class="math notranslate nohighlight">\(\alpha_{m,k}^{(h)}\)</span> 计算如下：</p>
@@ -595,9 +595,9 @@ Transformer 中的 Token Embeddings。</p>
 <span class="math notranslate nohighlight">\(\boldsymbol{W}_{\text{Query}}^{(h)} \in \mathbb{R}^{d' \times d}\)</span>
 和
 <span class="math notranslate nohighlight">\(\boldsymbol{W}_{\text{Key}}^{(h)} \in \mathbb{R}^{d' \times d}\)</span>
-是可学习的投影矩阵，它们分别将原始嵌入向量映射到”查询”（Query）和”键”（Key）空间。<span class="math notranslate nohighlight">\(d'\)</span>
+是可学习的投影矩阵，它们分别将原始嵌入向量映射到“查询”（Query）和“键”（Key）空间。<span class="math notranslate nohighlight">\(d'\)</span>
 是投影后的维度。</p>
-<p>在计算出所有特征对之间的相关性得分后，模型会利用这些得分来对所有特征的”值”（Value）向量进行加权求和，从而为特征
+<p>在计算出所有特征对之间的相关性得分后，模型会利用这些得分来对所有特征的“值”（Value）向量进行加权求和，从而为特征
 <span class="math notranslate nohighlight">\(\boldsymbol{e}_m\)</span> 生成一个新的、融合了其他特征信息的表示
 <span class="math notranslate nohighlight">\(\boldsymbol{\tilde{e}}_m^{(h)}\)</span>：</p>
 <div class="math notranslate nohighlight" id="equation-chapter-2-ranking-2-feature-crossing-2-higher-order-8">
@@ -675,11 +675,11 @@ DCN 和 xDeepFM 不同，AutoInt
 <div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------+--------+--------+------------+</span>
 <span class="o">|</span> <span class="n">模型</span>    <span class="o">|</span>    <span class="n">auc</span> <span class="o">|</span>   <span class="n">gauc</span> <span class="o">|</span>   <span class="n">val_user</span> <span class="o">|</span>
 <span class="o">+=========+========+========+============+</span>
-<span class="o">|</span> <span class="n">dcn</span>     <span class="o">|</span> <span class="mf">0.6057</span> <span class="o">|</span> <span class="mf">0.5733</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">dcn</span>     <span class="o">|</span> <span class="mf">0.602</span>  <span class="o">|</span> <span class="mf">0.5776</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
-<span class="o">|</span> <span class="n">xdeepfm</span> <span class="o">|</span> <span class="mf">0.6006</span> <span class="o">|</span> <span class="mf">0.5729</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">xdeepfm</span> <span class="o">|</span> <span class="mf">0.6024</span> <span class="o">|</span> <span class="mf">0.5769</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
-<span class="o">|</span> <span class="n">autoint</span> <span class="o">|</span> <span class="mf">0.5971</span> <span class="o">|</span> <span class="mf">0.5732</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">autoint</span> <span class="o">|</span> <span class="mf">0.6048</span> <span class="o">|</span> <span class="mf">0.5731</span> <span class="o">|</span>        <span class="mi">928</span> <span class="o">|</span>
 <span class="o">+---------+--------+--------+------------+</span>
 </pre></div>
 </div>

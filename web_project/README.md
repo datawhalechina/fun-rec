@@ -40,9 +40,9 @@ docker compose up --build
 cd backend
 ```
 
-* 同步依赖
+* 同步依赖（需要 Python 3.11，因为 TensorFlow 2.15 仅支持该版本）
 ```bash
-uv sync
+uv sync --python 3.11
 ```
 
 * 加载数据到数据库
@@ -116,6 +116,6 @@ http://localhost:3000
 
 ```bash
 cd backend
-uv sync --extra dev
+uv sync --python 3.11 --extra dev
 make test
 ```

@@ -380,7 +380,7 @@ Show Source
   <section id="itemcf">
 <span id="id1"></span><h1><span class="section-number">2.1.1. </span>ItemCF：基于物品相似度的协同过滤<a class="headerlink" href="#itemcf" title="Permalink to this heading">¶</a></h1>
 <p>基于物品的协同过滤（ItemCF） <span id="id2">(<a class="reference internal" href="../../chapter_references/references.html#id6" title="Linden, G., Smith, B., &amp; York, J. (2003). Amazon.com recommendations: item-to-item collaborative filtering. IEEE Internet computing, 7(1), 76–80.">Linden <em>et al.</em>, 2003</a>)</span>
-的核心思想是：用户的兴趣具有连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。ItemCF关注的问题是”和你喜欢的物品相似的还有什么”，通过计算物品之间的相似度来生成推荐结果。</p>
+的核心思想是：用户的兴趣具有连贯性，喜欢某个物品的用户往往也会对相似的物品感兴趣。ItemCF关注的问题是“和你喜欢的物品相似的还有什么”，通过计算物品之间的相似度来生成推荐结果。</p>
 <figure class="align-default" id="id11">
 <span id="itemcf-illustration"></span><a class="reference internal image-reference" href="../../_images/itemcf_illustration.svg"><img alt="../../_images/itemcf_illustration.svg" src="../../_images/itemcf_illustration.svg" width="300px" /></a>
 <figcaption>
@@ -582,8 +582,8 @@ Show Source
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;用户</span><span class="si">{</span><span class="n">target_user</span><span class="si">}</span><span class="s1">对物品</span><span class="si">{</span><span class="n">target_item</span><span class="si">}</span><span class="s1">的预测评分为：</span><span class="si">{</span><span class="n">target_item_pred</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>以上代码逐步演示了单个用户-物品对的预测过程。接下来调用封装好的实验框架，在完整数据集上运行
-ItemCF 并查看评估指标：</p>
+<p>以上代码逐步演示了单个用户-物品对的预测过程。</p>
+<p>接下来调用封装好的实验框架，在完整数据集上运行 ItemCF 并查看评估指标：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">funrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiment</span>
 
 <span class="n">run_experiment</span><span class="p">(</span><span class="s1">&#39;item_cf&#39;</span><span class="p">)</span>
