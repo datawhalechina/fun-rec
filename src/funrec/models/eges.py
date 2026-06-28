@@ -197,11 +197,15 @@ def build_eges_model(feature_columns, model_config):
 
     # 推断词表大小
     item_vocab_size = feature_dict.get("movie_id") or feature_dict.get("movieId") or 0
-    if not isinstance(item_vocab_size, int):
+    if isinstance(item_vocab_size, (int, np.integer)):
+        item_vocab_size = int(item_vocab_size)
+    else:
         # 兼容可能的dict形式
         item_vocab_size = len(item_vocab_size) + 1
     genre_vocab_size = feature_dict.get("genres", 0)
-    if not isinstance(genre_vocab_size, int):
+    if isinstance(genre_vocab_size, (int, np.integer)):
+        genre_vocab_size = int(genre_vocab_size)
+    else:
         genre_vocab_size = len(genre_vocab_size) + 1
 
     # 输入层
